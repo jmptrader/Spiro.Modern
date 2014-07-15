@@ -1,0 +1,14 @@
+source/packages
+source/bin
+source/obj
+source/Spiro.Modern.v12.suo
+source/Scripts/*.map
+source/Scripts/spiro.config.js
+source/Scripts/spiro.config.ts
+source/Scripts/spiro.models.helpers.js
+source/Scripts/spiro.models.helpers.ts
+source/Scripts/spiro.models.shims.js
+source/Scripts/spiro.models.shims.ts
+source/Scripts/spiro.models.js
+source/Scripts/spiro.models.ts
+source/Spiro.Modern.csproj.user

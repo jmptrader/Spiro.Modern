@@ -104,6 +104,15 @@
     <Content Include="index.html" />
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.color.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.loaderwithtransform.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.mask.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.representationloader.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.transformstrategy.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.config.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.models.helpers.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.models.shims.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.models.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.app.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.controllers.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.directives.ts" />
@@ -115,6 +124,15 @@
     <TypeScriptCompile Include="Scripts\spiro.modern.services.urlhelper.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.viewmodels.ts" />
+    <Content Include="Scripts\spiro.angular.services.color.js" />
+    <Content Include="Scripts\spiro.angular.services.loaderwithtransform.js" />
+    <Content Include="Scripts\spiro.angular.services.mask.js" />
+    <Content Include="Scripts\spiro.angular.services.representationloader.js" />
+    <Content Include="Scripts\spiro.angular.services.transformstrategy.js" />
+    <Content Include="Scripts\spiro.config.js" />
+    <Content Include="Scripts\spiro.models.helpers.js" />
+    <Content Include="Scripts\spiro.models.js" />
+    <Content Include="Scripts\spiro.models.shims.js" />
     <Content Include="Scripts\spiro.modern.app.js" />
     <Content Include="Scripts\spiro.modern.controllers.js" />
     <Content Include="Scripts\spiro.modern.directives.js" />
@@ -126,20 +144,19 @@
     <Content Include="Scripts\spiro.modern.services.urlhelper.js" />
     <Content Include="Scripts\spiro.modern.services.viewmodelfactory.js" />
     <Content Include="Scripts\spiro.modern.viewmodels.js" />
-    <Content Include="Scripts\typings\angularjs\angular-animate.d.ts" />
-    <Content Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
-    <Content Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
-    <Content Include="Scripts\typings\angularjs\angular-resource.d.ts" />
-    <Content Include="Scripts\typings\angularjs\angular-route.d.ts" />
-    <Content Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
-    <Content Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
-    <Content Include="Scripts\typings\angularjs\angular.d.ts" />
     <Content Include="Scripts\typings\jasmine\jasmine-1.3.d.ts" />
-    <Content Include="Scripts\typings\jquery\jquery.d.ts" />
     <Content Include="Scripts\typings\underscore\underscore.d.ts" />
     <Content Include="SpiroReadMe.txt" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Tests\specs\controllers.ts" />
     <TypeScriptCompile Include="Tests\specs\handlersService.ts" />
     <TypeScriptCompile Include="Tests\specs\helpers.ts" />
@@ -211,4 +228,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>cd  $(SolutionDir)\packages\Spiro.Models*\content\Scripts
+xcopy *  $(SolutionDir)\Scripts
+cd  $(SolutionDir)\packages\Spiro.Angular*\content\Scripts
+xcopy *  $(SolutionDir)\Scripts</PreBuildEvent>
+  </PropertyGroup>
 </Project>
