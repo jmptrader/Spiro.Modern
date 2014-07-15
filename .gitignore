@@ -26,3 +26,8 @@ source/Scripts/jasmine-samples/Player.js
 source/Scripts/jasmine-samples/PlayerSpec.js
 source/Scripts/jasmine-samples/Song.js
 source/Scripts/jasmine-samples/SpecHelper.js
+source/Tests/specs/viewModelFactoryService.js.map
+source/Tests/specs/helpers.js.map
+source/Tests/specs/handlersService.js.map
+source/Tests/specs/controllers.js.map
+source/Tests/specs/contextService.js.map
