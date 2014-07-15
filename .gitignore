@@ -12,3 +12,17 @@ source/Scripts/spiro.models.shims.ts
 source/Scripts/spiro.models.js
 source/Scripts/spiro.models.ts
 source/Spiro.Modern.csproj.user
+source/Scripts/spiro.angular.services.transformstrategy.ts
+source/Scripts/spiro.angular.services.representationloader.js
+source/Scripts/spiro.angular.services.representationloader.ts
+source/Scripts/spiro.angular.services.transformstrategy.js
+source/Scripts/spiro.angular.services.loaderwithtransform.js
+source/Scripts/spiro.angular.services.loaderwithtransform.ts
+source/Scripts/spiro.angular.services.mask.js
+source/Scripts/spiro.angular.services.mask.ts
+source/Scripts/spiro.angular.services.color.js
+source/Scripts/spiro.angular.services.color.ts
+source/Scripts/jasmine-samples/Player.js
+source/Scripts/jasmine-samples/PlayerSpec.js
+source/Scripts/jasmine-samples/Song.js
+source/Scripts/jasmine-samples/SpecHelper.js

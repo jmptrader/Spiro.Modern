@@ -1,4 +1,4 @@
-﻿/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+﻿/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 function spyOnPromise(tgt, func, mock) {
@@ -8,7 +8,7 @@ function spyOnPromise(tgt, func, mock) {
         return f(mock);
     };
 
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 
 function spyOnPromiseConditional(tgt, func, mock1, mock2) {
@@ -21,7 +21,7 @@ function spyOnPromiseConditional(tgt, func, mock1, mock2) {
         return result;
     };
 
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 
 function mockPromiseFail(mock) {
@@ -42,7 +42,7 @@ function spyOnPromiseFail(tgt, func, mock) {
         return fnok ? fnok(mock) : fok(mock);
     };
 
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 
 function spyOnPromiseNestedFail(tgt, func, mock) {
@@ -58,7 +58,7 @@ function spyOnPromiseNestedFail(tgt, func, mock) {
         return mmp;
     };
 
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 
 function spyOnPromise2NestedFail(tgt, func, mock) {
@@ -80,6 +80,6 @@ function spyOnPromise2NestedFail(tgt, func, mock) {
         return mmp;
     };
 
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 //# sourceMappingURL=helpers.js.map
