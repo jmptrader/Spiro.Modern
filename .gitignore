@@ -1,6 +1,8 @@
 source/packages
 source/bin
 source/obj
+test/bin
+test/obj
 source/Spiro.Modern.v12.suo
 source/Scripts/*.map
 source/Scripts/spiro.config.js
