@@ -37,3 +37,4 @@ coverage/Firefox 30.0.0 (Windows)/cobertura-coverage.xml
 coverage/IE 11.0.0 (Windows)/cobertura-coverage.xml
 source/Spiro.Modern.sln.DotSettings.user
 test-results/karma-test-results.xml
+test/Spiro.Angular.Selenium.Test.csproj.user

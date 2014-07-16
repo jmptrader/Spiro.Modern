@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
@@ -55,7 +56,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set price and days to mfctr
 
-            var today = DateTime.Now.ToString("d MMM yyyy");
+            var today = DateTime.Now.ToString("d MMM yyyy", CultureInfo.GetCultureInfo("en-GB"));
 
             for (int i = 0; i < 12; i++) {
                 br.FindElement(By.CssSelector("div#sellstartdate input")).SendKeys(Keys.Backspace);
