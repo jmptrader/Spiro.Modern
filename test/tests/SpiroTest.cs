@@ -58,7 +58,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class SpiroTest {
         #region overhead
 
+#if AV
+        protected const string Url = "http://localhost/index.html";
+#else
         protected const string Url = "http://mvc.nakedobjects.net:1081/UnitTestSpiroNg/index.html";
+#endif
+        
         protected const string Server = @"Saturn\SqlExpress";
         protected const string Database = "AdventureWorks";
         protected const string Backup = "AdventureWorks";
@@ -98,7 +103,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
-           //  DatabaseUtils.RestoreDatabase(Database, Backup, Server);
+#if AV
+#else
+          //DatabaseUtils.RestoreDatabase(Database, Backup, Server);
+#endif
         }
 
         public virtual void CleanUpTest() {
