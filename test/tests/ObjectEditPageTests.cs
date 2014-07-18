@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     [TestClass]
@@ -14,7 +15,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
        
         [TestMethod]
         public virtual void ObjectEditChangeScalar() {
-            br.Navigate().GoToUrl(Product469Url);
+            br.Navigate().GoToUrl(Product870Url);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
@@ -35,7 +36,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
-            Assert.AreEqual("List Price:\r\n100", properties[5].Text);
+            Assert.AreEqual("List Price:\r\n4100", properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
           
         }
@@ -44,7 +45,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeDateTime()
         {
-            br.Navigate().GoToUrl(Product469Url);
+            br.Navigate().GoToUrl(Product870Url);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
@@ -78,7 +79,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeChoices()
         {
-            br.Navigate().GoToUrl(Product469Url);
+            br.Navigate().GoToUrl(Product870Url);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
@@ -108,7 +109,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeConditionalChoices()
         {
-            br.Navigate().GoToUrl(Product469Url);
+            br.Navigate().GoToUrl(Product870Url);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
@@ -120,15 +121,20 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set product category and sub category
 
-            Assert.AreEqual("", br.FindElement(By.CssSelector("#productcategory  select option[selected=selected]")).Text);
-            Assert.AreEqual(5, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
-            Assert.AreEqual(0, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
+            var selected = new SelectElement(br.FindElement(By.CssSelector("#productcategory  select")));
+
+            Assert.AreEqual("Accessories", selected.SelectedOption.Text);
+
+            Assert.AreEqual(4, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
+            Assert.AreEqual(13, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
 
             br.FindElement(By.CssSelector("#productcategory  select")).SendKeys("Clothing" + Keys.Tab);
 
             wait.Until(d => d.FindElements(By.CssSelector("#productsubcategory  select option")).Count == 9);
 
             br.FindElement(By.CssSelector("#productsubcategory  select")).SendKeys("Caps");
+
+            br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
 
             Click(br.FindElement(By.ClassName("save")));
 
@@ -145,7 +151,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set product category and sub category
 
-            Assert.AreEqual("Clothing", br.FindElement(By.CssSelector("#productcategory  select option[selected=selected]")).Text);
+            var slctd = new SelectElement(br.FindElement(By.CssSelector("#productcategory  select")));
+
+            Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
+
             Assert.AreEqual(4, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
             Assert.AreEqual(9, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
 

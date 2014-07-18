@@ -122,7 +122,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("SO51782", topItem);
 
-            Assert.AreEqual("Ascending", br.FindElement(By.CssSelector("option[selected=selected]")).Text); 
+            var selected = new SelectElement(br.FindElement(By.CssSelector(".parameter-value  select")));
+
+            Assert.AreEqual("Ascending", selected.SelectedOption.Text);
         }
 
         [TestMethod]
@@ -202,7 +204,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("HL Fork", topItem);
 
-            Assert.AreEqual("Forks", br.FindElement(By.CssSelector("option[selected=selected]")).Text);
+            var selected = new SelectElement(br.FindElement(By.CssSelector("select")));
+
+            Assert.AreEqual("Forks", selected.SelectedOption.Text);
         }
 
        
@@ -221,11 +225,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("List Products By Sub Categories", title);
 
-            var selected = br.FindElements(By.CssSelector("option[selected=selected]"));
+            var selected = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
 
-            Assert.AreEqual(2, selected.Count);
-            Assert.AreEqual("Mountain Bikes", selected.First().Text);
-            Assert.AreEqual("Touring Bikes", selected.Last().Text);
+            Assert.AreEqual(2, selected.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.Last().Text);
 
             Click(br.FindElement(By.ClassName("show")));
 
@@ -235,11 +239,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Mountain-100 Black, 38", topItem);
 
-            selected = br.FindElements(By.CssSelector("option[selected=selected]"));
+            selected = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
 
-            Assert.AreEqual(2, selected.Count);
-            Assert.AreEqual("Mountain Bikes", selected.First().Text);
-            Assert.AreEqual("Touring Bikes", selected.Last().Text);
+            Assert.AreEqual(2, selected.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.Last().Text);
         }
 
         [TestMethod]
@@ -274,11 +278,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Front Brakes", topItem);
 
-            var selected = br.FindElements(By.CssSelector("option[selected=selected]"));
+            var selected = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
 
-            Assert.AreEqual(2, selected.Count);
-            Assert.AreEqual("Handlebars", selected.First().Text);
-            Assert.AreEqual("Brakes", selected.Last().Text);
+            Assert.AreEqual(2, selected.AllSelectedOptions.Count);
+            Assert.AreEqual("Handlebars", selected.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Brakes", selected.AllSelectedOptions.Last().Text);
         }
 
 
@@ -298,9 +302,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
 
             Assert.AreEqual("Find By Product Line And Class", title);
-  
-            Assert.AreEqual("M", br.FindElement(By.CssSelector("div#productline option[selected=selected]")).Text);
-            Assert.AreEqual("H", br.FindElement(By.CssSelector("div#productclass option[selected=selected]")).Text);
+
+            var slctPl = new SelectElement(br.FindElement(By.CssSelector("div#productline select")));
+            var slctPc = new SelectElement(br.FindElement(By.CssSelector("div#productclass select")));
+
+            Assert.AreEqual("M", slctPl.SelectedOption.Text);
+            Assert.AreEqual("H", slctPc.SelectedOption.Text);
 
             Click(br.FindElement(By.ClassName("show")));
 
@@ -310,8 +317,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Mountain-300 Black, 38", topItem);
 
-            Assert.AreEqual("M", br.FindElement(By.CssSelector("div#productline option[selected=selected]")).Text);
-            Assert.AreEqual("H", br.FindElement(By.CssSelector("div#productclass option[selected=selected]")).Text);
+            slctPl = new SelectElement(br.FindElement(By.CssSelector("div#productline select")));
+            slctPc = new SelectElement(br.FindElement(By.CssSelector("div#productclass select")));
+
+            Assert.AreEqual("M", slctPl.SelectedOption.Text);
+            Assert.AreEqual("H", slctPc.SelectedOption.Text);
 
         }
 
@@ -341,8 +351,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("HL Road Frame - Black, 58", topItem);
 
-            Assert.AreEqual("R", br.FindElement(By.CssSelector("div#productline option[selected=selected]")).Text);
-            Assert.AreEqual("L", br.FindElement(By.CssSelector("div#productclass option[selected=selected]")).Text);
+            var slctPl = new SelectElement(br.FindElement(By.CssSelector("div#productline select")));
+            var slctPc = new SelectElement(br.FindElement(By.CssSelector("div#productclass select")));
+
+            Assert.AreEqual("R", slctPl.SelectedOption.Text);
+            Assert.AreEqual("L", slctPc.SelectedOption.Text);
 
         }
 
@@ -361,7 +374,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Find Products By Category", title);
 
-            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
+            var slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
+
+            Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
 
             var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
@@ -378,7 +393,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Road-150 Red, 62", topItem);
 
-            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
+            slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
+
+            Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
             slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
 
@@ -402,8 +419,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Find Products By Category", title);
 
-            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
 
+            var slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
+
+            Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
             var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
 
@@ -419,7 +438,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Road-150 Red, 62", topItem);
 
-            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
+            slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
+
+            Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
             slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
 

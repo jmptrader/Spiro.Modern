@@ -80,6 +80,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string Store555Url = Url + "#/objects/AdventureWorksModel.Store/555";
         protected const string Product968Url = Url + "#/objects/AdventureWorksModel.Product/968";
         protected const string Product469Url = Url + "#/objects/AdventureWorksModel.Product/469";
+        protected const string Product870Url = Url + "#/objects/AdventureWorksModel.Product/870";
 
         protected const int StoreActions = 8;
         protected const int ProductActions = 7;
