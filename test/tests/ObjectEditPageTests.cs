@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ObjectEditChangeDateTime()
         {
             br.Navigate().GoToUrl(Product870Url);
@@ -58,13 +58,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set price and days to mfctr
 
-            var today = DateTime.Now.ToString("d MMM yyyy");
+            var date = new DateTime(2014, 7, 18, 0, 0, 0, DateTimeKind.Utc);
+            var dateStr = date.ToString("d MMM yyyy");
 
             for (int i = 0; i < 12; i++) {
                 br.FindElement(By.CssSelector("div#sellstartdate input")).SendKeys(Keys.Backspace);
             }
 
-            br.FindElement(By.CssSelector("div#sellstartdate input")).SendKeys(today + Keys.Tab);
+            br.FindElement(By.CssSelector("div#sellstartdate input")).SendKeys(dateStr + Keys.Tab);
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
 
             Click(br.FindElement(By.ClassName("save")));
@@ -73,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
-            Assert.AreEqual("Sell Start Date:\r\n" + today, properties[18].Text);
+            Assert.AreEqual("Sell Start Date:\r\n" + dateStr, properties[18].Text);
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
         }
 
