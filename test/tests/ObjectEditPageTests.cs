@@ -58,7 +58,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set price and days to mfctr
 
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
             var today = DateTime.Now.ToString("d MMM yyyy");
 
             for (int i = 0; i < 12; i++) {
