@@ -108,8 +108,6 @@
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular-touch.js" />
     <Content Include="Scripts\angular-touch.min.js" />
-    <Content Include="Scripts\angular.js" />
-    <Content Include="Scripts\angular.min.js" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.color.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.loaderwithtransform.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.mask.ts" />
@@ -130,6 +128,8 @@
     <TypeScriptCompile Include="Scripts\spiro.modern.services.urlhelper.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.viewmodels.ts" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jasmine-html.js" />
     <Content Include="Scripts\jasmine.js" />
@@ -189,6 +189,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Scripts\underscore-min.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
