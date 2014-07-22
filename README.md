@@ -1,7 +1,8 @@
 Spiro.Modern
 ============
 
-[![Build status](https://ci.appveyor.com/api/projects/status/le4g4eav55fcb0c1)](https://ci.appveyor.com/project/scascarini/spiro-modern)
+[![Build status](https://ci.appveyor.com/api/projects/status/w5vgjhtym1kyd407)](https://ci.appveyor.com/project/scascarini/spiro-modern-193)
+
 
 Spiro.Modern is a complete 'generic' user interface that will work against any API that conforms to the Restful Objects standard. It makes use of the Spiro.Models and Spiro.Angular libraries.
 
