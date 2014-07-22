@@ -297,4 +297,4 @@ var Spiro;
     })(Spiro.Angular || (Spiro.Angular = {}));
     var Angular = Spiro.Angular;
 })(Spiro || (Spiro = {}));
-
+//# sourceMappingURL=spiro.modern.services.handlers.js.map
