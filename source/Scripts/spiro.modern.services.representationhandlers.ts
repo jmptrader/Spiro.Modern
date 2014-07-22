@@ -7,7 +7,7 @@ module Spiro.Angular.Modern {
 
     export interface IRepHandlers {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
-        conditionalChoices(promptRep: PromptRepresentation, id: string, args: ValueMap): ng.IPromise<ChoiceViewModel[]>;
+        conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
         setResult(result: ActionResultRepresentation, dvm?: DialogViewModel);
         setInvokeUpdateError($scope, error: any, vms: ValueViewModel[], vm: MessageViewModel);
         invokeAction($scope, action: Spiro.ActionRepresentation, dvm: DialogViewModel);
@@ -36,7 +36,7 @@ module Spiro.Angular.Modern {
             });
         };
 
-        repHandlers.conditionalChoices = function (promptRep: PromptRepresentation, id: string, args: ValueMap): ng.IPromise<ChoiceViewModel[]> {
+        repHandlers.conditionalChoices = function (promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]> {
 
             promptRep.reset();
             promptRep.setArguments(args); 

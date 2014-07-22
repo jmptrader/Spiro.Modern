@@ -88,8 +88,8 @@ module Spiro.Angular.Modern{
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = <(args: ValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.conditionalChoices, promptRep, id);
-                    parmViewModel.arguments = _.object<ValueMap>(_.map(<_.Dictionary<Object>>parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.conditionalChoices, promptRep, id);
+                    parmViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
 
@@ -262,8 +262,8 @@ module Spiro.Angular.Modern{
                 } 
 
                 if (propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.conditionalChoices = <(args: ValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.conditionalChoices, promptRep, id);
-                    propertyViewModel.arguments = _.object<ValueMap>(_.map(<_.Dictionary<Object>>propertyDetails.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
+                    propertyViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.conditionalChoices, promptRep, id);
+                    propertyViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>propertyDetails.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
                 }
             }
 

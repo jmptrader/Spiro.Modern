@@ -165,7 +165,7 @@ module Spiro.Angular.Modern {
                 var currentOptions: ChoiceViewModel[] = [];
 
                 function populateArguments() {
-                    var nArgs = <ValueMap>{};
+                    var nArgs = <IValueMap>{};
 
                     var dialog = <DialogViewModel> parent.dialog;
                     var object = <DomainObjectViewModel> parent.object;

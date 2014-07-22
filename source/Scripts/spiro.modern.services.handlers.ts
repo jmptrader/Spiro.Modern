@@ -324,7 +324,7 @@ module Spiro.Angular.Modern {
             context.setNestedObject(object);
         }
 
-        function setNestedCollection($scope, listOrCollection: ListOrCollection) {
+        function setNestedCollection($scope, listOrCollection: IListOrCollection) {
 
 
             if ($routeParams.tableMode) {

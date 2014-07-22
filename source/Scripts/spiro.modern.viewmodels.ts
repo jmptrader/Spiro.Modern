@@ -97,7 +97,7 @@ module Spiro.Angular.Modern {
         returnType: string;
         title: string;
         format: string;
-        arguments: ValueMap; 
+        arguments: IValueMap; 
         mask: string;
         isMultipleChoices: boolean; 
         minLength : number;
@@ -108,7 +108,7 @@ module Spiro.Angular.Modern {
             return null;
         }
 
-        conditionalChoices(args: ValueMap): ng.IPromise<ChoiceViewModel[]> {
+        conditionalChoices(args: IValueMap): ng.IPromise<ChoiceViewModel[]> {
             return null;
         }
 
