@@ -1,5 +1,14 @@
-/// <reference path="typings/angularjs/angular.d.ts" />
-/// <reference path="spiro.models.ts" />
+//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
+//Licensed under the Apache License, Version 2.0(the
+//"License"); you may not use this file except in compliance
+//with the License.You may obtain a copy of the License at
+//    http://www.apache.org/licenses/LICENSE-2.0
+//Unless required by applicable law or agreed to in writing,
+//software distributed under the License is distributed on an
+//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//KIND, either express or implied.See the License for the
+//specific language governing permissions and limitations
+//under the License.
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -9,6 +18,8 @@ var __extends = this.__extends || function (d, b) {
 var Spiro;
 (function (Spiro) {
     (function (Angular) {
+        /// <reference path="typings/angularjs/angular.d.ts" />
+        /// <reference path="spiro.models.ts" />
         (function (Modern) {
             var AttachmentViewModel = (function () {
                 function AttachmentViewModel() {
@@ -133,7 +144,7 @@ var Spiro;
                                 var selValues = _.map(selections, function (cvm) {
                                     return cvm.value;
                                 });
-                                return new Spiro.Value(selValues);
+                                return new Value(selValues);
                             }
 
                             var selRefs = _.map(selections, function (cvm) {
@@ -141,23 +152,23 @@ var Spiro;
                             });
 
                             // reference
-                            return new Spiro.Value(selRefs);
+                            return new Value(selRefs);
                         }
 
                         if (this.type === "scalar") {
-                            return new Spiro.Value(this.choice && this.choice.value != null ? this.choice.value : "");
+                            return new Value(this.choice && this.choice.value != null ? this.choice.value : "");
                         }
 
                         // reference
-                        return new Spiro.Value(this.choice && this.choice.value ? { href: this.choice.value, title: this.choice.name } : null);
+                        return new Value(this.choice && this.choice.value ? { href: this.choice.value, title: this.choice.name } : null);
                     }
 
                     if (this.type === "scalar") {
-                        return new Spiro.Value(this.value == null ? "" : this.value);
+                        return new Value(this.value == null ? "" : this.value);
                     }
 
                     // reference
-                    return new Spiro.Value(this.reference ? { href: this.reference } : null);
+                    return new Value(this.reference ? { href: this.reference } : null);
                 };
                 return ValueViewModel;
             })(MessageViewModel);
