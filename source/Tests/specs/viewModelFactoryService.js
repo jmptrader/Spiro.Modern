@@ -1,4 +1,15 @@
-﻿/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
+//Licensed under the Apache License, Version 2.0(the
+//"License"); you may not use this file except in compliance
+//with the License.You may obtain a copy of the License at
+//    http://www.apache.org/licenses/LICENSE-2.0
+//Unless required by applicable law or agreed to in writing,
+//software distributed under the License is distributed on an
+//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//KIND, either express or implied.See the License for the
+//specific language governing permissions and limitations
+//under the License.
+/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.models.ts" />
@@ -7,17 +18,14 @@
 /// <reference path="helpers.ts" />
 describe('viewModelFactory Service', function () {
     beforeEach(module('app'));
-
     describe('create errorViewModel', function () {
         var resultVm;
         var rawError = { message: "a message", stackTrace: ["line1", "line2"] };
         var emptyError = {};
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.errorViewModel(new Spiro.ErrorRepresentation(rawError));
             }));
-
             it('creates a error view model', function () {
                 expect(resultVm.message).toBe("a message");
                 expect(resultVm.stackTrace.length).toBe(2);
@@ -25,12 +33,10 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.stackTrace.pop()).toBe("line1");
             });
         });
-
         describe('from empty rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.errorViewModel(new Spiro.ErrorRepresentation(emptyError));
             }));
-
             it('creates a error view model', function () {
                 expect(resultVm.message).toBe("An Error occurred");
                 expect(resultVm.stackTrace.length).toBe(1);
@@ -38,29 +44,24 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe('create linkViewModel', function () {
         var resultVm;
         var rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
         var emptyLink = {};
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink));
             }));
-
             it('creates a link view model', function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.href).toBe("#/objects/AdventureWorksModel.Product/1");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
             });
         });
-
         describe('from empty rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.linkViewModel(new Spiro.Link(emptyLink));
             }));
-
             it('creates a link view model', function () {
                 expect(resultVm.title).toBeUndefined();
                 expect(resultVm.href).toBe("");
@@ -68,29 +69,24 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe('create itemViewModel', function () {
         var resultVm;
         var rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
         var emptyLink = {};
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.itemViewModel(new Spiro.Link(rawLink), "http://objects/AdventureWorksModel.SalesOrderHeader/1");
             }));
-
             it('creates an item view model', function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.href).toBe("#/objects/AdventureWorksModel.SalesOrderHeader/1?collectionItem=AdventureWorksModel.Product/1");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
             });
         });
-
         describe('from empty rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.itemViewModel(new Spiro.Link(emptyLink), "");
             }));
-
             it('creates an item view model', function () {
                 expect(resultVm.title).toBeUndefined();
                 expect(resultVm.href).toBe("");
@@ -98,38 +94,30 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe('create actionViewModel', function () {
         var resultVm;
         var rawdetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction" };
         var rawAction = { extensions: { friendlyName: "a title" }, links: [rawdetailsLink] };
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}));
             }));
-
             it('creates an action view model', function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.href).toBe("#/objects/AdventureWorksModel.Product/1?action=anaction");
             });
         });
     });
-
     describe('create dialogViewModel', function () {
         var resultVm;
         var rawInvokeLink = { rel: "urn:org.restfulobjects:rels/invoke", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction" };
         var rawUpLink = { rel: "urn:org.restfulobjects:rels/up", href: "http://objects/AdventureWorksModel.Product/1" };
-
         var rawAction = { extensions: { friendlyName: "a title" }, links: [rawInvokeLink, rawUpLink] };
-
         describe('from simple rep', function () {
             beforeEach(inject(function (viewModelFactory, $routeParams) {
                 $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), function () {
-                });
+                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), function () { });
             }));
-
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.isQuery).toBe(false);
@@ -141,19 +129,15 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe('create collectionViewModel', function () {
         var resultVm;
         var rawDetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
         var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
-
         var rawCollection = { size: 0, extensions: { friendlyName: "a title", pluralName: "somethings", elementType: "AdventureWorksModel.Product" }, links: [rawDetailsLink] };
-
         describe('from collection member rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}));
             }));
-
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.size).toBe(0);
@@ -163,15 +147,12 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.pluralName).toBe("somethings");
             });
         });
-
         describe('from collection details rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 rawCollection.value = [];
                 rawCollection.links.push(rawSelfLink);
-
                 resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection));
             }));
-
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.size).toBe(0);
@@ -181,14 +162,11 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.pluralName).toBe("somethings");
             });
         });
-
         describe('from list rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 var rawList = { value: [], links: [rawSelfLink] };
-
                 resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList));
             }));
-
             it('creates a dialog view model', function () {
                 expect(resultVm.size).toBe(0);
                 expect(resultVm.items.length).toBe(0);
@@ -196,16 +174,13 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe("create services view model", function () {
         var resultVm;
         var rawServices = { value: [] };
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.servicesViewModel(new Spiro.DomainServicesRepresentation(rawServices));
             }));
-
             it('creates a services view model', function () {
                 expect(resultVm.title).toBe("Services");
                 expect(resultVm.color).toBe("bg-color-darkBlue");
@@ -213,18 +188,14 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe("create service view model", function () {
         var resultVm;
         var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://services/AdventureWorksModel.ProductRepository" };
-
         var rawService = { serviceId: "a service", value: [], links: [rawSelfLink], title: "a title" };
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.serviceViewModel(new Spiro.DomainObjectRepresentation(rawService));
             }));
-
             it('creates a service view model', function () {
                 expect(resultVm.serviceId).toBe("a service");
                 expect(resultVm.title).toBe("a title");
@@ -234,18 +205,14 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe("create object view model", function () {
         var resultVm;
         var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
-
         var rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject));
             }));
-
             it('creates a object view model', function () {
                 expect(resultVm.domainType).toBe("an object");
                 expect(resultVm.title).toBe("a title");
@@ -257,7 +224,6 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.cancelEdit).toBe("#/objects/AdventureWorksModel.Product/1");
             });
         });
-
         describe('from transient populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 var rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
@@ -265,10 +231,8 @@ describe('viewModelFactory Service', function () {
                 rawObject.links.push(rawPersistLink);
                 var doRep = new Spiro.DomainObjectRepresentation(rawObject);
                 doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
-
                 resultVm = viewModelFactory.domainObjectViewModel(doRep);
             }));
-
             it('creates a object view model', function () {
                 expect(resultVm.domainType).toBe("an object");
                 expect(resultVm.title).toBe("Unsaved a name");
@@ -281,18 +245,14 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
-
     describe("create parameter view model", function () {
         var resultVm;
-
         var rawParameter = { extensions: { friendlyName: "a parm" }, links: [] };
         var rawAction = {};
-
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "pv");
             }));
-
             it('creates a parameter view model', function () {
                 expect(resultVm.type).toBe("ref");
                 expect(resultVm.title).toBe("a parm");
@@ -304,7 +264,6 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.returnType).toBeUndefined();
                 expect(resultVm.format).toBeUndefined();
                 expect(resultVm.reference).toBe("");
-
                 expect(resultVm.choices.length).toBe(0);
                 expect(resultVm.hasChoices).toBe(false);
                 expect(resultVm.hasPrompt).toBe(false);
@@ -313,15 +272,12 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.value).toBe("pv");
             });
         });
-
         describe('from populated rep with scalar choices', function () {
             beforeEach(inject(function (viewModelFactory) {
                 rawParameter.choices = [1, 2, 3];
                 rawParameter.default = 1;
-
                 resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "");
             }));
-
             it('creates a parameter view model with choices', function () {
                 expect(resultVm.choices.length).toBe(3);
                 expect(resultVm.hasChoices).toBe(true);
@@ -332,7 +288,6 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.value).toBeUndefined();
             });
         });
-
         describe('from populated rep with prompt autocomplete', function () {
             beforeEach(inject(function (viewModelFactory) {
                 var rawPromptLink = {
@@ -342,14 +297,11 @@ describe('viewModelFactory Service', function () {
                     extensions: { minLength: 0 },
                     type: 'application/json; profile = "urn:org.restfulobjects:repr-types/prompt"'
                 };
-
                 rawParameter.choices = null;
                 rawParameter.default = 1;
                 rawParameter.links.push(rawPromptLink);
-
                 resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "");
             }));
-
             it('creates a parameter view model with prompt', function () {
                 expect(resultVm.choices.length).toBe(0);
                 expect(resultVm.hasChoices).toBe(false);
@@ -360,7 +312,6 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.value).toBeUndefined();
             });
         });
-
         describe('from populated rep with prompt conditional choices', function () {
             beforeEach(inject(function (viewModelFactory) {
                 var rawPromptLink = {
@@ -370,15 +321,12 @@ describe('viewModelFactory Service', function () {
                     extensions: { minLength: 0 },
                     type: 'application/json; profile = "urn:org.restfulobjects:repr-types/prompt"'
                 };
-
                 rawParameter.choices = null;
                 rawParameter.default = 1;
                 rawParameter.links.pop();
                 rawParameter.links.push(rawPromptLink);
-
                 resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "");
             }));
-
             it('creates a parameter view model with prompt', function () {
                 expect(resultVm.choices.length).toBe(0);
                 expect(resultVm.hasChoices).toBe(false);

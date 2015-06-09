@@ -1,21 +1,30 @@
-﻿/// <reference path="typings/angularjs/angular.d.ts" />
+//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
+//Licensed under the Apache License, Version 2.0(the
+//"License"); you may not use this file except in compliance
+//with the License.You may obtain a copy of the License at
+//    http://www.apache.org/licenses/LICENSE-2.0
+//Unless required by applicable law or agreed to in writing,
+//software distributed under the License is distributed on an
+//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//KIND, either express or implied.See the License for the
+//specific language governing permissions and limitations
+//under the License.
+/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/angularjs/angular-route.d.ts" />
 var Spiro;
 (function (Spiro) {
+    var Angular;
     (function (Angular) {
         /* Declare app level module */
         Angular.app = angular.module('app', ['ngRoute', 'ngTouch']);
-
         function getSvrPath() {
             var trimmedPath = Spiro.svrPath.trim();
-
             if (trimmedPath.length == 0 || trimmedPath.charAt(Spiro.svrPath.length - 1) == '/') {
                 return trimmedPath;
             }
             return trimmedPath + '/';
         }
-
-        // templates
+        // templates 
         Angular.nestedCollectionTemplate = getSvrPath() + "Content/partials/nestedCollection.html";
         Angular.nestedCollectionTableTemplate = getSvrPath() + "Content/partials/nestedCollectionTable.html";
         Angular.nestedObjectTemplate = getSvrPath() + "Content/partials/nestedObject.html";
@@ -28,34 +37,37 @@ var Spiro;
         Angular.objectTemplate = getSvrPath() + "Content/partials/object.html";
         Angular.viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";
         Angular.editPropertiesTemplate = getSvrPath() + "Content/partials/editProperties.html";
-
         var servicesPageTemplate = getSvrPath() + 'Content/partials/servicesPage.html';
         var servicePageTemplate = getSvrPath() + 'Content/partials/servicePage.html';
         var objectPageTemplate = getSvrPath() + 'Content/partials/objectPage.html';
         var transientObjectPageTemplate = getSvrPath() + 'Content/partials/transientObjectPage.html';
         var errorPageTemplate = getSvrPath() + 'Content/partials/errorPage.html';
-
         Angular.app.config(function ($routeProvider) {
-            $routeProvider.when('/services', {
+            $routeProvider.
+                when('/services', {
                 templateUrl: servicesPageTemplate,
                 controller: 'BackgroundController'
-            }).when('/services/:sid', {
+            }).
+                when('/services/:sid', {
                 templateUrl: servicePageTemplate,
                 controller: 'BackgroundController'
-            }).when('/objects/:dt/:id', {
+            }).
+                when('/objects/:dt/:id', {
                 templateUrl: objectPageTemplate,
                 controller: 'BackgroundController'
-            }).when('/objects/:dt', {
+            }).
+                when('/objects/:dt', {
                 templateUrl: transientObjectPageTemplate,
                 controller: 'BackgroundController'
-            }).when('/error', {
+            }).
+                when('/error', {
                 templateUrl: errorPageTemplate,
                 controller: 'BackgroundController'
-            }).otherwise({
+            }).
+                otherwise({
                 redirectTo: '/services'
             });
         });
-
         Angular.app.run(function (color, mask) {
             color.setColorMap({
                 "AdventureWorksModel.CustomerRepository": "redLight",
@@ -90,7 +102,6 @@ var Spiro;
                 "AdventureWorksModel.OrderContributedActions": "darkBlue",
                 "AdventureWorksModel.CustomerContributedActions": "darkBlue"
             });
-
             color.setDefaultColorArray([
                 "blue",
                 "blueLight",
@@ -109,17 +120,14 @@ var Spiro;
                 "grayDark",
                 "magenta",
                 "teal",
-                "redLight"
+                "redLight" //17
             ]);
-
             color.setDefaultColor("darkBlue");
-
             // map to convert from mask representation in RO extension to client represention.
             mask.setMaskMap({
                 "d": { name: "date", mask: "d MMM yyyy" }
             });
         });
-    })(Spiro.Angular || (Spiro.Angular = {}));
-    var Angular = Spiro.Angular;
+    })(Angular = Spiro.Angular || (Spiro.Angular = {}));
 })(Spiro || (Spiro = {}));
 //# sourceMappingURL=spiro.modern.app.js.map

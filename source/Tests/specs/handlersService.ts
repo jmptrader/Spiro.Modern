@@ -10,7 +10,7 @@
 //specific language governing permissions and limitations
 //under the License.
 
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
@@ -39,7 +39,7 @@ describe('handlers Service', () => {
                 $scope = $rootScope.$new();
 
                 getCollection = spyOnPromise(context, 'getCollection', testObject);
-                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').andReturn(testViewModel);
+                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').and.returnValue(testViewModel);
 
                 handlers.handleCollectionResult($scope);
             }));
@@ -101,10 +101,10 @@ describe('handlers Service', () => {
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
 
-                collectionMember = spyOn(testObject, "collectionMember").andReturn(testMember);
-                collectionDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
+                collectionMember = spyOn(testObject, "collectionMember").and.returnValue(testMember);
+                collectionDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
                 populate = spyOnPromise(repLoader, "populate", testDetails);
-                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').andReturn(testViewModel);
+                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').and.returnValue(testViewModel);
 
 
                 $routeParams.dt = "test";
@@ -178,17 +178,17 @@ describe('handlers Service', () => {
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
 
-                actionMember = spyOn(testObject, "actionMember").andReturn(testMember);
-                actionDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
+                actionMember = spyOn(testObject, "actionMember").and.returnValue(testMember);
+                actionDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
                 populate = spyOnPromise(repLoader, "populate", testDetails);
-                dialogViewModel = spyOn(viewModelFactory, 'dialogViewModel').andReturn(testViewModel);
+                dialogViewModel = spyOn(viewModelFactory, 'dialogViewModel').and.returnValue(testViewModel);
 
             }));
 
             describe('if it is a service', () => {
 
                 beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers) => {
-                    spyOn(testDetails, "extensions").andReturn({ hasParams: true });
+                    spyOn(testDetails, "extensions").and.returnValue({ hasParams: true });
 
                     $routeParams.sid = "testService";
                     $routeParams.action = "anAction";
@@ -213,7 +213,7 @@ describe('handlers Service', () => {
             describe('if it has params', () => {
 
                 beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers) => {
-                    spyOn(testDetails, "extensions").andReturn({ hasParams: true });
+                    spyOn(testDetails, "extensions").and.returnValue({ hasParams: true });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -237,7 +237,7 @@ describe('handlers Service', () => {
             describe('if it has no params', () => {
 
                 beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers) => {
-                    spyOn(testDetails, "extensions").andReturn({ hasParams: false });
+                    spyOn(testDetails, "extensions").and.returnValue({ hasParams: false });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -250,7 +250,7 @@ describe('handlers Service', () => {
                     expect(actionMember).toHaveBeenCalledWith("anAction");
                     expect(actionDetails).toHaveBeenCalled();
                     expect(populate).toHaveBeenCalledWith(testDetails);
-                    expect(dialogViewModel).wasNotCalled();
+                    expect(dialogViewModel).not.toHaveBeenCalled();
 
                     expect($scope.dialog).toBeUndefined();
                     expect($scope.dialogTemplate).toBeUndefined();
@@ -311,9 +311,9 @@ describe('handlers Service', () => {
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
 
-                actionMember = spyOn(testObject, "actionMember").andReturn(testMember);
-                actionDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
-                actionResult = spyOn(testDetails, "getInvoke").andReturn(testResult);
+                actionMember = spyOn(testObject, "actionMember").and.returnValue(testMember);
+                actionDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
+                actionResult = spyOn(testDetails, "getInvoke").and.returnValue(testResult);
                 populate = spyOnPromiseConditional(repLoader, "populate", testDetails, testResult);
 
                 setResult = spyOn(repHandlers, "setResult");
@@ -322,7 +322,7 @@ describe('handlers Service', () => {
             describe('if it is a service', () => {
 
                 beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers) => {
-                    spyOn(testMember, "extensions").andReturn({ hasParams: false });
+                    spyOn(testMember, "extensions").and.returnValue({ hasParams: false });
 
                     $routeParams.sid = "testService";
                     $routeParams.action = "anAction";
@@ -345,7 +345,7 @@ describe('handlers Service', () => {
             describe('if it has no params', () => {
 
                 beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers) => {
-                    spyOn(testMember, "extensions").andReturn({ hasParams: false });
+                    spyOn(testMember, "extensions").and.returnValue({ hasParams: false });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -368,7 +368,7 @@ describe('handlers Service', () => {
             describe('if it has params', () => {
 
                 beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers) => {
-                    spyOn(testMember, "extensions").andReturn({ hasParams: true });
+                    spyOn(testMember, "extensions").and.returnValue({ hasParams: true });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -379,10 +379,10 @@ describe('handlers Service', () => {
                 it('should not update the scope', () => {
                     expect(getObject).toHaveBeenCalledWith("test", "1");
                     expect(actionMember).toHaveBeenCalledWith("anAction");
-                    expect(actionDetails).wasNotCalled();
-                    expect(actionResult).wasNotCalled();
+                    expect(actionDetails).not.toHaveBeenCalled();
+                    expect(actionResult).not.toHaveBeenCalled();
 
-                    expect(setResult).wasNotCalled();
+                    expect(setResult).not.toHaveBeenCalled();
                 });
 
             });
@@ -444,16 +444,16 @@ describe('handlers Service', () => {
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
 
-                propertyMember = spyOn(testObject, "propertyMember").andReturn(testMember);
-                propertyDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
+                propertyMember = spyOn(testObject, "propertyMember").and.returnValue(testMember);
+                propertyDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
 
-                spyOn(testDetails, "value").andReturn(testValue);
-                spyOn(testValue, "link").andReturn(testLink);
-                spyOn(testLink, "getTarget").andReturn(testTarget);
+                spyOn(testDetails, "value").and.returnValue(testValue);
+                spyOn(testValue, "link").and.returnValue(testLink);
+                spyOn(testLink, "getTarget").and.returnValue(testTarget);
 
                 populate = spyOnPromiseConditional(repLoader, "populate", testDetails, testTarget);
 
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
 
                 $routeParams.dt = "test";
@@ -525,7 +525,7 @@ describe('handlers Service', () => {
 
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
 
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
 
 
@@ -589,7 +589,7 @@ describe('handlers Service', () => {
 
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
 
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
 
                 $routeParams.collectionItem = "test/1";
@@ -656,7 +656,7 @@ describe('handlers Service', () => {
 
                 getServices = spyOnPromise(context, 'getServices', testObject);
 
-                servicesViewModel = spyOn(viewModelFactory, 'servicesViewModel').andReturn(testViewModel);
+                servicesViewModel = spyOn(viewModelFactory, 'servicesViewModel').and.returnValue(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 setObject = spyOn(context, 'setObject');
 
@@ -716,7 +716,7 @@ describe('handlers Service', () => {
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
 
-                serviceViewModel = spyOn(viewModelFactory, 'serviceViewModel').andReturn(testViewModel);
+                serviceViewModel = spyOn(viewModelFactory, 'serviceViewModel').and.returnValue(testViewModel);
 
                 $routeParams.sid = "test";
 
@@ -775,7 +775,7 @@ describe('handlers Service', () => {
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
 
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
 
                 $routeParams.dt = "test";
@@ -809,8 +809,8 @@ describe('handlers Service', () => {
 
                 beforeEach(inject(($rootScope, $q, $routeParams, repLoader: Spiro.Angular.IRepLoader, handlers: Spiro.Angular.Modern.IHandlers) => {
 
-                    spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
-                    spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
+                    spyOn(testObject, 'propertyMembers').and.returnValue([propertyMem]);
+                    spyOn(propertyMem, 'getDetails').and.returnValue(propertyRep);
 
                     spyOnPromise($q, 'all', [propertyRep]);
 
@@ -882,12 +882,12 @@ describe('handlers Service', () => {
 
                 getTransientObject = spyOnPromise(context, 'getTransientObject', testObject);
 
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
 
-                spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
-                spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
-                spyOn(testObject, 'domainType').andReturn("test");
+                spyOn(testObject, 'propertyMembers').and.returnValue([propertyMem]);
+                spyOn(propertyMem, 'getDetails').and.returnValue(propertyRep);
+                spyOn(testObject, 'domainType').and.returnValue("test");
 
                 spyOnPromise($q, 'all', [propertyRep]);
 
@@ -964,7 +964,7 @@ describe('handlers Service', () => {
         beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
             $scope = $rootScope.$new();
 
-            spyOn(context, 'getError').andReturn(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
+            spyOn(context, 'getError').and.returnValue(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
 
             handlers.handleError($scope);
         }));
@@ -985,8 +985,8 @@ describe('handlers Service', () => {
             $scope = $rootScope.$new();
             navService = navigation;
 
-            spyOn(color, 'toColorFromHref').andReturn("acolor");
-            spyOn(urlHelper, 'toAppUrl').andReturn("aurl");
+            spyOn(color, 'toColorFromHref').and.returnValue("acolor");
+            spyOn(urlHelper, 'toAppUrl').and.returnValue("aurl");
             spyOn(navigation, 'push');
 
             handlers.handleBackground($scope);
@@ -1047,9 +1047,9 @@ describe('handlers Service', () => {
                 $routeParams.id = "1";
 
                 spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').andReturn([testMember]);
+                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
 
-                spyOn($location, 'path').andReturn("aPath");
+                spyOn($location, 'path').and.returnValue("aPath");
 
                 handlers.handleAppBar($scope);
             }));
@@ -1078,10 +1078,10 @@ describe('handlers Service', () => {
                 $routeParams.id = "1";
 
                 spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').andReturn([testMember]);
-                spyOn(testMember, 'disabledReason').andReturn("disabled");
+                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
+                spyOn(testMember, 'disabledReason').and.returnValue("disabled");
 
-                spyOn($location, 'path').andReturn("aPath");
+                spyOn($location, 'path').and.returnValue("aPath");
 
                 handlers.handleAppBar($scope);
             }));
@@ -1113,8 +1113,8 @@ describe('handlers Service', () => {
             var testResult = new Spiro.Result(null, 'object');
 
             beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
-                spyOn(testActionResult, 'result').andReturn(testResult);
-                spyOn(testActionResult, 'resultType').andReturn("void");
+                spyOn(testActionResult, 'result').and.returnValue(testResult);
+                spyOn(testActionResult, 'resultType').and.returnValue("void");
                 repHandlers.setResult(testActionResult, testViewModel);
             }));
 
@@ -1133,14 +1133,14 @@ describe('handlers Service', () => {
 
             beforeEach(inject(($routeParams, context: Spiro.Angular.Modern.IContext) => {
 
-                spyOn(testActionResult, 'result').andReturn(testResult);
-                spyOn(testActionResult, 'resultType').andReturn('object');
-                spyOn(testResult, 'object').andReturn(testObject);
+                spyOn(testActionResult, 'result').and.returnValue(testResult);
+                spyOn(testActionResult, 'resultType').and.returnValue('object');
+                spyOn(testResult, 'object').and.returnValue(testObject);
                 setNestedObject = spyOn(context, 'setNestedObject');
 
-                spyOn(testObject, 'domainType').andReturn("test");
-                spyOn(testObject, 'instanceId').andReturn("1");
-                spyOn(testObject, 'persistLink').andReturn(null);
+                spyOn(testObject, 'domainType').and.returnValue("test");
+                spyOn(testObject, 'instanceId').and.returnValue("1");
+                spyOn(testObject, 'persistLink').and.returnValue(null);
 
                 $routeParams.action = "anAction";
             }));
@@ -1187,8 +1187,8 @@ describe('handlers Service', () => {
             beforeEach(inject(($routeParams, context: Spiro.Angular.Modern.IContext) => {
 
 
-                spyOn(testActionResult, 'resultType').andReturn('list');
-                spyOn(testResult, 'list').andReturn(testList);
+                spyOn(testActionResult, 'resultType').and.returnValue('list');
+                spyOn(testResult, 'list').and.returnValue(testList);
                 setCollection = spyOn(context, 'setCollection');
 
                 $routeParams.action = "anAction";
@@ -1203,7 +1203,7 @@ describe('handlers Service', () => {
                 testParameters[1].value = "2";
 
                 beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
-                    spyOn(testActionResult, 'result').andReturn(testResult);
+                    spyOn(testActionResult, 'result').and.returnValue(testResult);
                     testViewModel.parameters = testParameters;
 
                     repHandlers.setResult(testActionResult, testViewModel);
@@ -1218,7 +1218,7 @@ describe('handlers Service', () => {
             describe('without show flag', () => {
 
                 beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
-                    spyOn(testActionResult, 'result').andReturn(testResult);
+                    spyOn(testActionResult, 'result').and.returnValue(testResult);
                     repHandlers.setResult(testActionResult);
                 }));
 
@@ -1232,7 +1232,7 @@ describe('handlers Service', () => {
             describe('result is null', () => {
 
                 beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
-                    spyOn(testActionResult, 'result').andReturn(testNullResult);
+                    spyOn(testActionResult, 'result').and.returnValue(testNullResult);
                     repHandlers.setResult(testActionResult, testViewModel);
                 }));
 
@@ -1265,7 +1265,7 @@ describe('handlers Service', () => {
 
         beforeEach(inject($rootScope => {
 
-            spyOn(testAction, 'getInvoke').andReturn(testActionResult);
+            spyOn(testAction, 'getInvoke').and.returnValue(testActionResult);
 
             clearMessages = spyOn(testViewModel, 'clearMessages');
             setParameter = spyOn(testActionResult, 'setParameter');
@@ -1353,11 +1353,11 @@ describe('handlers Service', () => {
 
             (<any>testUpdate).setProperty = () => {};
 
-            spyOn(testObject, 'getUpdateMap').andReturn(testUpdate);
+            spyOn(testObject, 'getUpdateMap').and.returnValue(testUpdate);
             setProperty = spyOn(testUpdate, 'setProperty');
             testViewModel.properties = testProperties;
 
-            spyOn(testObject, 'get').andReturn(testRawLinks);
+            spyOn(testObject, 'get').and.returnValue(testRawLinks);
             set = spyOn(testUpdatedObject, 'set');
 
             $scope = $rootScope.$new();
@@ -1382,7 +1382,7 @@ describe('handlers Service', () => {
 
                 populate = spyOnPromise(repLoader, 'populate', testUpdatedObject);
 
-                spyOn(cacheFactory, 'get').andReturn(testCache);
+                spyOn(cacheFactory, 'get').and.returnValue(testCache);
                 remove = spyOn(testCache, 'remove');
 
                 testUpdatedObject.hateoasUrl = "testUrl";
@@ -1474,7 +1474,7 @@ describe('handlers Service', () => {
             beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers, $location: ng.ILocationService, context: Spiro.Angular.Modern.IContext, urlHelper: Spiro.Angular.Modern.IUrlHelper) => {
                 error = spyOn(context, 'setError');
                 path = spyOn($location, 'path');
-                errorPath = spyOn(urlHelper, 'toErrorPath').andReturn("apath");
+                errorPath = spyOn(urlHelper, 'toErrorPath').and.returnValue("apath");
 
                 repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
             }));

@@ -10,7 +10,7 @@
 //specific language governing permissions and limitations
 //under the License.
 
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.modern.app.ts" />
@@ -87,7 +87,7 @@ describe('Controllers', () => {
 			}));
 
 			it('should not call the view handler', () => {
-				expect(handleObject).wasNotCalled();
+				expect(handleObject).not.toHaveBeenCalled();
 			});
 
 			it('should call the edit handler', () => {
@@ -102,7 +102,7 @@ describe('Controllers', () => {
 			}));
 
 			it('should not call the edit handler', () => {
-				expect(handleEditObject).wasNotCalled();
+                expect(handleEditObject).not.toHaveBeenCalled();
 			});
 
 			it('should call the view handler', () => {
@@ -146,7 +146,7 @@ describe('Controllers', () => {
 			}));
 
 			it('should not call the handler', () => {
-				expect(handleActionDialog).wasNotCalled();
+				expect(handleActionDialog).not.toHaveBeenCalled();
 			});
 
 		});
@@ -177,9 +177,9 @@ describe('Controllers', () => {
 
 			it('should call the action handler only', () => {
 				expect(handleActionResult).toHaveBeenCalledWith($scope);
-				expect(handleProperty).wasNotCalled();
-				expect(handleCollectionItem).wasNotCalled();
-				expect(handleResult).wasNotCalled();
+				expect(handleProperty).not.toHaveBeenCalled();
+				expect(handleCollectionItem).not.toHaveBeenCalled();
+				expect(handleResult).not.toHaveBeenCalled();
 			});
 		});
 
@@ -191,10 +191,10 @@ describe('Controllers', () => {
 			}));
 
 			it('should call the property handler only', () => {
-				expect(handleActionResult).wasNotCalled();
+				expect(handleActionResult).not.toHaveBeenCalled();
 				expect(handleProperty).toHaveBeenCalledWith($scope);
-				expect(handleCollectionItem).wasNotCalled();
-				expect(handleResult).wasNotCalled();
+				expect(handleCollectionItem).not.toHaveBeenCalled();
+				expect(handleResult).not.toHaveBeenCalled();
 			});
 
 		});
@@ -207,10 +207,10 @@ describe('Controllers', () => {
 			}));
 
 			it('should call the collection item handler only', () => {
-				expect(handleActionResult).wasNotCalled();
-				expect(handleProperty).wasNotCalled();
+				expect(handleActionResult).not.toHaveBeenCalled();
+				expect(handleProperty).not.toHaveBeenCalled();
 				expect(handleCollectionItem).toHaveBeenCalledWith($scope);
-				expect(handleResult).wasNotCalled();
+				expect(handleResult).not.toHaveBeenCalled();
 			});
 
 		});
@@ -223,9 +223,9 @@ describe('Controllers', () => {
 			}));
 
 			it('should call the result object handler only', () => {
-				expect(handleActionResult).wasNotCalled();
-				expect(handleProperty).wasNotCalled();
-				expect(handleCollectionItem).wasNotCalled();
+				expect(handleActionResult).not.toHaveBeenCalled();
+				expect(handleProperty).not.toHaveBeenCalled();
+				expect(handleCollectionItem).not.toHaveBeenCalled();
 				expect(handleResult).toHaveBeenCalledWith($scope);
 			});
 		});
@@ -243,8 +243,8 @@ describe('Controllers', () => {
 			it('should call the action and property handler only', () => {
 				expect(handleActionResult).toHaveBeenCalledWith($scope);
 				expect(handleProperty).toHaveBeenCalledWith($scope);
-				expect(handleCollectionItem).wasNotCalled();
-				expect(handleResult).wasNotCalled();
+				expect(handleCollectionItem).not.toHaveBeenCalled();
+				expect(handleResult).not.toHaveBeenCalled();
 			});
 		});
 
@@ -255,10 +255,10 @@ describe('Controllers', () => {
 			}));
 
 			it('should call no handlers', () => {
-				expect(handleActionResult).wasNotCalled();
-				expect(handleProperty).wasNotCalled();
-				expect(handleCollectionItem).wasNotCalled();
-				expect(handleResult).wasNotCalled();
+				expect(handleActionResult).not.toHaveBeenCalled();
+				expect(handleProperty).not.toHaveBeenCalled();
+				expect(handleCollectionItem).not.toHaveBeenCalled();
+				expect(handleResult).not.toHaveBeenCalled();
 			});
 		});
 
@@ -285,7 +285,7 @@ describe('Controllers', () => {
 
 			it('should call the result collection handler', () => {
 				expect(handleCollectionResult).toHaveBeenCalledWith($scope);
-				expect(handleCollection).wasNotCalled();
+				expect(handleCollection).not.toHaveBeenCalled();
 			});
 		});
 
@@ -297,7 +297,7 @@ describe('Controllers', () => {
 			}));
 
 			it('should  call the collection handler', () => {
-				expect(handleCollectionResult).wasNotCalled();
+				expect(handleCollectionResult).not.toHaveBeenCalled();
 				expect(handleCollection).toHaveBeenCalledWith($scope);
 			});
 
@@ -310,8 +310,8 @@ describe('Controllers', () => {
 			}));
 
 			it('should not call the handler', () => {
-				expect(handleCollectionResult).wasNotCalled();
-				expect(handleCollection).wasNotCalled();
+				expect(handleCollectionResult).not.toHaveBeenCalled();
+				expect(handleCollection).not.toHaveBeenCalled();
 			});
 
 		});
