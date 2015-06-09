@@ -15,7 +15,7 @@ module.exports = function(config) {
       
     // list of files / patterns to load in the browser
     files: [
-      'source/Scripts/jquery-2.1.1.js',
+      'source/Scripts/jquery-2.1.4.js',
       'source/Scripts/underscore.js',
       'source/Scripts/angular.js',
       'source/Scripts/angular-route.js',
