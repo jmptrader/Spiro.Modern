@@ -43,28 +43,22 @@ var Spiro;
         var transientObjectPageTemplate = getSvrPath() + 'Content/partials/transientObjectPage.html';
         var errorPageTemplate = getSvrPath() + 'Content/partials/errorPage.html';
         Angular.app.config(function ($routeProvider) {
-            $routeProvider.
-                when('/services', {
+            $routeProvider.when('/services', {
                 templateUrl: servicesPageTemplate,
                 controller: 'BackgroundController'
-            }).
-                when('/services/:sid', {
+            }).when('/services/:sid', {
                 templateUrl: servicePageTemplate,
                 controller: 'BackgroundController'
-            }).
-                when('/objects/:dt/:id', {
+            }).when('/objects/:dt/:id', {
                 templateUrl: objectPageTemplate,
                 controller: 'BackgroundController'
-            }).
-                when('/objects/:dt', {
+            }).when('/objects/:dt', {
                 templateUrl: transientObjectPageTemplate,
                 controller: 'BackgroundController'
-            }).
-                when('/error', {
+            }).when('/error', {
                 templateUrl: errorPageTemplate,
                 controller: 'BackgroundController'
-            }).
-                otherwise({
+            }).otherwise({
                 redirectTo: '/services'
             });
         });
@@ -120,7 +114,7 @@ var Spiro;
                 "grayDark",
                 "magenta",
                 "teal",
-                "redLight" //17
+                "redLight"
             ]);
             color.setDefaultColor("darkBlue");
             // map to convert from mask representation in RO extension to client represention.

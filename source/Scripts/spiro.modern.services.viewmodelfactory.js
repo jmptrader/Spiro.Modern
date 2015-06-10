@@ -171,7 +171,9 @@ var Spiro;
                     dialogViewModel.message = "";
                     dialogViewModel.close = urlHelper.toAppUrl(actionRep.upLink().href(), ["action"]);
                     var i = 0;
-                    dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, parms[i++]); });
+                    dialogViewModel.parameters = _.map(parameters, function (parm, id) {
+                        return viewModelFactory.parameterViewModel(parm, id, parms[i++]);
+                    });
                     dialogViewModel.doShow = function () {
                         dialogViewModel.show = true;
                         invoke(dialogViewModel);
@@ -273,7 +275,9 @@ var Spiro;
                         });
                     }
                     else {
-                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, href); });
+                        return _.map(links, function (link) {
+                            return viewModelFactory.itemViewModel(link, href);
+                        });
                     }
                 }
                 // tested
@@ -320,7 +324,9 @@ var Spiro;
                     });
                     servicesViewModel.title = "Services";
                     servicesViewModel.color = "bg-color-darkBlue";
-                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link); });
+                    servicesViewModel.items = _.map(links, function (link) {
+                        return viewModelFactory.linkViewModel(link);
+                    });
                     return servicesViewModel;
                 };
                 // tested
@@ -329,7 +335,9 @@ var Spiro;
                     var actions = serviceRep.actionMembers();
                     serviceViewModel.serviceId = serviceRep.serviceId();
                     serviceViewModel.title = serviceRep.title();
-                    serviceViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action); });
+                    serviceViewModel.actions = _.map(actions, function (action) {
+                        return viewModelFactory.actionViewModel(action);
+                    });
                     serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
                     serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
                     return serviceViewModel;
@@ -341,16 +349,25 @@ var Spiro;
                     objectViewModel.href = urlHelper.toAppUrl(objectRep.getUrl());
                     objectViewModel.cancelEdit = isTransient ? "" : urlHelper.toAppUrl(objectRep.getUrl());
                     objectViewModel.color = color.toColorFromType(objectRep.domainType());
-                    objectViewModel.doSave = save ? function () { return save(objectViewModel); } : function () { };
+                    objectViewModel.doSave = save ? function () { return save(objectViewModel); } : function () {
+                    };
                     var properties = objectRep.propertyMembers();
                     var collections = objectRep.collectionMembers();
                     var actions = objectRep.actionMembers();
                     objectViewModel.domainType = objectRep.domainType();
                     objectViewModel.title = isTransient ? "Unsaved " + objectRep.extensions().friendlyName : objectRep.title();
                     objectViewModel.message = "";
-                    objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id, _.find(details || [], function (d) { return d.instanceId() === id; })); });
-                    objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection); });
-                    objectViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action); });
+                    objectViewModel.properties = _.map(properties, function (property, id) {
+                        return viewModelFactory.propertyViewModel(property, id, _.find(details || [], function (d) {
+                            return d.instanceId() === id;
+                        }));
+                    });
+                    objectViewModel.collections = _.map(collections, function (collection) {
+                        return viewModelFactory.collectionViewModel(collection);
+                    });
+                    objectViewModel.actions = _.map(actions, function (action) {
+                        return viewModelFactory.actionViewModel(action);
+                    });
                     return objectViewModel;
                 };
             });

@@ -49,9 +49,7 @@ var Spiro;
                     return choiceViewModel;
                 };
                 ChoiceViewModel.prototype.equals = function (other) {
-                    return this.id === other.id &&
-                        this.name === other.name &&
-                        this.value === other.value;
+                    return this.id === other.id && this.name === other.name && this.value === other.value;
                 };
                 ChoiceViewModel.prototype.match = function (other) {
                     if (this.isEnum) {
@@ -94,7 +92,8 @@ var Spiro;
                 function ValueViewModel() {
                     _super.apply(this, arguments);
                 }
-                ValueViewModel.prototype.setSelectedChoice = function () { };
+                ValueViewModel.prototype.setSelectedChoice = function () {
+                };
                 ValueViewModel.prototype.prompt = function (searchTerm) {
                     return null;
                 };
@@ -168,8 +167,10 @@ var Spiro;
                 function DialogViewModel() {
                     _super.apply(this, arguments);
                 }
-                DialogViewModel.prototype.doShow = function () { };
-                DialogViewModel.prototype.doInvoke = function () { };
+                DialogViewModel.prototype.doShow = function () {
+                };
+                DialogViewModel.prototype.doInvoke = function () {
+                };
                 DialogViewModel.prototype.clearMessages = function () {
                     this.message = "";
                     _.each(this.parameters, function (parm) { return parm.clearMessage(); });
@@ -208,7 +209,8 @@ var Spiro;
                 function DomainObjectViewModel() {
                     _super.apply(this, arguments);
                 }
-                DomainObjectViewModel.prototype.doSave = function () { };
+                DomainObjectViewModel.prototype.doSave = function () {
+                };
                 return DomainObjectViewModel;
             })(MessageViewModel);
             Modern.DomainObjectViewModel = DomainObjectViewModel;

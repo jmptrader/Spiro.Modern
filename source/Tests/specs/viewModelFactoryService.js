@@ -9,7 +9,7 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.models.ts" />
@@ -116,7 +116,8 @@ describe('viewModelFactory Service', function () {
         describe('from simple rep', function () {
             beforeEach(inject(function (viewModelFactory, $routeParams) {
                 $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), function () { });
+                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), function () {
+                });
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");

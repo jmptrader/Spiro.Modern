@@ -40,13 +40,13 @@ var Spiro;
                 // exposed for test mocking
                 context.getService = function (type) {
                     var delay = $q.defer();
-                    this.getServices().
-                        then(function (services) {
-                        var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0] === 'serviceId="' + type + '"'; });
+                    this.getServices().then(function (services) {
+                        var serviceLink = _.find(services.value().models, function (model) {
+                            return model.rel().parms[0] === 'serviceId="' + type + '"';
+                        });
                         var service = serviceLink.getTarget();
                         return repLoader.populate(service);
-                    }).
-                        then(function (service) {
+                    }).then(function (service) {
                         currentObject = service;
                         delay.resolve(service);
                     }, function (error) { return delay.reject(error); });
@@ -74,12 +74,10 @@ var Spiro;
                         delay.resolve(currentServices);
                     }
                     else {
-                        this.getHome().
-                            then(function (home) {
+                        this.getHome().then(function (home) {
                             var ds = home.getDomainServices();
                             return repLoader.populate(ds);
-                        }).
-                            then(function (services) {
+                        }).then(function (services) {
                             currentServices = services;
                             delay.resolve(services);
                         }, function (error) { return delay.reject(error); });
@@ -113,8 +111,7 @@ var Spiro;
                     else {
                         var domainObjectRepresentation = new Spiro.DomainObjectRepresentation();
                         domainObjectRepresentation.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
-                        repLoader.populate(domainObjectRepresentation).
-                            then(function (dor) {
+                        repLoader.populate(domainObjectRepresentation).then(function (dor) {
                             currentNestedObject = dor;
                             delay.resolve(dor);
                         }, function (error) { return delay.reject(error); });

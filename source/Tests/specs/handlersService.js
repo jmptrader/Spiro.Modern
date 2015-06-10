@@ -9,7 +9,7 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
@@ -26,7 +26,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
                 getCollection = spyOnPromise(context, 'getCollection', testObject);
-                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').and.returnValue(testViewModel);
+                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').andReturn(testViewModel);
                 handlers.handleCollectionResult($scope);
             }));
             it('should update the scope', function () {
@@ -67,10 +67,10 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader) {
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
-                collectionMember = spyOn(testObject, "collectionMember").and.returnValue(testMember);
-                collectionDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
+                collectionMember = spyOn(testObject, "collectionMember").andReturn(testMember);
+                collectionDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
                 populate = spyOnPromise(repLoader, "populate", testDetails);
-                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').and.returnValue(testViewModel);
+                collectionViewModel = spyOn(viewModelFactory, 'collectionViewModel').andReturn(testViewModel);
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
                 $routeParams.collection = "aCollection";
@@ -119,14 +119,14 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader) {
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
-                actionMember = spyOn(testObject, "actionMember").and.returnValue(testMember);
-                actionDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
+                actionMember = spyOn(testObject, "actionMember").andReturn(testMember);
+                actionDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
                 populate = spyOnPromise(repLoader, "populate", testDetails);
-                dialogViewModel = spyOn(viewModelFactory, 'dialogViewModel').and.returnValue(testViewModel);
+                dialogViewModel = spyOn(viewModelFactory, 'dialogViewModel').andReturn(testViewModel);
             }));
             describe('if it is a service', function () {
                 beforeEach(inject(function ($rootScope, $routeParams, handlers) {
-                    spyOn(testDetails, "extensions").and.returnValue({ hasParams: true });
+                    spyOn(testDetails, "extensions").andReturn({ hasParams: true });
                     $routeParams.sid = "testService";
                     $routeParams.action = "anAction";
                     handlers.handleActionDialog($scope);
@@ -143,7 +143,7 @@ describe('handlers Service', function () {
             });
             describe('if it has params', function () {
                 beforeEach(inject(function ($rootScope, $routeParams, handlers) {
-                    spyOn(testDetails, "extensions").and.returnValue({ hasParams: true });
+                    spyOn(testDetails, "extensions").andReturn({ hasParams: true });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -161,7 +161,7 @@ describe('handlers Service', function () {
             });
             describe('if it has no params', function () {
                 beforeEach(inject(function ($rootScope, $routeParams, handlers) {
-                    spyOn(testDetails, "extensions").and.returnValue({ hasParams: false });
+                    spyOn(testDetails, "extensions").andReturn({ hasParams: false });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -212,15 +212,15 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, repHandlers, context, viewModelFactory, repLoader) {
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
-                actionMember = spyOn(testObject, "actionMember").and.returnValue(testMember);
-                actionDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
-                actionResult = spyOn(testDetails, "getInvoke").and.returnValue(testResult);
+                actionMember = spyOn(testObject, "actionMember").andReturn(testMember);
+                actionDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
+                actionResult = spyOn(testDetails, "getInvoke").andReturn(testResult);
                 populate = spyOnPromiseConditional(repLoader, "populate", testDetails, testResult);
                 setResult = spyOn(repHandlers, "setResult");
             }));
             describe('if it is a service', function () {
                 beforeEach(inject(function ($rootScope, $routeParams, handlers) {
-                    spyOn(testMember, "extensions").and.returnValue({ hasParams: false });
+                    spyOn(testMember, "extensions").andReturn({ hasParams: false });
                     $routeParams.sid = "testService";
                     $routeParams.action = "anAction";
                     handlers.handleActionResult($scope);
@@ -236,7 +236,7 @@ describe('handlers Service', function () {
             });
             describe('if it has no params', function () {
                 beforeEach(inject(function ($rootScope, $routeParams, handlers) {
-                    spyOn(testMember, "extensions").and.returnValue({ hasParams: false });
+                    spyOn(testMember, "extensions").andReturn({ hasParams: false });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -253,7 +253,7 @@ describe('handlers Service', function () {
             });
             describe('if it has params', function () {
                 beforeEach(inject(function ($rootScope, $routeParams, handlers) {
-                    spyOn(testMember, "extensions").and.returnValue({ hasParams: true });
+                    spyOn(testMember, "extensions").andReturn({ hasParams: true });
                     $routeParams.dt = "test";
                     $routeParams.id = "1";
                     $routeParams.action = "anAction";
@@ -305,13 +305,13 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader) {
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
-                propertyMember = spyOn(testObject, "propertyMember").and.returnValue(testMember);
-                propertyDetails = spyOn(testMember, "getDetails").and.returnValue(testDetails);
-                spyOn(testDetails, "value").and.returnValue(testValue);
-                spyOn(testValue, "link").and.returnValue(testLink);
-                spyOn(testLink, "getTarget").and.returnValue(testTarget);
+                propertyMember = spyOn(testObject, "propertyMember").andReturn(testMember);
+                propertyDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
+                spyOn(testDetails, "value").andReturn(testValue);
+                spyOn(testValue, "link").andReturn(testLink);
+                spyOn(testLink, "getTarget").andReturn(testTarget);
                 populate = spyOnPromiseConditional(repLoader, "populate", testDetails, testTarget);
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
@@ -357,7 +357,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 $routeParams.resultObject = "test-1";
                 handlers.handleResult($scope);
@@ -398,7 +398,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 $routeParams.collectionItem = "test/1";
                 handlers.handleCollectionItem($scope);
@@ -440,7 +440,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
                 getServices = spyOnPromise(context, 'getServices', testObject);
-                servicesViewModel = spyOn(viewModelFactory, 'servicesViewModel').and.returnValue(testViewModel);
+                servicesViewModel = spyOn(viewModelFactory, 'servicesViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 setObject = spyOn(context, 'setObject');
                 handlers.handleServices($scope);
@@ -478,7 +478,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
-                serviceViewModel = spyOn(viewModelFactory, 'serviceViewModel').and.returnValue(testViewModel);
+                serviceViewModel = spyOn(viewModelFactory, 'serviceViewModel').andReturn(testViewModel);
                 $routeParams.sid = "test";
                 handlers.handleService($scope);
             }));
@@ -515,7 +515,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
@@ -538,8 +538,8 @@ describe('handlers Service', function () {
                 var propertyRep = new Spiro.PropertyRepresentation();
                 var populate;
                 beforeEach(inject(function ($rootScope, $q, $routeParams, repLoader, handlers) {
-                    spyOn(testObject, 'propertyMembers').and.returnValue([propertyMem]);
-                    spyOn(propertyMem, 'getDetails').and.returnValue(propertyRep);
+                    spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
+                    spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
                     spyOnPromise($q, 'all', [propertyRep]);
                     populate = spyOnPromise(repLoader, "populate", propertyRep);
                     $routeParams.editMode = "test";
@@ -588,11 +588,11 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, $q, repLoader, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
                 getTransientObject = spyOnPromise(context, 'getTransientObject', testObject);
-                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
-                spyOn(testObject, 'propertyMembers').and.returnValue([propertyMem]);
-                spyOn(propertyMem, 'getDetails').and.returnValue(propertyRep);
-                spyOn(testObject, 'domainType').and.returnValue("test");
+                spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
+                spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
+                spyOn(testObject, 'domainType').andReturn("test");
                 spyOnPromise($q, 'all', [propertyRep]);
                 populate = spyOnPromise(repLoader, "populate", propertyRep);
                 handlers.handleTransientObject($scope);
@@ -641,7 +641,7 @@ describe('handlers Service', function () {
     describe('handleError', function () {
         beforeEach(inject(function ($rootScope, handlers, context) {
             $scope = $rootScope.$new();
-            spyOn(context, 'getError').and.returnValue(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
+            spyOn(context, 'getError').andReturn(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
             handlers.handleError($scope);
         }));
         it('should set a error data', function () {
@@ -654,8 +654,8 @@ describe('handlers Service', function () {
         beforeEach(inject(function ($rootScope, handlers, $location, urlHelper, color, navigation) {
             $scope = $rootScope.$new();
             navService = navigation;
-            spyOn(color, 'toColorFromHref').and.returnValue("acolor");
-            spyOn(urlHelper, 'toAppUrl').and.returnValue("aurl");
+            spyOn(color, 'toColorFromHref').andReturn("acolor");
+            spyOn(urlHelper, 'toAppUrl').andReturn("aurl");
             spyOn(navigation, 'push');
             handlers.handleBackground($scope);
         }));
@@ -695,8 +695,8 @@ describe('handlers Service', function () {
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
                 spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
-                spyOn($location, 'path').and.returnValue("aPath");
+                spyOn(testObject, 'propertyMembers').andReturn([testMember]);
+                spyOn($location, 'path').andReturn("aPath");
                 handlers.handleAppBar($scope);
             }));
             it('should set appBar data', function () {
@@ -715,9 +715,9 @@ describe('handlers Service', function () {
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
                 spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
-                spyOn(testMember, 'disabledReason').and.returnValue("disabled");
-                spyOn($location, 'path').and.returnValue("aPath");
+                spyOn(testObject, 'propertyMembers').andReturn([testMember]);
+                spyOn(testMember, 'disabledReason').andReturn("disabled");
+                spyOn($location, 'path').andReturn("aPath");
                 handlers.handleAppBar($scope);
             }));
             it('should set appBar data', function () {
@@ -738,8 +738,8 @@ describe('handlers Service', function () {
         describe('result is null', function () {
             var testResult = new Spiro.Result(null, 'object');
             beforeEach(inject(function (repHandlers) {
-                spyOn(testActionResult, 'result').and.returnValue(testResult);
-                spyOn(testActionResult, 'resultType').and.returnValue("void");
+                spyOn(testActionResult, 'result').andReturn(testResult);
+                spyOn(testActionResult, 'resultType').andReturn("void");
                 repHandlers.setResult(testActionResult, testViewModel);
             }));
             it('should not set view model error', function () {
@@ -752,13 +752,13 @@ describe('handlers Service', function () {
             var testResult = new Spiro.Result({}, 'object');
             var setNestedObject;
             beforeEach(inject(function ($routeParams, context) {
-                spyOn(testActionResult, 'result').and.returnValue(testResult);
-                spyOn(testActionResult, 'resultType').and.returnValue('object');
-                spyOn(testResult, 'object').and.returnValue(testObject);
+                spyOn(testActionResult, 'result').andReturn(testResult);
+                spyOn(testActionResult, 'resultType').andReturn('object');
+                spyOn(testResult, 'object').andReturn(testObject);
                 setNestedObject = spyOn(context, 'setNestedObject');
-                spyOn(testObject, 'domainType').and.returnValue("test");
-                spyOn(testObject, 'instanceId').and.returnValue("1");
-                spyOn(testObject, 'persistLink').and.returnValue(null);
+                spyOn(testObject, 'domainType').andReturn("test");
+                spyOn(testObject, 'instanceId').andReturn("1");
+                spyOn(testObject, 'persistLink').andReturn(null);
                 $routeParams.action = "anAction";
             }));
             describe('with show flag', function () {
@@ -788,8 +788,8 @@ describe('handlers Service', function () {
             var testNullResult = new Spiro.Result(null, 'list');
             var setCollection;
             beforeEach(inject(function ($routeParams, context) {
-                spyOn(testActionResult, 'resultType').and.returnValue('list');
-                spyOn(testResult, 'list').and.returnValue(testList);
+                spyOn(testActionResult, 'resultType').andReturn('list');
+                spyOn(testResult, 'list').andReturn(testList);
                 setCollection = spyOn(context, 'setCollection');
                 $routeParams.action = "anAction";
             }));
@@ -800,7 +800,7 @@ describe('handlers Service', function () {
                 testParameters[1].type = "scalar";
                 testParameters[1].value = "2";
                 beforeEach(inject(function (repHandlers) {
-                    spyOn(testActionResult, 'result').and.returnValue(testResult);
+                    spyOn(testActionResult, 'result').andReturn(testResult);
                     testViewModel.parameters = testParameters;
                     repHandlers.setResult(testActionResult, testViewModel);
                 }));
@@ -811,7 +811,7 @@ describe('handlers Service', function () {
             });
             describe('without show flag', function () {
                 beforeEach(inject(function (repHandlers) {
-                    spyOn(testActionResult, 'result').and.returnValue(testResult);
+                    spyOn(testActionResult, 'result').andReturn(testResult);
                     repHandlers.setResult(testActionResult);
                 }));
                 it('should set collection and search', function () {
@@ -821,7 +821,7 @@ describe('handlers Service', function () {
             });
             describe('result is null', function () {
                 beforeEach(inject(function (repHandlers) {
-                    spyOn(testActionResult, 'result').and.returnValue(testNullResult);
+                    spyOn(testActionResult, 'result').andReturn(testNullResult);
                     repHandlers.setResult(testActionResult, testViewModel);
                 }));
                 it('should set view model error', function () {
@@ -846,7 +846,7 @@ describe('handlers Service', function () {
         var clearMessages;
         var setParameter;
         beforeEach(inject(function ($rootScope) {
-            spyOn(testAction, 'getInvoke').and.returnValue(testActionResult);
+            spyOn(testAction, 'getInvoke').andReturn(testActionResult);
             clearMessages = spyOn(testViewModel, 'clearMessages');
             setParameter = spyOn(testActionResult, 'setParameter');
             $scope = $rootScope.$new();
@@ -907,11 +907,12 @@ describe('handlers Service', function () {
         var setProperty;
         var set;
         beforeEach(inject(function ($rootScope) {
-            testUpdate.setProperty = function () { };
-            spyOn(testObject, 'getUpdateMap').and.returnValue(testUpdate);
+            testUpdate.setProperty = function () {
+            };
+            spyOn(testObject, 'getUpdateMap').andReturn(testUpdate);
             setProperty = spyOn(testUpdate, 'setProperty');
             testViewModel.properties = testProperties;
-            spyOn(testObject, 'get').and.returnValue(testRawLinks);
+            spyOn(testObject, 'get').andReturn(testRawLinks);
             set = spyOn(testUpdatedObject, 'set');
             $scope = $rootScope.$new();
         }));
@@ -925,9 +926,10 @@ describe('handlers Service', function () {
                 setObject = spyOn(context, 'setObject');
                 location = $location;
                 cacheFactory = $cacheFactory;
-                testCache.remove = function () { };
+                testCache.remove = function () {
+                };
                 populate = spyOnPromise(repLoader, 'populate', testUpdatedObject);
-                spyOn(cacheFactory, 'get').and.returnValue(testCache);
+                spyOn(cacheFactory, 'get').andReturn(testCache);
                 remove = spyOn(testCache, 'remove');
                 testUpdatedObject.hateoasUrl = "testUrl";
                 repHandlers.updateObject($scope, testObject, testViewModel);
@@ -992,7 +994,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function (repHandlers, $location, context, urlHelper) {
                 error = spyOn(context, 'setError');
                 path = spyOn($location, 'path');
-                errorPath = spyOn(urlHelper, 'toErrorPath').and.returnValue("apath");
+                errorPath = spyOn(urlHelper, 'toErrorPath').andReturn("apath");
                 repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
             }));
             it('should set the location path', function () {

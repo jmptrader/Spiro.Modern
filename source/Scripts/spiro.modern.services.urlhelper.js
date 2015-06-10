@@ -21,7 +21,9 @@ var Spiro;
             Angular.app.service('urlHelper', function ($routeParams) {
                 var helper = this;
                 helper.action = function (dvm) {
-                    var pps = dvm && dvm.parameters.length > 0 ? _.reduce(dvm.parameters, function (memo, parm) { return memo + "/" + parm.getMemento(); }, "") : "";
+                    var pps = dvm && dvm.parameters.length > 0 ? _.reduce(dvm.parameters, function (memo, parm) {
+                        return memo + "/" + parm.getMemento();
+                    }, "") : "";
                     return _.first($routeParams.action.split("/")) + encodeURIComponent(pps);
                 };
                 helper.actionParms = function () {

@@ -9,7 +9,7 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
@@ -62,7 +62,7 @@ describe('context Service', function () {
         beforeEach(inject(function ($rootScope, $routeParams, context, repLoader) {
             spyOnPromise(repLoader, 'populate', testServices);
             spyOnPromise(context, 'getHome', testHome);
-            spyOn(testHome, 'getDomainServices').and.returnValue(testServices);
+            spyOn(testHome, 'getDomainServices').andReturn(testServices);
             localContext = context;
             runs(function () {
                 localContext.getServices().then(function (services) {
@@ -104,9 +104,9 @@ describe('context Service', function () {
             spyOnPromise(repLoader, 'populate', testObject);
             getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
             getService = spyOnPromise(context, 'getService', testObject);
-            spyOn(testObject, 'domainType').and.returnValue("test");
-            spyOn(testObject, 'instanceId').and.returnValue("1");
-            spyOn(testObject, 'serviceId').and.returnValue(undefined);
+            spyOn(testObject, 'domainType').andReturn("test");
+            spyOn(testObject, 'instanceId').andReturn("1");
+            spyOn(testObject, 'serviceId').andReturn(undefined);
             localContext = context;
         }));
         describe('when currentObject is set', function () {
@@ -166,9 +166,9 @@ describe('context Service', function () {
         var result;
         var populate;
         beforeEach(inject(function ($rootScope, $routeParams, context) {
-            spyOn(testObject, 'domainType').and.returnValue("test");
-            spyOn(testObject, 'instanceId').and.returnValue("1");
-            spyOn(testObject, 'serviceId').and.returnValue(undefined);
+            spyOn(testObject, 'domainType').andReturn("test");
+            spyOn(testObject, 'instanceId').andReturn("1");
+            spyOn(testObject, 'serviceId').andReturn(undefined);
             localContext = context;
         }));
         describe('when nestedObject is set', function () {
@@ -314,9 +314,9 @@ describe('context Service', function () {
             spyOnPromise(repLoader, 'populate', testObject);
             getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
             getService = spyOnPromise(context, 'getService', testObject);
-            spyOn(testObject, 'domainType').and.returnValue(undefined);
-            spyOn(testObject, 'instanceId').and.returnValue(undefined);
-            spyOn(testObject, 'serviceId').and.returnValue("test");
+            spyOn(testObject, 'domainType').andReturn(undefined);
+            spyOn(testObject, 'instanceId').andReturn(undefined);
+            spyOn(testObject, 'serviceId').andReturn("test");
             localContext = context;
         }));
         describe('when currentObject is set', function () {

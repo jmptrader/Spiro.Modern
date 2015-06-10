@@ -103,8 +103,7 @@ var Spiro;
                     var parameters = dvm.parameters;
                     _.each(parameters, function (parm) { return invoke.setParameter(parm.id, parm.getValue()); });
                     _.each(parameters, function (parm) { return parm.setSelectedChoice(); });
-                    repLoader.populate(invoke, true).
-                        then(function (result) {
+                    repLoader.populate(invoke, true).then(function (result) {
                         repHandlers.setResult(result, dvm);
                     }, function (error) {
                         repHandlers.setInvokeUpdateError($scope, error, parameters, dvm);
@@ -114,8 +113,7 @@ var Spiro;
                     var update = object.getUpdateMap();
                     var properties = _.filter(ovm.properties, function (property) { return property.isEditable; });
                     _.each(properties, function (property) { return update.setProperty(property.id, property.getValue()); });
-                    repLoader.populate(update, true, new Spiro.DomainObjectRepresentation()).
-                        then(function (updatedObject) {
+                    repLoader.populate(update, true, new Spiro.DomainObjectRepresentation()).then(function (updatedObject) {
                         // This is a kludge because updated object has no self link.
                         var rawLinks = object.get("links");
                         updatedObject.set("links", rawLinks);
@@ -131,8 +129,7 @@ var Spiro;
                     var persist = object.getPersistMap();
                     var properties = _.filter(ovm.properties, function (property) { return property.isEditable; });
                     _.each(properties, function (property) { return persist.setMember(property.id, property.getValue()); });
-                    repLoader.populate(persist, true, new Spiro.DomainObjectRepresentation()).
-                        then(function (updatedObject) {
+                    repLoader.populate(persist, true, new Spiro.DomainObjectRepresentation()).then(function (updatedObject) {
                         context.setObject(updatedObject);
                         $location.path(urlHelper.toObjectPath(updatedObject));
                     }, function (error) {
