@@ -77,10 +77,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string ProductServiceUrl = Url + "#/services/AdventureWorksModel.ProductRepository";
         protected const string SalesServiceUrl = Url + "#/services/AdventureWorksModel.SalesRepository";
 
-        protected const int ServicesCount = 11;
+        protected const int ServicesCount = 10;
 
         protected const int CustomerServiceActions = 9;
-        protected const int OrderServiceActions = 5;
+        protected const int OrderServiceActions = 6;
         protected const int ProductServiceActions = 11;
         protected const int SalesServiceActions = 4;
 
@@ -91,7 +91,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string Product870Url = Url + "#/objects/AdventureWorksModel.Product/870";
 
         protected const int StoreActions = 8;
-        protected const int ProductActions = 7;
+        protected const int ProductActions = 6;
         protected const int ProductProperties = 26;
 
         //protected const string url = "http://localhost:53103/";

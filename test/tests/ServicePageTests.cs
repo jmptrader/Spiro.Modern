@@ -40,14 +40,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
             Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
-            Assert.AreEqual("Customer Dashboard", actions[1].Text);
-            Assert.AreEqual("Throw Domain Exception", actions[2].Text);
-            Assert.AreEqual("Find Individual Customer By Name", actions[3].Text);
+            Assert.AreEqual("Find Store By Name", actions[1].Text);
+            Assert.AreEqual("Find Individual Customer By Name", actions[2].Text);
+            Assert.AreEqual("Create New Store Customer", actions[3].Text);
             Assert.AreEqual("Create New Individual Customer", actions[4].Text);
-            Assert.AreEqual("Random Individual", actions[5].Text);          
-            Assert.AreEqual("Find Store By Name", actions[6].Text);
-            Assert.AreEqual("Create New Store Customer", actions[7].Text);
-            Assert.AreEqual("Random Store", actions[8].Text);            
+            Assert.AreEqual("Random Store", actions[5].Text);
+            Assert.AreEqual("Random Individual", actions[6].Text);          
+            Assert.AreEqual("Customer Dashboard", actions[7].Text);
+            Assert.AreEqual("Throw Domain Exception", actions[8].Text);
         }
 
         [TestMethod]

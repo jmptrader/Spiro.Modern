@@ -399,7 +399,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
 
-            Assert.AreEqual("Road-150 Red, 62", topItem);
+            Assert.AreEqual("Mountain-100 Black, 38", topItem);
 
             slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
 
@@ -444,7 +444,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
 
-            Assert.AreEqual("Road-150 Red, 62", topItem);
+            Assert.AreEqual("Mountain-100 Black, 38", topItem);
 
             slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
 
@@ -476,7 +476,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElement(By.ClassName("ui-menu-item")));
 
-            Click(br.FindElement(By.CssSelector(".ui-menu-item a")));
+            Click(br.FindElement(By.CssSelector(".ui-menu-item")));
 
             Click(br.FindElement(By.ClassName("show")));
 
@@ -502,9 +502,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             br.FindElement(By.CssSelector(".parameter-value input[type='text']")).SendKeys("Valdez");
 
-            wait.Until(d => d.FindElement(By.ClassName("ui-menu-item")));
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
 
-            Click(br.FindElement(By.CssSelector(".ui-menu-item a")));
+            Click(br.FindElement(By.CssSelector(".ui-menu-item")));
 
             Click(br.FindElement(By.ClassName("go")));
 
@@ -578,7 +578,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElement(By.ClassName("ui-menu-item")));
 
-            Click(br.FindElement(By.CssSelector(".ui-menu-item a")));
+            Click(br.FindElement(By.CssSelector(".ui-menu-item")));
 
             Click(br.FindElement(By.ClassName("show")));
 
