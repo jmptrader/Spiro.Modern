@@ -184,7 +184,7 @@ var Spiro;
                     };
                     return dialogViewModel;
                 };
-                viewModelFactory.propertyViewModel = function (propertyRep, id, propertyDetails) {
+                viewModelFactory.propertyViewModel = function (propertyRep, id) {
                     var propertyViewModel = new Modern.PropertyViewModel();
                     propertyViewModel.title = propertyRep.extensions().friendlyName;
                     propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().toString();
@@ -205,8 +205,7 @@ var Spiro;
                     propertyViewModel.choices = [];
                     propertyViewModel.hasPrompt = propertyRep.hasPrompt();
                     if (propertyRep.hasChoices()) {
-                        // if we have details get from that as it will alawys be there. If not choices may be on member
-                        var choices = propertyDetails ? propertyDetails.choices() : propertyRep.choices();
+                        var choices = propertyRep.choices();
                         if (choices) {
                             propertyViewModel.choices = _.map(choices, function (v, n) {
                                 return Modern.ChoiceViewModel.create(v, id, n);
@@ -214,17 +213,17 @@ var Spiro;
                         }
                     }
                     propertyViewModel.hasChoices = propertyViewModel.choices.length > 0;
-                    propertyViewModel.hasPrompt = !!propertyDetails && !!propertyDetails.promptLink() && propertyDetails.promptLink().arguments()["x-ro-searchTerm"];
-                    propertyViewModel.hasConditionalChoices = !!propertyDetails && !!propertyDetails.promptLink() && !propertyViewModel.hasPrompt;
+                    propertyViewModel.hasPrompt = !!propertyRep.promptLink() && propertyRep.promptLink().arguments()["x-ro-searchTerm"];
+                    propertyViewModel.hasConditionalChoices = !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
                     if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
-                        var promptRep = propertyDetails.getPrompts();
+                        var promptRep = propertyRep.getPrompts();
                         if (propertyViewModel.hasPrompt) {
                             propertyViewModel.prompt = _.partial(repHandlers.prompt, promptRep, id);
-                            propertyViewModel.minLength = propertyDetails.promptLink().extensions().minLength;
+                            propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength;
                         }
                         if (propertyViewModel.hasConditionalChoices) {
                             propertyViewModel.conditionalChoices = _.partial(repHandlers.conditionalChoices, promptRep, id);
-                            propertyViewModel.arguments = _.object(_.map(propertyDetails.promptLink().arguments(), function (v, key) { return [key, new Spiro.Value(v.value)]; }));
+                            propertyViewModel.arguments = _.object(_.map(propertyRep.promptLink().arguments(), function (v, key) { return [key, new Spiro.Value(v.value)]; }));
                         }
                     }
                     if (propertyViewModel.hasChoices || propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
@@ -343,7 +342,7 @@ var Spiro;
                     return serviceViewModel;
                 };
                 // tested
-                viewModelFactory.domainObjectViewModel = function (objectRep, details, save) {
+                viewModelFactory.domainObjectViewModel = function (objectRep, save) {
                     var objectViewModel = new Modern.DomainObjectViewModel();
                     var isTransient = !!objectRep.persistLink();
                     objectViewModel.href = urlHelper.toAppUrl(objectRep.getUrl());
@@ -358,9 +357,7 @@ var Spiro;
                     objectViewModel.title = isTransient ? "Unsaved " + objectRep.extensions().friendlyName : objectRep.title();
                     objectViewModel.message = "";
                     objectViewModel.properties = _.map(properties, function (property, id) {
-                        return viewModelFactory.propertyViewModel(property, id, _.find(details || [], function (d) {
-                            return d.instanceId() === id;
-                        }));
+                        return viewModelFactory.propertyViewModel(property, id);
                     });
                     objectViewModel.collections = _.map(collections, function (collection) {
                         return viewModelFactory.collectionViewModel(collection);

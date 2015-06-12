@@ -24,14 +24,14 @@ module Spiro.Angular.Modern{
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionRepresentation, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
-        propertyViewModel(propertyRep: PropertyMember, id: string, propertyDetails?: PropertyRepresentation): PropertyViewModel;
+        propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
         collectionViewModel(collection: any, populateItems?: boolean): CollectionViewModel;
         collectionViewModel(collection: CollectionMember, populateItems?: boolean): CollectionViewModel;
         collectionViewModel(collection: CollectionRepresentation, populateItems?: boolean): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, populateItems?: boolean): CollectionViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
-        domainObjectViewModel(objectRep: DomainObjectRepresentation, details?: PropertyRepresentation[], save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
+        domainObjectViewModel(objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
 
     app.service('viewModelFactory', function($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask) {
@@ -223,7 +223,7 @@ module Spiro.Angular.Modern{
             return dialogViewModel;
         };
 
-        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, propertyDetails?: PropertyRepresentation) => {
+        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string) => {
             var propertyViewModel = new PropertyViewModel();
             propertyViewModel.title = propertyRep.extensions().friendlyName;
             propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().toString();
@@ -251,8 +251,8 @@ module Spiro.Angular.Modern{
             propertyViewModel.hasPrompt = propertyRep.hasPrompt();
 
             if (propertyRep.hasChoices()) {
-                // if we have details get from that as it will alawys be there. If not choices may be on member
-                var choices = propertyDetails ? propertyDetails.choices() : propertyRep.choices();
+                
+                var choices =  propertyRep.choices();
 
                 if (choices) {
                     propertyViewModel.choices = _.map(choices, (v, n) => {
@@ -262,20 +262,20 @@ module Spiro.Angular.Modern{
             }
 
             propertyViewModel.hasChoices = propertyViewModel.choices.length > 0;
-            propertyViewModel.hasPrompt = !!propertyDetails && !!propertyDetails.promptLink() && propertyDetails.promptLink().arguments()["x-ro-searchTerm"];
-            propertyViewModel.hasConditionalChoices = !!propertyDetails && !!propertyDetails.promptLink() && !propertyViewModel.hasPrompt;
+            propertyViewModel.hasPrompt = !!propertyRep.promptLink() && propertyRep.promptLink().arguments()["x-ro-searchTerm"];
+            propertyViewModel.hasConditionalChoices =  !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
 
             if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
-                var promptRep: PromptRepresentation = propertyDetails.getPrompts();
+                var promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 if (propertyViewModel.hasPrompt) {         
                     propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.prompt, promptRep, id);
-                    propertyViewModel.minLength = propertyDetails.promptLink().extensions().minLength;
+                    propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength;
                 } 
 
                 if (propertyViewModel.hasConditionalChoices) {
                     propertyViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.conditionalChoices, promptRep, id);
-                    propertyViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>propertyDetails.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
+                    propertyViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
                 }
             }
 
@@ -419,7 +419,7 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, details?: PropertyRepresentation[], save?: (ovm: DomainObjectViewModel) => void) => {
+        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void) => {
             var objectViewModel = new DomainObjectViewModel();
             var isTransient = !!objectRep.persistLink();
 
@@ -439,8 +439,8 @@ module Spiro.Angular.Modern{
             objectViewModel.title = isTransient ? "Unsaved " + objectRep.extensions().friendlyName : objectRep.title();
 
             objectViewModel.message = "";
-          
-            objectViewModel.properties = _.map(properties, (property, id?) => { return viewModelFactory.propertyViewModel(property, id, _.find(details || [], (d : PropertyRepresentation) => { return d.instanceId() === id; })); });
+
+            objectViewModel.properties = _.map(properties, (property, id?) => { return viewModelFactory.propertyViewModel(property, id); });
             objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection); });
             objectViewModel.actions = _.map(actions, (action) => { return viewModelFactory.actionViewModel(action); });
 

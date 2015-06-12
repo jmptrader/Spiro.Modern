@@ -28,6 +28,29 @@ var Spiro;
                     navigation.push();
                 };
                 // tested
+                function setNestedCollection($scope, listOrCollection) {
+                    if ($routeParams.tableMode) {
+                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, true);
+                        $scope.modeCollection = urlHelper.toAppUrl($location.path(), []);
+                        $scope.collectionTemplate = Angular.nestedCollectionTableTemplate;
+                    }
+                    else {
+                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection);
+                        $scope.modeCollection = urlHelper.toAppUrl($location.path(), []) + "&tableMode=true";
+                        $scope.collectionTemplate = Angular.nestedCollectionTemplate;
+                    }
+                }
+                function setError(error) {
+                    var errorRep;
+                    if (error instanceof Spiro.ErrorRepresentation) {
+                        errorRep = error;
+                    }
+                    else {
+                        errorRep = new Spiro.ErrorRepresentation({ message: "an unrecognised error has occurred" });
+                    }
+                    context.setError(errorRep);
+                    $location.path(urlHelper.toErrorPath());
+                }
                 handlers.handleCollectionResult = function ($scope) {
                     context.getCollection().then(function (list) {
                         setNestedCollection($scope, list);
@@ -84,12 +107,14 @@ var Spiro;
                     });
                 };
                 // tested
+                function setNestedObject(object, $scope) {
+                    $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
+                    $scope.nestedTemplate = Angular.nestedObjectTemplate;
+                    context.setNestedObject(object);
+                }
                 handlers.handleProperty = function ($scope) {
                     context.getObject($routeParams.dt, $routeParams.id).then(function (object) {
-                        var propertyDetails = object.propertyMember($routeParams.property).getDetails();
-                        return repLoader.populate(propertyDetails);
-                    }).then(function (details) {
-                        var target = details.value().link().getTarget();
+                        var target = object.propertyMember($routeParams.property).value().link().getTarget();
                         return repLoader.populate(target);
                     }).then(function (object) {
                         setNestedObject(object, $scope);
@@ -206,7 +231,7 @@ var Spiro;
                         if (object) {
                             $scope.backgroundColor = color.toColorFromType(object.domainType());
                             context.setNestedObject(null);
-                            var obj = viewModelFactory.domainObjectViewModel(object, null, _.partial(repHandlers.saveObject, $scope, object));
+                            var obj = viewModelFactory.domainObjectViewModel(object, _.partial(repHandlers.saveObject, $scope, object));
                             obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
                             $scope.object = obj;
                             $scope.objectTemplate = Angular.objectTemplate;
@@ -225,51 +250,16 @@ var Spiro;
                 // tested
                 handlers.handleEditObject = function ($scope) {
                     context.getObject($routeParams.dt, $routeParams.id).then(function (object) {
-                        var detailPromises = _.map(object.propertyMembers(), function (pm) {
-                            return repLoader.populate(pm.getDetails());
-                        });
-                        $q.all(detailPromises).then(function (details) {
-                            context.setNestedObject(null);
-                            $scope.object = viewModelFactory.domainObjectViewModel(object, details, _.partial(repHandlers.updateObject, $scope, object));
-                            $scope.objectTemplate = Angular.objectTemplate;
-                            $scope.actionTemplate = "";
-                            $scope.propertiesTemplate = Angular.editPropertiesTemplate;
-                        }, function (error) {
-                            setError(error);
-                        });
+                        context.setNestedObject(null);
+                        $scope.object = viewModelFactory.domainObjectViewModel(object, _.partial(repHandlers.updateObject, $scope, object));
+                        $scope.objectTemplate = Angular.objectTemplate;
+                        $scope.actionTemplate = "";
+                        $scope.propertiesTemplate = Angular.editPropertiesTemplate;
                     }, function (error) {
                         setError(error);
                     });
                 };
                 // helper functions 
-                function setNestedObject(object, $scope) {
-                    $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
-                    $scope.nestedTemplate = Angular.nestedObjectTemplate;
-                    context.setNestedObject(object);
-                }
-                function setNestedCollection($scope, listOrCollection) {
-                    if ($routeParams.tableMode) {
-                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, true);
-                        $scope.modeCollection = urlHelper.toAppUrl($location.path(), []);
-                        $scope.collectionTemplate = Angular.nestedCollectionTableTemplate;
-                    }
-                    else {
-                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection);
-                        $scope.modeCollection = urlHelper.toAppUrl($location.path(), []) + "&tableMode=true";
-                        $scope.collectionTemplate = Angular.nestedCollectionTemplate;
-                    }
-                }
-                function setError(error) {
-                    var errorRep;
-                    if (error instanceof Spiro.ErrorRepresentation) {
-                        errorRep = error;
-                    }
-                    else {
-                        errorRep = new Spiro.ErrorRepresentation({ message: "an unrecognised error has occurred" });
-                    }
-                    context.setError(errorRep);
-                    $location.path(urlHelper.toErrorPath());
-                }
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));

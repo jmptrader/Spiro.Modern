@@ -49,6 +49,32 @@ module Spiro.Angular.Modern {
         };
 
         // tested
+        function setNestedCollection($scope, listOrCollection: IListOrCollection) {
+
+
+            if ($routeParams.tableMode) {
+                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, true);
+                $scope.modeCollection = urlHelper.toAppUrl($location.path(), []);
+                $scope.collectionTemplate = nestedCollectionTableTemplate;
+            } else {
+                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection);
+                $scope.modeCollection = urlHelper.toAppUrl($location.path(), []) + "&tableMode=true";
+                $scope.collectionTemplate = nestedCollectionTemplate;
+            }
+        }
+
+        function setError(error) {
+
+            var errorRep: ErrorRepresentation;
+            if (error instanceof ErrorRepresentation) {
+                errorRep = <ErrorRepresentation>error;
+            } else {
+                errorRep = new ErrorRepresentation({ message: "an unrecognised error has occurred" });
+            }
+            context.setError(errorRep);
+            $location.path(urlHelper.toErrorPath());
+        }
+
         handlers.handleCollectionResult = $scope => {
             context.getCollection().
                 then((list: ListRepresentation) => {
@@ -119,14 +145,16 @@ module Spiro.Angular.Modern {
         };
 
         // tested
+        function setNestedObject(object: DomainObjectRepresentation, $scope) {
+            $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
+            $scope.nestedTemplate = nestedObjectTemplate;
+            context.setNestedObject(object);
+        }
+
         handlers.handleProperty = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
-                    var propertyDetails = object.propertyMember($routeParams.property).getDetails();
-                    return repLoader.populate(propertyDetails);
-                }).
-                then((details: PropertyRepresentation) => {
-                    var target = details.value().link().getTarget();
+                    var target = object.propertyMember($routeParams.property).value().link().getTarget();
                     return repLoader.populate(target);
                 }).
                 then((object: DomainObjectRepresentation) => {
@@ -285,7 +313,7 @@ module Spiro.Angular.Modern {
                         $scope.backgroundColor = color.toColorFromType(object.domainType());
 
                         context.setNestedObject(null);
-                        var obj = viewModelFactory.domainObjectViewModel(object, null, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
+                        var obj = viewModelFactory.domainObjectViewModel(object, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
                         obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
 
                         $scope.object = obj;
@@ -311,17 +339,11 @@ module Spiro.Angular.Modern {
             context.getObject($routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
 
-                    var detailPromises = _.map(object.propertyMembers(), (pm: PropertyMember) => { return repLoader.populate(pm.getDetails()); });
-
-                    $q.all(detailPromises).then((details: PropertyRepresentation[]) => {
-                        context.setNestedObject(null);
-                        $scope.object = viewModelFactory.domainObjectViewModel(object, details, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
-                        $scope.objectTemplate = objectTemplate;
-                        $scope.actionTemplate = "";
-                        $scope.propertiesTemplate = editPropertiesTemplate;
-                    }, error => {
-                        setError(error);
-                    });
+                    context.setNestedObject(null);
+                    $scope.object = viewModelFactory.domainObjectViewModel(object, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
+                    $scope.objectTemplate = objectTemplate;
+                    $scope.actionTemplate = "";
+                    $scope.propertiesTemplate = editPropertiesTemplate;
 
                 }, error => {
                     setError(error);
@@ -329,38 +351,5 @@ module Spiro.Angular.Modern {
         };
 
         // helper functions 
-
-        function setNestedObject(object: DomainObjectRepresentation, $scope) {
-            $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
-            $scope.nestedTemplate = nestedObjectTemplate;
-            context.setNestedObject(object);
-        }
-
-        function setNestedCollection($scope, listOrCollection: IListOrCollection) {
-
-
-            if ($routeParams.tableMode) {
-                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, true);
-                $scope.modeCollection = urlHelper.toAppUrl($location.path(), []);
-                $scope.collectionTemplate = nestedCollectionTableTemplate;
-            } else {
-                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection);
-                $scope.modeCollection = urlHelper.toAppUrl($location.path(), []) + "&tableMode=true";
-                $scope.collectionTemplate = nestedCollectionTemplate;
-            }
-        }
-
-        function setError(error) {
-
-            var errorRep: ErrorRepresentation;
-            if (error instanceof ErrorRepresentation) {
-                errorRep = <ErrorRepresentation>error;
-            } else {
-                errorRep = new ErrorRepresentation({ message: "an unrecognised error has occurred" });
-            }
-            context.setError(errorRep);
-            $location.path(urlHelper.toErrorPath());
-        }
-
     });
 }
