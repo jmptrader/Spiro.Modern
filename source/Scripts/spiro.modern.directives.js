@@ -40,9 +40,7 @@ var Spiro;
                             scope.$apply(function () {
                                 // Call the internal AngularJS helper to
                                 // update the two way binding
-                                ngModel.$parsers.push(function (val) {
-                                    return new Date(val).toISOString();
-                                });
+                                ngModel.$parsers.push(function (val) { return new Date(val).toISOString(); });
                                 ngModel.$setViewValue(dateTxt);
                             });
                         };
@@ -84,9 +82,7 @@ var Spiro;
                         function render(initialChoice) {
                             var cvm = ngModel.$modelValue || initialChoice;
                             if (cvm) {
-                                ngModel.$parsers.push(function (val) {
-                                    return cvm;
-                                });
+                                ngModel.$parsers.push(function (val) { return cvm; });
                                 ngModel.$setViewValue(cvm.name);
                                 element.val(cvm.name);
                             }
@@ -96,9 +92,7 @@ var Spiro;
                         var updateModel = function (cvm) {
                             //context.setSelectedChoice(cvm.id, cvm.search, cvm);
                             scope.$apply(function () {
-                                ngModel.$parsers.push(function (val) {
-                                    return cvm;
-                                });
+                                ngModel.$parsers.push(function (val) { return cvm; });
                                 ngModel.$setViewValue(cvm.name);
                                 element.val(cvm.name);
                             });
@@ -180,9 +174,7 @@ var Spiro;
                             var prompts = scope.select({ args: nArgs });
                             prompts.then(function (cvms) {
                                 // if unchanged return 
-                                if (cvms.length === currentOptions.length && _.all(cvms, function (c, i) {
-                                    return c.equals(currentOptions[i]);
-                                })) {
+                                if (cvms.length === currentOptions.length && _.all(cvms, function (c, i) { return c.equals(currentOptions[i]); })) {
                                     return;
                                 }
                                 element.find("option").remove();
@@ -228,9 +220,7 @@ var Spiro;
                                 var cvm = Modern.ChoiceViewModel.create(new Spiro.Value(val), viewModel.id, key);
                                 viewModel.choice = cvm;
                                 scope.$apply(function () {
-                                    ngModel.$parsers.push(function (val) {
-                                        return cvm;
-                                    });
+                                    ngModel.$parsers.push(function (val) { return cvm; });
                                     ngModel.$setViewValue(cvm.name);
                                 });
                             }
@@ -277,7 +267,9 @@ var Spiro;
                             xhr.send(null);
                         }
                         function displayInline(mt) {
-                            if (mt === "image/jpeg" || mt === "image/gif" || mt === "application/octet-stream") {
+                            if (mt === "image/jpeg" ||
+                                mt === "image/gif" ||
+                                mt === "application/octet-stream") {
                                 return true;
                             }
                             return false;

@@ -116,8 +116,7 @@ describe('viewModelFactory Service', function () {
         describe('from simple rep', function () {
             beforeEach(inject(function (viewModelFactory, $routeParams) {
                 $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), function () {
-                });
+                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), function () { });
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");

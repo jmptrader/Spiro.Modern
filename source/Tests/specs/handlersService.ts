@@ -426,7 +426,6 @@ describe('handlers Service', () => {
 
             var testObject = new Spiro.DomainObjectRepresentation();
             var testMember = new Spiro.PropertyMember({}, testObject);
-            var testDetails = new Spiro.PropertyRepresentation();
             var testValue = new Spiro.Value({});
             var testLink = new Spiro.Link();
             var testTarget = new Spiro.DomainObjectRepresentation();
@@ -445,13 +444,12 @@ describe('handlers Service', () => {
                 getObject = spyOnPromise(context, 'getObject', testObject);
 
                 propertyMember = spyOn(testObject, "propertyMember").andReturn(testMember);
-                propertyDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
 
-                spyOn(testDetails, "value").andReturn(testValue);
+                spyOn(testMember, "value").andReturn(testValue);
                 spyOn(testValue, "link").andReturn(testLink);
                 spyOn(testLink, "getTarget").andReturn(testTarget);
 
-                populate = spyOnPromiseConditional(repLoader, "populate", testDetails, testTarget);
+                populate = spyOnPromise(repLoader, "populate", testTarget);
 
                 objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
@@ -466,7 +464,6 @@ describe('handlers Service', () => {
             it('should update the scope', () => {
                 expect(getObject).toHaveBeenCalledWith("test", "1");
                 expect(propertyMember).toHaveBeenCalledWith("aProperty");
-                expect(propertyDetails).toHaveBeenCalled();
 
                 expect(populate).toHaveBeenCalled();
 
@@ -487,7 +484,7 @@ describe('handlers Service', () => {
             beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
                 $scope = $rootScope.$new();
 
-                getObject = spyOnPromise2NestedFail(context, 'getObject', testObject);
+                getObject = spyOnPromiseNestedFail(context, 'getObject', testObject);
                 setError = spyOn(context, 'setError');
 
                 $routeParams.dt = "test";
@@ -803,19 +800,12 @@ describe('handlers Service', () => {
             describe('in edit mode', () => {
 
                 var propertyMem = new Spiro.PropertyMember({}, testObject);
-                var propertyRep = new Spiro.PropertyRepresentation();
 
                 var populate;
 
                 beforeEach(inject(($rootScope, $q, $routeParams, repLoader: Spiro.Angular.IRepLoader, handlers: Spiro.Angular.Modern.IHandlers) => {
 
                     spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
-                    spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
-
-                    spyOnPromise($q, 'all', [propertyRep]);
-
-
-                    populate = spyOnPromise(repLoader, "populate", propertyRep);
 
                     $routeParams.editMode = "test";
                     handlers.handleEditObject($scope);
@@ -823,7 +813,7 @@ describe('handlers Service', () => {
 
                 it('should update the scope', () => {
                     expect(getObject).toHaveBeenCalledWith("test", "1");
-                    expect(objectViewModel).toHaveBeenCalledWith(testObject, [propertyRep], jasmine.any(Function));
+                    expect(objectViewModel).toHaveBeenCalledWith(testObject, jasmine.any(Function));
                     expect(setNestedObject).toHaveBeenCalledWith(null);
 
                     expect($scope.object).toEqual(testViewModel);
@@ -873,7 +863,6 @@ describe('handlers Service', () => {
             var setNestedObject;
 
             var propertyMem = new Spiro.PropertyMember({}, testObject);
-            var propertyRep = new Spiro.PropertyRepresentation();
 
             var populate;
 
@@ -886,12 +875,9 @@ describe('handlers Service', () => {
                 setNestedObject = spyOn(context, 'setNestedObject');
 
                 spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
-                spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
                 spyOn(testObject, 'domainType').andReturn("test");
 
-                spyOnPromise($q, 'all', [propertyRep]);
 
-                populate = spyOnPromise(repLoader, "populate", propertyRep);
 
                 handlers.handleTransientObject($scope);
             }));
@@ -899,7 +885,7 @@ describe('handlers Service', () => {
 
             it('should update the scope', () => {
                 expect(getTransientObject).toHaveBeenCalled();
-                expect(objectViewModel).toHaveBeenCalledWith(testObject, null, jasmine.any(Function));
+                expect(objectViewModel).toHaveBeenCalledWith(testObject, jasmine.any(Function));
                 expect(setNestedObject).toHaveBeenCalledWith(null);
 
                 expect($scope.object).toEqual(testViewModel);

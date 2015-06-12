@@ -292,7 +292,6 @@ describe('handlers Service', function () {
         describe('if it finds object', function () {
             var testObject = new Spiro.DomainObjectRepresentation();
             var testMember = new Spiro.PropertyMember({}, testObject);
-            var testDetails = new Spiro.PropertyRepresentation();
             var testValue = new Spiro.Value({});
             var testLink = new Spiro.Link();
             var testTarget = new Spiro.DomainObjectRepresentation();
@@ -306,11 +305,10 @@ describe('handlers Service', function () {
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
                 propertyMember = spyOn(testObject, "propertyMember").andReturn(testMember);
-                propertyDetails = spyOn(testMember, "getDetails").andReturn(testDetails);
-                spyOn(testDetails, "value").andReturn(testValue);
+                spyOn(testMember, "value").andReturn(testValue);
                 spyOn(testValue, "link").andReturn(testLink);
                 spyOn(testLink, "getTarget").andReturn(testTarget);
-                populate = spyOnPromiseConditional(repLoader, "populate", testDetails, testTarget);
+                populate = spyOnPromise(repLoader, "populate", testTarget);
                 objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 $routeParams.dt = "test";
@@ -321,7 +319,6 @@ describe('handlers Service', function () {
             it('should update the scope', function () {
                 expect(getObject).toHaveBeenCalledWith("test", "1");
                 expect(propertyMember).toHaveBeenCalledWith("aProperty");
-                expect(propertyDetails).toHaveBeenCalled();
                 expect(populate).toHaveBeenCalled();
                 expect(setNestedObject).toHaveBeenCalledWith(testTarget);
                 expect($scope.result).toEqual(testViewModel);
@@ -333,7 +330,7 @@ describe('handlers Service', function () {
             var setError;
             beforeEach(inject(function ($rootScope, $routeParams, handlers, context) {
                 $scope = $rootScope.$new();
-                getObject = spyOnPromise2NestedFail(context, 'getObject', testObject);
+                getObject = spyOnPromiseNestedFail(context, 'getObject', testObject);
                 setError = spyOn(context, 'setError');
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
@@ -535,19 +532,15 @@ describe('handlers Service', function () {
             });
             describe('in edit mode', function () {
                 var propertyMem = new Spiro.PropertyMember({}, testObject);
-                var propertyRep = new Spiro.PropertyRepresentation();
                 var populate;
                 beforeEach(inject(function ($rootScope, $q, $routeParams, repLoader, handlers) {
                     spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
-                    spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
-                    spyOnPromise($q, 'all', [propertyRep]);
-                    populate = spyOnPromise(repLoader, "populate", propertyRep);
                     $routeParams.editMode = "test";
                     handlers.handleEditObject($scope);
                 }));
                 it('should update the scope', function () {
                     expect(getObject).toHaveBeenCalledWith("test", "1");
-                    expect(objectViewModel).toHaveBeenCalledWith(testObject, [propertyRep], jasmine.any(Function));
+                    expect(objectViewModel).toHaveBeenCalledWith(testObject, jasmine.any(Function));
                     expect(setNestedObject).toHaveBeenCalledWith(null);
                     expect($scope.object).toEqual(testViewModel);
                     expect($scope.actionTemplate).toEqual("");
@@ -583,7 +576,6 @@ describe('handlers Service', function () {
             var objectViewModel;
             var setNestedObject;
             var propertyMem = new Spiro.PropertyMember({}, testObject);
-            var propertyRep = new Spiro.PropertyRepresentation();
             var populate;
             beforeEach(inject(function ($rootScope, $routeParams, $q, repLoader, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
@@ -591,15 +583,12 @@ describe('handlers Service', function () {
                 objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
                 setNestedObject = spyOn(context, 'setNestedObject');
                 spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
-                spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
                 spyOn(testObject, 'domainType').andReturn("test");
-                spyOnPromise($q, 'all', [propertyRep]);
-                populate = spyOnPromise(repLoader, "populate", propertyRep);
                 handlers.handleTransientObject($scope);
             }));
             it('should update the scope', function () {
                 expect(getTransientObject).toHaveBeenCalled();
-                expect(objectViewModel).toHaveBeenCalledWith(testObject, null, jasmine.any(Function));
+                expect(objectViewModel).toHaveBeenCalledWith(testObject, jasmine.any(Function));
                 expect(setNestedObject).toHaveBeenCalledWith(null);
                 expect($scope.object).toEqual(testViewModel);
                 expect($scope.actionTemplate).toEqual("");
@@ -907,8 +896,7 @@ describe('handlers Service', function () {
         var setProperty;
         var set;
         beforeEach(inject(function ($rootScope) {
-            testUpdate.setProperty = function () {
-            };
+            testUpdate.setProperty = function () { };
             spyOn(testObject, 'getUpdateMap').andReturn(testUpdate);
             setProperty = spyOn(testUpdate, 'setProperty');
             testViewModel.properties = testProperties;
@@ -926,8 +914,7 @@ describe('handlers Service', function () {
                 setObject = spyOn(context, 'setObject');
                 location = $location;
                 cacheFactory = $cacheFactory;
-                testCache.remove = function () {
-                };
+                testCache.remove = function () { };
                 populate = spyOnPromise(repLoader, 'populate', testUpdatedObject);
                 spyOn(cacheFactory, 'get').andReturn(testCache);
                 remove = spyOn(testCache, 'remove');
