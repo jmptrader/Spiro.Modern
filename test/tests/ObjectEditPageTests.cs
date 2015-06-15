@@ -41,7 +41,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Click(br.FindElement(By.ClassName("save")));
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
@@ -107,7 +107,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Click(br.FindElement(By.ClassName("save")));
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
@@ -181,7 +181,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Click(br.FindElement(By.ClassName("save")));
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
 
             properties = br.FindElements(By.ClassName("property"));
 
