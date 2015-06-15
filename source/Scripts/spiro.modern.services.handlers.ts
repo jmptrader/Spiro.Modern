@@ -64,7 +64,7 @@ module Spiro.Angular.Modern {
                 }
 
                 if (domainModel !== "simple" && domainModel !== "selectable") {
-                    setVersionError("Spiro Modern does not support domain metadata representation \"" + domainModel + "\"\r\n (8.2:optionalCapabilities)");
+                    setVersionError("Spiro Modern requires domain metadata representation to be simple or selectable not \"" + domainModel + "\"\r\n (8.2:optionalCapabilities)");
                 }
 
             });
