@@ -20,6 +20,7 @@ module Spiro.Angular.Modern {
 
     export interface IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
+        getVersion: () => ng.IPromise<VersionRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getObject: (type: string, id?: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (object: DomainObjectRepresentation) => void;
@@ -94,10 +95,11 @@ module Spiro.Angular.Modern {
                 delay.resolve(currentHome);
             }
             else {
-                repLoader.populate<HomePageRepresentation>(new HomePageRepresentation()).then((home: HomePageRepresentation) => {
-                    currentHome = home;
-                    delay.resolve(home);
-                }, error => delay.reject(error));
+                repLoader.populate<HomePageRepresentation>(new HomePageRepresentation()).
+                    then((home: HomePageRepresentation) => {
+                        currentHome = home;
+                        delay.resolve(home);
+                    }, error => delay.reject(error));
             }
 
             return delay.promise;
@@ -126,6 +128,30 @@ module Spiro.Angular.Modern {
 
             return delay.promise;
         };
+
+        var currentVersion: VersionRepresentation = null;
+
+        context.getVersion = function () {
+            var delay = $q.defer<VersionRepresentation>();
+
+            if (currentVersion) {
+                delay.resolve(currentVersion);
+            }
+            else {
+                this.getHome().
+                    then((home: HomePageRepresentation) => {
+                        var v = home.getVersion();
+                        return repLoader.populate<VersionRepresentation>(v);
+                    }).
+                    then((version: VersionRepresentation) => {
+                        currentVersion = version;
+                        delay.resolve(version);
+                    }, error => delay.reject(error));
+            }
+
+            return delay.promise;
+        };
+
 
         var currentObject: DomainObjectRepresentation = null;
 

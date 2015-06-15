@@ -59,7 +59,8 @@ var Spiro;
                         delay.resolve(currentHome);
                     }
                     else {
-                        repLoader.populate(new Spiro.HomePageRepresentation()).then(function (home) {
+                        repLoader.populate(new Spiro.HomePageRepresentation()).
+                            then(function (home) {
                             currentHome = home;
                             delay.resolve(home);
                         }, function (error) { return delay.reject(error); });
@@ -82,6 +83,25 @@ var Spiro;
                             then(function (services) {
                             currentServices = services;
                             delay.resolve(services);
+                        }, function (error) { return delay.reject(error); });
+                    }
+                    return delay.promise;
+                };
+                var currentVersion = null;
+                context.getVersion = function () {
+                    var delay = $q.defer();
+                    if (currentVersion) {
+                        delay.resolve(currentVersion);
+                    }
+                    else {
+                        this.getHome().
+                            then(function (home) {
+                            var v = home.getVersion();
+                            return repLoader.populate(v);
+                        }).
+                            then(function (version) {
+                            currentVersion = version;
+                            delay.resolve(version);
                         }, function (error) { return delay.reject(error); });
                     }
                     return delay.promise;

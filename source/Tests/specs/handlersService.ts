@@ -966,27 +966,67 @@ describe('handlers Service', () => {
     describe('handleBackground', () => {
 
         var navService: Spiro.Angular.Modern.INavigation;
+       
 
-        beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, $location: ng.ILocationService, urlHelper: Spiro.Angular.Modern.IUrlHelper, color: Spiro.Angular.IColor, navigation: Spiro.Angular.Modern.INavigation) => {
+        var setError;
+
+        beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, $location: ng.ILocationService, urlHelper: Spiro.Angular.Modern.IUrlHelper, color: Spiro.Angular.IColor, navigation: Spiro.Angular.Modern.INavigation, context: Spiro.Angular.Modern.IContext) => {
             $scope = $rootScope.$new();
             navService = navigation;
 
             spyOn(color, 'toColorFromHref').andReturn("acolor");
             spyOn(urlHelper, 'toAppUrl').andReturn("aurl");
             spyOn(navigation, 'push');
+           
+            setError = spyOn(context, 'setError');
 
-            handlers.handleBackground($scope);
         }));
 
+        describe('if validation ok', () => {
+            var testVersion = new Spiro.VersionRepresentation();
+            beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
+                testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "selectable" } };
+                spyOnPromise(context, 'getVersion', testVersion);
 
-        it('should set scope variables', () => {
-            expect($scope.backgroundColor).toEqual("acolor");
-            expect($scope.closeNestedObject).toEqual("aurl");
-            expect($scope.closeCollection).toEqual("aurl");
-            expect(navService.push).toHaveBeenCalled();
+                handlers.handleBackground($scope);
+            }));
+
+            it('should set scope variables', () => {
+                expect($scope.backgroundColor).toEqual("acolor");
+                expect($scope.closeNestedObject).toEqual("aurl");
+                expect($scope.closeCollection).toEqual("aurl");
+                expect(navService.push).toHaveBeenCalled();
+                expect(setError).wasNotCalled();
+            });
         });
 
+        describe('if validation fails version', () => {
+            var testVersion = new Spiro.VersionRepresentation();
+            beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
+                testVersion.attributes = { specVersion: "1.0", optionalCapabilities: { domainModel: "selectable" } };
+                spyOnPromise(context, 'getVersion', testVersion);
 
+                handlers.handleBackground($scope);
+            }));
+
+            it('sets error', () => {
+                expect(setError).toHaveBeenCalled();
+            });
+        });
+
+        describe('if validation fails domain model', () => {
+            var testVersion = new Spiro.VersionRepresentation();
+            beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
+                testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "formal" } };
+                spyOnPromise(context, 'getVersion', testVersion);
+
+                handlers.handleBackground($scope);
+            }));
+
+            it('sets error', () => {
+                expect(setError).toHaveBeenCalled();
+            });
+        });
     });
 
 

@@ -20,12 +20,28 @@ var Spiro;
         (function (Modern) {
             Angular.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, repLoader, context, viewModelFactory, urlHelper, color, repHandlers, navigation) {
                 var handlers = this;
+                function setVersionError(error) {
+                    var errorRep = new Spiro.ErrorRepresentation({ message: error });
+                    context.setError(errorRep);
+                    $location.path(urlHelper.toErrorPath());
+                }
                 // tested
                 handlers.handleBackground = function ($scope) {
                     $scope.backgroundColor = color.toColorFromHref($location.absUrl());
                     $scope.closeNestedObject = urlHelper.toAppUrl($location.path(), ["property", "collectionItem", "resultObject"]);
                     $scope.closeCollection = urlHelper.toAppUrl($location.path(), ["collection", "resultCollection"]);
                     navigation.push();
+                    // validate version 
+                    context.getVersion().then(function (v) {
+                        var specVersion = parseFloat(v.specVersion());
+                        var domainModel = v.optionalCapabilities().domainModel;
+                        if (specVersion < 1.1) {
+                            setVersionError("Restful Objects server must support spec version 1.1 or greater for Spiro Modern\r\n (8.2:specVersion)");
+                        }
+                        if (domainModel !== "simple" && domainModel !== "selectable") {
+                            setVersionError("Spiro Modern does not support domain metadata representation \"" + domainModel + "\"\r\n (8.2:optionalCapabilities)");
+                        }
+                    });
                 };
                 // tested
                 function setNestedCollection($scope, listOrCollection) {
