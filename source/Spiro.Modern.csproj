@@ -75,10 +75,6 @@
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
     <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-route.min.js" />
-    <Content Include="Scripts\angular-touch.js" />
-    <Content Include="Scripts\angular-touch.min.js" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.color.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.loaderwithtransform.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.mask.ts" />
@@ -99,9 +95,13 @@
     <TypeScriptCompile Include="Scripts\spiro.modern.services.urlhelper.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.viewmodels.ts" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-touch.js" />
+    <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jasmine-html.js" />
     <Content Include="Scripts\jasmine.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
