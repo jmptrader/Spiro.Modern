@@ -10,7 +10,7 @@
 //specific language governing permissions and limitations
 //under the License.
 /// <reference path="typings/angularjs/angular.d.ts" />
-/// <reference path="typings/underscore/underscore.d.ts" />
+/// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="spiro.models.ts" />
 var Spiro;
 (function (Spiro) {

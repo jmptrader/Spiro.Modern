@@ -9,7 +9,7 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="typings/underscore/underscore.d.ts" />
+/// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="spiro.models.ts" />
 var Spiro;
 (function (Spiro) {
