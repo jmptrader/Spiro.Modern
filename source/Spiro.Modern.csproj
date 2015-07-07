@@ -95,7 +95,6 @@
     <TypeScriptCompile Include="Scripts\spiro.modern.services.urlhelper.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.viewmodels.ts" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular-touch.js" />
@@ -131,7 +130,6 @@
     <Content Include="Scripts\spiro.modern.services.urlhelper.js" />
     <Content Include="Scripts\spiro.modern.services.viewmodelfactory.js" />
     <Content Include="Scripts\spiro.modern.viewmodels.js" />
-    <Content Include="Scripts\underscore-min.js" />
     <Content Include="SpiroReadMe.txt" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />

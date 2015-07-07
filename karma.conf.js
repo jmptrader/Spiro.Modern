@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'source/Scripts/jquery-2.1.4.js',
-      'source/Scripts/underscore.js',
+      'source/Scripts/lodash.js',
       'source/Scripts/angular.js',
       'source/Scripts/angular-route.js',
       'source/Scripts/angular-touch.js',
