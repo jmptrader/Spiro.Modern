@@ -62,8 +62,9 @@ module Spiro.Angular.Modern {
             if (this.isEnum) {
                 return this.value.trim() === other.value.trim();
             }
-            return this.search.trim() == other.search.trim(); 
+            return this.search.trim() === other.search.trim(); 
         }
+
     }
 
     export class ErrorViewModel {

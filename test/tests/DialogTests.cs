@@ -270,11 +270,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("List Products By Sub Categories", title);
 
 
-            br.FindElement(By.CssSelector(".parameter-value  select")).SendKeys("HandleBars");
+            br.FindElement(By.CssSelector(".parameter-value  select")).SendKeys("Handlebars");
             IKeyboard kb = ((IHasInputDevices)br).Keyboard;
 
             kb.PressKey(Keys.Control);
-            br.FindElement(By.CssSelector(".parameter-value  select option[value='5']")).Click();
+            br.FindElement(By.CssSelector(".parameter-value  select option[label='Brakes']")).Click();
             kb.ReleaseKey(Keys.Control);
 
 

@@ -57,7 +57,7 @@ var Spiro;
                     if (this.isEnum) {
                         return this.value.trim() === other.value.trim();
                     }
-                    return this.search.trim() == other.search.trim();
+                    return this.search.trim() === other.search.trim();
                 };
                 return ChoiceViewModel;
             })();
