@@ -23,8 +23,7 @@ module Spiro.Angular.Modern {
     }
 
     app.service('navigation', function ($location: ng.ILocationService) {
-
-        var nav = <INavigation>this;
+        const nav = <INavigation>this;
         var history = [];
         var index = -1; 
         var navigating = false; 
@@ -46,10 +45,9 @@ module Spiro.Angular.Modern {
         };
         nav.push = () => {
             if (!navigating) {
-                var newUrl = $location.url();
-                var curUrl = history[history.length - 1];
-                var isActionUrl = newUrl.indexOf("?action") > 0; 
-
+                const newUrl = $location.url();
+                const curUrl = history[history.length - 1];
+                const isActionUrl = newUrl.indexOf("?action") > 0;
                 if (!isActionUrl && newUrl !== curUrl) {
                     history.push($location.url());
                 }

@@ -19,25 +19,25 @@ var Spiro;
         var Modern;
         (function (Modern) {
             // tested
-            Angular.app.controller('BackgroundController', function ($scope, handlers) {
+            Angular.app.controller("BackgroundController", function ($scope, handlers) {
                 handlers.handleBackground($scope);
             });
             // tested
-            Angular.app.controller('ServicesController', function ($scope, handlers) {
+            Angular.app.controller("ServicesController", function ($scope, handlers) {
                 handlers.handleServices($scope);
             });
             // tested
-            Angular.app.controller('ServiceController', function ($scope, handlers) {
+            Angular.app.controller("ServiceController", function ($scope, handlers) {
                 handlers.handleService($scope);
             });
             // tested
-            Angular.app.controller('DialogController', function ($scope, $routeParams, handlers) {
+            Angular.app.controller("DialogController", function ($scope, $routeParams, handlers) {
                 if ($routeParams.action) {
                     handlers.handleActionDialog($scope);
                 }
             });
             // tested
-            Angular.app.controller('NestedObjectController', function ($scope, $routeParams, handlers) {
+            Angular.app.controller("NestedObjectController", function ($scope, $routeParams, handlers) {
                 // action takes priority 
                 if ($routeParams.action) {
                     handlers.handleActionResult($scope);
@@ -54,7 +54,7 @@ var Spiro;
                 }
             });
             // tested
-            Angular.app.controller('CollectionController', function ($scope, $routeParams, handlers) {
+            Angular.app.controller("CollectionController", function ($scope, $routeParams, handlers) {
                 if ($routeParams.resultCollection) {
                     handlers.handleCollectionResult($scope);
                 }
@@ -63,7 +63,7 @@ var Spiro;
                 }
             });
             // tested
-            Angular.app.controller('ObjectController', function ($scope, $routeParams, handlers) {
+            Angular.app.controller("ObjectController", function ($scope, $routeParams, handlers) {
                 if ($routeParams.editMode) {
                     handlers.handleEditObject($scope);
                 }
@@ -72,15 +72,15 @@ var Spiro;
                 }
             });
             // tested
-            Angular.app.controller('TransientObjectController', function ($scope, handlers) {
+            Angular.app.controller("TransientObjectController", function ($scope, handlers) {
                 handlers.handleTransientObject($scope);
             });
             // tested
-            Angular.app.controller('ErrorController', function ($scope, handlers) {
+            Angular.app.controller("ErrorController", function ($scope, handlers) {
                 handlers.handleError($scope);
             });
             // tested
-            Angular.app.controller('AppBarController', function ($scope, handlers) {
+            Angular.app.controller("AppBarController", function ($scope, handlers) {
                 handlers.handleAppBar($scope);
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));

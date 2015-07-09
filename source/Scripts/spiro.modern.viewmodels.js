@@ -130,8 +130,7 @@ var Spiro;
                             }
                             var selRefs = _.map(selections, function (cvm) {
                                 return { href: cvm.value, title: cvm.name };
-                            });
-                            // reference 
+                            }); // reference 
                             return new Spiro.Value(selRefs);
                         }
                         if (this.type === "scalar") {

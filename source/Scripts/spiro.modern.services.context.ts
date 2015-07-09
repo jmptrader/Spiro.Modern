@@ -44,14 +44,12 @@ module Spiro.Angular.Modern {
         getService: (type: string) => ng.IPromise<DomainObjectRepresentation>;
     }
 
-    app.service('context', function ($q: ng.IQService, repLoader: IRepLoader) {
-
-        var context = <IContextInternal>this;
-
+    app.service("context", function ($q: ng.IQService, repLoader: IRepLoader) {
+        const context = <IContextInternal>this;
         var currentHome: HomePageRepresentation = null;
 
         function getAppPath() {
-            if (appPath.charAt(appPath.length - 1) === '/') {
+            if (appPath.charAt(appPath.length - 1) === "/") {
                 return appPath.length > 1 ? appPath.substring(0, appPath.length - 2) : "";
             }
 
@@ -59,7 +57,7 @@ module Spiro.Angular.Modern {
         }
 
         function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
-            var sid = object.serviceId();
+            const sid = object.serviceId();
             return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
         }
 
@@ -78,7 +76,7 @@ module Spiro.Angular.Modern {
 
             this.getServices().
                 then((services: DomainServicesRepresentation) => {
-                    var serviceLink = _.find(services.value().models, (model: Link) => { return model.rel().parms[0] === 'serviceId="' + type + '"'; });
+                    var serviceLink = _.find(services.value().models, (model: Link) => { return model.rel().parms[0] === "serviceId=\"" + type + "\""; });
                     var service = serviceLink.getTarget();
                     return repLoader.populate(service);
                 }).
@@ -161,7 +159,7 @@ module Spiro.Angular.Modern {
                 delay.resolve(currentObject);
             }
             else {
-                var promise = id ? this.getDomainObject(type, id) : this.getService(type);
+                const promise = id ? this.getDomainObject(type, id) : this.getService(type);
                 promise.then((object: DomainObjectRepresentation) => {
                     currentObject = object;
                     delay.resolve(object);
@@ -183,7 +181,7 @@ module Spiro.Angular.Modern {
                 delay.resolve(currentNestedObject);
             }
             else {
-                var domainObjectRepresentation = new DomainObjectRepresentation();
+                const domainObjectRepresentation = new DomainObjectRepresentation();
                 domainObjectRepresentation.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
                 repLoader.populate<DomainObjectRepresentation>(domainObjectRepresentation).

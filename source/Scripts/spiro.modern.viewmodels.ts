@@ -23,8 +23,7 @@ module Spiro.Angular.Modern {
         title: string;
 
         static create(href : string, mimeType : string, title : string) {
-            var attachmentViewModel = new AttachmentViewModel();
-
+            const attachmentViewModel = new AttachmentViewModel();
             attachmentViewModel.href = href;
             attachmentViewModel.mimeType = mimeType;
             attachmentViewModel.title = title || "UnknownFile";
@@ -41,8 +40,7 @@ module Spiro.Angular.Modern {
         isEnum : boolean; 
 
         static create(value: Value, id : string, name? : string, searchTerm? : string) {
-            var choiceViewModel = new ChoiceViewModel();
-
+            const choiceViewModel = new ChoiceViewModel();
             choiceViewModel.id = id;
             choiceViewModel.name = name || value.toString(); 
             choiceViewModel.value = value.isReference() ? value.link().href() : value.toValueString();
@@ -128,10 +126,9 @@ module Spiro.Angular.Modern {
         getMemento(): string {
             if (this.hasChoices) {
                 if (this.isMultipleChoices) {
-                    var ss = _.map(this.multiChoices, (c) => {
+                    const ss = _.map(this.multiChoices, (c) => {
                         return c.search;
                     });
-
                     if (ss.length === 0) {
                         return "";
                     }
@@ -152,18 +149,14 @@ module Spiro.Angular.Modern {
             if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices) {
 
                 if (this.isMultipleChoices) {
-                    var selections = this.multiChoices || [];
-
+                    const selections = this.multiChoices || [];
                     if (this.type === "scalar") {
-                        var selValues = _.map(selections, (cvm: ChoiceViewModel) => cvm.value);
+                        const selValues = _.map(selections, (cvm: ChoiceViewModel) => cvm.value);
                         return new Value(selValues);
                     }
-
-                    var selRefs = _.map(selections, (cvm: ChoiceViewModel) => {
+                    const selRefs = _.map(selections, (cvm: ChoiceViewModel) => {
                         return { href: cvm.value, title: cvm.name };
-                    });
-
-                    // reference 
+                    }); // reference 
                     return new Value(selRefs);
                 }
 

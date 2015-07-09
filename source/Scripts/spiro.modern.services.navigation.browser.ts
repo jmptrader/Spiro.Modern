@@ -23,9 +23,7 @@ module Spiro.Angular.Modern {
     }
 
     app.service('navigation', function($location: ng.ILocationService, $routeParams: ISpiroRouteParams) {
-
-        var nav = <INavigation>this;
-
+        const nav = <INavigation>this;
         nav.back = () => {
             
             if ($routeParams.resultObject || $routeParams.resultCollection) {

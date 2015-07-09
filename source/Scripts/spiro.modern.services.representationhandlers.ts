@@ -77,8 +77,7 @@ module Spiro.Angular.Modern {
             const resultObject = result.result().object(); // transient object
 
             if (result.resultType() === "object" && resultObject.persistLink()) {
-                var domainType = resultObject.extensions().domainType;
-
+                const domainType = resultObject.extensions().domainType;
                 resultObject.set("domainType", domainType);
                 resultObject.set("instanceId", "0");
                 resultObject.hateoasUrl = "/" + domainType + "/0";
@@ -100,7 +99,7 @@ module Spiro.Angular.Modern {
             }
 
             if (result.resultType() === "list") {
-                var resultList = result.result().list();
+                const resultList = result.result().list();
                 context.setCollection(resultList);
                 parms = urlHelper.updateParms(resultList, dvm);
             }
@@ -156,7 +155,7 @@ module Spiro.Angular.Modern {
                 then(function (updatedObject: DomainObjectRepresentation) {
 
                     // This is a kludge because updated object has no self link.
-                    var rawLinks = (<any>object).get("links");
+                    const rawLinks = (<any>object).get("links");
                     (<any>updatedObject).set("links", rawLinks);
 
                     // remove pre-changed object from cache

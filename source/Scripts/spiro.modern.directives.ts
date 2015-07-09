@@ -36,9 +36,7 @@ module Spiro.Angular.Modern {
                 },
                 link: function (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
                     if (!ngModel) return;
-
-                    var optionsObj: { dateFormat?: string; onSelect?: Function } = {};
-
+                    const optionsObj: { dateFormat?: string; onSelect?: Function } = {};
                     optionsObj.dateFormat = 'd M yy'; // datepicker format
                     var updateModel = function (dateTxt) {
                         scope.$apply(function () {
@@ -61,7 +59,7 @@ module Spiro.Angular.Modern {
 
 
                     ngModel.$render = function () {
-                        var formattedDate = $filter('date')(ngModel.$viewValue, 'd MMM yyyy'); // angularjs format
+                        const formattedDate = $filter('date')(ngModel.$viewValue, 'd MMM yyyy'); // angularjs format
 
                         // Use the AngularJS internal 'binding-specific' variable
                         element.datepicker('setDate', formattedDate);
@@ -85,10 +83,9 @@ module Spiro.Angular.Modern {
             },
             link: function (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
                 if (!ngModel) return;
-        
-                var optionsObj: { autoFocus?: boolean; minLength?: number; source?: Function; select?: Function; focus?: Function } = {};
-                var parent = <any>scope.$parent;
-                var viewModel = <ValueViewModel> (parent.parameter || parent.property);
+                const optionsObj: { autoFocus?: boolean; minLength?: number; source?: Function; select?: Function; focus?: Function } = {};
+                const parent = <any>scope.$parent;
+                const viewModel = <ValueViewModel> (parent.parameter || parent.property);
 
                 function render ( initialChoice? :ChoiceViewModel) {
                     var cvm = ngModel.$modelValue || initialChoice;
@@ -140,15 +137,12 @@ module Spiro.Angular.Modern {
 
                 optionsObj.autoFocus = true;
                 optionsObj.minLength = viewModel.minLength;
-
-                var clearHandler = function () {
-                    var value = $(this).val();
-
+                const clearHandler = function () {
+                    const value = $(this).val();
                     if (value.length === 0) {
                         updateModel(ChoiceViewModel.create(new Value(""), ""));
                     }
                 };
-
                 element.keyup(clearHandler); 
                 element.autocomplete(optionsObj);
                 render(viewModel.choice);
@@ -206,10 +200,8 @@ module Spiro.Angular.Modern {
                 }
 
                 function populateDropdown() {
-                    var nArgs = populateArguments();
-      
-                    var prompts = scope.select({ args: nArgs });
-
+                    const nArgs = populateArguments();
+                    const prompts = scope.select({ args: nArgs });
                     prompts.then(function (cvms: ChoiceViewModel[]) {
                         // if unchanged return 
                         if (cvms.length === currentOptions.length && _.all(cvms, (c : ChoiceViewModel, i) => { return c.equals(currentOptions[i]); })) {
@@ -217,8 +209,8 @@ module Spiro.Angular.Modern {
                         }
 
                         element.find("option").remove();
-                        var emptyOpt = "<option></option>";
-                        element.append(emptyOpt);
+                            const emptyOpt = "<option></option>";
+                            element.append(emptyOpt);
 
                         _.forEach(cvms, (cvm) => {
                            
@@ -232,10 +224,9 @@ module Spiro.Angular.Modern {
                         currentOptions = cvms;
 
                         if (viewModel.isMultipleChoices && viewModel.multiChoices) {
-                            var vals = _.map(viewModel.multiChoices, (c: ChoiceViewModel) => {
+                            const vals = _.map(viewModel.multiChoices, (c: ChoiceViewModel) => {
                                 return c.value;
                             });
-
                             $(element).val(vals);
                         } else if (viewModel.choice) {
                             $(element).val(viewModel.choice.value);
@@ -252,21 +243,19 @@ module Spiro.Angular.Modern {
                 function optionChanged() {
 
                     if (viewModel.isMultipleChoices) {
-                        var options = $(element).find("option:selected");
+                        const options = $(element).find("option:selected");
                         var kvps = [];
 
                         options.each((n, e) => {
                             kvps.push({ key: $(e).text(), value: $(e).val() });
                         });
-                                  
-                        var cvms =  _.map(kvps, (o) =>  ChoiceViewModel.create(new Value(o.value), viewModel.id, o.key));
+                        const cvms = _.map(kvps, (o) =>  ChoiceViewModel.create(new Value(o.value), viewModel.id, o.key));
                         viewModel.multiChoices = cvms;
 
                     } else {
-                        var option = $(element).find("option:selected");
-
-                        var val = option.val();
-                        var key = option.text();
+                        const option = $(element).find("option:selected");
+                        const val = option.val();
+                        const key = option.text();
                         var cvm = ChoiceViewModel.create(new Value(val), viewModel.id, key);
                         viewModel.choice = cvm;
                         scope.$apply(function() {
@@ -336,11 +325,9 @@ module Spiro.Angular.Modern {
                 }
 
                 var clickHandler = function () {
-                    var attachment: AttachmentViewModel = ngModel.$modelValue;
-
-                    var url = attachment.href;
-                    var mt = attachment.mimeType;
-
+                    const attachment: AttachmentViewModel = ngModel.$modelValue;
+                    const url = attachment.href;
+                    const mt = attachment.mimeType;
                     downloadFile(url, mt, (resp : Blob) => {
                         var burl = URL.createObjectURL(resp); 
                         $window.location.href = burl;                    
@@ -348,13 +335,11 @@ module Spiro.Angular.Modern {
                     return false; 
                 };
                 ngModel.$render = function () {
-                    var attachment: AttachmentViewModel = ngModel.$modelValue;
-
-                    var url = attachment.href;
-                    var mt = attachment.mimeType;
+                    const attachment: AttachmentViewModel = ngModel.$modelValue;
+                    const url = attachment.href;
+                    const mt = attachment.mimeType;
                     var title = attachment.title;
-
-                    var link = "<a href='" + url + "'><span></span></a>";
+                    const link = "<a href='" + url + "'><span></span></a>";
                     element.append(link);
 
                     var anchor = element.find("a");

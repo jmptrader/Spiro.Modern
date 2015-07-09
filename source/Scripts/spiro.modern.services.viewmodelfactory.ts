@@ -309,8 +309,7 @@ module Spiro.Angular.Modern{
 
         // tested
         function create(collectionRep: CollectionMember) {
-            var collectionViewModel = new CollectionViewModel();
-
+            const collectionViewModel = new CollectionViewModel();
             collectionViewModel.title = collectionRep.extensions().friendlyName;
             collectionViewModel.size = collectionRep.size();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName;
@@ -346,9 +345,8 @@ module Spiro.Angular.Modern{
 
         // tested
         function createFromDetails(collectionRep: CollectionRepresentation, populateItems?: boolean) {
-            var collectionViewModel = new CollectionViewModel();
-            var links = collectionRep.value().models;
-
+            const collectionViewModel = new CollectionViewModel();
+            const links = collectionRep.value().models;
             collectionViewModel.title = collectionRep.extensions().friendlyName;
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = collectionRep.extensions().pluralName;
@@ -363,9 +361,8 @@ module Spiro.Angular.Modern{
 
         // tested
         function createFromList(listRep: ListRepresentation, populateItems?: boolean) {
-            var collectionViewModel = new CollectionViewModel();
-            var links = listRep.value().models;
-          
+            const collectionViewModel = new CollectionViewModel();
+            const links = listRep.value().models;
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
 

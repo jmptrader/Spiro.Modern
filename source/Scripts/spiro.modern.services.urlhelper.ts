@@ -40,9 +40,7 @@ module Spiro.Angular.Modern {
         var helper = <IUrlHelper>this;
 
         helper.action = function (dvm?: DialogViewModel) {
-
-            var pps = dvm && dvm.parameters.length > 0 ? _.reduce(dvm.parameters, (memo : string, parm : ParameterViewModel) => { return memo + "/" + parm.getMemento(); }, "") : "";
-
+            const pps = dvm && dvm.parameters.length > 0 ? _.reduce(dvm.parameters, (memo : string, parm : ParameterViewModel) => { return memo + "/" + parm.getMemento(); }, "") : "";
             return _.first($routeParams.action.split("/")) + encodeURIComponent(pps);
         }
 
@@ -60,19 +58,18 @@ module Spiro.Angular.Modern {
                 return include(name) ? `&${name}=${$routeParams[name]}` : "";
             }
 
-            var actionParm = include("action") ? `&action=${helper.action()}` : "";
-            var collectionParm = include("collection") ? `&collection=${$routeParams.collection}` : "";
-            var collectionItemParm = include("collectionItem") ? `&collectionItem=${$routeParams.collectionItem}` : "";
-            var propertyParm = include("property") ? `&property=${$routeParams.property}` : "";
-            var resultObjectParm = include("resultObject") ? `&resultObject=${$routeParams.resultObject}` : "";
-            var resultCollectionParm = include("resultCollection") ? `&resultCollection=${$routeParams.resultCollection}` : "";
-
+            const actionParm = include("action") ? `&action=${helper.action()}` : "";
+            const collectionParm = include("collection") ? `&collection=${$routeParams.collection}` : "";
+            const collectionItemParm = include("collectionItem") ? `&collectionItem=${$routeParams.collectionItem}` : "";
+            const propertyParm = include("property") ? `&property=${$routeParams.property}` : "";
+            const resultObjectParm = include("resultObject") ? `&resultObject=${$routeParams.resultObject}` : "";
+            const resultCollectionParm = include("resultCollection") ? `&resultCollection=${$routeParams.resultCollection}` : "";
             return actionParm + collectionParm + collectionItemParm + propertyParm + resultObjectParm + resultCollectionParm;
         }
 
         helper.toAppUrl = function (href: string, toClose?: string[]): string {
-            var urlRegex = /(objects|services)\/(.*)/;
-            var results = (urlRegex).exec(href);
+            const urlRegex = /(objects|services)\/(.*)/;
+            const results = (urlRegex).exec(href);
             var parms = "";
 
             if (toClose) {
@@ -85,28 +82,28 @@ module Spiro.Angular.Modern {
 
 
         helper.toActionUrl = function (href: string): string {
-            var urlRegex = /(services|objects)\/([\w|\.]+(\/[\w|\.|-]+)?)\/actions\/([\w|\.]+)/;
-            var results = (urlRegex).exec(href);
+            const urlRegex = /(services|objects)\/([\w|\.]+(\/[\w|\.|-]+)?)\/actions\/([\w|\.]+)/;
+            const results = (urlRegex).exec(href);
             return (results && results.length > 3) ? `#/${results[1]}/${results[2]}?action=${results[4]}${helper.getOtherParms(["action"])}` : "";
         }
 
         helper.toPropertyUrl = function (href: string): string {
-            var urlRegex = /(objects)\/([\w|\.]+)\/([\w|\.|-]+)\/(properties)\/([\w|\.]+)/;
-            var results = (urlRegex).exec(href);
+            const urlRegex = /(objects)\/([\w|\.]+)\/([\w|\.|-]+)\/(properties)\/([\w|\.]+)/;
+            const results = (urlRegex).exec(href);
             return (results && results.length > 5) ? `#/${results[1]}/${results[2]}/${results[3]}?property=${results[5]}${helper.getOtherParms(["property", "collectionItem", "resultObject"])}` : "";
         }
 
         helper.toCollectionUrl = function (href: string): string {
-            var urlRegex = /(objects)\/([\w|\.]+)\/([\w|\.|-]+)\/(collections)\/([\w|\.]+)/;
-            var results = (urlRegex).exec(href);
+            const urlRegex = /(objects)\/([\w|\.]+)\/([\w|\.|-]+)\/(collections)\/([\w|\.]+)/;
+            const results = (urlRegex).exec(href);
             return (results && results.length > 5) ? `#/${results[1]}/${results[2]}/${results[3]}?collection=${results[5]}${helper.getOtherParms(["collection", "resultCollection"])}` : "";
         }
 
         helper.toItemUrl = function (href: string, itemHref: string): string {
-            var parentUrlRegex = /(services|objects)\/([\w|\.]+(\/[\w|\.|-]+)?)/;
-            var itemUrlRegex = /(objects)\/([\w|\.]+)\/([\w|\.|-]+)/;
-            var parentResults = (parentUrlRegex).exec(href);
-            var itemResults = (itemUrlRegex).exec(itemHref);
+            const parentUrlRegex = /(services|objects)\/([\w|\.]+(\/[\w|\.|-]+)?)/;
+            const itemUrlRegex = /(objects)\/([\w|\.]+)\/([\w|\.|-]+)/;
+            const parentResults = (parentUrlRegex).exec(href);
+            const itemResults = (itemUrlRegex).exec(itemHref);
             return (parentResults && parentResults.length > 2) ? `#/${parentResults[1]}/${parentResults[2]}?collectionItem=${itemResults[2]}/${itemResults[3]}${helper.getOtherParms(["property", "collectionItem", "resultObject"])}` : "";
         }
 

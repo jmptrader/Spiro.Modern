@@ -17,7 +17,7 @@ module Spiro.Angular {
 
     /* Declare app level module */
    
-    export var app = angular.module('app', ['ngRoute', 'ngTouch']);
+    export var app = angular.module("app", ["ngRoute", "ngTouch"]);
 
     export interface ISpiroRouteParams extends ng.route.IRouteParamsService {
         action: string;
@@ -56,36 +56,36 @@ module Spiro.Angular {
     export var viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";
     export var editPropertiesTemplate = getSvrPath() + "Content/partials/editProperties.html";
 
-    var servicesPageTemplate = getSvrPath() + 'Content/partials/servicesPage.html';
-    var servicePageTemplate = getSvrPath() + 'Content/partials/servicePage.html';
-    var objectPageTemplate = getSvrPath() + 'Content/partials/objectPage.html';
-    var transientObjectPageTemplate = getSvrPath() + 'Content/partials/transientObjectPage.html';
-    var errorPageTemplate = getSvrPath() + 'Content/partials/errorPage.html';
+    var servicesPageTemplate = getSvrPath() + "Content/partials/servicesPage.html";
+    var servicePageTemplate = getSvrPath() + "Content/partials/servicePage.html";
+    var objectPageTemplate = getSvrPath() + "Content/partials/objectPage.html";
+    var transientObjectPageTemplate = getSvrPath() + "Content/partials/transientObjectPage.html";
+    var errorPageTemplate = getSvrPath() + "Content/partials/errorPage.html";
 
     app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
-            when('/services', {
+            when("/services", {
                 templateUrl: servicesPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-            when('/services/:sid', {
+            when("/services/:sid", {
                 templateUrl: servicePageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-            when('/objects/:dt/:id', {
+            when("/objects/:dt/:id", {
                 templateUrl: objectPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-            when('/objects/:dt', {
+            when("/objects/:dt", {
                 templateUrl: transientObjectPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-            when('/error', {
+            when("/error", {
                 templateUrl: errorPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
             otherwise({
-                redirectTo: '/services'
+                redirectTo: "/services"
             });
 
     });

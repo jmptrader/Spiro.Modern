@@ -16,7 +16,7 @@ var Spiro;
     var Angular;
     (function (Angular) {
         /* Declare app level module */
-        Angular.app = angular.module('app', ['ngRoute', 'ngTouch']);
+        Angular.app = angular.module("app", ["ngRoute", "ngTouch"]);
         function getSvrPath() {
             var trimmedPath = Spiro.svrPath.trim();
             if (trimmedPath.length === 0 || trimmedPath.charAt(Spiro.svrPath.length - 1) === "/") {
@@ -37,35 +37,35 @@ var Spiro;
         Angular.objectTemplate = getSvrPath() + "Content/partials/object.html";
         Angular.viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";
         Angular.editPropertiesTemplate = getSvrPath() + "Content/partials/editProperties.html";
-        var servicesPageTemplate = getSvrPath() + 'Content/partials/servicesPage.html';
-        var servicePageTemplate = getSvrPath() + 'Content/partials/servicePage.html';
-        var objectPageTemplate = getSvrPath() + 'Content/partials/objectPage.html';
-        var transientObjectPageTemplate = getSvrPath() + 'Content/partials/transientObjectPage.html';
-        var errorPageTemplate = getSvrPath() + 'Content/partials/errorPage.html';
+        var servicesPageTemplate = getSvrPath() + "Content/partials/servicesPage.html";
+        var servicePageTemplate = getSvrPath() + "Content/partials/servicePage.html";
+        var objectPageTemplate = getSvrPath() + "Content/partials/objectPage.html";
+        var transientObjectPageTemplate = getSvrPath() + "Content/partials/transientObjectPage.html";
+        var errorPageTemplate = getSvrPath() + "Content/partials/errorPage.html";
         Angular.app.config(function ($routeProvider) {
             $routeProvider.
-                when('/services', {
+                when("/services", {
                 templateUrl: servicesPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-                when('/services/:sid', {
+                when("/services/:sid", {
                 templateUrl: servicePageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-                when('/objects/:dt/:id', {
+                when("/objects/:dt/:id", {
                 templateUrl: objectPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-                when('/objects/:dt', {
+                when("/objects/:dt", {
                 templateUrl: transientObjectPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
-                when('/error', {
+                when("/error", {
                 templateUrl: errorPageTemplate,
-                controller: 'BackgroundController'
+                controller: "BackgroundController"
             }).
                 otherwise({
-                redirectTo: '/services'
+                redirectTo: "/services"
             });
         });
         Angular.app.run(function (color, mask) {

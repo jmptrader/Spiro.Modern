@@ -36,12 +36,10 @@ module Spiro.Angular.Modern {
     }
 
     app.service("handlers", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color: IColor, repHandlers: IRepHandlers, navigation: INavigation) {
+        const handlers = <IHandlers>this;
 
-        var handlers = <IHandlers>this;
-
-       
         function setVersionError(error) {
-            var errorRep = new ErrorRepresentation({ message: error });       
+            const errorRep = new ErrorRepresentation({ message: error });
             context.setError(errorRep);
             $location.path(urlHelper.toErrorPath());
         }
@@ -88,8 +86,7 @@ module Spiro.Angular.Modern {
         }
 
         function setError(error) {
-
-            var errorRep: ErrorRepresentation;
+            let errorRep: ErrorRepresentation;
             if (error instanceof ErrorRepresentation) {
                 errorRep = <ErrorRepresentation>error;
             } else {
@@ -147,7 +144,7 @@ module Spiro.Angular.Modern {
                     var action = object.actionMember(urlHelper.action());
 
                     if (action.extensions().hasParams) {
-                        var delay = $q.defer();
+                        const delay = $q.defer();
                         delay.reject();
                         return delay.promise;
                     }
@@ -250,7 +247,7 @@ module Spiro.Angular.Modern {
         handlers.handleError = $scope => {
             var error = context.getError();
             if (error) {
-                var evm = viewModelFactory.errorViewModel(error);
+                const evm = viewModelFactory.errorViewModel(error);
                 $scope.error = evm;
                 $scope.errorTemplate = errorTemplate;
             }
@@ -297,7 +294,7 @@ module Spiro.Angular.Modern {
                 context.getObject($routeParams.dt, $routeParams.id).
                     then((object: DomainObjectRepresentation) => {
 
-                        var pms = <PropertyMember[]> _.toArray(object.propertyMembers());
+                        var pms = _.toArray(object.propertyMembers());
 
                         var anyEditableField = _.any(pms, (pm: PropertyMember) => !pm.disabledReason());
 
@@ -337,7 +334,7 @@ module Spiro.Angular.Modern {
                         $scope.backgroundColor = color.toColorFromType(object.domainType());
 
                         context.setNestedObject(null);
-                        var obj = viewModelFactory.domainObjectViewModel(object, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
+                        const obj = viewModelFactory.domainObjectViewModel(object, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
                         obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
 
                         $scope.object = obj;

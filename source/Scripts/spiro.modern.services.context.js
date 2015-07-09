@@ -18,11 +18,11 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('context', function ($q, repLoader) {
+            Angular.app.service("context", function ($q, repLoader) {
                 var context = this;
                 var currentHome = null;
                 function getAppPath() {
-                    if (Spiro.appPath.charAt(Spiro.appPath.length - 1) === '/') {
+                    if (Spiro.appPath.charAt(Spiro.appPath.length - 1) === "/") {
                         return Spiro.appPath.length > 1 ? Spiro.appPath.substring(0, Spiro.appPath.length - 2) : "";
                     }
                     return Spiro.appPath;
@@ -43,7 +43,7 @@ var Spiro;
                     var delay = $q.defer();
                     this.getServices().
                         then(function (services) {
-                        var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0] === 'serviceId="' + type + '"'; });
+                        var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0] === "serviceId=\"" + type + "\""; });
                         var service = serviceLink.getTarget();
                         return repLoader.populate(service);
                     }).
