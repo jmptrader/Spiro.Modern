@@ -93,8 +93,7 @@ var Spiro;
                         return "";
                     }
                     if (result instanceof Spiro.DomainObjectRepresentation) {
-                        var obj = result;
-                        resultParm = "resultObject=" + obj.domainType() + "-" + obj.instanceId(); // todo add some parm handling code 
+                        resultParm = "resultObject=" + result.domainType() + "-" + result.instanceId(); // todo add some parm handling code 
                         actionParm = getActionParm();
                     }
                     if (result instanceof Spiro.ListRepresentation) {

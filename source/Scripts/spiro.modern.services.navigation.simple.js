@@ -41,7 +41,7 @@ var Spiro;
                         var newUrl = $location.url();
                         var curUrl = history[history.length - 1];
                         var isActionUrl = newUrl.indexOf("?action") > 0;
-                        if (!isActionUrl && newUrl != curUrl) {
+                        if (!isActionUrl && newUrl !== curUrl) {
                             history.push($location.url());
                         }
                         index = history.length - 1;

@@ -22,14 +22,14 @@ var Spiro;
                 var context = this;
                 var currentHome = null;
                 function getAppPath() {
-                    if (Spiro.appPath.charAt(Spiro.appPath.length - 1) == '/') {
+                    if (Spiro.appPath.charAt(Spiro.appPath.length - 1) === '/') {
                         return Spiro.appPath.length > 1 ? Spiro.appPath.substring(0, Spiro.appPath.length - 2) : "";
                     }
                     return Spiro.appPath;
                 }
                 function isSameObject(object, type, id) {
                     var sid = object.serviceId();
-                    return sid ? sid === type : (object.domainType() == type && object.instanceId() === id);
+                    return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
                 }
                 // exposed for test mocking
                 context.getDomainObject = function (type, id) {
@@ -38,6 +38,7 @@ var Spiro;
                     return repLoader.populate(object);
                 };
                 // exposed for test mocking
+                var currentObject;
                 context.getService = function (type) {
                     var delay = $q.defer();
                     this.getServices().
@@ -106,8 +107,7 @@ var Spiro;
                     }
                     return delay.promise;
                 };
-                var currentObject = null;
-                // tested
+                currentObject = null; // tested
                 context.getObject = function (type, id) {
                     var delay = $q.defer();
                     if (currentObject && isSameObject(currentObject, type, id)) {

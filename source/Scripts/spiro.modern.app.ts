@@ -36,10 +36,10 @@ module Spiro.Angular {
     function getSvrPath() {
         var trimmedPath = svrPath.trim();
 
-        if (trimmedPath.length == 0 || trimmedPath.charAt(svrPath.length - 1) == '/') {
+        if (trimmedPath.length === 0 || trimmedPath.charAt(svrPath.length - 1) === "/") {
             return trimmedPath;
         }
-        return trimmedPath + '/';
+        return trimmedPath + "/";
     }
 
     // templates 
@@ -90,7 +90,7 @@ module Spiro.Angular {
 
     });
 
-    app.run((color: Spiro.Angular.IColor, mask: Spiro.Angular.IMask) => {
+    app.run((color: Angular.IColor, mask: Angular.IMask) => {
 
         color.setColorMap({
             "AdventureWorksModel.CustomerRepository": "redLight",

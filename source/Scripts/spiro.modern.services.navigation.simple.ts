@@ -17,7 +17,7 @@
 module Spiro.Angular.Modern {
 
     export interface INavigation {
-        back()
+        back();
         forward();
         push();
     }
@@ -50,7 +50,7 @@ module Spiro.Angular.Modern {
                 var curUrl = history[history.length - 1];
                 var isActionUrl = newUrl.indexOf("?action") > 0; 
 
-                if (!isActionUrl && newUrl != curUrl) {
+                if (!isActionUrl && newUrl !== curUrl) {
                     history.push($location.url());
                 }
                       

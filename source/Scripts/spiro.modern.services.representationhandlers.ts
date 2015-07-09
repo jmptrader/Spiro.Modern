@@ -22,7 +22,7 @@ module Spiro.Angular.Modern {
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
         setResult(result: ActionResultRepresentation, dvm?: DialogViewModel);
         setInvokeUpdateError($scope, error: any, vms: ValueViewModel[], vm: MessageViewModel);
-        invokeAction($scope, action: Spiro.ActionRepresentation, dvm: DialogViewModel);
+        invokeAction($scope, action: ActionRepresentation, dvm: DialogViewModel);
         updateObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
     }
@@ -74,11 +74,10 @@ module Spiro.Angular.Modern {
             }
 
             var parms = "";
+            const resultObject = result.result().object(); // transient object
 
-            // transient object
-            if (result.resultType() === "object" && result.result().object().persistLink()) {
-                var resultObject = result.result().object();
-                var domainType = resultObject.extensions().domainType
+            if (result.resultType() === "object" && resultObject.persistLink()) {
+                var domainType = resultObject.extensions().domainType;
 
                 resultObject.set("domainType", domainType);
                 resultObject.set("instanceId", "0");
@@ -91,8 +90,7 @@ module Spiro.Angular.Modern {
             }
 
             // persistent object
-            if (result.resultType() === "object" && !result.result().object().persistLink()) {
-                var resultObject = result.result().object();
+            if (result.resultType() === "object" && !resultObject.persistLink()) {
 
                 // set the nested object here and then update the url. That should reload the page but pick up this object 
                 // so we don't hit the server again. 
@@ -131,7 +129,7 @@ module Spiro.Angular.Modern {
             }
         };
 
-        repHandlers.invokeAction = function ($scope, action: Spiro.ActionRepresentation, dvm: DialogViewModel) {
+        repHandlers.invokeAction = function ($scope, action: ActionRepresentation, dvm: DialogViewModel) {
             dvm.clearMessages();
 
             var invoke = action.getInvoke();

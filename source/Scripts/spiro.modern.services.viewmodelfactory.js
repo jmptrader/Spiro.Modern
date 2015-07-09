@@ -63,7 +63,7 @@ var Spiro;
                     parmViewModel.hasChoices = parmViewModel.choices.length > 0;
                     parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
                     parmViewModel.hasConditionalChoices = !!parmRep.promptLink() && !parmViewModel.hasPrompt;
-                    parmViewModel.isMultipleChoices = (parmViewModel.hasChoices || parmViewModel.hasConditionalChoices) && parmRep.extensions().returnType == "list";
+                    parmViewModel.isMultipleChoices = (parmViewModel.hasChoices || parmViewModel.hasConditionalChoices) && parmRep.extensions().returnType === "list";
                     if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                         var promptRep = parmRep.getPrompts();
                         if (parmViewModel.hasPrompt) {
@@ -241,7 +241,7 @@ var Spiro;
                         }
                     }
                     // if a reference and no way to set (ie not choices or autocomplete) set editable to false
-                    if (propertyViewModel.type == "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
+                    if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
                         propertyViewModel.isEditable = false;
                     }
                     return propertyViewModel;
@@ -315,7 +315,7 @@ var Spiro;
                     // filter out contributed action services 
                     var links = _.filter(servicesRep.value().models, function (m) {
                         var sid = m.rel().parms[0].split('=')[1];
-                        return sid.indexOf("ContributedActions") == -1;
+                        return sid.indexOf("ContributedActions") === -1;
                     });
                     servicesViewModel.title = "Services";
                     servicesViewModel.color = "bg-color-darkBlue";

@@ -51,7 +51,7 @@ module Spiro.Angular.Modern {
         var currentHome: HomePageRepresentation = null;
 
         function getAppPath() {
-            if (appPath.charAt(appPath.length - 1) == '/') {
+            if (appPath.charAt(appPath.length - 1) === '/') {
                 return appPath.length > 1 ? appPath.substring(0, appPath.length - 2) : "";
             }
 
@@ -60,7 +60,7 @@ module Spiro.Angular.Modern {
 
         function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
             var sid = object.serviceId();
-            return sid ? sid === type : (object.domainType() == type && object.instanceId() === id);
+            return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
         }
 
         // exposed for test mocking
@@ -71,6 +71,8 @@ module Spiro.Angular.Modern {
         };
 
         // exposed for test mocking
+        var currentObject: any;
+
         context.getService = function (type: string): ng.IPromise<DomainObjectRepresentation> {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -151,11 +153,7 @@ module Spiro.Angular.Modern {
 
             return delay.promise;
         };
-
-
-        var currentObject: DomainObjectRepresentation = null;
-
-        // tested
+        currentObject = null; // tested
         context.getObject = function (type: string, id?: string) {
             var delay = $q.defer<DomainObjectRepresentation>();
 

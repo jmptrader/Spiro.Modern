@@ -52,9 +52,8 @@ var Spiro;
                         return;
                     }
                     var parms = "";
-                    // transient object
-                    if (result.resultType() === "object" && result.result().object().persistLink()) {
-                        var resultObject = result.result().object();
+                    var resultObject = result.result().object(); // transient object
+                    if (result.resultType() === "object" && resultObject.persistLink()) {
                         var domainType = resultObject.extensions().domainType;
                         resultObject.set("domainType", domainType);
                         resultObject.set("instanceId", "0");
@@ -64,8 +63,7 @@ var Spiro;
                         $location.path(urlHelper.toTransientObjectPath(resultObject));
                     }
                     // persistent object
-                    if (result.resultType() === "object" && !result.result().object().persistLink()) {
-                        var resultObject = result.result().object();
+                    if (result.resultType() === "object" && !resultObject.persistLink()) {
                         // set the nested object here and then update the url. That should reload the page but pick up this object 
                         // so we don't hit the server again. 
                         context.setNestedObject(resultObject);

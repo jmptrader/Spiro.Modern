@@ -120,7 +120,7 @@ var Spiro;
                         optionsObj.minLength = viewModel.minLength;
                         var clearHandler = function () {
                             var value = $(this).val();
-                            if (value.length == 0) {
+                            if (value.length === 0) {
                                 updateModel(Modern.ChoiceViewModel.create(new Spiro.Value(""), ""));
                             }
                         };
@@ -155,14 +155,14 @@ var Spiro;
                             var object = parent.object;
                             if (dialog) {
                                 _.forEach(pArgs, function (v, n) {
-                                    var parm = _.find(dialog.parameters, function (p) { return p.id == n; });
+                                    var parm = _.find(dialog.parameters, function (p) { return p.id === n; });
                                     var newValue = parm.getValue();
                                     nArgs[n] = newValue;
                                 });
                             }
                             if (object) {
                                 _.forEach(pArgs, function (v, n) {
-                                    var property = _.find(object.properties, function (p) { return p.argId == n; });
+                                    var property = _.find(object.properties, function (p) { return p.argId === n; });
                                     var newValue = property.getValue();
                                     nArgs[n] = newValue;
                                 });
@@ -260,7 +260,7 @@ var Spiro;
                             xhr.responseType = "blob";
                             xhr.setRequestHeader("Accept", mt);
                             xhr.onreadystatechange = function () {
-                                if (xhr.readyState == 4) {
+                                if (xhr.readyState === 4) {
                                     success(xhr.response);
                                 }
                             };

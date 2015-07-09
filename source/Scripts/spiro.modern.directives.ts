@@ -144,7 +144,7 @@ module Spiro.Angular.Modern {
                 var clearHandler = function () {
                     var value = $(this).val();
 
-                    if (value.length == 0) {
+                    if (value.length === 0) {
                         updateModel(ChoiceViewModel.create(new Value(""), ""));
                     }
                 };
@@ -185,7 +185,7 @@ module Spiro.Angular.Modern {
                     if (dialog) {
                         _.forEach(<_.Dictionary<Value>>pArgs, (v, n) => {
 
-                            var parm = <ParameterViewModel> _.find(dialog.parameters, (p: ParameterViewModel) => p.id == n);
+                            var parm = _.find(dialog.parameters, (p: ParameterViewModel) => p.id === n);
 
                             var newValue = parm.getValue();
                             nArgs[n] = newValue;
@@ -195,7 +195,7 @@ module Spiro.Angular.Modern {
                     if (object) {
                         _.forEach(<_.Dictionary<Value>>pArgs, (v, n) => {
 
-                            var property = <PropertyViewModel> _.find(object.properties, (p: PropertyViewModel) => p.argId == n);
+                            var property = _.find(object.properties, (p: PropertyViewModel) => p.argId === n);
 
                             var newValue = property.getValue();
                             nArgs[n] = newValue;
@@ -317,7 +317,7 @@ module Spiro.Angular.Modern {
                     xhr.responseType = "blob";
                     xhr.setRequestHeader("Accept", mt); 
                     xhr.onreadystatechange = function () {
-                        if (xhr.readyState == 4) {
+                        if (xhr.readyState === 4) {
                             success(<Blob>xhr.response);
                         }
                     };

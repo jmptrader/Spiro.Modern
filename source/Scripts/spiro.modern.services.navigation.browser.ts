@@ -17,7 +17,7 @@
 module Spiro.Angular.Modern {
 
     export interface INavigation {
-        back()
+        back();
         forward();
         push();
     }

@@ -19,10 +19,10 @@ var Spiro;
         Angular.app = angular.module('app', ['ngRoute', 'ngTouch']);
         function getSvrPath() {
             var trimmedPath = Spiro.svrPath.trim();
-            if (trimmedPath.length == 0 || trimmedPath.charAt(Spiro.svrPath.length - 1) == '/') {
+            if (trimmedPath.length === 0 || trimmedPath.charAt(Spiro.svrPath.length - 1) === "/") {
                 return trimmedPath;
             }
-            return trimmedPath + '/';
+            return trimmedPath + "/";
         }
         // templates 
         Angular.nestedCollectionTemplate = getSvrPath() + "Content/partials/nestedCollection.html";
