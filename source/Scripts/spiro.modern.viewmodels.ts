@@ -111,7 +111,8 @@ module Spiro.Angular.Modern {
         arguments: IValueMap; 
         mask: string;
         isMultipleChoices: boolean; 
-        minLength : number;
+        minLength: number;
+        hasAutoAutoComplete : boolean;
 
         setSelectedChoice() {}
 
@@ -146,7 +147,7 @@ module Spiro.Angular.Modern {
 
         getValue(): Value {
            
-            if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices) {
+            if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices || this.hasAutoAutoComplete) {
 
                 if (this.isMultipleChoices) {
                     const selections = this.multiChoices || [];

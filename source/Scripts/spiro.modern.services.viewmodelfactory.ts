@@ -34,7 +34,7 @@ module Spiro.Angular.Modern{
         domainObjectViewModel(objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
 
-    app.service('viewModelFactory', function($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask) {
+    app.service('viewModelFactory', function($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory : ng.ICacheFactoryService ) {
 
         var viewModelFactory = <IViewModelFactory>this;
 
@@ -68,6 +68,37 @@ module Spiro.Angular.Modern{
         };
 
         // tested
+        function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice : ChoiceViewModel, id : string, currentValue : Value) {
+            valueViewModel.hasAutoAutoComplete = true;
+
+            const cache = $cacheFactory.get("recentlyViewed");
+
+            valueViewModel.choice = currentChoice;
+
+            // make sure current value is cached so can be recovered ! 
+
+            const key = valueViewModel.returnType;
+            const subKey = valueViewModel.reference;
+            const dict = cache.get(key) || {};
+            dict[subKey] = { value: currentValue, name : currentValue.toString() };
+            cache.put(key, dict);
+
+            // bind in autoautocomplete into prompt 
+
+            valueViewModel.prompt = (st: string) => {
+
+                var defer = $q.defer<ChoiceViewModel[]>();
+                var filtered = _.filter(dict, (i: { value: Value, name : string }) =>
+                    i.name.toString().toLowerCase().indexOf(st.toLowerCase()) > -1);
+                var ccs = _.map(filtered, (i: { value: Value, name : string }) => ChoiceViewModel.create(i.value, id, i.name));
+
+                defer.resolve(ccs);
+
+                return defer.promise;
+            }
+
+        }
+
         viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string) => {
             var parmViewModel = new ParameterViewModel();
 
@@ -152,7 +183,7 @@ module Spiro.Angular.Modern{
                         setCurrentChoice(sc);
                     }
                 } else if (parmViewModel.dflt) {
-                    var dflt = parmRep.default();
+                    let dflt = parmRep.default();
                   
                     if (parmViewModel.isMultipleChoices) {
                         var dfltChoices = _.map(dflt.list(), (v) => {
@@ -183,6 +214,25 @@ module Spiro.Angular.Modern{
                     parmViewModel.value = $filter(localFilter.name)(parmViewModel.value, localFilter.mask);
                 }
             }
+
+            if (parmViewModel.type === "ref" && !parmViewModel.hasPrompt && !parmViewModel.hasChoices && !parmViewModel.hasConditionalChoices) {
+
+                var currentChoice : ChoiceViewModel = null;
+
+                if (previousValue) {
+                    currentChoice = context.getSelectedChoice(id, previousValue).pop();
+                }
+                else if (parmViewModel.dflt) {
+                    let dflt = parmRep.default();
+                    currentChoice =  ChoiceViewModel.create(dflt, parmViewModel.id,  dflt.link().title());
+                }
+                context.clearSelectedChoice(parmViewModel.id);
+
+                var currentValue = new Value( currentChoice ?  { href: currentChoice.value, title : currentChoice.name } : "");
+              
+                addAutoAutoComplete(parmViewModel, currentChoice, id, currentValue);
+            } 
+
 
             return parmViewModel;
         };
@@ -222,7 +272,6 @@ module Spiro.Angular.Modern{
 
             return dialogViewModel;
         };
-
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string) => {
             var propertyViewModel = new PropertyViewModel();
             propertyViewModel.title = propertyRep.extensions().friendlyName;
@@ -299,15 +348,15 @@ module Spiro.Angular.Modern{
                 }
             }
 
-            // if a reference and no way to set (ie not choices or autocomplete) set editable to false
+            // if a reference and no way to set (ie not choices or autocomplete) use autoautocomplete
             if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
-                propertyViewModel.isEditable = false;
+                addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(propertyRep.value(), id), id, propertyRep.value());            
             } 
 
             return propertyViewModel;
         };
-
-        // tested
+        
+         // tested
         function create(collectionRep: CollectionMember) {
             const collectionViewModel = new CollectionViewModel();
             collectionViewModel.title = collectionRep.extensions().friendlyName;

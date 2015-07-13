@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask) {
+            Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask, $cacheFactory) {
                 var viewModelFactory = this;
                 // tested
                 viewModelFactory.errorViewModel = function (errorRep) {
@@ -45,6 +45,27 @@ var Spiro;
                     return itemViewModel;
                 };
                 // tested
+                function addAutoAutoComplete(valueViewModel, currentChoice, id, currentValue) {
+                    valueViewModel.hasAutoAutoComplete = true;
+                    var cache = $cacheFactory.get("recentlyViewed");
+                    valueViewModel.choice = currentChoice;
+                    // make sure current value is cached so can be recovered ! 
+                    var key = valueViewModel.returnType;
+                    var subKey = valueViewModel.reference;
+                    var dict = cache.get(key) || {};
+                    dict[subKey] = { value: currentValue, name: currentValue.toString() };
+                    cache.put(key, dict);
+                    // bind in autoautocomplete into prompt 
+                    valueViewModel.prompt = function (st) {
+                        var defer = $q.defer();
+                        var filtered = _.filter(dict, function (i) {
+                            return i.name.toString().toLowerCase().indexOf(st.toLowerCase()) > -1;
+                        });
+                        var ccs = _.map(filtered, function (i) { return Modern.ChoiceViewModel.create(i.value, id, i.name); });
+                        defer.resolve(ccs);
+                        return defer.promise;
+                    };
+                }
                 viewModelFactory.parameterViewModel = function (parmRep, id, previousValue) {
                     var parmViewModel = new Modern.ParameterViewModel();
                     parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -152,6 +173,19 @@ var Spiro;
                             parmViewModel.value = $filter(localFilter.name)(parmViewModel.value, localFilter.mask);
                         }
                     }
+                    if (parmViewModel.type === "ref" && !parmViewModel.hasPrompt && !parmViewModel.hasChoices && !parmViewModel.hasConditionalChoices) {
+                        var currentChoice = null;
+                        if (previousValue) {
+                            currentChoice = context.getSelectedChoice(id, previousValue).pop();
+                        }
+                        else if (parmViewModel.dflt) {
+                            var dflt = parmRep.default();
+                            currentChoice = Modern.ChoiceViewModel.create(dflt, parmViewModel.id, dflt.link().title());
+                        }
+                        context.clearSelectedChoice(parmViewModel.id);
+                        var currentValue = new Spiro.Value(currentChoice ? { href: currentChoice.value, title: currentChoice.name } : "");
+                        addAutoAutoComplete(parmViewModel, currentChoice, id, currentValue);
+                    }
                     return parmViewModel;
                 };
                 // tested
@@ -240,9 +274,9 @@ var Spiro;
                             propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                         }
                     }
-                    // if a reference and no way to set (ie not choices or autocomplete) set editable to false
+                    // if a reference and no way to set (ie not choices or autocomplete) use autoautocomplete
                     if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
-                        propertyViewModel.isEditable = false;
+                        addAutoAutoComplete(propertyViewModel, Modern.ChoiceViewModel.create(propertyRep.value(), id), id, propertyRep.value());
                     }
                     return propertyViewModel;
                 };

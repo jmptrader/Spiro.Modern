@@ -68,7 +68,8 @@ var Spiro;
                 redirectTo: "/services"
             });
         });
-        Angular.app.run(function (color, mask) {
+        Angular.app.run(function (color, mask, $cacheFactory) {
+            $cacheFactory("recentlyViewed");
             color.setColorMap({
                 "AdventureWorksModel.CustomerRepository": "redLight",
                 "AdventureWorksModel.Store": "red",

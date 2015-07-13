@@ -121,7 +121,7 @@ var Spiro;
                     return this.getValue().toString();
                 };
                 ValueViewModel.prototype.getValue = function () {
-                    if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices) {
+                    if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices || this.hasAutoAutoComplete) {
                         if (this.isMultipleChoices) {
                             var selections = this.multiChoices || [];
                             if (this.type === "scalar") {

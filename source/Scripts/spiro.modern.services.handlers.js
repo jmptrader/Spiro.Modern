@@ -76,10 +76,19 @@ var Spiro;
                     });
                 };
                 // tested
+                function cacheRecentlyViewed(object) {
+                    var cache = $cacheFactory.get("recentlyViewed");
+                    var key = object.domainType();
+                    var subKey = object.selfLink().href();
+                    var dict = cache.get(key) || {};
+                    dict[subKey] = { value: new Spiro.Value(object.selfLink()), name: object.title() };
+                    cache.put(key, dict);
+                }
                 handlers.handleCollection = function ($scope) {
                     context.getObject($routeParams.dt, $routeParams.id).
                         then(function (object) {
                         var collectionDetails = object.collectionMember($routeParams.collection).getDetails();
+                        cacheRecentlyViewed(object);
                         return repLoader.populate(collectionDetails);
                     }).
                         then(function (details) {
@@ -93,6 +102,7 @@ var Spiro;
                     context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
                         then(function (object) {
                         var actionTarget = object.actionMember(urlHelper.action()).getDetails();
+                        cacheRecentlyViewed(object);
                         return repLoader.populate(actionTarget);
                     }).
                         then(function (action) {
@@ -108,6 +118,7 @@ var Spiro;
                 handlers.handleActionResult = function ($scope) {
                     context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
                         then(function (object) {
+                        cacheRecentlyViewed(object);
                         var action = object.actionMember(urlHelper.action());
                         if (action.extensions().hasParams) {
                             var delay = $q.defer();
@@ -129,16 +140,17 @@ var Spiro;
                         }
                         // otherwise just action with parms 
                     });
-                };
-                // tested
+                }; // tested
                 function setNestedObject(object, $scope) {
                     $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
                     $scope.nestedTemplate = Angular.nestedObjectTemplate;
                     context.setNestedObject(object);
+                    cacheRecentlyViewed(object);
                 }
                 handlers.handleProperty = function ($scope) {
                     context.getObject($routeParams.dt, $routeParams.id).
                         then(function (object) {
+                        cacheRecentlyViewed(object);
                         var target = object.propertyMember($routeParams.property).value().link().getTarget();
                         return repLoader.populate(target);
                     }).
@@ -155,6 +167,7 @@ var Spiro;
                     var collectionItemKey = collectionItemTypeKey[1];
                     context.getNestedObject(collectionItemType, collectionItemKey).
                         then(function (object) {
+                        cacheRecentlyViewed(object);
                         setNestedObject(object, $scope);
                     }, function (error) {
                         setError(error);
@@ -190,6 +203,7 @@ var Spiro;
                     var id = result[1];
                     context.getNestedObject(dt, id).
                         then(function (object) {
+                        cacheRecentlyViewed(object);
                         $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
                         $scope.nestedTemplate = Angular.nestedObjectTemplate;
                         context.setNestedObject(object);
@@ -243,8 +257,7 @@ var Spiro;
                             $scope.appBar.doEdit = urlHelper.toAppUrl($location.path()) + "?editMode=true";
                         });
                     }
-                };
-                //tested
+                }; //tested
                 handlers.handleObject = function ($scope) {
                     context.getObject($routeParams.dt, $routeParams.id).
                         then(function (object) {
@@ -253,6 +266,8 @@ var Spiro;
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionTemplate = Angular.actionTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
+                        // cache
+                        cacheRecentlyViewed(object);
                     }, function (error) {
                         setError(error);
                     });

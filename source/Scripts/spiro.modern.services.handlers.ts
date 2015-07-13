@@ -106,10 +106,21 @@ module Spiro.Angular.Modern {
         };
 
         // tested
+        function cacheRecentlyViewed(object: DomainObjectRepresentation) {
+            const cache = $cacheFactory.get("recentlyViewed");
+
+            const key = object.domainType();
+            const subKey = object.selfLink().href();
+            const dict = cache.get(key) || {};
+            dict[subKey] = { value: new Value(object.selfLink()), name: object.title() };
+            cache.put(key, dict);
+        }
+
         handlers.handleCollection = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
-                    var collectionDetails = object.collectionMember($routeParams.collection).getDetails();
+                var collectionDetails = object.collectionMember($routeParams.collection).getDetails();
+                    cacheRecentlyViewed(object);
                     return repLoader.populate(collectionDetails);
                 }).
                 then((details: CollectionRepresentation) => {
@@ -125,6 +136,8 @@ module Spiro.Angular.Modern {
             context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
                     var actionTarget = object.actionMember(urlHelper.action()).getDetails();
+                    cacheRecentlyViewed(object);
+
                     return repLoader.populate(actionTarget);
                 }).
                 then((action: ActionRepresentation) => {
@@ -141,6 +154,8 @@ module Spiro.Angular.Modern {
         handlers.handleActionResult = $scope => {
             context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
+                    cacheRecentlyViewed(object);
+
                     var action = object.actionMember(urlHelper.action());
 
                     if (action.extensions().hasParams) {
@@ -163,18 +178,19 @@ module Spiro.Angular.Modern {
                     }
                     // otherwise just action with parms 
                 });
-        };
-
-        // tested
+        }; // tested
         function setNestedObject(object: DomainObjectRepresentation, $scope) {
             $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
             $scope.nestedTemplate = nestedObjectTemplate;
             context.setNestedObject(object);
+            cacheRecentlyViewed(object);
         }
 
         handlers.handleProperty = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
+                    cacheRecentlyViewed(object);
+
                     var target = object.propertyMember($routeParams.property).value().link().getTarget();
                     return repLoader.populate(target);
                 }).
@@ -193,6 +209,8 @@ module Spiro.Angular.Modern {
 
             context.getNestedObject(collectionItemType, collectionItemKey).
                 then((object: DomainObjectRepresentation) => {
+                    cacheRecentlyViewed(object);
+
                     setNestedObject(object, $scope);
                 }, error => {
                     setError(error);
@@ -234,6 +252,8 @@ module Spiro.Angular.Modern {
 
             context.getNestedObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
+                    cacheRecentlyViewed(object);
+
                     $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
                     $scope.nestedTemplate = nestedObjectTemplate;
                     context.setNestedObject(object);
@@ -305,9 +325,7 @@ module Spiro.Angular.Modern {
                         $scope.appBar.doEdit = urlHelper.toAppUrl($location.path()) + "?editMode=true";
                     });
             }
-        };
-
-        //tested
+        }; //tested
         handlers.handleObject = $scope => {
 
             context.getObject($routeParams.dt, $routeParams.id).
@@ -317,6 +335,10 @@ module Spiro.Angular.Modern {
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionTemplate = actionTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
+
+                    // cache
+                    cacheRecentlyViewed(object);
+
                 }, error => {
                     setError(error);
                 });

@@ -87,10 +87,12 @@ module Spiro.Angular {
             otherwise({
                 redirectTo: "/services"
             });
-
+       
     });
 
-    app.run((color: Angular.IColor, mask: Angular.IMask) => {
+    app.run((color: Angular.IColor, mask: Angular.IMask, $cacheFactory) => {
+
+        $cacheFactory("recentlyViewed");
 
         color.setColorMap({
             "AdventureWorksModel.CustomerRepository": "redLight",
