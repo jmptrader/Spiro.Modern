@@ -1,0 +1,706 @@
+﻿<html lang="en" ng-app="app" class="ng-scope"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}</style>
+    <meta charset="utf-8">
+    <title>Spiro</title>
+
+    <link href="Content/spiro-modern.css" rel="stylesheet" type="text/css">
+    <link href="Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet" type="text/css">
+    <link href="Content/themes/base/jquery.ui.theme.css" rel="stylesheet" type="text/css">
+    <link href="Content/themes/base/jquery.ui.core.css" rel="stylesheet" type="text/css">
+    
+</head>
+
+<body style="cursor: auto;" class="spiro">
+
+    <!-- ngView:  --><div id="main" ng-view="" ng-controller="BackgroundController" ng-class="backgroundColor" class="ng-scope bg-color-greenDark"><div class="object-view ng-scope bg-color-greenDark" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
+    <!-- ngInclude: objectTemplate --><div ng-controller="ObjectController" ng-include="objectTemplate" class="ng-scope">
+        
+        <div class="header ng-scope">
+    <div class="title ng-binding">SO71901</div>
+    <div class="type"></div>
+    <div class="messages ng-binding"></div>
+   </div>
+  <div class="properties-pane ng-scope" ng-include="propertiesTemplate"><div class="object-properties ng-scope bg-color-greenDark" ng-class="object.color">
+    <div class="properties">
+        <!-- ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Sales Order Number:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time -->
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  --><div ng-switch-default="" class="property-value ng-scope ng-binding">SO71901</div>
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Status:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string -->
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  --><div ng-switch-default="" class="ng-scope">
+                    <div class="property-value ng-binding">5</div>
+                </div>
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Customer:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-orange" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=Customer&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    Third Bike Store, AW00000165
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Store Contact:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-greenLight" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=StoreContact&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    Randall Boseman, Purchasing Manager
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Billing Address:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-magenta" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=BillingAddress&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    2500 North Stemmons Freeway ...
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Purchase Order Number:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time -->
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  --><div ng-switch-default="" class="property-value ng-scope ng-binding">PO3886195400</div>
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Shipping Address:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-magenta" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=ShippingAddress&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    2500 North Stemmons Freeway ...
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Ship Method:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-grayDark" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=ShipMethod&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    CARGO TRANSPORT 5
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Account Number:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time -->
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  --><div ng-switch-default="" class="property-value ng-scope ng-binding">10-4020-000165</div>
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Order Date:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time --><div ng-switch-when="date-time" class="property-value ng-scope ng-binding">1 Jun 2004</div>
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  -->
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Due Date:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time --><div ng-switch-when="date-time" class="property-value ng-scope ng-binding">13 Jun 2004</div>
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  -->
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Ship Date:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time --><div ng-switch-when="date-time" class="property-value ng-scope ng-binding">8 Jun 2004</div>
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  -->
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Sub Total:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string -->
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  --><div ng-switch-default="" class="ng-scope">
+                    <div class="property-value ng-binding">2539.9288</div>
+                </div>
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Tax Amt:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string -->
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  --><div ng-switch-default="" class="ng-scope">
+                    <div class="property-value ng-binding">203.1943</div>
+                </div>
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Freight:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string -->
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  --><div ng-switch-default="" class="ng-scope">
+                    <div class="property-value ng-binding">63.4982</div>
+                </div>
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Total Due:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string -->
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  --><div ng-switch-default="" class="ng-scope">
+                    <div class="property-value ng-binding">2806.6213</div>
+                </div>
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Currency Rate:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=CurrencyRate&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Online Order:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string -->
+
+                <!-- ngSwitchWhen: boolean --><div ng-switch-when="boolean" class="ng-scope">
+                    <input type="checkbox" onclick="return false" ng-checked="property.value">
+                </div>
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Credit Card:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-red" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=CreditCard&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    **********8080
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Credit Card Approval Code:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time -->
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  --><div ng-switch-default="" class="property-value ng-scope ng-binding">77077Vi18380</div>
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Revision Number:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string -->
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  --><div ng-switch-default="" class="ng-scope">
+                    <div class="property-value ng-binding">1</div>
+                </div>
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Comment:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time -->
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  --><div ng-switch-default="" class="property-value ng-scope ng-binding"></div>
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Sales Person:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-purple" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=SalesPerson&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    Michael Blythe
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Sales Territory:</div>
+            <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="property-reference clickable-area ng-scope bg-color-blueLight" ng-class="property.color">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?property=SalesTerritory&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding">
+                    <span></span>
+                    Southwest
+                </a>
+            </div>
+
+            <!-- ngSwitchWhen: scalar -->
+            
+
+        </div><!-- end ngRepeat: property in object.properties --><div class="property ng-scope" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name ng-binding">Modified Date:</div>
+            <!-- ngSwitchWhen: ref -->
+
+            <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" ng-switch="property.returnType" class="ng-scope">
+
+                <!-- ngSwitchWhen: string --><div ng-switch-when="string" ng-switch="property.format" class="ng-scope">
+                    <!-- ngSwitchWhen: date-time --><div ng-switch-when="date-time" class="property-value ng-scope ng-binding">2004-06-08T00:00:00Z</div>
+                    <!-- ngSwitchWhen: blob -->
+                    <!-- ngSwitchDefault:  -->
+                </div>
+
+                <!-- ngSwitchWhen: boolean -->
+
+                <!-- ngSwitchDefault:  -->
+            </div>
+            
+
+        </div><!-- end ngRepeat: property in object.properties -->
+
+        <!-- ngRepeat: collection in object.collections --><div class="property ng-scope" ng-repeat="collection in object.collections">
+
+            <div class="property-name ng-binding">Details:</div>
+            <div class="property-collection clickable-area">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collection=Details&amp;action=AddNewDetail" class="ng-binding"><span></span><i class="icon-plus"></i>8-Sales Order Details</a>
+            </div>
+        </div><!-- end ngRepeat: collection in object.collections --><div class="property ng-scope" ng-repeat="collection in object.collections">
+
+            <div class="property-name ng-binding">Reasons:</div>
+            <div class="property-collection clickable-area">
+                <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collection=SalesOrderHeaderSalesReason&amp;action=AddNewDetail" class="ng-binding"><span></span><i class="icon-plus"></i>0-Reasons</a>
+            </div>
+        </div><!-- end ngRepeat: collection in object.collections -->
+
+    </div>
+</div></div>
+<!-- ngInclude: actionTemplate --><div class="actions-pane ng-scope" ng-include="actionTemplate">
+    <div ng-class="object.color" class="ng-scope bg-color-greenDark">
+    <!-- ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddNewDetail&amp;collection=Details">
+                <span></span>
+                Add New Detail
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddNewSalesReason&amp;collection=Details">
+                <span></span>
+                Add New Sales Reason
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddNewSalesReasons&amp;collection=Details">
+                <span></span>
+                Add New Sales Reasons
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddNewSalesReasonsByCategory&amp;collection=Details">
+                <span></span>
+                Add New Sales Reasons By Category
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddNewSalesReasonsByCategories&amp;collection=Details">
+                <span></span>
+                Add New Sales Reasons By Categories
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddComment&amp;collection=Details">
+                <span></span>
+                Add Comment
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddComment2&amp;collection=Details">
+                <span></span>
+                Add Comment2
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddStandardComments&amp;collection=Details">
+                <span></span>
+                Add Standard Comments
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=CreateNewCreditCard&amp;collection=Details">
+                <span></span>
+                Create New Credit Card
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=DefaultStatus&amp;collection=Details">
+                <span></span>
+                Default Status
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=HideMarkAsShipped&amp;collection=Details">
+                <span></span>
+                Hide Mark As Shipped
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=Recalculate&amp;collection=Details">
+                <span></span>
+                Recalculate
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=RemoveDetail&amp;collection=Details">
+                <span></span>
+                Remove Detail
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=RemoveDetails&amp;collection=Details">
+                <span></span>
+                Remove Details
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AppendComment&amp;collection=Details">
+                <span></span>
+                Append Comment
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions --><div class="actions ng-scope" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action ng-binding" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=CommentAsUserUnhappy&amp;collection=Details">
+                <span></span>
+                Comment As User Unhappy
+            </a>
+        </div>
+    </div><!-- end ngRepeat: action in object.actions -->
+</div>
+</div></div>
+    <!-- ngInclude: dialogTemplate --><div class="dialog-pane ng-scope" ng-controller="DialogController" ng-include="dialogTemplate"><div class="action-dialog ng-scope">
+    <div class="title ng-binding">
+        Add New Detail
+        <a class="cancel icon-cancel" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collection=Details"></a>
+    </div>
+    <form class="ng-pristine ng-valid">
+        <div class="parameters ng-binding">
+            <!-- ngRepeat: parameter in dialog.parameters --><div class="parameter ng-scope" id="product" ng-repeat="parameter in dialog.parameters" ng-switch="parameter.type">
+                <div class="parameter-name ng-binding">Product</div>
+                
+                <!-- ngSwitchWhen: ref --><div ng-switch-when="ref" class="ng-scope">
+                    <div class="parameter-value input-control text" ng-switch="parameter.hasChoices">
+                     
+                        <input type="hidden" value="" ng-model="parameter.reference" class="ng-pristine ng-valid">
+                        
+                        <!-- ngSwitchWhen: false --><div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices" class="ng-scope">
+                                                                       
+                            <!-- ngSwitchWhen: false --><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input ng-switch-when="false" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" nog-autocomplete="" class="ng-scope ng-isolate-scope ng-pristine ng-valid ui-autocomplete-input" autocomplete="off">
+                        
+                            <!-- ngSwitchWhen: true -->  
+                        </div>      
+                        
+                        <!-- ngSwitchWhen: true -->                                                                                               
+                    </div>
+                </div>
+                       
+                <!-- ngSwitchWhen: scalar -->
+                
+                <div class="error ng-binding"></div>
+                
+
+            </div><!-- end ngRepeat: parameter in dialog.parameters --><div class="parameter ng-scope" id="quantity" ng-repeat="parameter in dialog.parameters" ng-switch="parameter.type">
+                <div class="parameter-name ng-binding">Quantity</div>
+                
+                <!-- ngSwitchWhen: ref -->
+                       
+                <!-- ngSwitchWhen: scalar --><div ng-switch-when="scalar" class="ng-scope">
+                    <div class="parameter-value input-control text" ng-switch="parameter.hasChoices">
+                                                                    
+                        <!-- ngSwitchWhen: false --><div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices" class="ng-scope">
+
+                            <!-- ngSwitchWhen: false --><div ng-switch-when="false" ng-switch="parameter.returnType" class="ng-scope">
+                        
+                                <!-- ngSwitchWhen: string -->
+
+                                <!-- ngSwitchWhen: boolean -->
+
+                                <!-- ngSwitchDefault:  --><div ng-switch-default="" class="ng-scope">
+                                    <input type="text" placeholder="1" ng-model="parameter.value" class="ng-pristine ng-valid">
+                                </div>
+                        
+                            </div>  
+                            
+                            <!-- ngSwitchWhen: true -->
+                        </div>                                                                                                                                                
+
+                        <!-- ngSwitchWhen: true -->      
+                    </div>
+                </div>
+                
+                <div class="error ng-binding"></div>
+                
+
+            </div><!-- end ngRepeat: parameter in dialog.parameters -->
+            
+        </div>
+
+        <div ng-switch="dialog.isQuery">
+            <!-- ngSwitchWhen: true -->
+            <!-- ngSwitchWhen: false --><input ng-switch-when="false" class="go ng-scope" type="submit" value="Do" style="float: right" ng-click="dialog.doInvoke()">
+        </div>
+    </form>
+</div></div>
+    <!-- ngInclude: collectionTemplate --><div class="collection-pane ng-scope" ng-controller="CollectionController" ng-include="collectionTemplate"><div class="list-view ng-scope">
+    <div class="title ng-binding">
+        8-Sales Order Details
+        <a class="cancel icon-cancel" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddNewDetail"></a>
+        <a class="expand icon-plus" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?action=AddNewDetail&amp;collection=Details&amp;tableMode=true"></a>
+    </div>
+    <div class="items">
+        <!-- ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112945&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>1 x ML Road Pedal</a>
+        </div><!-- end ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112946&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>2 x Road-750 Black, 52</a>
+        </div><!-- end ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112947&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>1 x Sport-100 Helmet, Blue</a>
+        </div><!-- end ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112948&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>1 x Road-550-W Yellow, 48</a>
+        </div><!-- end ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112949&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>3 x Bike Wash - Dissolver</a>
+        </div><!-- end ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112950&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>1 x Long-Sleeve Logo Jersey, L</a>
+        </div><!-- end ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112951&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>1 x Road-550-W Yellow, 38</a>
+        </div><!-- end ngRepeat: item in collection.items --><div class="list-item clickable-area ng-scope bg-color-green" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?collectionItem=AdventureWorksModel.SalesOrderDetail/71901-112952&amp;action=AddNewDetail&amp;collection=Details" class="ng-binding"><span></span>1 x Short-Sleeve Classic Jersey, L</a>
+        </div><!-- end ngRepeat: item in collection.items -->
+    </div>
+</div></div>
+    <!-- ngInclude: nestedTemplate -->
+    <!-- ngInclude: appBar.template -->
+<div class="app-bar ng-scope" ng-controller="AppBarController" ng-include="appBar.template"><a class="home icon-home ng-scope" title="Home" href="#/"></a>
+<a class="back icon-arrow-left-3 ng-scope" title="Back" ng-click="appBar.goBack()"></a>
+<a class="forward icon-arrow-right-3 ng-scope" title="Forward" ng-click="appBar.goForward()"></a>
+<a class="refresh icon-loop disabled ng-scope" title="Refresh"></a>
+<a class="edit icon-pencil ng-scope" title="Edit" href="#/objects/AdventureWorksModel.SalesOrderHeader/71901?editMode=true" ng-class="{disabled : appBar.hideEdit}"></a>
+<a class="help icon-help disabled ng-scope" title="Help"></a>
+<span class="ng-scope ng-binding"></span>
+<a style="display: none" class="ng-scope"></a> 
+</div>
+</div></div>
+    
+    <script type="text/javascript" src="Scripts/underscore.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-ui-1.10.3.js"></script>
+    <script type="text/javascript" src="Scripts/angular.js"></script>
+    <script type="text/javascript" src="Scripts/angular-route.js"></script>
+    <script type="text/javascript" src="Scripts/angular-touch.js"></script>  
+    <script type="text/javascript" src="Scripts/spiro.config.js"></script> 
+    <script type="text/javascript" src="Scripts/spiro.models.helpers.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.models.shims.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.models.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.config.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.viewmodels.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.app.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.controllers.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.directives.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.representationloader.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.representationhandlers.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.viewmodelfactory.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.urlhelper.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.context.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.handlers.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.color.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.mask.js"></script>
+    <script type="text/javascript" src="Scripts/spiro.angular.services.navigation.simple.js"></script>
+
+
+
+
+<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0" style="display: none;"></ul></body></html>
