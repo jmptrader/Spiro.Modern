@@ -383,8 +383,8 @@ describe('context Service', function () {
                     $rootScope.$apply();
                 });
             }));
-            it('returns null', function () {
-                expect(result).toBeNull();
+            it('returns empty collection', function () {
+                expect(result.length).toBe(0);
             });
         });
         describe('when selected choice is set', function () {

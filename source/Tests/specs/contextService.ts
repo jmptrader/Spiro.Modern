@@ -554,8 +554,8 @@ describe('context Service', () => {
                 });
             }));
 
-            it('returns null', () => {
-                expect(result).toBeNull();
+            it('returns empty collection', () => {
+                expect(result.length).toBe(0);
             });
         });
 

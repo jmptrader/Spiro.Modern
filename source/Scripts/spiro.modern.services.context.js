@@ -165,7 +165,7 @@ var Spiro;
                 context.getPreviousUrl = function () { return previousUrl; };
                 context.setPreviousUrl = function (url) { return previousUrl = url; };
                 var selectedChoice = {};
-                context.getSelectedChoice = function (parm, search) { return selectedChoice[parm] ? selectedChoice[parm][search] : null; };
+                context.getSelectedChoice = function (parm, search) { return selectedChoice[parm] ? selectedChoice[parm][search] : []; };
                 // tested
                 context.setSelectedChoice = function (parm, search, cvm) {
                     selectedChoice[parm] = selectedChoice[parm] || {};

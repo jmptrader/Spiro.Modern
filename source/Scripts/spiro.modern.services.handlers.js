@@ -75,15 +75,17 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 function cacheRecentlyViewed(object) {
                     var cache = $cacheFactory.get("recentlyViewed");
-                    var key = object.domainType();
-                    var subKey = object.selfLink().href();
-                    var dict = cache.get(key) || {};
-                    dict[subKey] = { value: new Spiro.Value(object.selfLink()), name: object.title() };
-                    cache.put(key, dict);
+                    if (cache && object) {
+                        var key = object.domainType();
+                        var subKey = object.selfLink().href();
+                        var dict = cache.get(key) || {};
+                        dict[subKey] = { value: new Spiro.Value(object.selfLink()), name: object.title() };
+                        cache.put(key, dict);
+                    }
                 }
+                // tested
                 handlers.handleCollection = function ($scope) {
                     context.getObject($routeParams.dt, $routeParams.id).
                         then(function (object) {

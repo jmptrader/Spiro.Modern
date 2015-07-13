@@ -105,17 +105,21 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        // tested
+       
         function cacheRecentlyViewed(object: DomainObjectRepresentation) {
             const cache = $cacheFactory.get("recentlyViewed");
+           
+            if (cache && object) {
+                const key = object.domainType();
+                const subKey = object.selfLink().href();
+                const dict = cache.get(key) || {};
+                dict[subKey] = { value: new Value(object.selfLink()), name: object.title() };
+                cache.put(key, dict);
+            }
 
-            const key = object.domainType();
-            const subKey = object.selfLink().href();
-            const dict = cache.get(key) || {};
-            dict[subKey] = { value: new Value(object.selfLink()), name: object.title() };
-            cache.put(key, dict);
         }
 
+         // tested
         handlers.handleCollection = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {

@@ -232,7 +232,7 @@ module Spiro.Angular.Modern {
 
         var selectedChoice: { [parm: string]: { [search: string]: ChoiceViewModel[] } } = {};
 
-        context.getSelectedChoice = (parm: string, search: string) => selectedChoice[parm] ? selectedChoice[parm][search] : null;
+        context.getSelectedChoice = (parm: string, search: string) => selectedChoice[parm] ? selectedChoice[parm][search] : [];
 
         // tested
         context.setSelectedChoice = (parm: string, search: string, cvm: ChoiceViewModel) => {
