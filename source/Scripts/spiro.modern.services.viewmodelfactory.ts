@@ -67,7 +67,7 @@ module Spiro.Angular.Modern{
             return itemViewModel;
         };
 
-        // tested
+       
         function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice : ChoiceViewModel, id : string, currentValue : Value) {
             valueViewModel.hasAutoAutoComplete = true;
 
@@ -99,6 +99,7 @@ module Spiro.Angular.Modern{
 
         }
 
+         // tested
         viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string) => {
             var parmViewModel = new ParameterViewModel();
 

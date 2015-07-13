@@ -44,7 +44,6 @@ var Spiro;
                     itemViewModel.color = color.toColorFromHref(linkRep.href());
                     return itemViewModel;
                 };
-                // tested
                 function addAutoAutoComplete(valueViewModel, currentChoice, id, currentValue) {
                     valueViewModel.hasAutoAutoComplete = true;
                     var cache = $cacheFactory.get("recentlyViewed");
@@ -66,6 +65,7 @@ var Spiro;
                         return defer.promise;
                     };
                 }
+                // tested
                 viewModelFactory.parameterViewModel = function (parmRep, id, previousValue) {
                     var parmViewModel = new Modern.ParameterViewModel();
                     parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
