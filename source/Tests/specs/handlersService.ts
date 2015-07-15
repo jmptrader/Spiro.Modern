@@ -20,7 +20,10 @@ describe('handlers Service', () => {
 
     var $scope;
 
-    beforeEach(module('app'));
+    beforeEach(() => {
+        module('app');
+         
+    });
 
     describe('handleCollectionResult', () => {
 
@@ -96,7 +99,10 @@ describe('handlers Service', () => {
             var populate;
             var collectionViewModel;
 
-            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader) => {
+            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader, $cacheFactory) => {
+
+                $cacheFactory.get("recentlyViewed").destroy();
+
                 $scope = $rootScope.$new();
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
@@ -173,7 +179,11 @@ describe('handlers Service', () => {
             var populate;
             var dialogViewModel;
 
-            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader) => {
+            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader, $cacheFactory) => {
+
+                $cacheFactory.get("recentlyViewed").destroy();
+
+
                 $scope = $rootScope.$new();
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
@@ -306,7 +316,11 @@ describe('handlers Service', () => {
             var populate;
             var setResult;
 
-            beforeEach(inject(($rootScope, $routeParams, repHandlers: Spiro.Angular.Modern.IRepHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader) => {
+            beforeEach(inject(($rootScope, $routeParams, repHandlers: Spiro.Angular.Modern.IRepHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader, $cacheFactory) => {
+
+                $cacheFactory.get("recentlyViewed").destroy();
+
+
                 $scope = $rootScope.$new();
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
@@ -438,7 +452,11 @@ describe('handlers Service', () => {
 
             var populate;
 
-            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader) => {
+            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, repLoader: Spiro.Angular.IRepLoader, $cacheFactory) => {
+
+                $cacheFactory.get("recentlyViewed").destroy();
+
+
                 $scope = $rootScope.$new();
 
                 getObject = spyOnPromise(context, 'getObject', testObject);
@@ -517,7 +535,11 @@ describe('handlers Service', () => {
             var objectViewModel;
             var setNestedObject;
 
-            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
+            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, $cacheFactory) => {
+
+                $cacheFactory.get("recentlyViewed").destroy();
+
+
                 $scope = $rootScope.$new();
 
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
@@ -581,7 +603,10 @@ describe('handlers Service', () => {
             var objectViewModel;
             var setNestedObject;
 
-            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
+            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, $cacheFactory) => {
+
+                $cacheFactory.get("recentlyViewed").destroy();
+
                 $scope = $rootScope.$new();
 
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
@@ -767,7 +792,11 @@ describe('handlers Service', () => {
             var objectViewModel;
             var setNestedObject;
 
-            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
+            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, $cacheFactory) => {
+
+                $cacheFactory.get("recentlyViewed").destroy();
+
+
                 $scope = $rootScope.$new();
 
                 getObject = spyOnPromise(context, 'getObject', testObject);

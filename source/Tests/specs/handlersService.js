@@ -16,7 +16,9 @@
 /// <reference path="helpers.ts" />
 describe('handlers Service', function () {
     var $scope;
-    beforeEach(module('app'));
+    beforeEach(function () {
+        module('app');
+    });
     describe('handleCollectionResult', function () {
         var getCollection;
         describe('if it finds collection', function () {
@@ -64,7 +66,8 @@ describe('handlers Service', function () {
             var collectionDetails;
             var populate;
             var collectionViewModel;
-            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader) {
+            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader, $cacheFactory) {
+                $cacheFactory.get("recentlyViewed").destroy();
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
                 collectionMember = spyOn(testObject, "collectionMember").andReturn(testMember);
@@ -116,7 +119,8 @@ describe('handlers Service', function () {
             var actionDetails;
             var populate;
             var dialogViewModel;
-            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader) {
+            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader, $cacheFactory) {
+                $cacheFactory.get("recentlyViewed").destroy();
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
                 actionMember = spyOn(testObject, "actionMember").andReturn(testMember);
@@ -209,7 +213,8 @@ describe('handlers Service', function () {
             var actionResult;
             var populate;
             var setResult;
-            beforeEach(inject(function ($rootScope, $routeParams, repHandlers, context, viewModelFactory, repLoader) {
+            beforeEach(inject(function ($rootScope, $routeParams, repHandlers, context, viewModelFactory, repLoader, $cacheFactory) {
+                $cacheFactory.get("recentlyViewed").destroy();
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
                 actionMember = spyOn(testObject, "actionMember").andReturn(testMember);
@@ -301,7 +306,8 @@ describe('handlers Service', function () {
             var setNestedObject;
             var objectViewModel;
             var populate;
-            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader) {
+            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, repLoader, $cacheFactory) {
+                $cacheFactory.get("recentlyViewed").destroy();
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
                 propertyMember = spyOn(testObject, "propertyMember").andReturn(testMember);
@@ -351,7 +357,8 @@ describe('handlers Service', function () {
             var testViewModel = { test: testObject };
             var objectViewModel;
             var setNestedObject;
-            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
+            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, $cacheFactory) {
+                $cacheFactory.get("recentlyViewed").destroy();
                 $scope = $rootScope.$new();
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
                 objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
@@ -392,7 +399,8 @@ describe('handlers Service', function () {
             var testViewModel = { test: testObject };
             var objectViewModel;
             var setNestedObject;
-            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
+            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, $cacheFactory) {
+                $cacheFactory.get("recentlyViewed").destroy();
                 $scope = $rootScope.$new();
                 getNestedObject = spyOnPromise(context, 'getNestedObject', testObject);
                 objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
@@ -509,7 +517,8 @@ describe('handlers Service', function () {
             var testViewModel = { test: testObject };
             var objectViewModel;
             var setNestedObject;
-            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory) {
+            beforeEach(inject(function ($rootScope, $routeParams, handlers, context, viewModelFactory, $cacheFactory) {
+                $cacheFactory.get("recentlyViewed").destroy();
                 $scope = $rootScope.$new();
                 getObject = spyOnPromise(context, 'getObject', testObject);
                 objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
