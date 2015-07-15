@@ -81,7 +81,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected const int CustomerServiceActions = 9;
         protected const int OrderServiceActions = 6;
-        protected const int ProductServiceActions = 11;
+        protected const int ProductServiceActions = 12;
         protected const int SalesServiceActions = 4;
 
 
