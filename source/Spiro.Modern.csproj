@@ -19,8 +19,9 @@
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="New-actions-pane.html" />
-    <Content Include="New-Collections-Pane.html" />
+    <Content Include="Temp - Restyling\spiro-modern1.css" />
+    <Content Include="Temp - Restyling\Example.html" />
+    <Content Include="Temp - Restyling\Example %28earlier go%29.html" />
     <Content Include="Content\partials\actions.html" />
     <Content Include="Content\partials\appbar.html" />
     <Content Include="Content\partials\dialog.html" />
@@ -76,7 +77,6 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
-    <Content Include="New-StaticBody.html" />
     <Content Include="Scripts\angular-mocks.js" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.color.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.loaderwithtransform.ts" />
@@ -133,7 +133,7 @@
     <Content Include="Scripts\spiro.modern.services.urlhelper.js" />
     <Content Include="Scripts\spiro.modern.services.viewmodelfactory.js" />
     <Content Include="Scripts\spiro.modern.viewmodels.js" />
-    <Content Include="Spiro1Example.html" />
+    <Content Include="Temp - Restyling\spiro-modern2.css" />
     <Content Include="SpiroReadMe.txt" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
