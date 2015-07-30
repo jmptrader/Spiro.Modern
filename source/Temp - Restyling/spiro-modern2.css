@@ -7,10 +7,10 @@
     text-decoration: none; /*Override default underlining of links*/
 }
 
-.spiro * {
-    /*Specifies that padding & border are added INSIDE the specified width*/
-    box-sizing: border-box;
-}
+    .spiro * {
+        /*Specifies that padding & border are added INSIDE the specified width*/
+        box-sizing: border-box;
+    }
 
 html, #main, body, .main-pane {
     height: 100%; /*fill the vertical space*/
@@ -22,28 +22,37 @@ html, #main, body, .main-pane {
 .main-pane {
     float: left;
     width: 100%;
-    padding: 30px;
+    padding-top: 20px;
+    padding-left: 20px;
+    overflow-y: auto;
 }
 
-.main-pane.split {
+    .main-pane.split {
         width: 50%;
-}
+        overflow-x:auto;
+    }
+
+
 
 /*Layout of sub-panes */
 .actions, .main-column, .collections {
-    float:left;
+    float: left;
     margin-right: 20px;
     margin-bottom: 20px;
 }
 
 .properties, .dialog {
+    width: 390px;
     padding: 5px;
+    margin-bottom: 20px;
 }
 
 /*Header*/
-   .header {
-       margin-bottom: 20px;
-   }
+.header {
+    margin-bottom: 20px;
+    overflow: hidden; /*Expands the div to size of all contents*/
+}
+
     .header .title, .header .type {
         position: relative;
         font-weight: 200;
@@ -56,9 +65,22 @@ html, #main, body, .main-pane {
         margin-right: 20px;
     }
 
-    .menus {
-        margin-top: 20px;
-        width: 100px;
+.menus {
+    margin-top: 20px;
+}
+
+.menu {
+    float: left;
+    margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
+    margin-right: 20px;
+    margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
+    padding: 5px;
+}
+
+    .menu:hover, .menu.selected {
+        outline-style: solid;
+        outline-width: 1px;
+        outline-color: white;
     }
 
     .menu a {
@@ -67,46 +89,44 @@ html, #main, body, .main-pane {
 
 /*Actions*/
 .action {
-    width: 200px;
+    width: 150px;
     padding: 2px 5px;
     margin-bottom: 5px;
     background-color: white;
 }
-.action a {
-    color: black;
-}
+
+    .action a {
+        color: black;
+    }
 
 .submenu .name {
     float: none;
     margin-bottom: 5px;
 }
 
-.submenu .name a {
-    font-size: 12pt;
-}
+    .submenu .name a {
+        font-size: 12pt;
+    }
 
 /*Dialog*/
 .dialog {
-    width: 390px;
-    padding: 5px;
-    margin-bottom: 20px;
     overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
     background-color: white;
     color: black;
 }
 
-.dialog .title {
-    font-size: 12pt;
-    margin-bottom: 10px;
-}
+    .dialog .title {
+        font-size: 12pt;
+        margin-bottom: 10px;
+    }
 
-.dialog .icon-cancel {
-    color: #253836;
-    float: right;
-}
+    .dialog .icon-cancel {
+        color: #253836;
+        float: right;
+    }
 
 .parameter .name {
-    width: 145px;  /*To align input box with reference fields*/
+    width: 145px; /*To align input box with reference fields*/
 }
 
 /*Properties*/
@@ -115,17 +135,16 @@ html, #main, body, .main-pane {
     overflow: hidden;
 }
 
-.property:not(:last-child), .list .reference:not(:last-child)
-{
-   margin-bottom: 5px;
-}
+    .property:not(:last-child), .list .reference:not(:last-child) {
+        margin-bottom: 5px;
+    }
 
- .name {
+.name {
     width: 150px;
     padding-right: 5px;
 }
 
-.reference,  .value, .details {
+.reference, .value, .details {
     width: 230px;
     padding-left: 5px;
     padding-right: 5px;
@@ -137,19 +156,19 @@ input {
     margin-bottom: 5px;
 }
 
-.name, .value,  .property .reference {
+.name, .value, .property .reference {
     float: left;
 }
 
 
 /*Hovering & active behaviour*/
-.reference:hover, .clickable-row:hover, input:hover, .action {
+.reference:hover, .clickable-row:hover, input:hover {
     outline-style: auto;
     outline-width: 1px;
     outline-color: black;
 }
 
-.reference:active, .clickable-row:hover:active {
+.reference:active, .clickable-row:active, .menu:active {
     outline-style: auto;
     outline-width: 1px;
     outline-color: white;
@@ -159,15 +178,15 @@ input {
     margin-bottom: 20px;
 }
 
-.collection .summary {
-    font-size: 12pt;
-    margin-bottom: 10px;
-}
+    .collection .summary {
+        font-size: 12pt;
+        margin-bottom: 10px;
+    }
 
-.collection .name, .collection .details {
-    padding-left: 0px;  /*Because it is a heading, so outdented*/
-    float: left;
-}
+    .collection .name, .collection .details {
+        padding-left: 0px; /*Because it is a heading, so outdented*/
+        float: left;
+    }
 
 
 /*Tables*/
@@ -179,13 +198,13 @@ th, td {
 }
 
 /*footer*/
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: black;
-    }
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+}
 
     .footer a {
         color: white;
@@ -194,188 +213,188 @@ th, td {
         margin-left: 10px;
     }
 
-    .footer a.disabled {
-        display: none;
-    }
+        .footer a.disabled {
+            display: none;
+        }
 
-    .footer a:hover {
-        outline-style: solid;
-        outline-width: 1px;
-        outline-color: white;
-    }
+        .footer a:hover {
+            outline-style: solid;
+            outline-width: 1px;
+            outline-color: white;
+        }
 
-    .footer a:active {
-        outline-style: solid;
-        outline-width: 2px;
-        outline-color: white;
-    }
+        .footer a:active {
+            outline-style: solid;
+            outline-width: 2px;
+            outline-color: white;
+        }
 
     .footer .icons, .footer .messages {
-    float: left;
+        float: left;
     }
 
-    .messages {
-        font-size: 12pt;
-        color: red;
-    }
+.messages {
+    font-size: 12pt;
+    color: red;
+}
 
 /* Colours */
-    .bg-color-blue {
-        background-color: #2d89ef;
-    }
+.bg-color-blue {
+    background-color: #2d89ef;
+}
 
-    .bg-color-blueLight {
-        background-color: #66ccff;
-    }
+.bg-color-blueLight {
+    background-color: #66ccff;
+}
 
-    .bg-color-blueDark {
-        background-color: #2b5797;
-    }
+.bg-color-blueDark {
+    background-color: #2b5797;
+}
 
-    .bg-color-darkBlue { /*Temporary fix*/
-        background-color: #1d1d1d;
-    }
+.bg-color-darkBlue { /*Temporary fix*/
+    background-color: #1d1d1d;
+}
 
-    .fg-color-darkBlue { /*Temporary fix*/
-        color: #1d1d1d;
-    }
+.fg-color-darkBlue { /*Temporary fix*/
+    color: #1d1d1d;
+}
 
-    .bg-color-green {
-        background-color: #00a300;
-    }
+.bg-color-green {
+    background-color: #00a300;
+}
 
-    .bg-color-greenLight {
-        background-color: #99b433;
-    }
+.bg-color-greenLight {
+    background-color: #99b433;
+}
 
-    .bg-color-greenDark {
-        background-color: #1e7145;
-    }
+.bg-color-greenDark {
+    background-color: #1e7145;
+}
 
-    .bg-color-red {
-        background-color: #b91d47;
-    }
+.bg-color-red {
+    background-color: #b91d47;
+}
 
-    .bg-color-yellow {
-        background-color: #ffc40d;
-    }
+.bg-color-yellow {
+    background-color: #ffc40d;
+}
 
-    .bg-color-orange {
-        background-color: #e3a21a;
-    }
+.bg-color-orange {
+    background-color: #e3a21a;
+}
 
-    .bg-color-orangeDark {
-        background-color: #da532c;
-    }
+.bg-color-orangeDark {
+    background-color: #da532c;
+}
 
-    .bg-color-pink {
-        background-color: #9f00a7;
-    }
+.bg-color-pink {
+    background-color: #9f00a7;
+}
 
-    .bg-color-pinkDark {
-        background-color: #7e3878;
-    }
+.bg-color-pinkDark {
+    background-color: #7e3878;
+}
 
-    .bg-color-purple {
-        background-color: #603cba;
-    }
+.bg-color-purple {
+    background-color: #603cba;
+}
 
-    .bg-color-darken {
-        background-color: #1d1d1d;
-    }
+.bg-color-darken {
+    background-color: #1d1d1d;
+}
 
-    .bg-color-lighten {
-        background-color: #d5e7ec;
-    }
+.bg-color-lighten {
+    background-color: #d5e7ec;
+}
 
-    .bg-color-white {
-        background-color: #ffffff;
-    }
+.bg-color-white {
+    background-color: #ffffff;
+}
 
-    .bg-color-grayDark {
-        background-color: #525252;
-    }
+.bg-color-grayDark {
+    background-color: #525252;
+}
 
-    .bg-color-magenta {
-        background-color: #ff0097;
-    }
+.bg-color-magenta {
+    background-color: #ff0097;
+}
 
-    .bg-color-teal {
-        background-color: #00aba9;
-    }
+.bg-color-teal {
+    background-color: #00aba9;
+}
 
-    .bg-color-redLight {
-        background-color: #ee1111;
-    }
+.bg-color-redLight {
+    background-color: #ee1111;
+}
 
 /*Icons - general*/
 
-    [class^="icon-"], [class*=" icon-"] {
-        font-family: "iconFont";
-        font-weight: normal;
-        font-style: normal;
-        text-decoration: inherit;
-        -webkit-font-smoothing: antialiased;
-        display: inline-block;
-        width: auto;
-        height: auto;
-        line-height: normal;
-        vertical-align: baseline;
-        background-image: none;
-        background-position: 0% 0%;
-        background-repeat: repeat;
-        margin-top: 0;
-        position: relative;
-    }
+[class^="icon-"], [class*=" icon-"] {
+    font-family: "iconFont";
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    vertical-align: baseline;
+    background-image: none;
+    background-position: 0% 0%;
+    background-repeat: repeat;
+    margin-top: 0;
+    position: relative;
+}
 
-    @font-face {
-        font-family: "iconFont";
-        src: url('../fonts/iconFont.eot');
-        src: url('../fonts/iconFont.eot?#iefix') format('embedded-opentype'), url('../fonts/iconFont.svg#iconFont') format('svg'), url('../fonts/iconFont.woff') format('woff'), url('../fonts/iconFont.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
+@font-face {
+    font-family: "iconFont";
+    src: url('../fonts/iconFont.eot');
+    src: url('../fonts/iconFont.eot?#iefix') format('embedded-opentype'), url('../fonts/iconFont.svg#iconFont') format('svg'), url('../fonts/iconFont.woff') format('woff'), url('../fonts/iconFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 /*Icons -specific*/
-    .icon-home:before {
-        content: "\e000";
-    }
+.icon-home:before {
+    content: "\e000";
+}
 
-    .icon-arrow-left-3:before {
-        content: "\e09f";
-    }
+.icon-arrow-left-3:before {
+    content: "\e09f";
+}
 
-    .icon-arrow-right-3:before {
-        content: "\e09d";
-    }
+.icon-arrow-right-3:before {
+    content: "\e09d";
+}
 
-    .icon-loop:before {
-        content: "\e08f";
-    }
+.icon-loop:before {
+    content: "\e08f";
+}
 
-    .icon-pencil:before {
-        content: "\e002";
-    }
+.icon-pencil:before {
+    content: "\e002";
+}
 
-    .icon-help:before {
-        content: "\e085";
-    }
+.icon-help:before {
+    content: "\e085";
+}
 
-    .icon-cancel:before {
-        content: "\e088";
-    }
+.icon-cancel:before {
+    content: "\e088";
+}
 
-    .icon-enter:before {
-        content: "\e08d";
-    }
+.icon-enter:before {
+    content: "\e08d";
+}
 
-    .icon-plus:before {
-        content: "\e083";
-    }
+.icon-plus:before {
+    content: "\e083";
+}
 
-    .icon-minus:before {
-        content: "\e084";
-    }
+.icon-minus:before {
+    content: "\e084";
+}
 
 
 /*Buttons*/

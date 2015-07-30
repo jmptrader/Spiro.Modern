@@ -19,9 +19,14 @@
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Temp - Restyling\spiro-modern1.css" />
+    <Content Include="Temp - Restyling\object_object.html" />
+    <Content Include="Temp - Restyling\object_actions_dialog.html" />
+    <Content Include="Temp - Restyling\split_object_home.html" />
+    <Content Include="Temp - Restyling\split_home_with_dialog_results.html" />
+    <Content Include="Temp - Restyling\home_with_dialog.html" />
+    <Content Include="Temp - Restyling\home_selected_menu.html" />
+    <Content Include="Temp - Restyling\home.html" />
     <Content Include="Temp - Restyling\Example.html" />
-    <Content Include="Temp - Restyling\Example %28earlier go%29.html" />
     <Content Include="Content\partials\actions.html" />
     <Content Include="Content\partials\appbar.html" />
     <Content Include="Content\partials\dialog.html" />

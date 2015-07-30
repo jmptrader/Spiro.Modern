@@ -4,7 +4,7 @@
         @charset "UTF-8";
     </style>
     <meta charset="utf-8">
-    <title>Example</title>
+    <title>Object</title>
 
     <link href="spiro-modern2.css" rel="stylesheet" type="text/css">
     <link href="Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet" type="text/css">
@@ -15,7 +15,7 @@
 
     <!-- 'split' class is removed for single pane view-->
     <!--This example represents an object view, but main-pane represent Home (main menus), or query result-->
-    <div class="main-pane split bg-color-greenDark" id="pane1">
+    <div class="main-pane bg-color-greenDark" id="pane1">
         <div class="header">
             <!--Header is per main-pane; no overall header-->
             <div class="type">Sales Order</div>
@@ -182,34 +182,7 @@
             </div>
         </div>
     </div>
-    <div class="main-pane  split bg-color-orange" id="pane2">
-        <div class="header">
-            <div class="type">Sales Order</div>
-            <div class="title ">SO71902</div>
-            <div class="menus">
-                <div class="menu clickable-area">
-                    <a href="x">Actions</a>
-                </div>
-            </div>
-        </div>
-        <div class="actions"></div>
-        <div class="main-column">
-<!--            <div class="dialog"></div>-->
-            <div class="properties">
-                <div class="property">
-                    <div class="name">Sales Order Number:</div>
-                    <div class="value">SO71902</div>
-                </div>
-                <div class="property">
-                    <div class="name">Customer:</div>
-                    <div class="reference clickable-area bg-color-orange">
-                        <a href="x">Fourth Bike Store, AW00000166
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="collections"></div>
+    <div class="main-pane  bg-color-orange" id="pane2">
     </div>
     <!--    Footer goes across whole screen, not specific to each pane-->
     <div class="footer">
@@ -221,7 +194,6 @@
             <a class="edit icon-pencil" title="Edit" href="x"></a>
             <a class="help icon-help disabled" title="Help"></a>
         </div>
-        <div class="messages">Any message(s) here</div>
     </div>
 </body>
 </html>
