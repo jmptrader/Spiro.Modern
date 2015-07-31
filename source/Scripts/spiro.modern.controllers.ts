@@ -16,6 +16,39 @@
 // tested 
 module Spiro.Angular.Modern {
 
+    app.controller("Pane1ObjectController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams,   handlers: IHandlers) => {
+        // get parm match type and call correct handler. 
+
+        var p1 = $routeParams["pane1"];
+
+        var rx = /(.*)-(.*)/;
+
+        var results = rx.exec(p1);
+
+
+
+
+        handlers.handlePaneObject($scope, results[1], results[2]);
+    });
+
+
+    app.controller("Pane2ObjectController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
+
+        var p2 = $routeParams["pane2"];
+
+
+        var rx = /(.*)-(.*)/;
+
+        var results = rx.exec(p2);
+
+
+
+
+        handlers.handlePaneObject($scope, results[1], results[2]);
+    });
+
+
+
 	// tested
     app.controller("BackgroundController", ($scope: ng.IScope, handlers: IHandlers) => {
 	    handlers.handleBackground($scope); 

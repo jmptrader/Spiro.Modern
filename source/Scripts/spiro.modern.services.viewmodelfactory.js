@@ -223,7 +223,7 @@ var Spiro;
                     propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
                     propertyViewModel.returnType = propertyRep.extensions().returnType;
                     propertyViewModel.format = propertyRep.extensions().format;
-                    propertyViewModel.href = propertyRep.isScalar() || propertyRep.detailsLink() == null ? "" : urlHelper.toPropertyUrl(propertyRep.detailsLink().href());
+                    propertyViewModel.href = propertyRep.isScalar() || propertyRep.detailsLink() == null ? "" : urlHelper.toNewAppUrl2(propertyRep.value().link().href());
                     propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
                     propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
                     if (propertyRep.attachmentLink() != null) {
@@ -371,7 +371,7 @@ var Spiro;
                 viewModelFactory.domainObjectViewModel = function (objectRep, save) {
                     var objectViewModel = new Modern.DomainObjectViewModel();
                     var isTransient = !!objectRep.persistLink();
-                    objectViewModel.href = urlHelper.toAppUrl(objectRep.getUrl());
+                    objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
                     objectViewModel.cancelEdit = isTransient ? "" : urlHelper.toAppUrl(objectRep.getUrl());
                     objectViewModel.color = color.toColorFromType(objectRep.domainType());
                     objectViewModel.doSave = save ? function () { return save(objectViewModel); } : function () { };

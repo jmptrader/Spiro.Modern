@@ -17,8 +17,11 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\partials\paneObjectObjectTemplate.html" />
+    <Content Include="Content\partials\paneObjectTemplate.html" />
     <Content Include="Temp - Restyling\object_object.html" />
     <Content Include="Temp - Restyling\object_actions_dialog.html" />
     <Content Include="Temp - Restyling\split_object_home.html" />
