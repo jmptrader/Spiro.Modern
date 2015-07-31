@@ -1,57 +1,55 @@
 ﻿/*Global*/
 
-.spiro, table, a { /*Need to override browser defaults*/
-    font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
-    color: white;
-    font-size: 11pt; /*Default*/
-    text-decoration: none; /*Override default underlining of links*/
-}
+    .spiro, table, a { /*Need to override browser defaults*/
+        font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+        color: white;
+        font-size: 11pt; /*Default*/
+        text-decoration: none; /*Override default underlining of links*/
+    }
 
     .spiro * {
         /*Specifies that padding & border are added INSIDE the specified width*/
         box-sizing: border-box;
     }
 
-html, #main, body, .main-pane {
-    height: 100%; /*fill the vertical space*/
-    background-color: black;
-    margin: 0px;
-}
+    html, #main, body, .main-pane {
+        height: 100%; /*fill the vertical space*/
+        background-color: black;
+        margin: 0px;
+    }
 
 /* Main-pane*/
-.main-pane {
-    float: left;
-    width: 100%;
-    padding-top: 20px;
-    padding-left: 20px;
-    overflow-y: auto;
-}
+    .main-pane {
+        float: left;
+        width: 100%;
+        padding-top: 20px;
+        padding-left: 20px;
+        overflow-y: auto;
+    }
 
     .main-pane.split {
         width: 50%;
-        overflow-x:auto;
+        overflow-x: auto;
     }
 
+/*Sub-panes - layout */
+    .actions, .main-column, .collections {
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
 
-
-/*Layout of sub-panes */
-.actions, .main-column, .collections {
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 20px;
-}
-
-.properties, .dialog {
-    width: 390px;
-    padding: 5px;
-    margin-bottom: 20px;
-}
+    .properties, .dialog {
+        width: 390px;
+        padding: 5px;
+        margin-bottom: 20px;
+    }
 
 /*Header*/
-.header {
-    margin-bottom: 20px;
-    overflow: hidden; /*Expands the div to size of all contents*/
-}
+    .header {
+        margin-bottom: 20px;
+        overflow: hidden; /*Expands the div to size of all contents*/
+    }
 
     .header .title, .header .type {
         position: relative;
@@ -65,55 +63,56 @@ html, #main, body, .main-pane {
         margin-right: 20px;
     }
 
-.menus {
-    margin-top: 20px;
-}
+/*Menus*/
+    .menus {
+        margin-top: 20px;
+    }
 
-.menu {
-    float: left;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
-    margin-right: 20px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
-    padding: 5px;
-}
+    .menu {
+        float: left;
+        padding: 5px;
+        margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
+        margin-right: 10px;
+        margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
+    }
 
     .menu:hover, .menu.selected {
-        outline-style: solid;
+        outline: solid;
         outline-width: 1px;
         outline-color: white;
     }
 
     .menu a {
-        font-size: 16pt;
+        font-size: 14pt;
     }
 
 /*Actions*/
-.action {
-    width: 150px;
-    padding: 2px 5px;
-    margin-bottom: 5px;
-    background-color: white;
-}
+    .action {
+        width: 150px;
+        padding: 2px 5px;
+        margin-bottom: 5px;
+        background-color: white;
+    }
 
     .action a {
         color: black;
     }
 
-.submenu .name {
-    float: none;
-    margin-bottom: 5px;
-}
+    .submenu .name {
+        float: none;
+        margin-bottom: 5px;
+    }
 
     .submenu .name a {
         font-size: 12pt;
     }
 
 /*Dialog*/
-.dialog {
-    overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
-    background-color: white;
-    color: black;
-}
+    .dialog {
+        overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
+        background-color: white;
+        color: black;
+    }
 
     .dialog .title {
         font-size: 12pt;
@@ -125,51 +124,51 @@ html, #main, body, .main-pane {
         float: right;
     }
 
-.parameter .name {
-    width: 145px; /*To align input box with reference fields*/
-}
+    .parameter .name {
+        width: 145px; /*To align input box with reference fields*/
+    }
 
 /*Properties*/
 
-.property {
-    overflow: hidden;
-}
+    .property {
+        overflow: hidden;
+    }
 
-    .property:not(:last-child), .list .reference:not(:last-child) {
+        .property:not(:last-child), .list .reference:not(:last-child) {
+            margin-bottom: 5px;
+        }
+
+    .name {
+        width: 150px;
+        padding-right: 5px;
+    }
+
+    .reference, .value, .details {
+        width: 230px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    input {
+        width: 230px;
+        padding-left: 5px;
         margin-bottom: 5px;
     }
 
-.name {
-    width: 150px;
-    padding-right: 5px;
-}
+    .name, .value, .property .reference {
+        float: left;
+    }
 
-.reference, .value, .details {
-    width: 230px;
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-input {
-    width: 230px;
-    padding-left: 5px;
-    margin-bottom: 5px;
-}
-
-.name, .value, .property .reference {
-    float: left;
-}
-
-
+/*TODO:  Review for consistent use of black & white */
 /*Hovering & active behaviour*/
 .reference:hover, .clickable-row:hover, input:hover {
-    outline-style: auto;
+    outline: auto;
     outline-width: 1px;
     outline-color: black;
 }
 
 .reference:active, .clickable-row:active, .menu:active {
-    outline-style: auto;
+    outline: auto;
     outline-width: 1px;
     outline-color: white;
 }
@@ -187,7 +186,18 @@ input {
         padding-left: 0px; /*Because it is a heading, so outdented*/
         float: left;
     }
+/*List*/
+.list .reference {
+    width: 390px;
+}
 
+td input {
+    width: 20px;
+}
+
+td.checkbox {
+        background-color:black; /*Because check-box only ever displayed on default background*/
+}
 
 /*Tables*/
 th, td {
