@@ -143,6 +143,16 @@
     <Content Include="Scripts\spiro.modern.services.urlhelper.js" />
     <Content Include="Scripts\spiro.modern.services.viewmodelfactory.js" />
     <Content Include="Scripts\spiro.modern.viewmodels.js" />
+    <Content Include="Temp - Restyling\partials\dialog.html" />
+    <Content Include="Temp - Restyling\partials\footer.html" />
+    <Content Include="Temp - Restyling\partials\home.html" />
+    <Content Include="Temp - Restyling\partials\object.html" />
+    <Content Include="Temp - Restyling\partials\query.html" />
+    <Content Include="Temp - Restyling\partials\singleHome.html" />
+    <Content Include="Temp - Restyling\partials\singleObject.html" />
+    <Content Include="Temp - Restyling\partials\singleQuery.html" />
+    <Content Include="Temp - Restyling\partials\splitHomeQuery.html" />
+    <Content Include="Temp - Restyling\partials\splitObjectObject.html" />
     <Content Include="Temp - Restyling\spiro-modern2.css" />
     <Content Include="SpiroReadMe.txt" />
     <Content Include="Tests\specs\contextService.js" />
