@@ -62,6 +62,11 @@ module Spiro.Angular {
     var transientObjectPageTemplate = getSvrPath() + "Content/partials/transientObjectPage.html";
     var errorPageTemplate = getSvrPath() + "Content/partials/errorPage.html";
 
+    var paneObjectTemplate = getSvrPath() + "Content/partials/paneObjectTemplate.html";
+    var paneObjectObjectTemplate = getSvrPath() + "Content/partials/paneObjectObjectTemplate.html";
+
+
+
     app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
             when("/services", {
@@ -84,6 +89,18 @@ module Spiro.Angular {
                 templateUrl: errorPageTemplate,
                 controller: "BackgroundController"
             }).
+
+            // new routing 
+            when("/object", {
+                templateUrl: paneObjectTemplate,
+                controller: "BackgroundController"
+            }).
+            when("/object/object", {
+                templateUrl: paneObjectObjectTemplate,
+                controller: "BackgroundController"
+            }).
+
+
             otherwise({
                 redirectTo: "/services"
             });

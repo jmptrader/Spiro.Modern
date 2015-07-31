@@ -157,7 +157,9 @@ var Spiro;
                         return repLoader.populate(target);
                     }).
                         then(function (object) {
-                        setNestedObject(object, $scope);
+                        //setNestedObject(object, $scope);
+                        var newurl = urlHelper.toNewAppUrl2(object.getUrl());
+                        $location.path(newurl);
                     }, function (error) {
                         setError(error);
                     });
@@ -262,6 +264,20 @@ var Spiro;
                 }; //tested
                 handlers.handleObject = function ($scope) {
                     context.getObject($routeParams.dt, $routeParams.id).
+                        then(function (object) {
+                        context.setNestedObject(null);
+                        $scope.object = viewModelFactory.domainObjectViewModel(object);
+                        $scope.objectTemplate = Angular.objectTemplate;
+                        $scope.actionTemplate = Angular.actionTemplate;
+                        $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
+                        // cache
+                        cacheRecentlyViewed(object);
+                    }, function (error) {
+                        setError(error);
+                    });
+                };
+                handlers.handlePaneObject = function ($scope, dt, id) {
+                    context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);
                         $scope.object = viewModelFactory.domainObjectViewModel(object);

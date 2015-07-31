@@ -32,6 +32,8 @@ module Spiro.Angular.Modern {
         handleEditObject($scope): void;
         handleTransientObject($scope): void;
         handleObject($scope): void;
+
+        handlePaneObject($scope, dt : string, id : string): void;
         handleAppBar($scope): void;
     }
 
@@ -199,7 +201,12 @@ module Spiro.Angular.Modern {
                     return repLoader.populate(target);
                 }).
                 then((object: DomainObjectRepresentation) => {
-                    setNestedObject(object, $scope);
+                    //setNestedObject(object, $scope);
+
+                    var newurl = urlHelper.toNewAppUrl2(object.getUrl());
+
+                    $location.path(newurl);
+
                 }, error => {
                     setError(error);
                 });
@@ -348,6 +355,27 @@ module Spiro.Angular.Modern {
                 });
 
         };
+
+        handlers.handlePaneObject = ($scope, dt : string, id : string) => {
+
+            context.getObject(dt, id).
+                then((object: DomainObjectRepresentation) => {
+                    context.setNestedObject(null);
+                    $scope.object = viewModelFactory.domainObjectViewModel(object);
+                    $scope.objectTemplate = objectTemplate;
+                    $scope.actionTemplate = actionTemplate;
+                    $scope.propertiesTemplate = viewPropertiesTemplate;
+
+                    // cache
+                    cacheRecentlyViewed(object);
+
+                }, error => {
+                    setError(error);
+                });
+
+        };
+
+
 
         // tested
         handlers.handleTransientObject = $scope => {

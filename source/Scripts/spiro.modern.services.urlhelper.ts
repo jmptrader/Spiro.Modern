@@ -23,6 +23,12 @@ module Spiro.Angular.Modern {
         actionParms(): string[];
         getOtherParms(excepts?: string[]): string;
         toAppUrl(href: string, toClose?: string[]): string;
+
+        toNewAppUrl(href: string, toClose?: string[]): string;
+        toNewAppUrl2(href: string): string;
+
+
+
         toActionUrl(href: string): string;
         toPropertyUrl(href: string): string;
         toCollectionUrl(href: string): string;
@@ -79,6 +85,27 @@ module Spiro.Angular.Modern {
 
             return (results && results.length > 2) ? `#/${results[1]}/${results[2]}${parms}` : "";
         }
+
+        helper.toNewAppUrl = function (href: string): string {
+            const urlRegex = /(objects|services)\/(.*)\/(.*)/;
+            const results = (urlRegex).exec(href);
+          
+
+            return (results && results.length > 2) ? `#/object?pane1=${results[2]}-${results[3]}` : "";            
+        }
+
+        helper.toNewAppUrl2 = function(href: string): string {
+            const urlRegex = /(objects|services)\/(.*)\/(.*)/;
+            const results = (urlRegex).exec(href);
+
+            var p1 = $routeParams["pane1"];
+
+          
+
+            return (results && results.length > 2) ? `#/object/object?pane1=${p1}&pane2=${results[2]}-${results[3]}` : "";
+        }
+
+
 
 
         helper.toActionUrl = function (href: string): string {

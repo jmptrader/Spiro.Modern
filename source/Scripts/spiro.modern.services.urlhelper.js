@@ -52,6 +52,17 @@ var Spiro;
                     }
                     return (results && results.length > 2) ? "#/" + results[1] + "/" + results[2] + parms : "";
                 };
+                helper.toNewAppUrl = function (href) {
+                    var urlRegex = /(objects|services)\/(.*)\/(.*)/;
+                    var results = (urlRegex).exec(href);
+                    return (results && results.length > 2) ? "#/object?pane1=" + results[2] + "-" + results[3] : "";
+                };
+                helper.toNewAppUrl2 = function (href) {
+                    var urlRegex = /(objects|services)\/(.*)\/(.*)/;
+                    var results = (urlRegex).exec(href);
+                    var p1 = $routeParams["pane1"];
+                    return (results && results.length > 2) ? "#/object/object?pane1=" + p1 + "&pane2=" + results[2] + "-" + results[3] : "";
+                };
                 helper.toActionUrl = function (href) {
                     var urlRegex = /(services|objects)\/([\w|\.]+(\/[\w|\.|-]+)?)\/actions\/([\w|\.]+)/;
                     var results = (urlRegex).exec(href);

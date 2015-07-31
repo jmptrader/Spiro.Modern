@@ -18,6 +18,19 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
+            Angular.app.controller("Pane1ObjectController", function ($scope, $routeParams, handlers) {
+                // get parm match type and call correct handler. 
+                var p1 = $routeParams["pane1"];
+                var rx = /(.*)-(.*)/;
+                var results = rx.exec(p1);
+                handlers.handlePaneObject($scope, results[1], results[2]);
+            });
+            Angular.app.controller("Pane2ObjectController", function ($scope, $routeParams, handlers) {
+                var p2 = $routeParams["pane2"];
+                var rx = /(.*)-(.*)/;
+                var results = rx.exec(p2);
+                handlers.handlePaneObject($scope, results[1], results[2]);
+            });
             // tested
             Angular.app.controller("BackgroundController", function ($scope, handlers) {
                 handlers.handleBackground($scope);
