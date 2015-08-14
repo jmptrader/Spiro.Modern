@@ -701,6 +701,7 @@ describe('handlers Service', function () {
             expect($scope.appBar).toBeDefined();
             expect($scope.appBar.goHome).toEqual("#/");
             expect($scope.appBar.template).toEqual("Content/partials/appbar.html");
+            expect($scope.appBar.footerTemplate).toEqual("Content/partials/footer.html");
             expect($scope.appBar.goBack).toBeDefined();
             expect($scope.appBar.goForward).toBeDefined();
         }

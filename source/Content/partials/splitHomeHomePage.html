@@ -10,8 +10,12 @@ KIND, either express or implied.See the License for the
 specific language governing permissions and limitations
 under the License.-->
 
-<div class="split" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
-    <div ng-controller="Pane1HomeController" ng-include="homeTemplate"></div>
-    <div ng-controller="Pane2HomeController" ng-include="homeTemplate"></div>
-    <div class="app-bar" ng-controller="AppBarController" ng-include="appBar.template"></div>
+<div class="background" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
+    <div id="pane1" class="split">
+        <div class="home" ng-controller="Pane1HomeController" ng-include="homeTemplate"></div>
+    </div>
+    <div id="pane2" class="split">
+        <div class="home" ng-controller="Pane2HomeController" ng-include="homeTemplate"></div>
+    </div>
+    <div class="footer" ng-controller="AppBarController" ng-include="appBar.footerTemplate"></div>
 </div>

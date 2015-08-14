@@ -200,6 +200,9 @@ var Spiro;
                         setError(error);
                     });
                 };
+                handlers.handleQuery = function ($scope) {
+                    //TODO:
+                };
                 // tested
                 handlers.handleService = function ($scope) {
                     context.getObject($routeParams.sid).
@@ -253,6 +256,7 @@ var Spiro;
                         navigation.forward();
                     });
                     $scope.appBar.template = Angular.appBarTemplate;
+                    $scope.appBar.footerTemplate = Angular.footerTemplate;
                     $scope.appBar.goHome = "#/";
                     $scope.appBar.goBack = function () {
                         navigation.back();

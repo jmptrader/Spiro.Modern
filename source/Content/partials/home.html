@@ -11,14 +11,14 @@ specific language governing permissions and limitations
 under the License.-->
 
 <div class="header">
-    <div class="title">{{services.title}}</div>
-    <div class="type"></div>
-    <div class="messages"></div>
-</div>
-<div class="properties-pane" ng-class="services.color">
-    <div class="service clickable-area" ng-class="service.color" ng-repeat="service in services.items">
-        <a href="{{service.href}}">
-            <span></span>{{service.title}}
-        </a>
+    <div class="title">Home</div>
+    <div class="menus">
+        <div class="menu clickable-area" ng-class="service.color" ng-repeat="service in services.items">
+            <a href="{{service.href}}">
+                <span></span>{{service.title}}
+            </a>
+        </div>
     </div>
 </div>
+<div class="actions" ng-include="actionsTemplate"></div>
+<div class="dialog" ng-include="dialogTemplate"></div>

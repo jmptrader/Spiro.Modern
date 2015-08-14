@@ -10,9 +10,12 @@ KIND, either express or implied.See the License for the
 specific language governing permissions and limitations
 under the License.-->
 
-<div class="background" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
-    <div class="single">
-        <div class="home" ng-controller="Pane1HomeController" ng-include="homeTemplate"></div>
-    </div>
-    <div class="footer" ng-controller="AppBarController" ng-include="appBar.footerTemplate"></div>
+
+<!--TODO -  define (currently still a copy of object)-->
+<div class="header">
+    <div class="title">{{object.title}}</div>
+    <div class="type"></div>
+    <div class="messages">{{object.message}}</div>
 </div>
+<div class="properties-pane" ng-include="propertiesTemplate"></div>
+<div class="actions-pane" ng-include="actionTemplate"></div>

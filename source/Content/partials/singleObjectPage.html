@@ -12,7 +12,7 @@ under the License.-->
 
 <div class="background" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
     <div class="single">
-        <div class="home" ng-controller="Pane1HomeController" ng-include="homeTemplate"></div>
+        <div class="object" ng-controller="Pane1ObjectController" ng-include="objectTemplate"></div>
     </div>
     <div class="footer" ng-controller="AppBarController" ng-include="appBar.footerTemplate"></div>
 </div>

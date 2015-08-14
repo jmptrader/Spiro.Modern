@@ -34,7 +34,6 @@ var Spiro;
         Angular.actionTemplate = getSvrPath() + "Content/partials/actions.html";
         Angular.errorTemplate = getSvrPath() + "Content/partials/error.html";
         Angular.appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
-        Angular.objectTemplate = getSvrPath() + "Content/partials/object.html";
         Angular.viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";
         Angular.editPropertiesTemplate = getSvrPath() + "Content/partials/editProperties.html";
         var servicesPageTemplate = getSvrPath() + "Content/partials/servicesPage.html";
@@ -42,21 +41,25 @@ var Spiro;
         var objectPageTemplate = getSvrPath() + "Content/partials/objectPage.html";
         var transientObjectPageTemplate = getSvrPath() + "Content/partials/transientObjectPage.html";
         var errorPageTemplate = getSvrPath() + "Content/partials/errorPage.html";
-        var paneObjectTemplate = getSvrPath() + "Content/partials/paneObjectTemplate.html";
-        var paneObjectObjectTemplate = getSvrPath() + "Content/partials/paneObjectObjectTemplate.html";
+        //All Modern2 templates below:
         var singleHomePageTemplate = getSvrPath() + "Content/partials/singleHomePage.html";
+        var singleObjectPageTemplate = getSvrPath() + "Content/partials/singleObjectPage.html";
+        var singleQueryPageTemplate = getSvrPath() + "Content/partials/singleQueryPage.html";
         var splitHomeHomePageTemplate = getSvrPath() + "Content/partials/splitHomeHomePage.html";
+        var splitHomeObjectPageTemplate = getSvrPath() + "Content/partials/splitHomeObjectPage.html";
+        var splitHomeQueryPageTemplate = getSvrPath() + "Content/partials/splitHomeQueryPage.html";
+        var splitObjectHomePageTemplate = getSvrPath() + "Content/partials/splitObjectHomePage.html";
+        var splitObjectObjectPageTemplate = getSvrPath() + "Content/partials/splitObjectObjectPage.html";
+        var splitObjectQueryPageTemplate = getSvrPath() + "Content/partials/splitObjectQueryPage.html";
+        var splitQueryHomePageTemplate = getSvrPath() + "Content/partials/splitQueryHomePage.html";
+        var splitQueryObjectPageTemplate = getSvrPath() + "Content/partials/splitQueryObjectPage.html";
+        var splitQueryQueryPageTemplate = getSvrPath() + "Content/partials/splitQueryQueryPage.html";
         Angular.homeTemplate = getSvrPath() + "Content/partials/home.html";
+        Angular.objectTemplate = getSvrPath() + "Content/partials/object.html";
+        Angular.queryTemplate = getSvrPath() + "Content/partials/query.html";
+        Angular.footerTemplate = getSvrPath() + "Content/partials/footer.html";
         Angular.app.config(function ($routeProvider) {
             $routeProvider.
-                when("/home", {
-                templateUrl: singleHomePageTemplate,
-                controller: "BackgroundController"
-            }).
-                when("/home/home", {
-                templateUrl: splitHomeHomePageTemplate,
-                controller: "BackgroundController"
-            }).
                 when("/services", {
                 templateUrl: servicesPageTemplate,
                 controller: "BackgroundController"
@@ -77,15 +80,56 @@ var Spiro;
                 templateUrl: errorPageTemplate,
                 controller: "BackgroundController"
             }).
-                // new routing 
+                //Modern2 Urls below:
+                when("/home", {
+                templateUrl: singleHomePageTemplate,
+                controller: "BackgroundController"
+            }).
                 when("/object", {
-                templateUrl: paneObjectTemplate,
+                templateUrl: singleObjectPageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/query", {
+                templateUrl: singleQueryPageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/home/home", {
+                templateUrl: splitHomeHomePageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/home/object", {
+                templateUrl: splitHomeObjectPageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/home/query", {
+                templateUrl: splitHomeQueryPageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/object/home", {
+                templateUrl: splitObjectHomePageTemplate,
                 controller: "BackgroundController"
             }).
                 when("/object/object", {
-                templateUrl: paneObjectObjectTemplate,
+                templateUrl: splitObjectObjectPageTemplate,
                 controller: "BackgroundController"
             }).
+                when("/object/query", {
+                templateUrl: splitObjectQueryPageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/query/home", {
+                templateUrl: splitQueryHomePageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/query/object", {
+                templateUrl: splitQueryObjectPageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/query/query", {
+                templateUrl: splitQueryQueryPageTemplate,
+                controller: "BackgroundController"
+            }).
+                //TODO: change default to /home when Modern2 is complete
                 otherwise({
                 redirectTo: "/services"
             });

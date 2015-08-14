@@ -31,13 +31,14 @@ module Spiro.Angular.Modern {
         handleResult($scope): void;
         handleEditObject($scope): void;
         handleTransientObject($scope): void;
-        handleObject($scope): void;
+
 
         handlePaneObject($scope, dt : string, id : string): void;
         handleAppBar($scope): void;
 
         handleHome($scope): void;
-
+        handleObject($scope): void;
+        handleQuery($scope): void;
     }
 
     app.service("handlers", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color: IColor, repHandlers: IRepHandlers, navigation: INavigation) {
@@ -256,6 +257,10 @@ module Spiro.Angular.Modern {
                 });
         };
 
+        handlers.handleQuery = $scope => {
+            //TODO:
+        };
+
         // tested
         handlers.handleService = $scope => {
             context.getObject($routeParams.sid).
@@ -321,6 +326,8 @@ module Spiro.Angular.Modern {
             });
 
             $scope.appBar.template = appBarTemplate;
+
+            $scope.appBar.footerTemplate = footerTemplate;
 
             $scope.appBar.goHome = "#/";
 

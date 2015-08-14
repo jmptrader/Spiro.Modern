@@ -20,8 +20,19 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Content\partials\paneObjectObjectTemplate.html" />
-    <Content Include="Content\partials\paneObjectTemplate.html" />
+    <Content Include="Content\partials\footer.html" />
+    <Content Include="Content\partials\query.html" />
+    <Content Include="Content\partials\singleQueryPage.html" />
+    <Content Include="Content\partials\splitHomeQuerytPage.html" />
+    <Content Include="Content\partials\splitObjectQueryPage.html" />
+    <Content Include="Content\partials\splitQueryHomePage.html" />
+    <Content Include="Content\partials\splitQueryObject.html" />
+    <Content Include="Content\partials\splitQueryQueryPage.html" />
+    <Content Include="Content\partials\splitObjectHomePage.html" />
+    <Content Include="Content\partials\splitHomeObjectPage.html" />
+    <Content Include="Content\partials\splitObjectObjectPage.html" />
+    <Content Include="Content\partials\singleObjectPage.html" />
+    <Content Include="Content\spiro-modern2.css" />
     <Content Include="Temp - Restyling\partials\home.html" />
     <Content Include="Temp - Restyling\partials\query.html" />
     <Content Include="Temp - Restyling\partials\singleHome.html" />
