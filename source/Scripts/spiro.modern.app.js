@@ -44,8 +44,19 @@ var Spiro;
         var errorPageTemplate = getSvrPath() + "Content/partials/errorPage.html";
         var paneObjectTemplate = getSvrPath() + "Content/partials/paneObjectTemplate.html";
         var paneObjectObjectTemplate = getSvrPath() + "Content/partials/paneObjectObjectTemplate.html";
+        var singleHomePageTemplate = getSvrPath() + "Content/partials/singleHomePage.html";
+        var splitHomeHomePageTemplate = getSvrPath() + "Content/partials/splitHomeHomePage.html";
+        Angular.homeTemplate = getSvrPath() + "Content/partials/home.html";
         Angular.app.config(function ($routeProvider) {
             $routeProvider.
+                when("/home", {
+                templateUrl: singleHomePageTemplate,
+                controller: "BackgroundController"
+            }).
+                when("/home/home", {
+                templateUrl: splitHomeHomePageTemplate,
+                controller: "BackgroundController"
+            }).
                 when("/services", {
                 templateUrl: servicesPageTemplate,
                 controller: "BackgroundController"

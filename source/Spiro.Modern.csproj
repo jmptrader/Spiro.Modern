@@ -32,6 +32,10 @@
     <Content Include="Temp - Restyling\singleQuery.html" />
     <Content Include="Temp - Restyling\spiro-modern2.css" />
     <Content Include="Temp - Restyling\splitHomeQuery_list.html" />
+    <Content Include="Content\partials\home.html" />
+    <Content Include="Content\partials\splitHomeHomePage.html" />
+    <Content Include="Content\partials\singleHomePage.html" />
+    <Content Include="Temp - Restyling\home_collection_list.html" />
     <Content Include="Temp - Restyling\home_collection_table.html" />
     <Content Include="Temp - Restyling\home_object.html" />
     <Content Include="Temp - Restyling\splitObjectHome.html" />

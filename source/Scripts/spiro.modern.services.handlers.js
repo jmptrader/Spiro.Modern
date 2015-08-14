@@ -189,6 +189,17 @@ var Spiro;
                         setError(error);
                     });
                 };
+                handlers.handleHome = function ($scope) {
+                    context.getServices().
+                        then(function (services) {
+                        $scope.services = viewModelFactory.servicesViewModel(services);
+                        $scope.homeTemplate = Angular.homeTemplate;
+                        context.setObject(null);
+                        context.setNestedObject(null);
+                    }, function (error) {
+                        setError(error);
+                    });
+                };
                 // tested
                 handlers.handleService = function ($scope) {
                     context.getObject($routeParams.sid).

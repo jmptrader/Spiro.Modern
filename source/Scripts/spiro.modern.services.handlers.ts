@@ -35,6 +35,9 @@ module Spiro.Angular.Modern {
 
         handlePaneObject($scope, dt : string, id : string): void;
         handleAppBar($scope): void;
+
+        handleHome($scope): void;
+
     }
 
     app.service("handlers", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color: IColor, repHandlers: IRepHandlers, navigation: INavigation) {
@@ -234,6 +237,18 @@ module Spiro.Angular.Modern {
                 then((services: DomainServicesRepresentation) => {
                     $scope.services = viewModelFactory.servicesViewModel(services);
                     $scope.servicesTemplate = servicesTemplate;
+                    context.setObject(null);
+                    context.setNestedObject(null);
+                }, error => {
+                    setError(error);
+                });
+        };
+
+        handlers.handleHome = $scope => {
+            context.getServices().
+                then((services: DomainServicesRepresentation) => {
+                    $scope.services = viewModelFactory.servicesViewModel(services);
+                    $scope.homeTemplate = homeTemplate;
                     context.setObject(null);
                     context.setNestedObject(null);
                 }, error => {

@@ -65,10 +65,21 @@ module Spiro.Angular {
     var paneObjectTemplate = getSvrPath() + "Content/partials/paneObjectTemplate.html";
     var paneObjectObjectTemplate = getSvrPath() + "Content/partials/paneObjectObjectTemplate.html";
 
+    var singleHomePageTemplate = getSvrPath() + "Content/partials/singleHomePage.html";
+    var splitHomeHomePageTemplate = getSvrPath() + "Content/partials/splitHomeHomePage.html";
 
+    export var homeTemplate = getSvrPath() + "Content/partials/home.html";
 
     app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
+            when("/home", {
+                templateUrl: singleHomePageTemplate,
+                controller: "BackgroundController"
+            }).
+            when("/home/home", {
+                templateUrl: splitHomeHomePageTemplate,
+                controller: "BackgroundController"
+            }).
             when("/services", {
                 templateUrl: servicesPageTemplate,
                 controller: "BackgroundController"

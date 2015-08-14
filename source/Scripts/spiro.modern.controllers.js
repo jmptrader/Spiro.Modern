@@ -25,6 +25,14 @@ var Spiro;
                 var results = rx.exec(p1);
                 handlers.handlePaneObject($scope, results[1], results[2]);
             });
+            Angular.app.controller("Pane1HomeController", function ($scope, $routeParams, handlers) {
+                // get parm match type and call correct handler.       
+                handlers.handleHome($scope);
+            });
+            Angular.app.controller("Pane2HomeController", function ($scope, $routeParams, handlers) {
+                // get parm match type and call correct handler. 
+                handlers.handleHome($scope);
+            });
             Angular.app.controller("Pane2ObjectController", function ($scope, $routeParams, handlers) {
                 var p2 = $routeParams["pane2"];
                 var rx = /(.*)-(.*)/;
