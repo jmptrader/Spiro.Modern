@@ -160,7 +160,7 @@ describe('viewModelFactory Service', () => {
 
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, $routeParams) => {
                 $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), () => {});
+                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionMember(rawAction, null), () => {});
             }));
 
             it('creates a dialog view model', () => {

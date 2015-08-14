@@ -23,7 +23,7 @@ module Spiro.Angular.Modern{
         itemViewModel(linkRep: Link, parentHref: string): ItemViewModel;
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember): ActionViewModel;
-        dialogViewModel(actionRep: ActionRepresentation, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
+        dialogViewModel(actionRep: ActionMember, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
         collectionViewModel(collection: any, populateItems?: boolean): CollectionViewModel;
         collectionViewModel(collection: CollectionMember, populateItems?: boolean): CollectionViewModel;
@@ -247,17 +247,17 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.dialogViewModel = (actionRep: ActionRepresentation, invoke: (dvm: DialogViewModel) => void) => {
+        viewModelFactory.dialogViewModel = (actionMember: ActionMember, invoke: (dvm: DialogViewModel) => void) => {
             var dialogViewModel = new DialogViewModel();
-            var parameters = actionRep.parameters();
+            var parameters = actionMember.parameters();
             var parms = urlHelper.actionParms();
 
-            dialogViewModel.title = actionRep.extensions().friendlyName;
-            dialogViewModel.isQuery = actionRep.invokeLink().method() === "GET";
+            dialogViewModel.title = actionMember.extensions().friendlyName;
+            dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
 
             dialogViewModel.message = "";
 
-            dialogViewModel.close = urlHelper.toAppUrl(actionRep.upLink().href(), ["action"]);
+            dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
 
             var i = 0;
             dialogViewModel.parameters = _.map(parameters, (parm, id?) => { return viewModelFactory.parameterViewModel(parm, id, parms[i++]); });
@@ -273,6 +273,7 @@ module Spiro.Angular.Modern{
 
             return dialogViewModel;
         };
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string) => {
             var propertyViewModel = new PropertyViewModel();
             propertyViewModel.title = propertyRep.extensions().friendlyName;

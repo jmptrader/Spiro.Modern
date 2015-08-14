@@ -196,14 +196,14 @@ var Spiro;
                     return actionViewModel;
                 };
                 // tested
-                viewModelFactory.dialogViewModel = function (actionRep, invoke) {
+                viewModelFactory.dialogViewModel = function (actionMember, invoke) {
                     var dialogViewModel = new Modern.DialogViewModel();
-                    var parameters = actionRep.parameters();
+                    var parameters = actionMember.parameters();
                     var parms = urlHelper.actionParms();
-                    dialogViewModel.title = actionRep.extensions().friendlyName;
-                    dialogViewModel.isQuery = actionRep.invokeLink().method() === "GET";
+                    dialogViewModel.title = actionMember.extensions().friendlyName;
+                    dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
                     dialogViewModel.message = "";
-                    dialogViewModel.close = urlHelper.toAppUrl(actionRep.upLink().href(), ["action"]);
+                    dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
                     var i = 0;
                     dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, parms[i++]); });
                     dialogViewModel.doShow = function () {

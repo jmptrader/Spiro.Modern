@@ -103,11 +103,8 @@ var Spiro;
                 handlers.handleActionDialog = function ($scope) {
                     context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
                         then(function (object) {
-                        var actionTarget = object.actionMember(urlHelper.action()).getDetails();
+                        var action = object.actionMember(urlHelper.action());
                         cacheRecentlyViewed(object);
-                        return repLoader.populate(actionTarget);
-                    }).
-                        then(function (action) {
                         if (action.extensions().hasParams) {
                             $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, $scope, action));
                             $scope.dialogTemplate = Angular.dialogTemplate;
@@ -127,10 +124,6 @@ var Spiro;
                             delay.reject();
                             return delay.promise;
                         }
-                        var actionTarget = action.getDetails();
-                        return repLoader.populate(actionTarget);
-                    }).
-                        then(function (action) {
                         var result = action.getInvoke();
                         return repLoader.populate(result, true);
                     }).
@@ -142,7 +135,8 @@ var Spiro;
                         }
                         // otherwise just action with parms 
                     });
-                }; // tested
+                };
+                // tested
                 function setNestedObject(object, $scope) {
                     $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
                     $scope.nestedTemplate = Angular.nestedObjectTemplate;

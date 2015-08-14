@@ -145,12 +145,9 @@ module Spiro.Angular.Modern {
 
             context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
-                    var actionTarget = object.actionMember(urlHelper.action()).getDetails();
+                    var action = object.actionMember(urlHelper.action());
                     cacheRecentlyViewed(object);
 
-                    return repLoader.populate(actionTarget);
-                }).
-                then((action: ActionRepresentation) => {
                     if (action.extensions().hasParams) {
                         $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, $scope, action));
                         $scope.dialogTemplate = dialogTemplate;
@@ -173,10 +170,6 @@ module Spiro.Angular.Modern {
                         delay.reject();
                         return delay.promise;
                     }
-                    var actionTarget = action.getDetails();
-                    return repLoader.populate(actionTarget);
-                }).
-                then((action: ActionRepresentation) => {
                     var result = action.getInvoke();
                     return repLoader.populate(result, true);
                 }).
@@ -188,7 +181,9 @@ module Spiro.Angular.Modern {
                     }
                     // otherwise just action with parms 
                 });
-        }; // tested
+        };
+        
+         // tested
         function setNestedObject(object: DomainObjectRepresentation, $scope) {
             $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
             $scope.nestedTemplate = nestedObjectTemplate;
