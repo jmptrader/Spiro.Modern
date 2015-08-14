@@ -22,15 +22,25 @@
   <ItemGroup>
     <Content Include="Content\partials\paneObjectObjectTemplate.html" />
     <Content Include="Content\partials\paneObjectTemplate.html" />
-    <Content Include="Temp - Restyling\home_collection_list.html" />
+    <Content Include="Temp - Restyling\partials\home.html" />
+    <Content Include="Temp - Restyling\partials\query.html" />
+    <Content Include="Temp - Restyling\partials\singleHome.html" />
+    <Content Include="Temp - Restyling\partials\singleObject.html" />
+    <Content Include="Temp - Restyling\partials\singleQuery.html" />
+    <Content Include="Temp - Restyling\partials\splitHomeQuery.html" />
+    <Content Include="Temp - Restyling\partials\splitObjectObject.html" />
+    <Content Include="Temp - Restyling\singleQuery.html" />
+    <Content Include="Temp - Restyling\spiro-modern2.css" />
+    <Content Include="Temp - Restyling\splitHomeQuery_list.html" />
     <Content Include="Temp - Restyling\home_collection_table.html" />
     <Content Include="Temp - Restyling\home_object.html" />
-    <Content Include="Temp - Restyling\object_home.html" />
-    <Content Include="Temp - Restyling\object_object.html" />
-    <Content Include="Temp - Restyling\object_actions_dialog.html" />
-    <Content Include="Temp - Restyling\home_with_dialog.html" />
+    <Content Include="Temp - Restyling\splitObjectHome.html" />
+    <Content Include="Temp - Restyling\splitObjectObject.html" />
+    <Content Include="Temp - Restyling\singleObject.html" />
+    <Content Include="Temp - Restyling\singleObject_actions_dialog_collections.html" />
+    <Content Include="Temp - Restyling\singleHome_dialog.html" />
     <Content Include="Temp - Restyling\home_selected_menu.html" />
-    <Content Include="Temp - Restyling\home.html" />
+    <Content Include="Temp - Restyling\singleHome.html" />
     <Content Include="Temp - Restyling\Example.html" />
     <Content Include="Content\partials\actions.html" />
     <Content Include="Content\partials\appbar.html" />
@@ -143,18 +153,8 @@
     <Content Include="Scripts\spiro.modern.services.urlhelper.js" />
     <Content Include="Scripts\spiro.modern.services.viewmodelfactory.js" />
     <Content Include="Scripts\spiro.modern.viewmodels.js" />
-    <Content Include="Temp - Restyling\partials\dialog.html" />
-    <Content Include="Temp - Restyling\partials\footer.html" />
-    <Content Include="Temp - Restyling\partials\home.html" />
-    <Content Include="Temp - Restyling\partials\object.html" />
-    <Content Include="Temp - Restyling\partials\query.html" />
-    <Content Include="Temp - Restyling\partials\singleHome.html" />
-    <Content Include="Temp - Restyling\partials\singleObject.html" />
-    <Content Include="Temp - Restyling\partials\singleQuery.html" />
-    <Content Include="Temp - Restyling\partials\splitHomeQuery.html" />
-    <Content Include="Temp - Restyling\partials\splitObjectObject.html" />
-    <Content Include="Temp - Restyling\spiro-modern2.css" />
     <Content Include="SpiroReadMe.txt" />
+    <Content Include="Temp - Restyling\spiro-modern.css" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
@@ -241,9 +241,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>cd  $(SolutionDir)packages\Spiro.Models*\content\Scripts
-xcopy /Y *  $(SolutionDir)Scripts
-cd  $(SolutionDir)packages\Spiro.Angular*\content\Scripts
-xcopy  /Y *  $(SolutionDir)Scripts</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
