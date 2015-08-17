@@ -33,13 +33,6 @@
     <Content Include="Content\partials\splitObjectObjectPage.html" />
     <Content Include="Content\partials\singleObjectPage.html" />
     <Content Include="Content\spiro-modern2.css" />
-    <Content Include="Temp - Restyling\partials\home.html" />
-    <Content Include="Temp - Restyling\partials\query.html" />
-    <Content Include="Temp - Restyling\partials\singleHome.html" />
-    <Content Include="Temp - Restyling\partials\singleObject.html" />
-    <Content Include="Temp - Restyling\partials\singleQuery.html" />
-    <Content Include="Temp - Restyling\partials\splitHomeQuery.html" />
-    <Content Include="Temp - Restyling\partials\splitObjectObject.html" />
     <Content Include="Temp - Restyling\singleQuery.html" />
     <Content Include="Temp - Restyling\spiro-modern2.css" />
     <Content Include="Temp - Restyling\splitHomeQuery_list.html" />
@@ -148,7 +141,6 @@
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
     <Content Include="SpiroReadMe.txt" />
-    <Content Include="Temp - Restyling\spiro-modern.css" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
@@ -178,6 +170,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Temp - Restyling\SpiroUrls.docx" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
