@@ -33,20 +33,12 @@
     <Content Include="Content\partials\splitObjectObjectPage.html" />
     <Content Include="Content\partials\singleObjectPage.html" />
     <Content Include="Content\spiro-modern2.css" />
-    <Content Include="Temp - Restyling\partials\home.html" />
-    <Content Include="Temp - Restyling\partials\query.html" />
-    <Content Include="Temp - Restyling\partials\singleHome.html" />
-    <Content Include="Temp - Restyling\partials\singleObject.html" />
-    <Content Include="Temp - Restyling\partials\singleQuery.html" />
-    <Content Include="Temp - Restyling\partials\splitHomeQuery.html" />
-    <Content Include="Temp - Restyling\partials\splitObjectObject.html" />
     <Content Include="Temp - Restyling\singleQuery.html" />
     <Content Include="Temp - Restyling\spiro-modern2.css" />
     <Content Include="Temp - Restyling\splitHomeQuery_list.html" />
     <Content Include="Content\partials\home.html" />
     <Content Include="Content\partials\splitHomeHomePage.html" />
     <Content Include="Content\partials\singleHomePage.html" />
-    <Content Include="Temp - Restyling\home_collection_list.html" />
     <Content Include="Temp - Restyling\home_collection_table.html" />
     <Content Include="Temp - Restyling\home_object.html" />
     <Content Include="Temp - Restyling\splitObjectHome.html" />
@@ -148,28 +140,7 @@
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
-    <Content Include="Scripts\spiro.angular.services.color.js" />
-    <Content Include="Scripts\spiro.angular.services.loaderwithtransform.js" />
-    <Content Include="Scripts\spiro.angular.services.mask.js" />
-    <Content Include="Scripts\spiro.angular.services.representationloader.js" />
-    <Content Include="Scripts\spiro.angular.services.transformstrategy.js" />
-    <Content Include="Scripts\spiro.config.js" />
-    <Content Include="Scripts\spiro.models.helpers.js" />
-    <Content Include="Scripts\spiro.models.js" />
-    <Content Include="Scripts\spiro.models.shims.js" />
-    <Content Include="Scripts\spiro.modern.app.js" />
-    <Content Include="Scripts\spiro.modern.controllers.js" />
-    <Content Include="Scripts\spiro.modern.directives.js" />
-    <Content Include="Scripts\spiro.modern.services.context.js" />
-    <Content Include="Scripts\spiro.modern.services.handlers.js" />
-    <Content Include="Scripts\spiro.modern.services.navigation.browser.js" />
-    <Content Include="Scripts\spiro.modern.services.navigation.simple.js" />
-    <Content Include="Scripts\spiro.modern.services.representationhandlers.js" />
-    <Content Include="Scripts\spiro.modern.services.urlhelper.js" />
-    <Content Include="Scripts\spiro.modern.services.viewmodelfactory.js" />
-    <Content Include="Scripts\spiro.modern.viewmodels.js" />
     <Content Include="SpiroReadMe.txt" />
-    <Content Include="Temp - Restyling\spiro-modern.css" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
@@ -199,6 +170,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Temp - Restyling\SpiroUrls.docx" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
