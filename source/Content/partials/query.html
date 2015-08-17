@@ -12,10 +12,12 @@ under the License.-->
 
 
 <!--TODO -  define (currently still a copy of object)-->
-<div class="header">
-    <div class="title">{{object.title}}</div>
-    <div class="type"></div>
-    <div class="messages">{{object.message}}</div>
+<div class="query">
+    <div class="header">
+        <div class="title">{{object.title}}</div>
+        <div class="type"></div>
+        <div class="messages">{{object.message}}</div>
+    </div>
+    <div class="properties-pane" ng-include="propertiesTemplate"></div>
+    <div class="actions-pane" ng-include="actionTemplate"></div>
 </div>
-<div class="properties-pane" ng-include="propertiesTemplate"></div>
-<div class="actions-pane" ng-include="actionTemplate"></div>
