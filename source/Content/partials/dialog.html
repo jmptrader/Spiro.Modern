@@ -18,10 +18,10 @@ under the License.-->
     <form>
         <div class='parameters'>
             <div class='parameter' id="{{parameter.argId}}" ng-repeat="parameter in dialog.parameters" ng-switch="parameter.type">
-                <div class='parameter-name'>{{parameter.title}}</div>
+                <div class='name'>{{parameter.title}}</div>
                 
                 <div ng-switch-when="ref">
-                    <div class='parameter-value input-control text' ng-switch="parameter.hasChoices">
+                    <div class='value input-control text' ng-switch="parameter.hasChoices">
                      
                         <input type='hidden' value='{{parameter.reference}}' ng-model="parameter.reference" />
                         
@@ -44,7 +44,7 @@ under the License.-->
                 </div>
                        
                 <div ng-switch-when="scalar">
-                    <div class='parameter-value input-control text' ng-switch="parameter.hasChoices">
+                    <div class='value input-control text' ng-switch="parameter.hasChoices">
                                                                     
                         <div ng-switch-when="false"  ng-switch="parameter.hasConditionalChoices">
 

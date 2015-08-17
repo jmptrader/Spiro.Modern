@@ -34,7 +34,7 @@
     <Content Include="Content\partials\singleObjectPage.html" />
     <Content Include="Content\spiro-modern2.css" />
     <Content Include="Temp - Restyling\singleQuery.html" />
-    <Content Include="Temp - Restyling\spiro-modern2.css" />
+    <Content Include="Temp - Restyling\spiro-modern.css" />
     <Content Include="Temp - Restyling\splitHomeQuery_list.html" />
     <Content Include="Content\partials\home.html" />
     <Content Include="Content\partials\splitHomeHomePage.html" />

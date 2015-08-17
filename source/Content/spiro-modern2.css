@@ -1,9 +1,10 @@
 ﻿/*Global*/
 
     .spiro, table, a { /*Need to override browser defaults*/
-        font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+        font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
         color: white;
         font-size: 11pt; /*Default*/
+        font-weight: 100;
         text-decoration: none; /*Override default underlining of links*/
     }
 
@@ -100,6 +101,7 @@
 
     .action a {
         color: black;
+        font-weight: bolder; /*Because black on white light looks too faint*/
     }
 
     .submenu .name {
@@ -116,6 +118,7 @@
         overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
         background-color: white;
         color: black;
+        font-weight: bolder;
     }
 
     .dialog .title {
@@ -124,7 +127,7 @@
     }
 
     .dialog .icon-cancel {
-        color: #253836;
+        color: black;
         float: right;
     }
 
@@ -415,6 +418,7 @@ th, td {
 input[type=button],
 input[type=reset],
 input[type=submit] {
+    margin-left:5px;
     margin-top: 10px;
     display: inline-block;
     padding: 4px 12px;
@@ -425,5 +429,5 @@ input[type=submit] {
     width: auto;
     *zoom: 1;
     color: white;
-    background-color: #25383c;
+    background-color: black;
 }
