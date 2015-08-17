@@ -24,8 +24,9 @@ module Spiro.Angular.Modern {
         // get parm match type and call correct handler.     
         
         var p1 = $routeParams["menu1"];  
+        var p2 = $routeParams["dialog1"];  
 
-        handlers.handleHome($scope, p1);
+        handlers.handleHome($scope, p1, p2);
     });
 
     app.controller("Pane2HomeController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {

@@ -36,7 +36,7 @@ module Spiro.Angular.Modern {
         handlePaneObject($scope, dt : string, id : string): void;
         handleAppBar($scope): void;
 
-        handleHome($scope, currentMenu? : string): void;
+        handleHome($scope, currentMenu? : string, currentDialog? : string): void;
         handleObject($scope): void;
         handleQuery($scope): void;
     }
@@ -254,7 +254,7 @@ module Spiro.Angular.Modern {
         };
 
 
-        handlers.handleHome = ($scope, currentMenu: string) => {
+        handlers.handleHome = ($scope, currentMenu? : string, currentDialog? : string) => {
 
             //TODO DRY THIS !!!
 
@@ -274,7 +274,15 @@ module Spiro.Angular.Modern {
                 context.getMenu(currentMenu).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        $scope.actions = { items: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am)) }
+                        var actions  = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id)) }
+                        $scope.actions = actions;
+
+                        if (currentDialog) {
+                            $scope.dialogTemplate = dialogTemplate;
+                            var action = menu.actionMember(currentDialog);
+                            $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, $scope, action));
+                        }
+
                     }, error => {
                         setError(error);
                     });
@@ -292,6 +300,11 @@ module Spiro.Angular.Modern {
                         setError(error);
                     });
             }
+
+            if (currentDialog) {
+                
+            }
+
 
         };
 

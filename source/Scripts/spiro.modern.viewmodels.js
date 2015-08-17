@@ -159,6 +159,7 @@ var Spiro;
             var ActionViewModel = (function () {
                 function ActionViewModel() {
                 }
+                ActionViewModel.prototype.doInvoke = function () { };
                 return ActionViewModel;
             })();
             Modern.ActionViewModel = ActionViewModel;

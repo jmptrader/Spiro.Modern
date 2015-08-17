@@ -189,10 +189,18 @@ var Spiro;
                     return parmViewModel;
                 };
                 // tested
-                viewModelFactory.actionViewModel = function (actionRep) {
+                viewModelFactory.actionViewModel = function (actionRep, id) {
                     var actionViewModel = new Modern.ActionViewModel();
                     actionViewModel.title = actionRep.extensions().friendlyName;
                     actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
+                    if (actionRep.extensions().hasParams) {
+                        actionViewModel.doInvoke = function () {
+                            // show the dialog 
+                            // todo keep the menu !!
+                            // hack 
+                            $location.search({ dialog1: id, menu1: urlHelper.getMenu() });
+                        };
+                    }
                     return actionViewModel;
                 };
                 // tested
@@ -369,7 +377,7 @@ var Spiro;
                     var actions = serviceRep.actionMembers();
                     serviceViewModel.serviceId = serviceRep.serviceId();
                     serviceViewModel.title = serviceRep.title();
-                    serviceViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action); });
+                    serviceViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id); });
                     serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
                     serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
                     return serviceViewModel;
@@ -390,7 +398,7 @@ var Spiro;
                     objectViewModel.message = "";
                     objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id); });
                     objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection); });
-                    objectViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action); });
+                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id); });
                     return objectViewModel;
                 };
             });

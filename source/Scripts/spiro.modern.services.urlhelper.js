@@ -47,6 +47,11 @@ var Spiro;
                     var results = (urlRegex).exec(href);
                     return "#/home?menu1=" + results[2];
                 }
+                helper.toDialogUrl = function (href, action) {
+                    var urlRegex = /(menus)\/(.*)/;
+                    var results = (urlRegex).exec(href);
+                    return href + "&dialog1=" + action;
+                };
                 helper.toAppUrl = function (href, toClose) {
                     // temp kludge 
                     if (href.indexOf("menus") > -1) {
@@ -121,6 +126,10 @@ var Spiro;
                         actionParm = getActionParm();
                     }
                     return resultParm + actionParm;
+                };
+                helper.getMenu = function () {
+                    var mp = $routeParams["menu1"];
+                    return mp;
                 };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));

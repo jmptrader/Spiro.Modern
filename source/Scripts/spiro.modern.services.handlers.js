@@ -195,7 +195,7 @@ var Spiro;
                     });
                 }
                 ;
-                handlers.handleHome = function ($scope, currentMenu) {
+                handlers.handleHome = function ($scope, currentMenu, currentDialog) {
                     //TODO DRY THIS !!!
                     if (currentMenu) {
                         context.getMenus().
@@ -210,7 +210,13 @@ var Spiro;
                         context.getMenu(currentMenu).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
-                            $scope.actions = { items: _.map(menu.actionMembers(), function (am) { return viewModelFactory.actionViewModel(am); }) };
+                            var actions = { items: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id); }) };
+                            $scope.actions = actions;
+                            if (currentDialog) {
+                                $scope.dialogTemplate = Angular.dialogTemplate;
+                                var action = menu.actionMember(currentDialog);
+                                $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, $scope, action));
+                            }
                         }, function (error) {
                             setError(error);
                         });
@@ -225,6 +231,8 @@ var Spiro;
                         }, function (error) {
                             setError(error);
                         });
+                    }
+                    if (currentDialog) {
                     }
                 };
                 handlers.handleQuery = function ($scope) {

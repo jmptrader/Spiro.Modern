@@ -28,7 +28,6 @@ module Spiro.Angular.Modern {
         toNewAppUrl2(href: string): string;
 
 
-
         toActionUrl(href: string): string;
         toPropertyUrl(href: string): string;
         toCollectionUrl(href: string): string;
@@ -37,9 +36,13 @@ module Spiro.Angular.Modern {
         toObjectPath(obj: DomainObjectRepresentation): string;
         toTransientObjectPath(obj: DomainObjectRepresentation): string;
         toErrorPath(): string;
-        updateParms(resultObj: DomainObjectRepresentation, dvm?: DialogViewModel) : string;
-        updateParms(resultList: ListRepresentation, dvm?: DialogViewModel) : string;
-    }
+        updateParms(resultObj: DomainObjectRepresentation, dvm?: DialogViewModel): string;
+        updateParms(resultList: ListRepresentation, dvm?: DialogViewModel): string;
+        toDialogUrl(href: string, action: string);
+
+        getMenu();
+
+}
 
     app.service('urlHelper', function ($routeParams : ISpiroRouteParams) {
 
@@ -79,6 +82,14 @@ module Spiro.Angular.Modern {
            
 
             return `#/home?menu1=${results[2]}`;
+        }
+
+        helper.toDialogUrl  = function(href: string, action : string): string {
+            const urlRegex = /(menus)\/(.*)/;
+            const results = (urlRegex).exec(href);
+
+
+            return href + "&dialog1=" + action; 
         }
 
 
@@ -186,6 +197,13 @@ module Spiro.Angular.Modern {
 
             return resultParm + actionParm;
         }
+
+        helper.getMenu = function()
+        {
+            var mp = $routeParams["menu1"];
+            return mp;
+        }
+
     });
 
 }

@@ -137,7 +137,7 @@ describe('viewModelFactory Service', () => {
         describe('from populated rep', () => {
 
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}));
+                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}), "");
             }));
 
             it('creates an action view model', () => {

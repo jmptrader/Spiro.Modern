@@ -185,8 +185,11 @@ module Spiro.Angular.Modern {
     } 
 
     export class ActionViewModel {
+  
         title: string;
-        href: string;    
+        href: string;
+
+        doInvoke() {}
     } 
 
     export class DialogViewModel extends MessageViewModel {
