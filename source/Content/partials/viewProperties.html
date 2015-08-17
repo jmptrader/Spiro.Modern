@@ -1,54 +1,36 @@
-﻿<!--Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-Licensed under the Apache License, Version 2.0(the
-"License"); you may not use this file except in compliance
-with the License.You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.See the License for the
-specific language governing permissions and limitations
-under the License.-->
+﻿    <div class="property" ng-repeat="property in object.properties" ng-switch="property.type">
 
-<div class="object-properties" ng-class="object.color">
-    <div class="properties">
-        <div class="property" ng-repeat="property in object.properties" ng-switch="property.type">
+        <div class="name">{{property.title}}:</div>
+        <div ng-switch-when="ref" class="reference clickable-area" ng-class="property.color">
+            <a href="{{property.href}}">
+                <span></span>
+                {{property.value}}
+            </a>
+        </div>
 
-            <div class="property-name">{{property.title}}:</div>
-            <div ng-switch-when="ref" class="property-reference clickable-area" ng-class="property.color">
-                <a href="{{property.href}}">
-                    <span></span>
-                    {{property.value}}
-                </a>
+        <div ng-switch-when="scalar" ng-switch="property.returnType">
+
+            <div ng-switch-when="string" ng-switch="property.format">
+                <div ng-switch-when="date-time" class='value'>{{property.value}}</div>
+                <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" nog-attachment></div>
+                <div ng-switch-default class='value'>{{property.value}}</div>
             </div>
 
-            <div ng-switch-when="scalar" ng-switch="property.returnType">
-
-                <div ng-switch-when="string" ng-switch="property.format">
-                    <div ng-switch-when="date-time" class='property-value'>{{property.value}}</div>
-                    <div ng-switch-when="blob" class='property-reference clickable-area' ng-model="$parent.property.attachment" nog-attachment></div>
-                    <div ng-switch-default class='property-value'>{{property.value}}</div>
-                </div>
-
-                <div ng-switch-when="boolean">
-                    <input type="checkbox" onclick="return false" ng-checked="property.value"/>
-                </div>
-
-                <div ng-switch-default>
-                    <div class='property-value'>{{property.value}}</div>
-                </div>
+            <div ng-switch-when="boolean">
+                <input type="checkbox" onclick="return false" ng-checked="property.value"/>
             </div>
+
+            <div ng-switch-default>
+                <div class='value'>{{property.value}}</div>
+            </div>
+        </div>
             
 
-        </div>
-
-        <div class="property" ng-repeat="collection in object.collections">
-
-            <div class='property-name'>{{collection.title}}:</div>
-            <div class='property-collection clickable-area'>
-                <a href='{{collection.href}}'><span></span><i class='icon-plus' />{{collection.size}}-{{collection.pluralName}}</a>
-            </div>
-        </div>
-
     </div>
-</div>
+    <div class="property" ng-repeat="collection in object.collections">
+
+        <div class='name'>{{collection.title}}:</div>
+        <div class='collection clickable-area'>
+            <a href='{{collection.href}}'><span></span><i class='icon-plus' />{{collection.size}}-{{collection.pluralName}}</a>
+        </div>
+    </div>
