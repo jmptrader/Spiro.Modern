@@ -71,6 +71,7 @@ var Spiro;
             var LinkViewModel = (function () {
                 function LinkViewModel() {
                 }
+                LinkViewModel.prototype.doClick = function () { };
                 return LinkViewModel;
             })();
             Modern.LinkViewModel = LinkViewModel;

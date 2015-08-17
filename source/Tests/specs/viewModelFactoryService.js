@@ -100,7 +100,7 @@ describe('viewModelFactory Service', function () {
         var rawAction = { extensions: { friendlyName: "a title" }, links: [rawdetailsLink] };
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}), "");
+                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}), "", null);
             }));
             it('creates an action view model', function () {
                 expect(resultVm.title).toBe("a title");

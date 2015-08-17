@@ -74,7 +74,9 @@ module Spiro.Angular.Modern {
     export class LinkViewModel {
         title: string;
         href: string;
-        color: string; 
+        color: string;
+
+        doClick() {}
     } 
 
     export class ItemViewModel {

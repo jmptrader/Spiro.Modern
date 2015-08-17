@@ -122,6 +122,7 @@
     <TypeScriptCompile Include="Scripts\spiro.modern.services.navigation.browser.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.navigation.simple.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.representationhandlers.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.modern.services.urlmanager.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.urlhelper.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.viewmodels.ts" />

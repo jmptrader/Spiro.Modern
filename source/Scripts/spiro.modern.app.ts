@@ -31,6 +31,12 @@ module Spiro.Angular {
         dt: string; 
         id: string; 
         sid: string; 
+
+        menu1: string;
+        dialog1 : string;
+
+
+
     }
 
     function getSvrPath() {

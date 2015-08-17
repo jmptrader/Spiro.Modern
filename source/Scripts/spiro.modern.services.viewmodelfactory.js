@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask, $cacheFactory) {
+            Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask, $cacheFactory, urlManager) {
                 var viewModelFactory = this;
                 // tested
                 viewModelFactory.errorViewModel = function (errorRep) {
@@ -29,11 +29,14 @@ var Spiro;
                     return errorViewModel;
                 };
                 // tested
-                viewModelFactory.linkViewModel = function (linkRep) {
+                viewModelFactory.linkViewModel = function (linkRep, click) {
                     var linkViewModel = new Modern.LinkViewModel();
                     linkViewModel.title = linkRep.title();
                     linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
                     linkViewModel.color = color.toColorFromHref(linkRep.href());
+                    if (click) {
+                        linkViewModel.doClick = click;
+                    }
                     return linkViewModel;
                 };
                 // tested
@@ -189,7 +192,7 @@ var Spiro;
                     return parmViewModel;
                 };
                 // tested
-                viewModelFactory.actionViewModel = function (actionRep, id) {
+                viewModelFactory.actionViewModel = function (actionRep, id, invoke) {
                     var actionViewModel = new Modern.ActionViewModel();
                     actionViewModel.title = actionRep.extensions().friendlyName;
                     actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
@@ -200,6 +203,9 @@ var Spiro;
                             // hack 
                             $location.search({ dialog1: id, menu1: urlHelper.getMenu() });
                         };
+                    }
+                    else {
+                        actionViewModel.doInvoke = invoke;
                     }
                     return actionViewModel;
                 };
@@ -368,7 +374,8 @@ var Spiro;
                     var menusViewModel = new Modern.MenusViewModel();
                     menusViewModel.title = "Menus";
                     menusViewModel.color = "bg-color-darkBlue";
-                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link); });
+                    //todo use regex!
+                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link, function () { return urlManager.setMenu(link.rel().parms[0].split("=")[1].replace("\"", "").replace("\"", "")); }); });
                     return menusViewModel;
                 };
                 // tested
@@ -377,7 +384,7 @@ var Spiro;
                     var actions = serviceRep.actionMembers();
                     serviceViewModel.serviceId = serviceRep.serviceId();
                     serviceViewModel.title = serviceRep.title();
-                    serviceViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id); });
+                    serviceViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, function () { return null; }); });
                     serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
                     serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
                     return serviceViewModel;
@@ -398,7 +405,7 @@ var Spiro;
                     objectViewModel.message = "";
                     objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id); });
                     objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection); });
-                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id); });
+                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, null); });
                     return objectViewModel;
                 };
             });

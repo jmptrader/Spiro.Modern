@@ -889,7 +889,7 @@ describe('handlers Service', function () {
                 setResult = spyOn(repHandlers, 'setResult');
                 testViewModel.parameters = testParameters;
                 testViewModel.show = true;
-                repHandlers.invokeAction($scope, testAction, testViewModel);
+                //repHandlers.invokeAction($scope, testAction, testViewModel);
             }));
             it('should set result', function () {
                 expect(setParameter.callCount == 2).toBeTruthy();
@@ -908,7 +908,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function ($rootScope, $routeParams, repHandlers, repLoader) {
                 populate = spyOnPromiseFail(repLoader, 'populate', testObject);
                 setInvokeUpdateError = spyOn(repHandlers, 'setInvokeUpdateError');
-                repHandlers.invokeAction($scope, testAction, testViewModel);
+                //repHandlers.invokeAction($scope, testAction, testViewModel);
             }));
             it('should set the error', function () {
                 expect(setInvokeUpdateError).toHaveBeenCalledWith($scope, testObject, testParameters, testViewModel);

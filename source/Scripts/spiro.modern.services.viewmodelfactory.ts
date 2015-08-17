@@ -19,10 +19,10 @@ module Spiro.Angular.Modern{
 
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        linkViewModel(linkRep: Link): LinkViewModel;
+        linkViewModel(linkRep: Link, click? : () => void): LinkViewModel;
         itemViewModel(linkRep: Link, parentHref: string): ItemViewModel;
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
-        actionViewModel(actionRep: ActionMember,  id : string): ActionViewModel;
+        actionViewModel(actionRep: ActionMember,  id : string, invoke : () => void): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
         collectionViewModel(collection: any, populateItems?: boolean): CollectionViewModel;
@@ -35,7 +35,7 @@ module Spiro.Angular.Modern{
         domainObjectViewModel(objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
 
-    app.service('viewModelFactory', function($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory : ng.ICacheFactoryService ) {
+    app.service('viewModelFactory', function($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory : ng.ICacheFactoryService, urlManager : IUrlManager ) {
 
         var viewModelFactory = <IViewModelFactory>this;
 
@@ -50,11 +50,16 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.linkViewModel = (linkRep: Link) => {
+        viewModelFactory.linkViewModel = (linkRep: Link, click? : () => void) => {
             var linkViewModel = new LinkViewModel();
             linkViewModel.title = linkRep.title();
             linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
             linkViewModel.color = color.toColorFromHref(linkRep.href());
+
+            if (click) {
+                linkViewModel.doClick = click;
+            }
+
             return linkViewModel;
         };
 
@@ -240,7 +245,7 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.actionViewModel = (actionRep: ActionMember, id : string) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember, id: string, invoke: () => void) => {
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
@@ -252,13 +257,13 @@ module Spiro.Angular.Modern{
 
                     // todo keep the menu !!
                     // hack 
-                   
-                    $location.search({dialog1 : id, menu1 : urlHelper.getMenu() });
+
+                    $location.search({ dialog1: id, menu1: urlHelper.getMenu() });
                 }
 
+            } else {
+                actionViewModel.doInvoke = invoke;
             }
-
-
 
             return actionViewModel;
         };
@@ -474,7 +479,8 @@ module Spiro.Angular.Modern{
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value().models, (link) => { return viewModelFactory.linkViewModel(link); });
+            //todo use regex!
+            menusViewModel.items = _.map(menusRep.value().models, (link) => { return viewModelFactory.linkViewModel(link, () => urlManager.setMenu(link.rel().parms[0].split("=")[1].replace("\"", "").replace("\"", "")     ) ); });
             return menusViewModel;
         };
 
@@ -486,7 +492,7 @@ module Spiro.Angular.Modern{
             var actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id); });
+            serviceViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, () => null); });
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
             serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
           
@@ -518,7 +524,7 @@ module Spiro.Angular.Modern{
 
             objectViewModel.properties = _.map(properties, (property, id?) => { return viewModelFactory.propertyViewModel(property, id); });
             objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection); });
-            objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id); });
+            objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, null); });
 
             return objectViewModel;
         };

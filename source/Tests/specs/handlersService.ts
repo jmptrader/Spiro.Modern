@@ -1339,7 +1339,7 @@ describe('handlers Service', () => {
                 testViewModel.parameters = testParameters;
                 testViewModel.show = true;
 
-                repHandlers.invokeAction($scope, testAction, testViewModel);
+                //repHandlers.invokeAction($scope, testAction, testViewModel);
             }));
 
             it('should set result', () => {
@@ -1366,7 +1366,7 @@ describe('handlers Service', () => {
             beforeEach(inject(($rootScope, $routeParams, repHandlers: Spiro.Angular.Modern.IRepHandlers, repLoader: Spiro.Angular.IRepLoader) => {
                 populate = spyOnPromiseFail(repLoader, 'populate', testObject);
                 setInvokeUpdateError = spyOn(repHandlers, 'setInvokeUpdateError');
-                repHandlers.invokeAction($scope, testAction, testViewModel);
+                //repHandlers.invokeAction($scope, testAction, testViewModel);
             }));
 
             it('should set the error', () => {

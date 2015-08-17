@@ -67,7 +67,6 @@ var Spiro;
                         // set the nested object here and then update the url. That should reload the page but pick up this object 
                         // so we don't hit the server again. 
                         context.setNestedObject(resultObject);
-                        parms = urlHelper.updateParms(resultObject, dvm);
                     }
                     if (result.resultType() === "list") {
                         var resultList = result.result().list();
@@ -85,22 +84,28 @@ var Spiro;
                                 vmi.message = errorValue.invalidReason;
                             }
                         });
-                        vm.message = error.invalidReason();
+                        if (vm) {
+                            vm.message = error.invalidReason();
+                        }
                     }
                     else if (error instanceof Spiro.ErrorRepresentation) {
                         context.setError(error);
                         $location.path(urlHelper.toErrorPath());
                     }
                     else {
-                        vm.message = error;
+                        if (vm) {
+                            vm.message = error;
+                        }
                     }
                 };
                 repHandlers.invokeAction = function ($scope, action, dvm) {
-                    dvm.clearMessages();
                     var invoke = action.getInvoke();
-                    var parameters = dvm.parameters;
-                    _.each(parameters, function (parm) { return invoke.setParameter(parm.id, parm.getValue()); });
-                    _.each(parameters, function (parm) { return parm.setSelectedChoice(); });
+                    if (dvm) {
+                        dvm.clearMessages();
+                        var parameters = dvm.parameters;
+                        _.each(parameters, function (parm) { return invoke.setParameter(parm.id, parm.getValue()); });
+                        _.each(parameters, function (parm) { return parm.setSelectedChoice(); });
+                    }
                     repLoader.populate(invoke, true).
                         then(function (result) {
                         repHandlers.setResult(result, dvm);

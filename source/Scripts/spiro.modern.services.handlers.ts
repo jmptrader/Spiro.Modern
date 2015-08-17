@@ -274,7 +274,7 @@ module Spiro.Angular.Modern {
                 context.getMenu(currentMenu).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        var actions  = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id)) }
+                        var actions = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction($scope, am))) }
                         $scope.actions = actions;
 
                         if (currentDialog) {
@@ -300,11 +300,6 @@ module Spiro.Angular.Modern {
                         setError(error);
                     });
             }
-
-            if (currentDialog) {
-                
-            }
-
 
         };
 

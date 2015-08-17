@@ -21,8 +21,8 @@ module Spiro.Angular.Modern {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
         setResult(result: ActionResultRepresentation, dvm?: DialogViewModel);
-        setInvokeUpdateError($scope, error: any, vms: ValueViewModel[], vm: MessageViewModel);
-        invokeAction($scope, action: ActionRepresentation, dvm: DialogViewModel);
+        setInvokeUpdateError($scope, error: any, vms: ValueViewModel[], vm?: MessageViewModel);
+        invokeAction($scope, action: ActionMember, dvm?: DialogViewModel);
         updateObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
     }
@@ -95,7 +95,12 @@ module Spiro.Angular.Modern {
                 // so we don't hit the server again. 
 
                 context.setNestedObject(resultObject);
-                parms = urlHelper.updateParms(resultObject, dvm);
+                //parms = urlHelper.updateParms(resultObject, dvm);
+
+                // todo hack 
+
+
+
             }
 
             if (result.resultType() === "list") {
@@ -107,7 +112,7 @@ module Spiro.Angular.Modern {
             $location.search(parms);
         };
 
-        repHandlers.setInvokeUpdateError = function ($scope, error: any, vms: ValueViewModel[], vm: MessageViewModel) {
+        repHandlers.setInvokeUpdateError = function ($scope, error: any, vms: ValueViewModel[], vm?: MessageViewModel) {
             if (error instanceof ErrorMap) {
                 _.each(vms, (vmi) => {
                     var errorValue = error.valuesMap()[vmi.id];
@@ -117,25 +122,31 @@ module Spiro.Angular.Modern {
                         vmi.message = errorValue.invalidReason;
                     }
                 });
-                vm.message = (<ErrorMap>error).invalidReason();
+                if (vm) {
+                    vm.message = (<ErrorMap>error).invalidReason();
+                }
             }
             else if (error instanceof ErrorRepresentation) {
                 context.setError(error);
                 $location.path(urlHelper.toErrorPath());
             }
             else {
-                vm.message = error;
+                if (vm) {
+                    vm.message = error;
+                }
             }
         };
 
-        repHandlers.invokeAction = function ($scope, action: ActionRepresentation, dvm: DialogViewModel) {
-            dvm.clearMessages();
+        repHandlers.invokeAction = function ($scope, action: ActionMember, dvm?: DialogViewModel) {
 
             var invoke = action.getInvoke();
-     
-            var parameters = dvm.parameters;
-            _.each(parameters, (parm) => invoke.setParameter(parm.id, parm.getValue()));
-            _.each(parameters, (parm) => parm.setSelectedChoice());
+
+            if (dvm) {
+                dvm.clearMessages();
+                var parameters = dvm.parameters;
+                _.each(parameters, (parm) => invoke.setParameter(parm.id, parm.getValue()));
+                _.each(parameters, (parm) => parm.setSelectedChoice());
+            }
 
             repLoader.populate(invoke, true).
                 then(function (result: ActionResultRepresentation) {

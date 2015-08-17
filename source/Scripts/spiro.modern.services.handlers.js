@@ -210,7 +210,7 @@ var Spiro;
                         context.getMenu(currentMenu).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
-                            var actions = { items: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id); }) };
+                            var actions = { items: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return repHandlers.invokeAction($scope, am); }); }) };
                             $scope.actions = actions;
                             if (currentDialog) {
                                 $scope.dialogTemplate = Angular.dialogTemplate;
@@ -231,8 +231,6 @@ var Spiro;
                         }, function (error) {
                             setError(error);
                         });
-                    }
-                    if (currentDialog) {
                     }
                 };
                 handlers.handleQuery = function ($scope) {

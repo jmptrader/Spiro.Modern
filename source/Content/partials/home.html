@@ -14,7 +14,7 @@ under the License.-->
     <div class="title">Home</div>
     <div class="menus">
         <div class="menu clickable-area" ng-class="menu.color" ng-repeat="menu in menus.items">
-            <a href="{{menu.href}}">
+            <a href="" ng-click="menu.doClick()">
                 <span></span>{{menu.title}}
             </a>
         </div>
