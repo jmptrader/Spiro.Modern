@@ -234,6 +234,13 @@ module Spiro.Angular.Modern {
         items: LinkViewModel[];       
     } 
 
+    export class MenusViewModel {
+        title: string;
+        color: string;
+        items: LinkViewModel[];
+    } 
+
+
     export class ServiceViewModel {
         title: string;
         serviceId: string;
@@ -241,6 +248,14 @@ module Spiro.Angular.Modern {
         color: string; 
         href: string; 
     } 
+
+    export class MenuViewModel {
+        title: string;
+        actions: ActionViewModel[];
+        color: string;
+        href: string;
+    } 
+
 
     export class DomainObjectViewModel extends MessageViewModel{
         title: string;

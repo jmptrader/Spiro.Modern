@@ -22,6 +22,8 @@ module Spiro.Angular.Modern {
         getHome: () => ng.IPromise<HomePageRepresentation>;
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
+        getMenus: () => ng.IPromise<MenusRepresentation>;
+        getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (type: string, id?: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (object: DomainObjectRepresentation) => void;
         getNestedObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
@@ -42,6 +44,8 @@ module Spiro.Angular.Modern {
     interface IContextInternal extends IContext {
         getDomainObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         getService: (type: string) => ng.IPromise<DomainObjectRepresentation>;
+       
+
     }
 
     app.service("context", function ($q: ng.IQService, repLoader: IRepLoader) {
@@ -87,6 +91,23 @@ module Spiro.Angular.Modern {
             return delay.promise;
         };
 
+        context.getMenu = function (menuId: string): ng.IPromise<MenuRepresentation> {
+            var delay = $q.defer<MenuRepresentation>();
+
+            this.getMenus().
+                then((menus: MenusRepresentation) => {
+                var menuLink = _.find(menus.value().models, (model: Link) => { return model.rel().parms[0] === "menuId=\"" + menuId + "\""; });
+                    var menu = menuLink.getTarget();
+                    return repLoader.populate(menu);
+                }).
+                then((menu: MenuRepresentation) => {          
+                    delay.resolve(menu);
+                }, error => delay.reject(error));
+            return delay.promise;
+        };
+
+
+
         // tested
         context.getHome = () => {
             var delay = $q.defer<HomePageRepresentation>();
@@ -123,6 +144,29 @@ module Spiro.Angular.Modern {
                     then((services: DomainServicesRepresentation) => {
                         currentServices = services;
                         delay.resolve(services);
+                    }, error => delay.reject(error));
+            }
+
+            return delay.promise;
+        };
+
+        var currentMenus: MenusRepresentation = null;
+
+        context.getMenus = function () {
+            var delay = $q.defer<MenusRepresentation>();
+
+            if (currentMenus) {
+                delay.resolve(currentMenus);
+            }
+            else {
+                this.getHome().
+                    then((home: HomePageRepresentation) => {
+                        var ds = home.getMenus();
+                        return repLoader.populate<MenusRepresentation>(ds);
+                    }).
+                    then((menus: MenusRepresentation) => {
+                        currentMenus = menus;
+                        delay.resolve(menus);
                     }, error => delay.reject(error));
             }
 

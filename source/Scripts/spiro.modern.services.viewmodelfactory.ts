@@ -30,6 +30,7 @@ module Spiro.Angular.Modern{
         collectionViewModel(collection: CollectionRepresentation, populateItems?: boolean): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, populateItems?: boolean): CollectionViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
+        menusViewModel(menusRep: MenusRepresentation): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
         domainObjectViewModel(objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
@@ -451,6 +452,17 @@ module Spiro.Angular.Modern{
             servicesViewModel.items = _.map(links, (link) => { return viewModelFactory.linkViewModel(link); });
             return servicesViewModel;
         };
+
+        viewModelFactory.menusViewModel = (menusRep: MenusRepresentation) => {
+            var menusViewModel = new MenusViewModel();
+
+            menusViewModel.title = "Menus";
+            menusViewModel.color = "bg-color-darkBlue";
+            menusViewModel.items = _.map(menusRep.value().models, (link) => { return viewModelFactory.linkViewModel(link); });
+            return menusViewModel;
+        };
+
+
 
         // tested
         viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation) => {

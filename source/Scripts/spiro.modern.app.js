@@ -58,6 +58,7 @@ var Spiro;
         Angular.objectTemplate = getSvrPath() + "Content/partials/object.html";
         Angular.queryTemplate = getSvrPath() + "Content/partials/query.html";
         Angular.footerTemplate = getSvrPath() + "Content/partials/footer.html";
+        Angular.actionsTemplate = getSvrPath() + "Content/partials/actions.html";
         Angular.app.config(function ($routeProvider) {
             $routeProvider.
                 when("/services", {
@@ -131,7 +132,7 @@ var Spiro;
             }).
                 //TODO: change default to /home when Modern2 is complete
                 otherwise({
-                redirectTo: "/services"
+                redirectTo: "/home"
             });
         });
         Angular.app.run(function (color, mask, $cacheFactory) {

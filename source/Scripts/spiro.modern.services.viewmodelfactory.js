@@ -356,6 +356,13 @@ var Spiro;
                     servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link); });
                     return servicesViewModel;
                 };
+                viewModelFactory.menusViewModel = function (menusRep) {
+                    var menusViewModel = new Modern.MenusViewModel();
+                    menusViewModel.title = "Menus";
+                    menusViewModel.color = "bg-color-darkBlue";
+                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link); });
+                    return menusViewModel;
+                };
                 // tested
                 viewModelFactory.serviceViewModel = function (serviceRep) {
                     var serviceViewModel = new Modern.ServiceViewModel();

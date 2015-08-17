@@ -36,7 +36,7 @@ module Spiro.Angular.Modern {
         handlePaneObject($scope, dt : string, id : string): void;
         handleAppBar($scope): void;
 
-        handleHome($scope): void;
+        handleHome($scope, currentMenu? : string): void;
         handleObject($scope): void;
         handleQuery($scope): void;
     }
@@ -240,16 +240,59 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        handlers.handleHome = $scope => {
-            context.getServices().
-                then((services: DomainServicesRepresentation) => {
-                    $scope.services = viewModelFactory.servicesViewModel(services);
+       function getMenus ($scope) {
+            context.getMenus().
+                then((menus: MenusRepresentation) => {
+                    $scope.menus = viewModelFactory.menusViewModel(menus);
                     $scope.homeTemplate = homeTemplate;
                     context.setObject(null);
                     context.setNestedObject(null);
+                
                 }, error => {
                     setError(error);
                 });
+        };
+
+
+        handlers.handleHome = ($scope, currentMenu: string) => {
+
+            //TODO DRY THIS !!!
+
+            if (currentMenu) {
+
+                context.getMenus().
+                    then((menus: MenusRepresentation) => {
+                        $scope.menus = viewModelFactory.menusViewModel(menus);
+                        $scope.homeTemplate = homeTemplate;
+                        context.setObject(null);
+                        context.setNestedObject(null);
+
+                    }, error => {
+                        setError(error);
+                    });
+
+                context.getMenu(currentMenu).
+                    then((menu: MenuRepresentation) => {
+                        $scope.actionsTemplate = actionsTemplate;
+                        $scope.actions = { items: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am)) }
+                    }, error => {
+                        setError(error);
+                    });
+
+            } else {
+
+                context.getMenus().
+                    then((menus: MenusRepresentation) => {
+                        $scope.menus = viewModelFactory.menusViewModel(menus);
+                        $scope.homeTemplate = homeTemplate;
+                        context.setObject(null);
+                        context.setNestedObject(null);
+
+                    }, error => {
+                        setError(error);
+                    });
+            }
+
         };
 
         handlers.handleQuery = $scope => {

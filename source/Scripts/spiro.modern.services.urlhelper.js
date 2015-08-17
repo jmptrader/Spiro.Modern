@@ -42,7 +42,16 @@ var Spiro;
                     var resultCollectionParm = include("resultCollection") ? "&resultCollection=" + $routeParams.resultCollection : "";
                     return actionParm + collectionParm + collectionItemParm + propertyParm + resultObjectParm + resultCollectionParm;
                 };
+                function toMenuUrl(href, toClose) {
+                    var urlRegex = /(menus)\/(.*)/;
+                    var results = (urlRegex).exec(href);
+                    return "#/home?menu1=" + results[2];
+                }
                 helper.toAppUrl = function (href, toClose) {
+                    // temp kludge 
+                    if (href.indexOf("menus") > -1) {
+                        return toMenuUrl(href, toClose);
+                    }
                     var urlRegex = /(objects|services)\/(.*)/;
                     var results = (urlRegex).exec(href);
                     var parms = "";

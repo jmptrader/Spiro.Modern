@@ -19,8 +19,9 @@ var Spiro;
         var Modern;
         (function (Modern) {
             Angular.app.controller("Pane1HomeController", function ($scope, $routeParams, handlers) {
-                // get parm match type and call correct handler.       
-                handlers.handleHome($scope);
+                // get parm match type and call correct handler.     
+                var p1 = $routeParams["menu1"];
+                handlers.handleHome($scope, p1);
             });
             Angular.app.controller("Pane2HomeController", function ($scope, $routeParams, handlers) {
                 // get parm match type and call correct handler. 

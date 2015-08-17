@@ -53,6 +53,19 @@ var Spiro;
                     }, function (error) { return delay.reject(error); });
                     return delay.promise;
                 };
+                context.getMenu = function (menuId) {
+                    var delay = $q.defer();
+                    this.getMenus().
+                        then(function (menus) {
+                        var menuLink = _.find(menus.value().models, function (model) { return model.rel().parms[0] === "menuId=\"" + menuId + "\""; });
+                        var menu = menuLink.getTarget();
+                        return repLoader.populate(menu);
+                    }).
+                        then(function (menu) {
+                        delay.resolve(menu);
+                    }, function (error) { return delay.reject(error); });
+                    return delay.promise;
+                };
                 // tested
                 context.getHome = function () {
                     var delay = $q.defer();
@@ -84,6 +97,25 @@ var Spiro;
                             then(function (services) {
                             currentServices = services;
                             delay.resolve(services);
+                        }, function (error) { return delay.reject(error); });
+                    }
+                    return delay.promise;
+                };
+                var currentMenus = null;
+                context.getMenus = function () {
+                    var delay = $q.defer();
+                    if (currentMenus) {
+                        delay.resolve(currentMenus);
+                    }
+                    else {
+                        this.getHome().
+                            then(function (home) {
+                            var ds = home.getMenus();
+                            return repLoader.populate(ds);
+                        }).
+                            then(function (menus) {
+                            currentMenus = menus;
+                            delay.resolve(menus);
                         }, function (error) { return delay.reject(error); });
                     }
                     return delay.promise;

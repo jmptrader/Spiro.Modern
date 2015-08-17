@@ -73,7 +73,23 @@ module Spiro.Angular.Modern {
             return actionParm + collectionParm + collectionItemParm + propertyParm + resultObjectParm + resultCollectionParm;
         }
 
+        function toMenuUrl (href: string, toClose?: string[]): string {
+            const urlRegex = /(menus)\/(.*)/;
+            const results = (urlRegex).exec(href);
+           
+
+            return `#/home?menu1=${results[2]}`;
+        }
+
+
+
         helper.toAppUrl = function (href: string, toClose?: string[]): string {
+            // temp kludge 
+            if (href.indexOf("menus") > -1) {
+                return toMenuUrl(href, toClose);
+            }
+
+
             const urlRegex = /(objects|services)\/(.*)/;
             const results = (urlRegex).exec(href);
             var parms = "";

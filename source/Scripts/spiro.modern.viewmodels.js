@@ -196,12 +196,24 @@ var Spiro;
                 return ServicesViewModel;
             })();
             Modern.ServicesViewModel = ServicesViewModel;
+            var MenusViewModel = (function () {
+                function MenusViewModel() {
+                }
+                return MenusViewModel;
+            })();
+            Modern.MenusViewModel = MenusViewModel;
             var ServiceViewModel = (function () {
                 function ServiceViewModel() {
                 }
                 return ServiceViewModel;
             })();
             Modern.ServiceViewModel = ServiceViewModel;
+            var MenuViewModel = (function () {
+                function MenuViewModel() {
+                }
+                return MenuViewModel;
+            })();
+            Modern.MenuViewModel = MenuViewModel;
             var DomainObjectViewModel = (function (_super) {
                 __extends(DomainObjectViewModel, _super);
                 function DomainObjectViewModel() {

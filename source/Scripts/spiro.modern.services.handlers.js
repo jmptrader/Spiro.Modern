@@ -183,16 +183,49 @@ var Spiro;
                         setError(error);
                     });
                 };
-                handlers.handleHome = function ($scope) {
-                    context.getServices().
-                        then(function (services) {
-                        $scope.services = viewModelFactory.servicesViewModel(services);
+                function getMenus($scope) {
+                    context.getMenus().
+                        then(function (menus) {
+                        $scope.menus = viewModelFactory.menusViewModel(menus);
                         $scope.homeTemplate = Angular.homeTemplate;
                         context.setObject(null);
                         context.setNestedObject(null);
                     }, function (error) {
                         setError(error);
                     });
+                }
+                ;
+                handlers.handleHome = function ($scope, currentMenu) {
+                    //TODO DRY THIS !!!
+                    if (currentMenu) {
+                        context.getMenus().
+                            then(function (menus) {
+                            $scope.menus = viewModelFactory.menusViewModel(menus);
+                            $scope.homeTemplate = Angular.homeTemplate;
+                            context.setObject(null);
+                            context.setNestedObject(null);
+                        }, function (error) {
+                            setError(error);
+                        });
+                        context.getMenu(currentMenu).
+                            then(function (menu) {
+                            $scope.actionsTemplate = Angular.actionsTemplate;
+                            $scope.actions = { items: _.map(menu.actionMembers(), function (am) { return viewModelFactory.actionViewModel(am); }) };
+                        }, function (error) {
+                            setError(error);
+                        });
+                    }
+                    else {
+                        context.getMenus().
+                            then(function (menus) {
+                            $scope.menus = viewModelFactory.menusViewModel(menus);
+                            $scope.homeTemplate = Angular.homeTemplate;
+                            context.setObject(null);
+                            context.setNestedObject(null);
+                        }, function (error) {
+                            setError(error);
+                        });
+                    }
                 };
                 handlers.handleQuery = function ($scope) {
                     //TODO:

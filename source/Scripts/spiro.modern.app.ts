@@ -79,6 +79,8 @@ module Spiro.Angular {
     export var objectTemplate = getSvrPath() + "Content/partials/object.html";
     export var queryTemplate = getSvrPath() + "Content/partials/query.html";
     export var footerTemplate = getSvrPath() + "Content/partials/footer.html";
+    export var actionsTemplate = getSvrPath() + "Content/partials/actions.html";
+
 
     app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
@@ -153,7 +155,7 @@ module Spiro.Angular {
             }).
             //TODO: change default to /home when Modern2 is complete
             otherwise({
-                redirectTo: "/services"
+                redirectTo: "/home"
             });
        
     });
