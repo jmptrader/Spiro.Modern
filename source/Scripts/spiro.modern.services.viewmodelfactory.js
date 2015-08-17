@@ -207,13 +207,13 @@ var Spiro;
                 viewModelFactory.dialogViewModel = function (actionMember, invoke) {
                     var dialogViewModel = new Modern.DialogViewModel();
                     var parameters = actionMember.parameters();
-                    var parms = urlHelper.actionParms();
+                    //var parms = [];//urlHelper.actionParms();
                     dialogViewModel.title = actionMember.extensions().friendlyName;
                     dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
                     dialogViewModel.message = "";
                     dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
                     var i = 0;
-                    dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, parms[i++]); });
+                    dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, ""); });
                     dialogViewModel.doShow = function () {
                         dialogViewModel.show = true;
                         invoke(dialogViewModel);

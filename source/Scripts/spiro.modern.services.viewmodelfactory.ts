@@ -267,7 +267,7 @@ module Spiro.Angular.Modern{
         viewModelFactory.dialogViewModel = (actionMember: ActionMember, invoke: (dvm: DialogViewModel) => void) => {
             var dialogViewModel = new DialogViewModel();
             var parameters = actionMember.parameters();
-            var parms = urlHelper.actionParms();
+            //var parms = [];//urlHelper.actionParms();
 
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
@@ -277,7 +277,7 @@ module Spiro.Angular.Modern{
             dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
 
             var i = 0;
-            dialogViewModel.parameters = _.map(parameters, (parm, id?) => { return viewModelFactory.parameterViewModel(parm, id, parms[i++]); });
+            dialogViewModel.parameters = _.map(parameters, (parm, id?) => { return viewModelFactory.parameterViewModel(parm, id, ""); });
 
             dialogViewModel.doShow = () => {
                 dialogViewModel.show = true;
