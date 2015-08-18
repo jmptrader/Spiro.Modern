@@ -41,7 +41,7 @@ module Spiro.Angular.Modern{
 
         // tested
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
-            var errorViewModel = new ErrorViewModel();
+            const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
             var stackTrace = errorRep.stacktrace();
 
@@ -50,8 +50,8 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.linkViewModel = (linkRep: Link, click? : () => void) => {
-            var linkViewModel = new LinkViewModel();
+        viewModelFactory.linkViewModel = (linkRep: Link, click?: () => void) => {
+            const linkViewModel = new LinkViewModel();
             linkViewModel.title = linkRep.title();
             linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
             linkViewModel.color = color.toColorFromHref(linkRep.href());
@@ -65,7 +65,7 @@ module Spiro.Angular.Modern{
 
         // tested
         viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string) => {
-            var itemViewModel = new ItemViewModel();
+            const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
             itemViewModel.color = color.toColorFromHref(linkRep.href());
@@ -276,7 +276,6 @@ module Spiro.Angular.Modern{
 
             dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
 
-            var i = 0;
             dialogViewModel.parameters = _.map(parameters, (parm, id?) => { return viewModelFactory.parameterViewModel(parm, id, ""); });
 
             dialogViewModel.doShow = () => {
@@ -459,7 +458,7 @@ module Spiro.Angular.Modern{
 
             // filter out contributed action services 
             var links = _.filter(servicesRep.value().models, (m: Link) => {
-                var sid = m.rel().parms[0].split('=')[1];
+                var sid = m.rel().parms[0].value;
                 return sid.indexOf("ContributedActions") === -1; 
             });
             
@@ -474,8 +473,7 @@ module Spiro.Angular.Modern{
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            //todo use regex!
-            menusViewModel.items = _.map(menusRep.value().models, (link) => { return viewModelFactory.linkViewModel(link, () => urlManager.setMenu(link.rel().parms[0].split("=")[1].replace("\"", "").replace("\"", "")     ) ); });
+            menusViewModel.items = _.map(menusRep.value().models, (link) => { return viewModelFactory.linkViewModel(link, () => urlManager.setMenu(link.rel().parms[0].value) ); });
             return menusViewModel;
         };
 

@@ -39,11 +39,11 @@ var Spiro;
                 };
                 // exposed for test mocking
                 var currentObject;
-                context.getService = function (type) {
+                context.getService = function (serviceType) {
                     var delay = $q.defer();
                     this.getServices().
                         then(function (services) {
-                        var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0] === "serviceId=\"" + type + "\""; });
+                        var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0].value === serviceType; });
                         var service = serviceLink.getTarget();
                         return repLoader.populate(service);
                     }).
@@ -57,7 +57,7 @@ var Spiro;
                     var delay = $q.defer();
                     this.getMenus().
                         then(function (menus) {
-                        var menuLink = _.find(menus.value().models, function (model) { return model.rel().parms[0] === "menuId=\"" + menuId + "\""; });
+                        var menuLink = _.find(menus.value().models, function (model) { return model.rel().parms[0].value === menuId; });
                         var menu = menuLink.getTarget();
                         return repLoader.populate(menu);
                     }).

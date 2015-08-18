@@ -112,7 +112,7 @@ describe('handlers Service', function () {
         var getObject;
         describe('if it finds object', function () {
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.ActionMember({}, testObject);
+            var testMember = new Spiro.ActionMember({}, testObject, "");
             var testDetails = new Spiro.ActionRepresentation();
             var testViewModel = { test: testObject };
             var actionMember;
@@ -205,7 +205,7 @@ describe('handlers Service', function () {
         var getObject;
         describe('if it finds object', function () {
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.ActionMember({}, testObject);
+            var testMember = new Spiro.ActionMember({}, testObject, "");
             var testDetails = new Spiro.ActionRepresentation();
             var testResult = new Spiro.ActionResultRepresentation();
             var actionMember;
@@ -771,7 +771,7 @@ describe('handlers Service', function () {
             beforeEach(inject(function (repHandlers) {
                 spyOn(testActionResult, 'result').andReturn(testResult);
                 spyOn(testActionResult, 'resultType').andReturn("void");
-                repHandlers.setResult(testActionResult, testViewModel);
+                repHandlers.setResult(null, testActionResult, testViewModel);
             }));
             it('should not set view model error', function () {
                 expect(testViewModel.message).toBeUndefined();
@@ -796,7 +796,7 @@ describe('handlers Service', function () {
                 beforeEach(inject(function (repHandlers) {
                     testViewModel.parameters = [];
                     testViewModel.show = true;
-                    repHandlers.setResult(testActionResult, testViewModel);
+                    repHandlers.setResult(null, testActionResult, testViewModel);
                 }));
                 it('should set nested object and search', function () {
                     expect(setNestedObject).toHaveBeenCalledWith(testObject);
@@ -805,7 +805,7 @@ describe('handlers Service', function () {
             });
             describe('without show flag', function () {
                 beforeEach(inject(function (repHandlers) {
-                    repHandlers.setResult(testActionResult);
+                    repHandlers.setResult(null, testActionResult);
                 }));
                 it('should set nested object and search', function () {
                     expect(setNestedObject).toHaveBeenCalledWith(testObject);
@@ -833,7 +833,7 @@ describe('handlers Service', function () {
                 beforeEach(inject(function (repHandlers) {
                     spyOn(testActionResult, 'result').andReturn(testResult);
                     testViewModel.parameters = testParameters;
-                    repHandlers.setResult(testActionResult, testViewModel);
+                    repHandlers.setResult(null, testActionResult, testViewModel);
                 }));
                 it('should set collection and search', function () {
                     expect(setCollection).toHaveBeenCalledWith(testList);
@@ -843,7 +843,7 @@ describe('handlers Service', function () {
             describe('without show flag', function () {
                 beforeEach(inject(function (repHandlers) {
                     spyOn(testActionResult, 'result').andReturn(testResult);
-                    repHandlers.setResult(testActionResult);
+                    repHandlers.setResult(null, testActionResult);
                 }));
                 it('should set collection and search', function () {
                     expect(setCollection).toHaveBeenCalledWith(testList);
@@ -853,7 +853,7 @@ describe('handlers Service', function () {
             describe('result is null', function () {
                 beforeEach(inject(function (repHandlers) {
                     spyOn(testActionResult, 'result').andReturn(testNullResult);
-                    repHandlers.setResult(testActionResult, testViewModel);
+                    repHandlers.setResult(null, testActionResult, testViewModel);
                 }));
                 it('should set view model error', function () {
                     expect(testViewModel.message).toBe("no result found");

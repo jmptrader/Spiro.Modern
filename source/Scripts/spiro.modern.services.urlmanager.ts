@@ -10,7 +10,7 @@
 //specific language governing permissions and limitations
 //under the License.
 
- /// <reference path="typings/angularjs/angular.d.ts" />
+/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="spiro.models.ts" />
 
@@ -18,27 +18,44 @@
 module Spiro.Angular.Modern {
 
     export interface IUrlManager {
-       setMenu(menuId : string);
-       setDialog(id: string);
+        setMenu(menuId: string);
+        setDialog(id: string);
+        setObject(resultObject: DomainObjectRepresentation);
+        setQuery(action : ActionMember, dvm: DialogViewModel);
     }
 
-    app.service('urlManager', function ($routeParams : ISpiroRouteParams, $location : ng.ILocationService) {
-
-        var helper = <IUrlManager>this;
+    app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
+        const helper = <IUrlManager>this;
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
-            var search = clearOthers ? {} : $location.search();
+            const search = clearOthers ? {} : $location.search();
             search[parmId] = parmValue;
             $location.search(search);
         }
 
         helper.setMenu = (menuId: string) => {
             setSearch("menu1", menuId, true);
-        }
+        };
 
         helper.setDialog = (dialogId: string) => {
             setSearch("dialog1", dialogId, false);
-        }
+        };
+
+        helper.setObject = (resultObject: DomainObjectRepresentation) => {
+            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
+            $location.path("/object").search({ object1: oid });
+        };
+
+        helper.setQuery = (action : ActionMember, dvm: DialogViewModel) => {
+            const aid = action.actionId();
+            const search = $location.search();
+
+            search.action1 = aid;
+
+            _.each(dvm.parameters, (p, i) => search[`parm1_${i}`] = p.getValue());
+
+            $location.path("/query").search(search);
+        };
     });
 
 }

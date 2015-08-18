@@ -75,12 +75,12 @@ module Spiro.Angular.Modern {
         // exposed for test mocking
         var currentObject: any;
 
-        context.getService = function (type: string): ng.IPromise<DomainObjectRepresentation> {
+        context.getService = function (serviceType: string): ng.IPromise<DomainObjectRepresentation> {
             var delay = $q.defer<DomainObjectRepresentation>();
 
             this.getServices().
                 then((services: DomainServicesRepresentation) => {
-                    var serviceLink = _.find(services.value().models, (model: Link) => { return model.rel().parms[0] === "serviceId=\"" + type + "\""; });
+                    var serviceLink = _.find(services.value().models, (model: Link) => { return model.rel().parms[0].value === serviceType; });
                     var service = serviceLink.getTarget();
                     return repLoader.populate(service);
                 }).
@@ -96,7 +96,7 @@ module Spiro.Angular.Modern {
 
             this.getMenus().
                 then((menus: MenusRepresentation) => {
-                var menuLink = _.find(menus.value().models, (model: Link) => { return model.rel().parms[0] === "menuId=\"" + menuId + "\""; });
+                var menuLink = _.find(menus.value().models, (model: Link) => { return model.rel().parms[0].value ===  menuId; });
                     var menu = menuLink.getTarget();
                     return repLoader.populate(menu);
                 }).

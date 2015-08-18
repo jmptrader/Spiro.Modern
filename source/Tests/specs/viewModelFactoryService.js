@@ -100,7 +100,7 @@ describe('viewModelFactory Service', function () {
         var rawAction = { extensions: { friendlyName: "a title" }, links: [rawdetailsLink] };
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}), "", null);
+                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}, ""), "", null);
             }));
             it('creates an action view model', function () {
                 expect(resultVm.title).toBe("a title");
@@ -116,7 +116,7 @@ describe('viewModelFactory Service', function () {
         describe('from simple rep', function () {
             beforeEach(inject(function (viewModelFactory, $routeParams) {
                 $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionMember(rawAction, null), function () { });
+                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionMember(rawAction, null, ""), function () { });
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");

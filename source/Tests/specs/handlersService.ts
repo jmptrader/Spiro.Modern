@@ -170,7 +170,7 @@ describe('handlers Service', () => {
         describe('if it finds object', () => {
 
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.ActionMember({}, testObject);
+            var testMember = new Spiro.ActionMember({}, testObject, "");
             var testDetails = new Spiro.ActionRepresentation();
             var testViewModel = { test: testObject };
 
@@ -306,7 +306,7 @@ describe('handlers Service', () => {
         describe('if it finds object', () => {
 
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.ActionMember({}, testObject);
+            var testMember = new Spiro.ActionMember({}, testObject, "");
             var testDetails = new Spiro.ActionRepresentation();
             var testResult = new Spiro.ActionResultRepresentation();
 
@@ -1171,7 +1171,7 @@ describe('handlers Service', () => {
             beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
                 spyOn(testActionResult, 'result').andReturn(testResult);
                 spyOn(testActionResult, 'resultType').andReturn("void");
-                repHandlers.setResult(testActionResult, testViewModel);
+                repHandlers.setResult(null, testActionResult, testViewModel);
             }));
 
             it('should not set view model error', () => {
@@ -1208,7 +1208,7 @@ describe('handlers Service', () => {
                     testViewModel.parameters = [];
                     testViewModel.show = true;
 
-                    repHandlers.setResult(testActionResult, testViewModel);
+                    repHandlers.setResult(null, testActionResult, testViewModel);
                 }));
 
                 it('should set nested object and search', () => {
@@ -1222,7 +1222,7 @@ describe('handlers Service', () => {
 
                 beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
 
-                    repHandlers.setResult(testActionResult);
+                    repHandlers.setResult(null, testActionResult);
                 }));
 
                 it('should set nested object and search', () => {
@@ -1262,7 +1262,7 @@ describe('handlers Service', () => {
                     spyOn(testActionResult, 'result').andReturn(testResult);
                     testViewModel.parameters = testParameters;
 
-                    repHandlers.setResult(testActionResult, testViewModel);
+                    repHandlers.setResult(null,testActionResult, testViewModel);
                 }));
 
                 it('should set collection and search', () => {
@@ -1275,7 +1275,7 @@ describe('handlers Service', () => {
 
                 beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
                     spyOn(testActionResult, 'result').andReturn(testResult);
-                    repHandlers.setResult(testActionResult);
+                    repHandlers.setResult(null, testActionResult);
                 }));
 
                 it('should set collection and search', () => {
@@ -1289,7 +1289,7 @@ describe('handlers Service', () => {
 
                 beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
                     spyOn(testActionResult, 'result').andReturn(testNullResult);
-                    repHandlers.setResult(testActionResult, testViewModel);
+                    repHandlers.setResult(null, testActionResult, testViewModel);
                 }));
 
                 it('should set view model error', () => {

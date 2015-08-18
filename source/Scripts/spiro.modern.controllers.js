@@ -20,9 +20,9 @@ var Spiro;
         (function (Modern) {
             Angular.app.controller("Pane1HomeController", function ($scope, $routeParams, handlers) {
                 // get parm match type and call correct handler.     
-                var p1 = $routeParams.menu1;
-                var p2 = $routeParams.dialog1;
-                handlers.handleHome($scope, p1, p2);
+                var menuId = $routeParams.menu1;
+                var dialogId = $routeParams.dialog1;
+                handlers.handleHome($scope, menuId, dialogId);
             });
             Angular.app.controller("Pane2HomeController", function ($scope, $routeParams, handlers) {
                 // get parm match type and call correct handler. 
@@ -30,28 +30,22 @@ var Spiro;
             });
             Angular.app.controller("Pane1ObjectController", function ($scope, $routeParams, handlers) {
                 // get parm match type and call correct handler. 
-                var p1 = $routeParams["pane1"];
-                var rx = /(.*)-(.*)/;
-                var results = rx.exec(p1);
-                handlers.handlePaneObject($scope, results[1], results[2]);
+                var objectId = $routeParams.object1;
+                handlers.handlePaneObject($scope, objectId);
             });
             Angular.app.controller("Pane2ObjectController", function ($scope, $routeParams, handlers) {
-                var p2 = $routeParams["pane2"];
-                var rx = /(.*)-(.*)/;
-                var results = rx.exec(p2);
-                handlers.handlePaneObject($scope, results[1], results[2]);
+                handlers.handlePaneObject($scope, "todo");
             });
             Angular.app.controller("Pane1QueryController", function ($scope, $routeParams, handlers) {
-                var p2 = $routeParams["pane1"];
-                var rx = /(.*)-(.*)/;
-                var results = rx.exec(p2);
-                handlers.handlePaneObject($scope, results[1], results[2]);
+                var actionId = $routeParams.action1;
+                var parms = _.map(_.filter($routeParams, function (v, k) { return k.indexOf("parm1") === 0; }), function (v) { return v; });
+                handlers.handleQuery($scope, actionId, parms);
             });
             Angular.app.controller("Pane2QueryController", function ($scope, $routeParams, handlers) {
                 var p2 = $routeParams["pane2"];
                 var rx = /(.*)-(.*)/;
                 var results = rx.exec(p2);
-                handlers.handlePaneObject($scope, results[1], results[2]);
+                handlers.handlePaneObject($scope, "todo");
             });
             // tested
             Angular.app.controller("BackgroundController", function ($scope, handlers) {

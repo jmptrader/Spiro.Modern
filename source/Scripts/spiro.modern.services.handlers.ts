@@ -33,12 +33,12 @@ module Spiro.Angular.Modern {
         handleTransientObject($scope): void;
 
 
-        handlePaneObject($scope, dt : string, id : string): void;
+        handlePaneObject($scope, objectId : string): void;
         handleAppBar($scope): void;
 
         handleHome($scope, currentMenu? : string, currentDialog? : string): void;
         handleObject($scope): void;
-        handleQuery($scope): void;
+        handleQuery($scope, actionId :string, parms : string[]): void;
     }
 
     app.service("handlers", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color: IColor, repHandlers: IRepHandlers, navigation: INavigation) {
@@ -60,8 +60,8 @@ module Spiro.Angular.Modern {
             // validate version 
 
             context.getVersion().then((v: VersionRepresentation) => {
-                var specVersion =  parseFloat(v.specVersion());
-                var domainModel = v.optionalCapabilities().domainModel;
+                const specVersion =  parseFloat(v.specVersion());
+                const domainModel = v.optionalCapabilities().domainModel;
 
                 if (specVersion < 1.1) {
                     setVersionError("Restful Objects server must support spec version 1.1 or greater for Spiro Modern\r\n (8.2:specVersion)");
@@ -70,10 +70,7 @@ module Spiro.Angular.Modern {
                 if (domainModel !== "simple" && domainModel !== "selectable") {
                     setVersionError("Spiro Modern requires domain metadata representation to be simple or selectable not \"" + domainModel + "\"\r\n (8.2:optionalCapabilities)");
                 }
-
             });
-
-
         };
 
         // tested
@@ -174,7 +171,7 @@ module Spiro.Angular.Modern {
                     return repLoader.populate(result, true);
                 }).
                 then((result: ActionResultRepresentation) => {
-                    repHandlers.setResult(result);
+                    repHandlers.setResult(null, result);
                 }, error => {
                     if (error) {
                         setError(error);
@@ -424,7 +421,9 @@ module Spiro.Angular.Modern {
 
         };
 
-        handlers.handlePaneObject = ($scope, dt : string, id : string) => {
+        handlers.handlePaneObject = ($scope, objectId : string) => {
+
+            var [dt, id] = objectId.split("-");
 
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {

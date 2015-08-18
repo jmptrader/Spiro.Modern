@@ -128,7 +128,7 @@ var Spiro;
                         return repLoader.populate(result, true);
                     }).
                         then(function (result) {
-                        repHandlers.setResult(result);
+                        repHandlers.setResult(null, result);
                     }, function (error) {
                         if (error) {
                             setError(error);
@@ -324,7 +324,8 @@ var Spiro;
                         setError(error);
                     });
                 };
-                handlers.handlePaneObject = function ($scope, dt, id) {
+                handlers.handlePaneObject = function ($scope, objectId) {
+                    var _a = objectId.split("-"), dt = _a[0], id = _a[1];
                     context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);

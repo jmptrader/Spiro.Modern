@@ -20,10 +20,10 @@ module Spiro.Angular.Modern {
     app.controller("Pane1HomeController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
         // get parm match type and call correct handler.     
 
-        var p1 = $routeParams.menu1;
-        var p2 = $routeParams.dialog1;
+        var menuId = $routeParams.menu1;
+        var dialogId = $routeParams.dialog1;
 
-        handlers.handleHome($scope, p1, p2);
+        handlers.handleHome($scope, menuId, dialogId);
     });
 
     app.controller("Pane2HomeController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
@@ -36,33 +36,22 @@ module Spiro.Angular.Modern {
     app.controller("Pane1ObjectController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams,   handlers: IHandlers) => {
         // get parm match type and call correct handler. 
 
-        var p1 = $routeParams["pane1"];
+        var objectId = $routeParams.object1;
 
-        var rx = /(.*)-(.*)/;
-
-        var results = rx.exec(p1);
-
-        handlers.handlePaneObject($scope, results[1], results[2]);
+        handlers.handlePaneObject($scope, objectId);
     });
 
     app.controller("Pane2ObjectController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
 
-        var p2 = $routeParams["pane2"];
-        var rx = /(.*)-(.*)/;
-
-        var results = rx.exec(p2);
-
-        handlers.handlePaneObject($scope, results[1], results[2]);
+        handlers.handlePaneObject($scope, "todo");
     });
 
     app.controller("Pane1QueryController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
 
-        var p2 = $routeParams["pane1"];
-        var rx = /(.*)-(.*)/;
+        var actionId = $routeParams.action1;
+        var parms = _.map(_.filter($routeParams, (v, k) => k.indexOf("parm1") === 0), v => v);
 
-        var results = rx.exec(p2);
-
-        handlers.handlePaneObject($scope, results[1], results[2]);
+        handlers.handleQuery($scope, actionId, parms);
     });
 
     app.controller("Pane2QueryController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
@@ -72,7 +61,7 @@ module Spiro.Angular.Modern {
 
         var results = rx.exec(p2);
 
-        handlers.handlePaneObject($scope, results[1], results[2]);
+        handlers.handlePaneObject($scope, "todo");
     });
 
 

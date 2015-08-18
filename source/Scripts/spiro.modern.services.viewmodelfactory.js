@@ -216,7 +216,6 @@ var Spiro;
                     dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
                     dialogViewModel.message = "";
                     dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
-                    var i = 0;
                     dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, ""); });
                     dialogViewModel.doShow = function () {
                         dialogViewModel.show = true;
@@ -360,7 +359,7 @@ var Spiro;
                     var servicesViewModel = new Modern.ServicesViewModel();
                     // filter out contributed action services 
                     var links = _.filter(servicesRep.value().models, function (m) {
-                        var sid = m.rel().parms[0].split('=')[1];
+                        var sid = m.rel().parms[0].value;
                         return sid.indexOf("ContributedActions") === -1;
                     });
                     servicesViewModel.title = "Services";
@@ -372,8 +371,7 @@ var Spiro;
                     var menusViewModel = new Modern.MenusViewModel();
                     menusViewModel.title = "Menus";
                     menusViewModel.color = "bg-color-darkBlue";
-                    //todo use regex!
-                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link, function () { return urlManager.setMenu(link.rel().parms[0].split("=")[1].replace("\"", "").replace("\"", "")); }); });
+                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link, function () { return urlManager.setMenu(link.rel().parms[0].value); }); });
                     return menusViewModel;
                 };
                 // tested

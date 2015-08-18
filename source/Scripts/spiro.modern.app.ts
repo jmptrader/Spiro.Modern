@@ -33,7 +33,9 @@ module Spiro.Angular {
         sid: string; 
 
         menu1: string;
-        dialog1 : string;
+        dialog1: string;
+        object1: string;
+        action1: string;
 
 
 

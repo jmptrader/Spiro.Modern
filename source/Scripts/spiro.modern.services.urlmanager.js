@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('urlManager', function ($routeParams, $location) {
+            Angular.app.service("urlManager", function ($routeParams, $location) {
                 var helper = this;
                 function setSearch(parmId, parmValue, clearOthers) {
                     var search = clearOthers ? {} : $location.search();
@@ -30,6 +30,17 @@ var Spiro;
                 };
                 helper.setDialog = function (dialogId) {
                     setSearch("dialog1", dialogId, false);
+                };
+                helper.setObject = function (resultObject) {
+                    var oid = resultObject.domainType() + "-" + resultObject.instanceId();
+                    $location.path("/object").search({ object1: oid });
+                };
+                helper.setQuery = function (action, dvm) {
+                    var aid = action.actionId();
+                    var search = $location.search();
+                    search.action1 = aid;
+                    _.each(dvm.parameters, function (p, i) { return search[("parm1_" + i)] = p.getValue(); });
+                    $location.path("/query").search(search);
                 };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));

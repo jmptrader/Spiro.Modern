@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('repHandlers', function ($q, $location, $cacheFactory, repLoader, context, urlHelper) {
+            Angular.app.service("repHandlers", function ($q, $location, $cacheFactory, repLoader, context, urlHelper, urlManager) {
                 var repHandlers = this;
                 repHandlers.prompt = function (promptRep, id, searchTerm) {
                     promptRep.reset();
@@ -44,14 +44,13 @@ var Spiro;
                         return delay.promise;
                     });
                 };
-                repHandlers.setResult = function (result, dvm) {
+                repHandlers.setResult = function (action, result, dvm) {
                     if (result.result().isNull() && result.resultType() !== "void") {
                         if (dvm) {
                             dvm.message = "no result found";
                         }
                         return;
                     }
-                    var parms = "";
                     var resultObject = result.result().object(); // transient object
                     if (result.resultType() === "object" && resultObject.persistLink()) {
                         var domainType = resultObject.extensions().domainType;
@@ -67,13 +66,13 @@ var Spiro;
                         // set the nested object here and then update the url. That should reload the page but pick up this object 
                         // so we don't hit the server again. 
                         context.setNestedObject(resultObject);
+                        urlManager.setObject(resultObject);
                     }
                     if (result.resultType() === "list") {
                         var resultList = result.result().list();
                         context.setCollection(resultList);
-                        parms = urlHelper.updateParms(resultList, dvm);
+                        urlManager.setQuery(action, dvm);
                     }
-                    $location.search(parms);
                 };
                 repHandlers.setInvokeUpdateError = function ($scope, error, vms, vm) {
                     if (error instanceof Spiro.ErrorMap) {
@@ -100,15 +99,16 @@ var Spiro;
                 };
                 repHandlers.invokeAction = function ($scope, action, dvm) {
                     var invoke = action.getInvoke();
+                    var parameters = [];
                     if (dvm) {
                         dvm.clearMessages();
-                        var parameters = dvm.parameters;
+                        parameters = dvm.parameters;
                         _.each(parameters, function (parm) { return invoke.setParameter(parm.id, parm.getValue()); });
                         _.each(parameters, function (parm) { return parm.setSelectedChoice(); });
                     }
                     repLoader.populate(invoke, true).
                         then(function (result) {
-                        repHandlers.setResult(result, dvm);
+                        repHandlers.setResult(action, result, dvm);
                     }, function (error) {
                         repHandlers.setInvokeUpdateError($scope, error, parameters, dvm);
                     });
@@ -123,7 +123,7 @@ var Spiro;
                         var rawLinks = object.get("links");
                         updatedObject.set("links", rawLinks);
                         // remove pre-changed object from cache
-                        $cacheFactory.get('$http').remove(updatedObject.url());
+                        $cacheFactory.get("$http").remove(updatedObject.url());
                         context.setObject(updatedObject);
                         $location.search("");
                     }, function (error) {
