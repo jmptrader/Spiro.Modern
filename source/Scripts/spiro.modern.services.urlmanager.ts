@@ -19,20 +19,25 @@ module Spiro.Angular.Modern {
 
     export interface IUrlManager {
        setMenu(menuId : string);
+       setDialog(id: string);
     }
 
     app.service('urlManager', function ($routeParams : ISpiroRouteParams, $location : ng.ILocationService) {
 
         var helper = <IUrlManager>this;
 
-        function setSearch(parmId: string, parmValue: string) {
-            var search = $location.search();
+        function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
+            var search = clearOthers ? {} : $location.search();
             search[parmId] = parmValue;
             $location.search(search);
         }
 
         helper.setMenu = (menuId: string) => {
-            setSearch("menu1", menuId);
+            setSearch("menu1", menuId, true);
+        }
+
+        helper.setDialog = (dialogId: string) => {
+            setSearch("dialog1", dialogId, false);
         }
     });
 

@@ -199,9 +199,7 @@ var Spiro;
                     if (actionRep.extensions().hasParams) {
                         actionViewModel.doInvoke = function () {
                             // show the dialog 
-                            // todo keep the menu !!
-                            // hack 
-                            $location.search({ dialog1: id, menu1: urlHelper.getMenu() });
+                            urlManager.setDialog(id);
                         };
                     }
                     else {

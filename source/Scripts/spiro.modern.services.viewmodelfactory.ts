@@ -254,13 +254,8 @@ module Spiro.Angular.Modern{
             if (actionRep.extensions().hasParams) {
                 actionViewModel.doInvoke = () => {
                     // show the dialog 
-
-                    // todo keep the menu !!
-                    // hack 
-
-                    $location.search({ dialog1: id, menu1: urlHelper.getMenu() });
+                    urlManager.setDialog(id);
                 }
-
             } else {
                 actionViewModel.doInvoke = invoke;
             }

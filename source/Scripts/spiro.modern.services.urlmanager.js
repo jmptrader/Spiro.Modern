@@ -20,13 +20,16 @@ var Spiro;
         (function (Modern) {
             Angular.app.service('urlManager', function ($routeParams, $location) {
                 var helper = this;
-                function setSearch(parmId, parmValue) {
-                    var search = $location.search();
+                function setSearch(parmId, parmValue, clearOthers) {
+                    var search = clearOthers ? {} : $location.search();
                     search[parmId] = parmValue;
                     $location.search(search);
                 }
                 helper.setMenu = function (menuId) {
-                    setSearch("menu1", menuId);
+                    setSearch("menu1", menuId, true);
+                };
+                helper.setDialog = function (dialogId) {
+                    setSearch("dialog1", dialogId, false);
                 };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
