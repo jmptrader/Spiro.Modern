@@ -21,7 +21,7 @@ module Spiro.Angular.Modern {
         setMenu(menuId: string);
         setDialog(id: string);
         setObject(resultObject: DomainObjectRepresentation);
-        setQuery(action : ActionMember, dvm: DialogViewModel);
+        setQuery(action : ActionMember, dvm?: DialogViewModel);
     }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
@@ -46,13 +46,15 @@ module Spiro.Angular.Modern {
             $location.path("/object").search({ object1: oid });
         };
 
-        helper.setQuery = (action : ActionMember, dvm: DialogViewModel) => {
+        helper.setQuery = (action : ActionMember, dvm?: DialogViewModel) => {
             const aid = action.actionId();
             const search = $location.search();
 
             search.action1 = aid;
 
-            _.each(dvm.parameters, (p, i) => search[`parm1_${i}`] = p.getValue());
+            if (dvm) {
+                _.each(dvm.parameters, (p, i) => search[`parm1_${i}`] = p.getValue());
+            }
 
             $location.path("/query").search(search);
         };

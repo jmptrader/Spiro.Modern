@@ -196,17 +196,16 @@ var Spiro;
                 }
                 ;
                 handlers.handleHome = function ($scope, currentMenu, currentDialog) {
-                    //TODO DRY THIS !!!
+                    context.getMenus().
+                        then(function (menus) {
+                        $scope.menus = viewModelFactory.menusViewModel(menus);
+                        $scope.homeTemplate = Angular.homeTemplate;
+                        context.setObject(null);
+                        context.setNestedObject(null);
+                    }, function (error) {
+                        setError(error);
+                    });
                     if (currentMenu) {
-                        context.getMenus().
-                            then(function (menus) {
-                            $scope.menus = viewModelFactory.menusViewModel(menus);
-                            $scope.homeTemplate = Angular.homeTemplate;
-                            context.setObject(null);
-                            context.setNestedObject(null);
-                        }, function (error) {
-                            setError(error);
-                        });
                         context.getMenu(currentMenu).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
@@ -221,20 +220,15 @@ var Spiro;
                             setError(error);
                         });
                     }
-                    else {
-                        context.getMenus().
-                            then(function (menus) {
-                            $scope.menus = viewModelFactory.menusViewModel(menus);
-                            $scope.homeTemplate = Angular.homeTemplate;
-                            context.setObject(null);
-                            context.setNestedObject(null);
-                        }, function (error) {
-                            setError(error);
-                        });
-                    }
                 };
-                handlers.handleQuery = function ($scope) {
-                    //TODO:
+                handlers.handleQuery = function ($scope, menuId, actionId, parms) {
+                    context.getCollection().
+                        then(function (list) {
+                        $scope.queryTemplate = Angular.queryTemplate;
+                        $scope.collection = viewModelFactory.collectionViewModel(list);
+                    }, function (error) {
+                        setError(error);
+                    });
                 };
                 // tested
                 handlers.handleService = function ($scope) {

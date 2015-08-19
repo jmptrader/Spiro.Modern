@@ -13,11 +13,14 @@ under the License.-->
 
 <!--TODO -  define (currently still a copy of object)-->
 <div class="query">
-    <div class="header">
-        <div class="title">{{object.title}}</div>
-        <div class="type"></div>
-        <div class="messages">{{object.message}}</div>
+    <div class="title">
+        {{collection.size}}-{{collection.pluralName}}
+        <a class="cancel icon-cancel" href="{{closeCollection}}"></a>
+        <a class="expand icon-plus" href="{{modeCollection}}"></a>
     </div>
-    <div class="properties-pane" ng-include="propertiesTemplate"></div>
-    <div class="actions-pane" ng-include="actionTemplate"></div>
+    <div class="items">
+        <div class="list-item clickable-area" ng-repeat="item in collection.items" ng-class="item.color">
+            <a href="{{item.href}}"><span></span>{{item.title}}</a>
+        </div>
+    </div>
 </div>

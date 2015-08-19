@@ -38,7 +38,8 @@ module Spiro.Angular.Modern {
 
         handleHome($scope, currentMenu? : string, currentDialog? : string): void;
         handleObject($scope): void;
-        handleQuery($scope, actionId :string, parms : string[]): void;
+        // obviously will have to change to generalize
+        handleQuery($scope, menuId : string, actionId :string, parms : string[]): void;
     }
 
     app.service("handlers", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color: IColor, repHandlers: IRepHandlers, navigation: INavigation) {
@@ -251,48 +252,32 @@ module Spiro.Angular.Modern {
         };
 
 
-        handlers.handleHome = ($scope, currentMenu? : string, currentDialog? : string) => {
+        handlers.handleHome = ($scope, currentMenu?: string, currentDialog?: string) => {
 
-            //TODO DRY THIS !!!
+            context.getMenus().
+                then((menus: MenusRepresentation) => {
+                    $scope.menus = viewModelFactory.menusViewModel(menus);
+                    $scope.homeTemplate = homeTemplate;
+                    context.setObject(null);
+                    context.setNestedObject(null);
+
+                }, error => {
+                    setError(error);
+                });
 
             if (currentMenu) {
-
-                context.getMenus().
-                    then((menus: MenusRepresentation) => {
-                        $scope.menus = viewModelFactory.menusViewModel(menus);
-                        $scope.homeTemplate = homeTemplate;
-                        context.setObject(null);
-                        context.setNestedObject(null);
-
-                    }, error => {
-                        setError(error);
-                    });
 
                 context.getMenu(currentMenu).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        var actions = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction($scope, am))) }
+                        const actions = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction($scope, am))) };
                         $scope.actions = actions;
 
                         if (currentDialog) {
                             $scope.dialogTemplate = dialogTemplate;
-                            var action = menu.actionMember(currentDialog);
+                            const action = menu.actionMember(currentDialog);
                             $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, $scope, action));
                         }
-
-                    }, error => {
-                        setError(error);
-                    });
-
-            } else {
-
-                context.getMenus().
-                    then((menus: MenusRepresentation) => {
-                        $scope.menus = viewModelFactory.menusViewModel(menus);
-                        $scope.homeTemplate = homeTemplate;
-                        context.setObject(null);
-                        context.setNestedObject(null);
-
                     }, error => {
                         setError(error);
                     });
@@ -300,8 +285,15 @@ module Spiro.Angular.Modern {
 
         };
 
-        handlers.handleQuery = $scope => {
-            //TODO:
+        handlers.handleQuery = ($scope, menuId : string, actionId :string, parms : string[]) => {
+
+            context.getCollection().
+                then((list: ListRepresentation) => {
+                    $scope.queryTemplate = queryTemplate;
+                    $scope.collection = viewModelFactory.collectionViewModel(list);
+                }, error => {
+                    setError(error);
+                });
         };
 
         // tested

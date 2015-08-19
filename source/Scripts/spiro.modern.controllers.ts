@@ -48,10 +48,11 @@ module Spiro.Angular.Modern {
 
     app.controller("Pane1QueryController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
 
+        var menuId = $routeParams.menu1;
         var actionId = $routeParams.action1;
         var parms = _.map(_.filter($routeParams, (v, k) => k.indexOf("parm1") === 0), v => v);
 
-        handlers.handleQuery($scope, actionId, parms);
+        handlers.handleQuery($scope, menuId, actionId, parms);
     });
 
     app.controller("Pane2QueryController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {

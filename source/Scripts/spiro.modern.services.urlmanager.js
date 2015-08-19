@@ -39,7 +39,9 @@ var Spiro;
                     var aid = action.actionId();
                     var search = $location.search();
                     search.action1 = aid;
-                    _.each(dvm.parameters, function (p, i) { return search[("parm1_" + i)] = p.getValue(); });
+                    if (dvm) {
+                        _.each(dvm.parameters, function (p, i) { return search[("parm1_" + i)] = p.getValue(); });
+                    }
                     $location.path("/query").search(search);
                 };
             });

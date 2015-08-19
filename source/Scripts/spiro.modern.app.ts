@@ -83,6 +83,7 @@ module Spiro.Angular {
     var splitQueryHomePageTemplate = getSvrPath() + "Content/partials/splitQueryHomePage.html";
     var splitQueryObjectPageTemplate = getSvrPath() + "Content/partials/splitQueryObjectPage.html";
     var splitQueryQueryPageTemplate = getSvrPath() + "Content/partials/splitQueryQueryPage.html";
+
     export var homeTemplate = getSvrPath() + "Content/partials/home.html";
     export var objectTemplate = getSvrPath() + "Content/partials/object.html";
     export var queryTemplate = getSvrPath() + "Content/partials/query.html";
