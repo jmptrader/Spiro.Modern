@@ -97,6 +97,7 @@ var Spiro;
                         }
                     }
                 };
+                // todo this code is nearly duplicated in context - DRY it
                 repHandlers.invokeAction = function (action, dvm) {
                     var invoke = action.getInvoke();
                     var parameters = [];

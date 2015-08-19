@@ -39,7 +39,7 @@ module Spiro.Angular.Modern {
         getSelectedChoice: (parm: string, search: string) => ChoiceViewModel[];
         clearSelectedChoice: (parm: string) => void;
         setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
-        getQuery: (menuId: string, actionId: string) => angular.IPromise<ListRepresentation>;
+        getQuery: (menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
 
     }
 
@@ -215,7 +215,7 @@ module Spiro.Angular.Modern {
 
         var currentCollection = null; // tested
 
-        context.getQuery = function (menuId: string, actionId: string) {
+        context.getQuery = function (menuId: string, actionId: string, parms : {id: string, val: string }[]) {
             var delay = $q.defer<ListRepresentation>();
 
             if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
@@ -225,7 +225,16 @@ module Spiro.Angular.Modern {
 
                 this.getMenu(menuId).then((menu: MenuRepresentation) => {
 
-                    var invoke = menu.actionMember(actionId).getInvoke();
+                    var action = menu.actionMember(actionId);
+                    var invoke = action.getInvoke();
+
+                    var valueParms = _.map(parms, (p) => { return {id : p.id,  val : new Value(p.val)} });
+
+                    // todo revist how to do this if necessary
+                   // var parmViewModels = _.map(action.parameters(), (p, id) => viewModelFactory.parameterViewModel(p, id, ""));
+                                        
+                    _.each(valueParms, (vp) => invoke.setParameter(vp.id, vp.val));
+                   // _.each(parmViewModels, (parm) => parm.setSelectedChoice());
 
                     return repLoader.populate(invoke, true);
 

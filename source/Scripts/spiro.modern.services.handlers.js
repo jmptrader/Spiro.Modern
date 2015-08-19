@@ -222,7 +222,7 @@ var Spiro;
                     }
                 };
                 handlers.handleQuery = function ($scope, menuId, actionId, parms) {
-                    context.getQuery(menuId, actionId).
+                    context.getQuery(menuId, actionId, parms).
                         then(function (list) {
                         $scope.queryTemplate = Angular.queryTemplate;
                         $scope.collection = viewModelFactory.collectionViewModel(list);

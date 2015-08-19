@@ -155,7 +155,7 @@ var Spiro;
                     return delay.promise;
                 };
                 var currentCollection = null; // tested
-                context.getQuery = function (menuId, actionId) {
+                context.getQuery = function (menuId, actionId, parms) {
                     var _this = this;
                     var delay = $q.defer();
                     if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
@@ -163,7 +163,13 @@ var Spiro;
                     }
                     else {
                         this.getMenu(menuId).then(function (menu) {
-                            var invoke = menu.actionMember(actionId).getInvoke();
+                            var action = menu.actionMember(actionId);
+                            var invoke = action.getInvoke();
+                            var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
+                            // todo revist how to do this if necessary
+                            // var parmViewModels = _.map(action.parameters(), (p, id) => viewModelFactory.parameterViewModel(p, id, ""));
+                            _.each(valueParms, function (vp) { return invoke.setParameter(vp.id, vp.val); });
+                            // _.each(parmViewModels, (parm) => parm.setSelectedChoice());
                             return repLoader.populate(invoke, true);
                         }).then(function (result) {
                             if (result.resultType() === "list") {

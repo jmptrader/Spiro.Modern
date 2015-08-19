@@ -39,7 +39,8 @@ var Spiro;
             Angular.app.controller("Pane1QueryController", function ($scope, $routeParams, handlers) {
                 var menuId = $routeParams.menu1;
                 var actionId = $routeParams.action1;
-                var parms = _.map(_.filter($routeParams, function (v, k) { return k.indexOf("parm1") === 0; }), function (v) { return v; });
+                var parmObjs = _.pick($routeParams, function (v, k) { return k.indexOf("parm1") === 0; });
+                var parms = _.map(parmObjs, function (v, k) { return { id: k.substr(k.indexOf("_") + 1), val: v }; });
                 handlers.handleQuery($scope, menuId, actionId, parms);
             });
             Angular.app.controller("Pane2QueryController", function ($scope, $routeParams, handlers) {

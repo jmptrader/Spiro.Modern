@@ -53,7 +53,7 @@ module Spiro.Angular.Modern {
             search.action1 = aid;
 
             if (dvm) {
-                _.each(dvm.parameters, (p, i) => search[`parm1_${i}`] = p.getValue());
+                _.each(dvm.parameters, (p) => search[`parm1_${p.id}`] = p.getValue());
             }
 
             $location.path("/query").search(search);
