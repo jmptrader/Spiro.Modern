@@ -183,6 +183,7 @@ var Spiro;
                 function PropertyViewModel() {
                     _super.apply(this, arguments);
                 }
+                PropertyViewModel.prototype.doClick = function () { };
                 return PropertyViewModel;
             })(ValueViewModel);
             Modern.PropertyViewModel = PropertyViewModel;

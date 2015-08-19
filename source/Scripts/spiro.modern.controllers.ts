@@ -50,9 +50,8 @@ module Spiro.Angular.Modern {
 
         var menuId = $routeParams.menu1;
         var actionId = $routeParams.action1;
-        var parmObjs = <{[index :string] : string}> _.pick($routeParams, (v, k) => k.indexOf("parm1") === 0);
-
-        var parms = _.map(parmObjs, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
+        var parmIds = <{[index :string] : string}> _.pick($routeParams, (v, k) => k.indexOf("parm1") === 0);
+        var parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
 
         handlers.handleQuery($scope, menuId, actionId, parms);
     });

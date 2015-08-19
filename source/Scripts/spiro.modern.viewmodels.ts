@@ -221,6 +221,8 @@ module Spiro.Angular.Modern {
         color: string;       
         isEditable: boolean;    
         attachment: AttachmentViewModel;
+
+        doClick() { }
     } 
 
     export class CollectionViewModel {

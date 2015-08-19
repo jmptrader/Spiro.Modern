@@ -237,6 +237,9 @@ var Spiro;
                     propertyViewModel.href = propertyRep.isScalar() || propertyRep.value().isNull() || propertyRep.detailsLink() == null ? "" : urlHelper.toNewAppUrl2(propertyRep.value().link().href());
                     propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
                     propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
+                    propertyViewModel.doClick = function () {
+                        urlManager.setProperty(propertyRep);
+                    };
                     if (propertyRep.attachmentLink() != null) {
                         propertyViewModel.attachment = Modern.AttachmentViewModel.create(propertyRep.attachmentLink().href(), propertyRep.attachmentLink().type().asString, propertyRep.attachmentLink().title());
                     }

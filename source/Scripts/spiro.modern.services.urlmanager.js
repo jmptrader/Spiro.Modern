@@ -44,6 +44,13 @@ var Spiro;
                     }
                     $location.path("/query").search(search);
                 };
+                helper.setProperty = function (propertyMember) {
+                    var href = propertyMember.value().link().href();
+                    var urlRegex = /(objects|services)\/(.*)\/(.*)/;
+                    var results = (urlRegex).exec(href);
+                    var oid = results[2] + "-" + results[3];
+                    $location.search({ object1: oid });
+                };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));

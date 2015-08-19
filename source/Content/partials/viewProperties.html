@@ -2,7 +2,7 @@
 
         <div class="name">{{property.title}}:</div>
         <div ng-switch-when="ref" class="reference clickable-area" ng-class="property.color">
-            <a href="{{property.href}}">
+            <a href="" ng-click="property.doClick()">
                 <span></span>
                 {{property.value}}
             </a>
