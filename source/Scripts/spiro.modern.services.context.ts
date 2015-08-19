@@ -39,13 +39,13 @@ module Spiro.Angular.Modern {
         getSelectedChoice: (parm: string, search: string) => ChoiceViewModel[];
         clearSelectedChoice: (parm: string) => void;
         setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
+        getQuery: (menuId: string, actionId: string) => angular.IPromise<ListRepresentation>;
+
     }
 
     interface IContextInternal extends IContext {
         getDomainObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         getService: (type: string) => ng.IPromise<DomainObjectRepresentation>;
-       
-
     }
 
     app.service("context", function ($q: ng.IQService, repLoader: IRepLoader) {
@@ -213,6 +213,38 @@ module Spiro.Angular.Modern {
             return delay.promise;
         };
 
+        var currentCollection = null; // tested
+
+        context.getQuery = function (menuId: string, actionId: string) {
+            var delay = $q.defer<ListRepresentation>();
+
+            if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
+                delay.resolve(currentCollection);
+            }
+            else {
+
+                this.getMenu(menuId).then((menu: MenuRepresentation) => {
+
+                    var invoke = menu.actionMember(actionId).getInvoke();
+
+                    return repLoader.populate(invoke, true);
+
+                }).then((result: ActionResultRepresentation) => {
+
+                    if (result.resultType() === "list") {
+                        const resultList = result.result().list();
+                        this.setCollection(resultList);
+                        delay.resolve(currentCollection);
+                    } else {
+                        delay.reject("fail");
+                    }
+                }, error => delay.reject(error));
+            }
+
+            return delay.promise;
+        };
+
+
         context.setObject = co => currentObject = co;
 
         var currentNestedObject: DomainObjectRepresentation = null;
@@ -245,10 +277,7 @@ module Spiro.Angular.Modern {
         context.getError = () => currentError;
 
         context.setError = (e: ErrorRepresentation) => currentError = e;
-
-        var currentCollection: ListRepresentation = null;
-
-        // tested
+       
         context.getCollection = () => {
             var delay = $q.defer<ListRepresentation>();
             delay.resolve(currentCollection);

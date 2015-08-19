@@ -154,6 +154,30 @@ var Spiro;
                     }
                     return delay.promise;
                 };
+                var currentCollection = null; // tested
+                context.getQuery = function (menuId, actionId) {
+                    var _this = this;
+                    var delay = $q.defer();
+                    if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
+                        delay.resolve(currentCollection);
+                    }
+                    else {
+                        this.getMenu(menuId).then(function (menu) {
+                            var invoke = menu.actionMember(actionId).getInvoke();
+                            return repLoader.populate(invoke, true);
+                        }).then(function (result) {
+                            if (result.resultType() === "list") {
+                                var resultList = result.result().list();
+                                _this.setCollection(resultList);
+                                delay.resolve(currentCollection);
+                            }
+                            else {
+                                delay.reject("fail");
+                            }
+                        }, function (error) { return delay.reject(error); });
+                    }
+                    return delay.promise;
+                };
                 context.setObject = function (co) { return currentObject = co; };
                 var currentNestedObject = null;
                 // tested
@@ -177,8 +201,6 @@ var Spiro;
                 var currentError = null;
                 context.getError = function () { return currentError; };
                 context.setError = function (e) { return currentError = e; };
-                var currentCollection = null;
-                // tested
                 context.getCollection = function () {
                     var delay = $q.defer();
                     delay.resolve(currentCollection);

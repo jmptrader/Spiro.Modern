@@ -209,12 +209,12 @@ var Spiro;
                         context.getMenu(currentMenu).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
-                            var actions = { items: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return repHandlers.invokeAction($scope, am); }); }) };
+                            var actions = { items: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return repHandlers.invokeAction(am); }); }) };
                             $scope.actions = actions;
                             if (currentDialog) {
                                 $scope.dialogTemplate = Angular.dialogTemplate;
                                 var action = menu.actionMember(currentDialog);
-                                $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, $scope, action));
+                                $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, action));
                             }
                         }, function (error) {
                             setError(error);
@@ -222,7 +222,7 @@ var Spiro;
                     }
                 };
                 handlers.handleQuery = function ($scope, menuId, actionId, parms) {
-                    context.getCollection().
+                    context.getQuery(menuId, actionId).
                         then(function (list) {
                         $scope.queryTemplate = Angular.queryTemplate;
                         $scope.collection = viewModelFactory.collectionViewModel(list);

@@ -1506,7 +1506,7 @@ describe('handlers Service', () => {
             var vms = [vm1, vm2];
 
             beforeEach(inject((repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
-                repHandlers.setInvokeUpdateError($scope, errorMap, vms, testViewModel);
+                repHandlers.setInvokeUpdateError( errorMap, vms, testViewModel);
             }));
 
             it('should set the parameters and error', () => {
@@ -1532,7 +1532,7 @@ describe('handlers Service', () => {
                 path = spyOn($location, 'path');
                 errorPath = spyOn(urlHelper, 'toErrorPath').andReturn("apath");
 
-                repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
+                repHandlers.setInvokeUpdateError( testError, [], testViewModel);
             }));
 
             it('should set the location path', () => {
@@ -1549,7 +1549,7 @@ describe('handlers Service', () => {
             var errorMessage = 'an error message';
 
             beforeEach(inject(($rootScope, $routeParams, repHandlers: Spiro.Angular.Modern.IRepHandlers) => {
-                repHandlers.setInvokeUpdateError($scope, errorMessage, [], testViewModel);
+                repHandlers.setInvokeUpdateError( errorMessage, [], testViewModel);
             }));
 
             it('should set the scope ', () => {

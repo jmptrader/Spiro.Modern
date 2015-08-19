@@ -21,8 +21,8 @@ module Spiro.Angular.Modern {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
         setResult(action : ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel);
-        setInvokeUpdateError($scope, error: any, vms: ValueViewModel[], vm?: MessageViewModel);
-        invokeAction($scope, action: ActionMember, dvm?: DialogViewModel);
+        setInvokeUpdateError( error: any, vms: ValueViewModel[], vm?: MessageViewModel);
+        invokeAction( action: ActionMember, dvm?: DialogViewModel);
         updateObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
     }
@@ -104,7 +104,7 @@ module Spiro.Angular.Modern {
             }
         };
 
-        repHandlers.setInvokeUpdateError = ($scope, error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
+        repHandlers.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
             if (error instanceof ErrorMap) {
                 _.each(vms, vmi => {
                     var errorValue = error.valuesMap()[vmi.id];
@@ -129,7 +129,7 @@ module Spiro.Angular.Modern {
             }
         };
 
-        repHandlers.invokeAction = ($scope, action: ActionMember, dvm?: DialogViewModel) => {
+        repHandlers.invokeAction = ( action: ActionMember, dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
             let parameters : ParameterViewModel[] = [];
 
@@ -144,7 +144,7 @@ module Spiro.Angular.Modern {
                 then((result: ActionResultRepresentation) => {
                     repHandlers.setResult(action, result, dvm);
                 }, (error: any) => {
-                    repHandlers.setInvokeUpdateError($scope, error, parameters, dvm);
+                    repHandlers.setInvokeUpdateError( error, parameters, dvm);
                 });
         };
 
@@ -167,7 +167,7 @@ module Spiro.Angular.Modern {
                     context.setObject(updatedObject);
                     $location.search("");
                 }, (error: any) => {
-                    repHandlers.setInvokeUpdateError($scope, error, properties, ovm);
+                    repHandlers.setInvokeUpdateError( error, properties, ovm);
                 });
         };
 
@@ -182,7 +182,7 @@ module Spiro.Angular.Modern {
                     context.setObject(updatedObject);
                     $location.path(urlHelper.toObjectPath(updatedObject));
                 }, (error: any) => {
-                    repHandlers.setInvokeUpdateError($scope, error, properties, ovm);
+                    repHandlers.setInvokeUpdateError( error, properties, ovm);
                 });
         };
 

@@ -74,7 +74,7 @@ var Spiro;
                         urlManager.setQuery(action, dvm);
                     }
                 };
-                repHandlers.setInvokeUpdateError = function ($scope, error, vms, vm) {
+                repHandlers.setInvokeUpdateError = function (error, vms, vm) {
                     if (error instanceof Spiro.ErrorMap) {
                         _.each(vms, function (vmi) {
                             var errorValue = error.valuesMap()[vmi.id];
@@ -97,7 +97,7 @@ var Spiro;
                         }
                     }
                 };
-                repHandlers.invokeAction = function ($scope, action, dvm) {
+                repHandlers.invokeAction = function (action, dvm) {
                     var invoke = action.getInvoke();
                     var parameters = [];
                     if (dvm) {
@@ -110,7 +110,7 @@ var Spiro;
                         then(function (result) {
                         repHandlers.setResult(action, result, dvm);
                     }, function (error) {
-                        repHandlers.setInvokeUpdateError($scope, error, parameters, dvm);
+                        repHandlers.setInvokeUpdateError(error, parameters, dvm);
                     });
                 };
                 repHandlers.updateObject = function ($scope, object, ovm) {
@@ -127,7 +127,7 @@ var Spiro;
                         context.setObject(updatedObject);
                         $location.search("");
                     }, function (error) {
-                        repHandlers.setInvokeUpdateError($scope, error, properties, ovm);
+                        repHandlers.setInvokeUpdateError(error, properties, ovm);
                     });
                 };
                 repHandlers.saveObject = function ($scope, object, ovm) {
@@ -139,7 +139,7 @@ var Spiro;
                         context.setObject(updatedObject);
                         $location.path(urlHelper.toObjectPath(updatedObject));
                     }, function (error) {
-                        repHandlers.setInvokeUpdateError($scope, error, properties, ovm);
+                        repHandlers.setInvokeUpdateError(error, properties, ovm);
                     });
                 };
             });

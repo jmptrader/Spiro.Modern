@@ -270,13 +270,13 @@ module Spiro.Angular.Modern {
                 context.getMenu(currentMenu).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        const actions = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction($scope, am))) };
+                        const actions = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction( am))) };
                         $scope.actions = actions;
 
                         if (currentDialog) {
                             $scope.dialogTemplate = dialogTemplate;
                             const action = menu.actionMember(currentDialog);
-                            $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, $scope, action));
+                            $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction,  action));
                         }
                     }, error => {
                         setError(error);
@@ -287,7 +287,7 @@ module Spiro.Angular.Modern {
 
         handlers.handleQuery = ($scope, menuId : string, actionId :string, parms : string[]) => {
 
-            context.getCollection().
+            context.getQuery(menuId, actionId).
                 then((list: ListRepresentation) => {
                     $scope.queryTemplate = queryTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel(list);

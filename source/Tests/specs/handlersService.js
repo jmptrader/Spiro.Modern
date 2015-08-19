@@ -1005,7 +1005,7 @@ describe('handlers Service', function () {
             vm2.id = "two";
             var vms = [vm1, vm2];
             beforeEach(inject(function (repHandlers) {
-                repHandlers.setInvokeUpdateError($scope, errorMap, vms, testViewModel);
+                repHandlers.setInvokeUpdateError(errorMap, vms, testViewModel);
             }));
             it('should set the parameters and error', function () {
                 expect(vms[0].value).toBe("1");
@@ -1024,7 +1024,7 @@ describe('handlers Service', function () {
                 error = spyOn(context, 'setError');
                 path = spyOn($location, 'path');
                 errorPath = spyOn(urlHelper, 'toErrorPath').andReturn("apath");
-                repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
+                repHandlers.setInvokeUpdateError(testError, [], testViewModel);
             }));
             it('should set the location path', function () {
                 expect(error).toHaveBeenCalledWith(testError);
@@ -1035,7 +1035,7 @@ describe('handlers Service', function () {
         describe('if error is string', function () {
             var errorMessage = 'an error message';
             beforeEach(inject(function ($rootScope, $routeParams, repHandlers) {
-                repHandlers.setInvokeUpdateError($scope, errorMessage, [], testViewModel);
+                repHandlers.setInvokeUpdateError(errorMessage, [], testViewModel);
             }));
             it('should set the scope ', function () {
                 expect(testViewModel.message).toBe(errorMessage);
