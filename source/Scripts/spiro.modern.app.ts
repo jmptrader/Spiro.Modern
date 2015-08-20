@@ -93,26 +93,7 @@ module Spiro.Angular {
 
     app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
-            when("/services", {
-                templateUrl: servicesPageTemplate,
-                controller: "BackgroundController"
-            }).
-            when("/services/:sid", {
-                templateUrl: servicePageTemplate,
-                controller: "BackgroundController"
-            }).
-            when("/objects/:dt/:id", {
-                templateUrl: objectPageTemplate,
-                controller: "BackgroundController"
-            }).
-            when("/objects/:dt", {
-                templateUrl: transientObjectPageTemplate,
-                controller: "BackgroundController"
-            }).
-            when("/error", {
-                templateUrl: errorPageTemplate,
-                controller: "BackgroundController"
-            }).
+            
             //Modern2 Urls below:
             when("/home", {
                 templateUrl: singleHomePageTemplate,

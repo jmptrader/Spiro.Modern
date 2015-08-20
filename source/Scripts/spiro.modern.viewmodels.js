@@ -54,10 +54,9 @@ var Spiro;
                         this.value === other.value;
                 };
                 ChoiceViewModel.prototype.match = function (other) {
-                    if (this.isEnum) {
-                        return this.value.trim() === other.value.trim();
-                    }
-                    return this.search.trim() === other.search.trim();
+                    var thisValue = this.isEnum ? this.value.trim() : this.search.trim();
+                    var otherValue = this.isEnum ? other.value.trim() : other.search.trim();
+                    return thisValue === otherValue;
                 };
                 return ChoiceViewModel;
             })();
@@ -115,9 +114,7 @@ var Spiro;
                                 return m + "-" + s;
                             });
                         }
-                        else {
-                            return (this.choice && this.choice.search) ? this.choice.search : this.getValue().toString();
-                        }
+                        return (this.choice && this.choice.search) ? this.choice.search : this.getValue().toString();
                     }
                     return this.getValue().toString();
                 };

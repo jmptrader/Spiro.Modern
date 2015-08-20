@@ -39,7 +39,6 @@ module Spiro.Angular.Modern{
 
         var viewModelFactory = <IViewModelFactory>this;
 
-        // tested
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
@@ -49,7 +48,6 @@ module Spiro.Angular.Modern{
             return errorViewModel;
         };
 
-        // tested
         viewModelFactory.linkViewModel = (linkRep: Link, click?: () => void) => {
             const linkViewModel = new LinkViewModel();
             linkViewModel.title = linkRep.title();
@@ -414,7 +412,7 @@ module Spiro.Angular.Modern{
             }
         }
 
-        // tested
+     
         function createFromDetails(collectionRep: CollectionRepresentation, populateItems?: boolean) {
             const collectionViewModel = new CollectionViewModel();
             const links = collectionRep.value().models;
@@ -430,7 +428,7 @@ module Spiro.Angular.Modern{
             return collectionViewModel;
         }
 
-        // tested
+       
         function createFromList(listRep: ListRepresentation, populateItems?: boolean) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
@@ -442,7 +440,7 @@ module Spiro.Angular.Modern{
             return collectionViewModel;
         }
 
-        // tested
+      
         viewModelFactory.collectionViewModel = (collection: any, populateItems?: boolean) => {
             if (collection instanceof CollectionMember) {
                 return create(<CollectionMember>collection);
@@ -456,7 +454,7 @@ module Spiro.Angular.Modern{
             return null;
         };
 
-        // tested
+     
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
             var servicesViewModel = new ServicesViewModel();
 
@@ -483,7 +481,7 @@ module Spiro.Angular.Modern{
 
 
 
-        // tested
+       
         viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation) => {
             var serviceViewModel = new ServiceViewModel();
             var actions = serviceRep.actionMembers();
@@ -497,7 +495,7 @@ module Spiro.Angular.Modern{
             return serviceViewModel;
         };
 
-        // tested
+    
         viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void) => {
             var objectViewModel = new DomainObjectViewModel();
             var isTransient = !!objectRep.persistLink();
@@ -515,7 +513,7 @@ module Spiro.Angular.Modern{
             var actions = objectRep.actionMembers();
 
             objectViewModel.domainType = objectRep.domainType();
-            objectViewModel.title = isTransient ? "Unsaved " + objectRep.extensions().friendlyName : objectRep.title();
+            objectViewModel.title = isTransient ? `Unsaved ${objectRep.extensions().friendlyName}` : objectRep.title();
 
             objectViewModel.message = "";
 

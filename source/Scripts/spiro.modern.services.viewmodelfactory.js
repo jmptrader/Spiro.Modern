@@ -20,7 +20,6 @@ var Spiro;
         (function (Modern) {
             Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask, $cacheFactory, urlManager) {
                 var viewModelFactory = this;
-                // tested
                 viewModelFactory.errorViewModel = function (errorRep) {
                     var errorViewModel = new Modern.ErrorViewModel();
                     errorViewModel.message = errorRep.message() || "An Error occurred";
@@ -28,7 +27,6 @@ var Spiro;
                     errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
                     return errorViewModel;
                 };
-                // tested
                 viewModelFactory.linkViewModel = function (linkRep, click) {
                     var linkViewModel = new Modern.LinkViewModel();
                     linkViewModel.title = linkRep.title();
@@ -323,7 +321,6 @@ var Spiro;
                         return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, href); });
                     }
                 }
-                // tested
                 function createFromDetails(collectionRep, populateItems) {
                     var collectionViewModel = new Modern.CollectionViewModel();
                     var links = collectionRep.value().models;
@@ -335,7 +332,6 @@ var Spiro;
                     collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, populateItems);
                     return collectionViewModel;
                 }
-                // tested
                 function createFromList(listRep, populateItems) {
                     var collectionViewModel = new Modern.CollectionViewModel();
                     var links = listRep.value().models;
@@ -344,7 +340,6 @@ var Spiro;
                     collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), populateItems);
                     return collectionViewModel;
                 }
-                // tested
                 viewModelFactory.collectionViewModel = function (collection, populateItems) {
                     if (collection instanceof Spiro.CollectionMember) {
                         return create(collection);
@@ -357,7 +352,6 @@ var Spiro;
                     }
                     return null;
                 };
-                // tested
                 viewModelFactory.servicesViewModel = function (servicesRep) {
                     var servicesViewModel = new Modern.ServicesViewModel();
                     // filter out contributed action services 
@@ -377,7 +371,6 @@ var Spiro;
                     menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link, function () { return urlManager.setMenu(link.rel().parms[0].value); }); });
                     return menusViewModel;
                 };
-                // tested
                 viewModelFactory.serviceViewModel = function (serviceRep) {
                     var serviceViewModel = new Modern.ServiceViewModel();
                     var actions = serviceRep.actionMembers();
@@ -388,7 +381,6 @@ var Spiro;
                     serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
                     return serviceViewModel;
                 };
-                // tested
                 viewModelFactory.domainObjectViewModel = function (objectRep, save) {
                     var objectViewModel = new Modern.DomainObjectViewModel();
                     var isTransient = !!objectRep.persistLink();

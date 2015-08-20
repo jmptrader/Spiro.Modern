@@ -164,13 +164,8 @@ var Spiro;
                     else {
                         this.getMenu(menuId).then(function (menu) {
                             var action = menu.actionMember(actionId);
-                            var invoke = action.getInvoke();
                             var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
-                            // todo revist how to do this if necessary
-                            // var parmViewModels = _.map(action.parameters(), (p, id) => viewModelFactory.parameterViewModel(p, id, ""));
-                            _.each(valueParms, function (vp) { return invoke.setParameter(vp.id, vp.val); });
-                            // _.each(parmViewModels, (parm) => parm.setSelectedChoice());
-                            return repLoader.populate(invoke, true);
+                            return repLoader.invoke(action, valueParms);
                         }).then(function (result) {
                             if (result.resultType() === "list") {
                                 var resultList = result.result().list();
@@ -178,7 +173,7 @@ var Spiro;
                                 delay.resolve(currentCollection);
                             }
                             else {
-                                delay.reject("fail");
+                                delay.reject("expect list");
                             }
                         }, function (error) { return delay.reject(error); });
                     }
@@ -186,7 +181,6 @@ var Spiro;
                 };
                 context.setObject = function (co) { return currentObject = co; };
                 var currentNestedObject = null;
-                // tested
                 context.getNestedObject = function (type, id) {
                     var delay = $q.defer();
                     if (currentNestedObject && isSameObject(currentNestedObject, type, id)) {
@@ -214,7 +208,6 @@ var Spiro;
                 };
                 context.setCollection = function (c) { return currentCollection = c; };
                 var currentTransient = null;
-                // tested
                 context.getTransientObject = function () {
                     var delay = $q.defer();
                     delay.resolve(currentTransient);
@@ -226,7 +219,6 @@ var Spiro;
                 context.setPreviousUrl = function (url) { return previousUrl = url; };
                 var selectedChoice = {};
                 context.getSelectedChoice = function (parm, search) { return selectedChoice[parm] ? selectedChoice[parm][search] : []; };
-                // tested
                 context.setSelectedChoice = function (parm, search, cvm) {
                     selectedChoice[parm] = selectedChoice[parm] || {};
                     selectedChoice[parm][search] = selectedChoice[parm][search] || [];

@@ -224,20 +224,9 @@ module Spiro.Angular.Modern {
             else {
 
                 this.getMenu(menuId).then((menu: MenuRepresentation) => {
-
-                    var action = menu.actionMember(actionId);
-                    var invoke = action.getInvoke();
-
-                    var valueParms = _.map(parms, (p) => { return {id : p.id,  val : new Value(p.val)} });
-
-                    // todo revist how to do this if necessary
-                   // var parmViewModels = _.map(action.parameters(), (p, id) => viewModelFactory.parameterViewModel(p, id, ""));
-                                        
-                    _.each(valueParms, (vp) => invoke.setParameter(vp.id, vp.val));
-                   // _.each(parmViewModels, (parm) => parm.setSelectedChoice());
-
-                    return repLoader.populate(invoke, true);
-
+                    const action = menu.actionMember(actionId);               
+                    const valueParms = _.map(parms, (p) => { return {id : p.id,  val : new Value(p.val)} });  
+                    return repLoader.invoke(action, valueParms);
                 }).then((result: ActionResultRepresentation) => {
 
                     if (result.resultType() === "list") {
@@ -245,7 +234,7 @@ module Spiro.Angular.Modern {
                         this.setCollection(resultList);
                         delay.resolve(currentCollection);
                     } else {
-                        delay.reject("fail");
+                        delay.reject("expect list");
                     }
                 }, error => delay.reject(error));
             }
@@ -258,7 +247,6 @@ module Spiro.Angular.Modern {
 
         var currentNestedObject: DomainObjectRepresentation = null;
 
-        // tested
         context.getNestedObject = (type: string, id: string) => {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -297,7 +285,6 @@ module Spiro.Angular.Modern {
 
         var currentTransient: DomainObjectRepresentation = null;
 
-        // tested
         context.getTransientObject = () => {
             var delay = $q.defer<DomainObjectRepresentation>();
             delay.resolve(currentTransient);
@@ -316,7 +303,6 @@ module Spiro.Angular.Modern {
 
         context.getSelectedChoice = (parm: string, search: string) => selectedChoice[parm] ? selectedChoice[parm][search] : [];
 
-        // tested
         context.setSelectedChoice = (parm: string, search: string, cvm: ChoiceViewModel) => {
             selectedChoice[parm] = selectedChoice[parm] || {};
             selectedChoice[parm][search] = selectedChoice[parm][search] || [];

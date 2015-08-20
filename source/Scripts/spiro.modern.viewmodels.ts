@@ -56,11 +56,10 @@ module Spiro.Angular.Modern {
                    this.value === other.value;
         }
 
-        match(other : ChoiceViewModel) {
-            if (this.isEnum) {
-                return this.value.trim() === other.value.trim();
-            }
-            return this.search.trim() === other.search.trim(); 
+        match(other: ChoiceViewModel) {
+            const thisValue = this.isEnum ? this.value.trim() : this.search.trim();
+            const otherValue = this.isEnum ? other.value.trim() : other.search.trim();
+            return thisValue === otherValue; 
         }
 
     }
@@ -132,6 +131,7 @@ module Spiro.Angular.Modern {
                     const ss = _.map(this.multiChoices, (c) => {
                         return c.search;
                     });
+
                     if (ss.length === 0) {
                         return "";
                     }
@@ -139,9 +139,9 @@ module Spiro.Angular.Modern {
                     return _.reduce(ss, (m: string, s) => {
                         return m + "-" + s;
                     });
-                } else {
-                    return (this.choice && this.choice.search) ? this.choice.search : this.getValue().toString();
-                }
+                } 
+
+                return (this.choice && this.choice.search) ? this.choice.search : this.getValue().toString(); 
             }
 
             return this.getValue().toString();
@@ -204,8 +204,8 @@ module Spiro.Angular.Modern {
 
         parameters: ParameterViewModel[];
 
-        doShow() { }
-        doInvoke() { }
+        doShow() : void { }
+        doInvoke() : void { }
 
         clearMessages() {
             this.message = ""; 
@@ -222,7 +222,7 @@ module Spiro.Angular.Modern {
         isEditable: boolean;    
         attachment: AttachmentViewModel;
 
-        doClick() { }
+        doClick() : void { }
     } 
 
     export class CollectionViewModel {
