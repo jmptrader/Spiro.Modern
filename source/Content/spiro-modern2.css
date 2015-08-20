@@ -36,6 +36,7 @@
 .home, .object, .query {
     padding-left: 20px;
     height: 100%;
+    overflow-y: auto;
 }
 
 
@@ -159,7 +160,7 @@
         padding-right: 5px;
     }
 
-    input {
+    .input-control input {
         width: 230px;
         padding-left: 5px;
         margin-bottom: 5px;
@@ -201,8 +202,8 @@
     width: 390px;
 }
 
-td input {
-    width: 20px;
+td.reference {
+    width: 350px;
 }
 
 td.checkbox {
