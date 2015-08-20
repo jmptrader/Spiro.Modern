@@ -50,8 +50,7 @@ var Spiro;
                     var cache = $cacheFactory.get("recentlyViewed");
                     valueViewModel.choice = currentChoice;
                     // make sure current value is cached so can be recovered ! 
-                    var key = valueViewModel.returnType;
-                    var subKey = valueViewModel.reference;
+                    var key = valueViewModel.returnType, subKey = valueViewModel.reference;
                     var dict = cache.get(key) || {};
                     dict[subKey] = { value: currentValue, name: currentValue.toString() };
                     cache.put(key, dict);
@@ -70,15 +69,15 @@ var Spiro;
                 viewModelFactory.parameterViewModel = function (parmRep, id, previousValue) {
                     var parmViewModel = new Modern.ParameterViewModel();
                     parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
-                    parmViewModel.title = parmRep.extensions().friendlyName;
                     parmViewModel.dflt = parmRep.default().toValueString();
                     parmViewModel.message = "";
-                    parmViewModel.mask = parmRep.extensions["x-ro-nof-mask"];
                     parmViewModel.id = id;
                     parmViewModel.argId = id.toLowerCase();
+                    parmViewModel.reference = "";
+                    parmViewModel.mask = parmRep.extensions()["x-ro-nof-mask"];
+                    parmViewModel.title = parmRep.extensions().friendlyName;
                     parmViewModel.returnType = parmRep.extensions().returnType;
                     parmViewModel.format = parmRep.extensions().format;
-                    parmViewModel.reference = "";
                     parmViewModel.choices = _.map(parmRep.choices(), function (v, n) {
                         return Modern.ChoiceViewModel.create(v, id, n);
                     });

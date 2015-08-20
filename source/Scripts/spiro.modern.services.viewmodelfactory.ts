@@ -50,6 +50,7 @@ module Spiro.Angular.Modern{
 
         viewModelFactory.linkViewModel = (linkRep: Link, click?: () => void) => {
             const linkViewModel = new LinkViewModel();
+
             linkViewModel.title = linkRep.title();
             linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
             linkViewModel.color = color.toColorFromHref(linkRep.href());
@@ -81,8 +82,7 @@ module Spiro.Angular.Modern{
 
             // make sure current value is cached so can be recovered ! 
 
-            const key = valueViewModel.returnType;
-            const subKey = valueViewModel.reference;
+            const { returnType: key, reference : subKey } = valueViewModel;
             const dict = cache.get(key) || {};
             dict[subKey] = { value: currentValue, name : currentValue.toString() };
             cache.put(key, dict);
@@ -90,11 +90,10 @@ module Spiro.Angular.Modern{
             // bind in autoautocomplete into prompt 
 
             valueViewModel.prompt = (st: string) => {
-
-                var defer = $q.defer<ChoiceViewModel[]>();
-                var filtered = _.filter(dict, (i: { value: Value, name : string }) =>
+                const defer = $q.defer<ChoiceViewModel[]>();
+                const filtered = _.filter(dict, (i: { value: Value, name : string }) =>
                     i.name.toString().toLowerCase().indexOf(st.toLowerCase()) > -1);
-                var ccs = _.map(filtered, (i: { value: Value, name : string }) => ChoiceViewModel.create(i.value, id, i.name));
+                const ccs = _.map(filtered, (i: { value: Value, name : string }) => ChoiceViewModel.create(i.value, id, i.name));
 
                 defer.resolve(ccs);
 
@@ -108,15 +107,16 @@ module Spiro.Angular.Modern{
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
-            parmViewModel.title = parmRep.extensions().friendlyName;
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.message = "";
-            parmViewModel.mask = parmRep.extensions["x-ro-nof-mask"];
             parmViewModel.id = id;
             parmViewModel.argId = id.toLowerCase();
+            parmViewModel.reference = "";
+
+            parmViewModel.mask = parmRep.extensions()["x-ro-nof-mask"];
+            parmViewModel.title = parmRep.extensions().friendlyName;
             parmViewModel.returnType = parmRep.extensions().returnType;
             parmViewModel.format = parmRep.extensions().format;
-            parmViewModel.reference = "";
 
             parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
                 return ChoiceViewModel.create(v, id, n);
