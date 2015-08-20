@@ -4,6 +4,10 @@
         <div class="type"></div>
         <div class="messages">{{object.message}}</div>
     </div>
-    <div class="properties" ng-include="propertiesTemplate"></div>
-    <div class="actions-pane" ng-include="actionTemplate"></div>
+    <div class="actions" ng-include="actionTemplate"></div>
+    <div class="main-column">
+        <div class="dialog" ng-include="dialogTemplate"></div>
+        <div class="properties" ng-include="propertiesTemplate"></div>
+    </div>
+    <div class="collections"></div>
 </div>

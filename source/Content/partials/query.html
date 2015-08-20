@@ -10,24 +10,35 @@ KIND, either express or implied.See the License for the
 specific language governing permissions and limitations
 under the License.-->
 
-
-<!--TODO -  define (currently still a copy of object)-->
 <div class="query">
-    <div class="title">
-        {{collection.size}}-{{collection.pluralName}}
-        <a class="cancel icon-cancel" href="{{closeCollection}}"></a>
-        <a class="expand icon-plus" href="{{modeCollection}}"></a>
+    <div class="header">
+        <div class="title">
+            Query-action name e.g. Highest Value Orders
+        </div>
+        <div class="menus">
+            <div class="menu clickable-area">
+                <a href="x">Actions</a>
+            </div>
+        </div>
     </div>
-    <table>
-        <tbody>
-            <tr ng-repeat="item in collection.items" >
-                <td class="checkbox">
-                    <input type="checkbox">
-                </td>
-                <td class="reference clickable-area" ng-class="item.color">
-                    <a href="{{item.href}}"><span></span>{{item.title}}</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="collection">
+        <div class="summary">
+            <div class="name"></div>
+            <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
+            <a class="icon-summary" href="x"></a>
+            <a class="icon-table" href="x"></a>
+        </div>
+        <table>
+            <tbody>
+                <tr ng-repeat="item in collection.items">
+                    <td class="checkbox">
+                        <input type="checkbox">
+                    </td>
+                    <td class="reference clickable-area" ng-class="item.color">
+                        <a href="{{item.href}}"><span></span>{{item.title}}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
