@@ -2,6 +2,11 @@
     <div class="header">
         <div class="title">{{object.title}}</div>
         <div class="type"></div>
+        <div class="menus">
+            <div class="menu clickable-area" ng-class="menu.color">
+                <a href="" ng-click="menu.doClick()">Actions</a>
+            </div>
+        </div>
         <div class="messages">{{object.message}}</div>
     </div>
     <div class="actions" ng-include="actionTemplate"></div>
@@ -9,5 +14,5 @@
         <div class="dialog" ng-include="dialogTemplate"></div>
         <div class="properties" ng-include="propertiesTemplate"></div>
     </div>
-    <div class="collections"></div>
+    <div class="collections" ng-include="collectionsTemplate"></div>
 </div>

@@ -89,7 +89,7 @@ module Spiro.Angular {
     export var queryTemplate = getSvrPath() + "Content/partials/query.html";
     export var footerTemplate = getSvrPath() + "Content/partials/footer.html";
     export var actionsTemplate = getSvrPath() + "Content/partials/actions.html";
-
+    export var collectionsTemplate = getSvrPath() + "Content/partials/collections.html";
 
     app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.

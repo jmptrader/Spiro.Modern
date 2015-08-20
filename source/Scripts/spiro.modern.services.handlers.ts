@@ -424,6 +424,7 @@ module Spiro.Angular.Modern {
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionTemplate = actionTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
+                    $scope.collectionsTemplate = collectionsTemplate;
 
                     // cache
                     cacheRecentlyViewed(object);

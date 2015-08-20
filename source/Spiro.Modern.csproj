@@ -32,6 +32,7 @@
     <Content Include="Content\partials\splitHomeObjectPage.html" />
     <Content Include="Content\partials\splitObjectObjectPage.html" />
     <Content Include="Content\partials\singleObjectPage.html" />
+    <Content Include="Content\partials\collections.html" />
     <Content Include="Content\spiro-modern2.css" />
     <Content Include="Scripts\spiro.angular.services.color.js" />
     <Content Include="Scripts\spiro.angular.services.loaderwithtransform.js" />

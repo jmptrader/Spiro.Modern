@@ -10,9 +10,9 @@ KIND, either express or implied.See the License for the
 specific language governing permissions and limitations
 under the License.-->
 
-<div class="action" ng-repeat="action in actions.items">
-    <a href="" ng-click="action.doInvoke()">
-        <span></span>
-        {{(action.menuPath ?  action.menuPath + " : " : "") + action.title}}
-    </a>
-</div>
+    <div class="action" ng-repeat="action in actions.items">
+        <a href="" ng-click="action.doInvoke()">
+            <span></span>
+            {{(action.menuPath ?  action.menuPath + " : " : "") + action.title}}
+        </a>
+    </div>
