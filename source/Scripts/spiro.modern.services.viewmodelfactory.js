@@ -194,6 +194,7 @@ var Spiro;
                     var actionViewModel = new Modern.ActionViewModel();
                     actionViewModel.title = actionRep.extensions().friendlyName;
                     actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
+                    actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
                     if (actionRep.extensions().hasParams) {
                         actionViewModel.doInvoke = function () {
                             // show the dialog 

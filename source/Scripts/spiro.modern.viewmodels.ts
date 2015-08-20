@@ -188,6 +188,7 @@ module Spiro.Angular.Modern {
 
     export class ActionViewModel {
   
+        menuPath : string;
         title: string;
         href: string;
 

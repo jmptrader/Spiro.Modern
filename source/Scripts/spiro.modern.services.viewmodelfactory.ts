@@ -249,6 +249,8 @@ module Spiro.Angular.Modern{
             actionViewModel.title = actionRep.extensions().friendlyName;
             actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
 
+            actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
+
             if (actionRep.extensions().hasParams) {
                 actionViewModel.doInvoke = () => {
                     // show the dialog 
