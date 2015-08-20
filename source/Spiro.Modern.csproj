@@ -60,7 +60,6 @@
     <Content Include="Temp - Restyling\singleHome.html" />
     <Content Include="Temp - Restyling\Example.html" />
     <Content Include="Content\partials\actions.html" />
-    <Content Include="Content\partials\appbar.html" />
     <Content Include="Content\partials\dialog.html" />
     <Content Include="Content\partials\editProperties.html" />
     <Content Include="Content\partials\error.html" />
