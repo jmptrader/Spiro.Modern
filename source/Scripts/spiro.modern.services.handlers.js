@@ -327,6 +327,7 @@ var Spiro;
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionTemplate = Angular.actionTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
+                        $scope.collectionsTemplate = Angular.collectionsTemplate;
                         // cache
                         cacheRecentlyViewed(object);
                     }, function (error) {

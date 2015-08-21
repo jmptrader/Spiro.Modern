@@ -43,7 +43,6 @@
 /*Sub-panes - layout */
     .actions, .main-column, .collections {
         float: left;
-        margin-right: 20px;
         margin-bottom: 20px;
     }
 
@@ -51,6 +50,10 @@
         width: 390px;
         padding: 5px;
         margin-bottom: 20px;
+    }
+
+    .action, .main-column, .collections {
+        margin-right: 20px;
     }
 
 /*Header*/
@@ -417,6 +420,13 @@ th, td {
     content: "\e084";
 }
 
+.icon-summary:before {
+    content: "\e083";
+}
+
+.icon-table:before {
+    content: "\e083";
+}
 
 /*Buttons*/
 input[type=button],
