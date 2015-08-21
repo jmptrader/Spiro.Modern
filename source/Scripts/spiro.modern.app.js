@@ -31,7 +31,7 @@ var Spiro;
         Angular.dialogTemplate = getSvrPath() + "Content/partials/dialog.html";
         Angular.servicesTemplate = getSvrPath() + "Content/partials/services.html";
         Angular.serviceTemplate = getSvrPath() + "Content/partials/service.html";
-        Angular.actionTemplate = getSvrPath() + "Content/partials/actions.html";
+        Angular.actionsTemplate = getSvrPath() + "Content/partials/actions.html";
         Angular.errorTemplate = getSvrPath() + "Content/partials/error.html";
         Angular.appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
         Angular.viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";

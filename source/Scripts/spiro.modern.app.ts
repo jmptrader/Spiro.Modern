@@ -57,7 +57,7 @@ module Spiro.Angular {
     export var dialogTemplate = getSvrPath() + "Content/partials/dialog.html";
     export var servicesTemplate = getSvrPath() + "Content/partials/services.html";
     export var serviceTemplate = getSvrPath() + "Content/partials/service.html";
-    export var actionTemplate = getSvrPath() + "Content/partials/actions.html";
+    export var actionsTemplate = getSvrPath() + "Content/partials/actions.html";
     export var errorTemplate = getSvrPath() + "Content/partials/error.html";
     export var appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
 

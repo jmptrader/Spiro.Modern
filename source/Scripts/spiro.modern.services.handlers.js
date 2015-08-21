@@ -209,8 +209,8 @@ var Spiro;
                         context.getMenu(currentMenu).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
-                            var actions = { items: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return repHandlers.invokeAction(am); }); }) };
-                            $scope.actions = actions;
+                            var actions = { actions: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return repHandlers.invokeAction(am); }); }) };
+                            $scope.object = actions;
                             if (currentDialog) {
                                 $scope.dialogTemplate = Angular.dialogTemplate;
                                 var action = menu.actionMember(currentDialog);
@@ -236,7 +236,7 @@ var Spiro;
                         then(function (service) {
                         $scope.object = viewModelFactory.serviceViewModel(service);
                         $scope.serviceTemplate = Angular.serviceTemplate;
-                        $scope.actionTemplate = Angular.actionTemplate;
+                        $scope.actionsTemplate = Angular.actionsTemplate;
                     }, function (error) {
                         setError(error);
                     });
@@ -310,7 +310,7 @@ var Spiro;
                         context.setNestedObject(null);
                         $scope.object = viewModelFactory.domainObjectViewModel(object);
                         $scope.objectTemplate = Angular.objectTemplate;
-                        $scope.actionTemplate = Angular.actionTemplate;
+                        $scope.actionsTemplate = Angular.actionsTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
                         // cache
                         cacheRecentlyViewed(object);
@@ -325,7 +325,7 @@ var Spiro;
                         context.setNestedObject(null);
                         $scope.object = viewModelFactory.domainObjectViewModel(object);
                         $scope.objectTemplate = Angular.objectTemplate;
-                        $scope.actionTemplate = Angular.actionTemplate;
+                        $scope.actionsTemplate = Angular.actionsTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
                         $scope.collectionsTemplate = Angular.collectionsTemplate;
                         // cache

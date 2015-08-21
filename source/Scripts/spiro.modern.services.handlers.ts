@@ -270,8 +270,8 @@ module Spiro.Angular.Modern {
                 context.getMenu(currentMenu).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        const actions = { items: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction( am))) };
-                        $scope.actions = actions;
+                        const actions = { actions: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction( am))) };
+                        $scope.object = actions;
 
                         if (currentDialog) {
                             $scope.dialogTemplate = dialogTemplate;
@@ -302,7 +302,7 @@ module Spiro.Angular.Modern {
                 then((service: DomainObjectRepresentation) => {
                     $scope.object = viewModelFactory.serviceViewModel(service);
                     $scope.serviceTemplate = serviceTemplate;
-                    $scope.actionTemplate = actionTemplate;
+                    $scope.actionsTemplate = actionsTemplate;
                 }, error => {
                     setError(error);
                 });
@@ -401,7 +401,7 @@ module Spiro.Angular.Modern {
                     context.setNestedObject(null);
                     $scope.object = viewModelFactory.domainObjectViewModel(object);
                     $scope.objectTemplate = objectTemplate;
-                    $scope.actionTemplate = actionTemplate;
+                    $scope.actionsTemplate = actionsTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
 
                     // cache
@@ -422,7 +422,7 @@ module Spiro.Angular.Modern {
                     context.setNestedObject(null);
                     $scope.object = viewModelFactory.domainObjectViewModel(object);
                     $scope.objectTemplate = objectTemplate;
-                    $scope.actionTemplate = actionTemplate;
+                    $scope.actionsTemplate = actionsTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
                     $scope.collectionsTemplate = collectionsTemplate;
 
