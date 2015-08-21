@@ -1,0 +1,42 @@
+﻿1. (Eventually) A new icon in the footer (formerly known as the 'app bar') will permit selection
+of various options, including the ability to switch between whole different colour/styling schemes.
+In particular there will be a 'rainbow' scheme, similar to the current design and a 'overcast' scheme
+that has all white backgrounds with pale grey elements (somewhat reminiscant of the current NOF MVC UI).
+
+2. In both cases, each object type will have a background colour, and a link colour.
+  
+3. For the overcast scheme, EVERY type has:
+- background colour of white
+- link colour of pale grey
+- text in black
+
+4. For the rainbow scheme and object will have:
+- a background colour that is one of the standard palete e.g. green
+- a link colour that is a slightly darker version of that colour
+- text in white
+The background and link versions of each colour are sufficiently close in tone that the user will
+perceive them as the same, if they are separated by another colour, and sufficiently distinct that
+the extent of the link will be clear when shown against the equivalent background. Where colours are
+specified, only a single 'core' colour is specified:  the background and link tonal variants are 
+determined automatically from the colour palete. 
+
+5. For the rainbow scheme, only the most important objects (what we used to call the 'primary' objects)
+will have individually-specified colours.  There are two main approaches, which are under the control of
+the domain programmer:
+- By default, all objects have the same colour, which can even be the same as
+for the overcast scheme.  Primary objects have their colours specified -  probably by UI configuration.
+Two different primary objects can have the same colour, but the intent should be that these are 
+sufficiently far apart (in terms of user scenarios, title, and content) that they will not be easily confused.
+- All objects within a cluster have the same colour (or, perhaps, a small number of colours if the cluster
+is particularly 'rich' in functionality).  As with the other variant, if there are sufficient clusters then
+there might need to be duplication between them -  but the intent should be that clusters with the same
+colour are sufficiently far apart (in terms of user scenarios) that they will not be easily confused.
+
+6. It follows that there needs to be a simple way to specify the colour either for an object, or
+for a set of related objects.  This probably implies some matching on names and/or namespaces e.g:
+
+'Cluster.Document.DocumentHolder' => Green
+'Cluster.Document*' => Red
+'*Customer*' => Yellow
+
+where the system either picks up the first match (so ordering of rules is important).

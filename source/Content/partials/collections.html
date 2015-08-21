@@ -1,8 +1,56 @@
-﻿    <div class="collection" ng-repeat="collection in object.collections">
-        <div class="summary">
-            <div class='name'>{{collection.title}}:</div>
-            <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
-            <a class="icon-summary" href="x"></a>
-            <a class="icon-table" href="x"></a>
-        </div>
+﻿<div class="collection" ng-repeat="collection in object.collections">
+    <div class="summary">
+        <div class='name'>{{collection.title}}:</div>
+        <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
+        <!--TODO: Hide icon not relevant for current display-->
+        <a class="icon-summary" href="x"></a>
+        <a class="icon-list" href="x"></a>
+        <a class="icon-table" href="x"></a>
     </div>
+    <!--<table ng-switch-when="list" ng-switch="collection.display">
+        <tbody>
+            <tr ng-repeat="item in collection.items">
+                <td class="reference clickable-area" ng-class="item.color">
+                    <a href="" ng-click="item.doClick()"><span></span>{{item.title}}</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table ng-switch-when="table" ng-switch="collection.display">
+        <thead>
+            <tr>
+                <th ng-repeat="heading in collection.header">
+                    {{heading}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in collection.items">
+                <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+
+                    <div ng-switch-when="ref">
+                        <div class='value'>{{property.value}}</div>
+                    </div>
+
+                    <div ng-switch-when="scalar" ng-switch="property.returnType">
+                        TODO: Lots of these cases end up with property.value
+                        so can't we just reduce them?
+                        <div ng-switch-when="string" ng-switch="property.format">
+                            <div ng-switch-when="date-time" class='value'>{{property.value}}</div>
+                            <div ng-switch-default class='value'>{{property.value}}</div>
+                        </div>
+
+                        <div ng-switch-when="boolean">
+                            <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                        </div>
+
+                        <div ng-switch-default>
+                            <div class='value'>{{property.value}}</div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>-->
+</div>

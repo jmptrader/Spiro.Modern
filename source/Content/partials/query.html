@@ -25,20 +25,59 @@ under the License.-->
         <div class="summary">
             <div class="name"></div>
             <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
-            <a class="icon-summary" href="x"></a>
+            <a class="icon-list" href="x"></a>
             <a class="icon-table" href="x"></a>
+            <!--<a ng-switch-when="list" ng-switch="collection.display" class="icon-table" href="x"></a>
+                <a ng-switch-when="table" ng-switch="collection.display" class="icon-list" href="x"></a>-->
         </div>
         <table>
+            <!--ng-switch-when="list" ng-switch="collection.display">-->
             <tbody>
                 <tr ng-repeat="item in collection.items">
                     <td class="checkbox">
                         <input type="checkbox">
                     </td>
                     <td class="reference clickable-area" ng-class="item.color">
-                    <a href="" ng-click="item.doClick()"><span></span>{{item.title}}</a>
+                        <a href="" ng-click="item.doClick()"><span></span>{{item.title}}</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <!--<table ng-switch-when="table" ng-switch="collection.display">
+            <thead>
+                <tr>
+                    <th ng-repeat="heading in collection.header">
+                        {{heading}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in collection.items">
+                    <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+
+                        <div ng-switch-when="ref">
+                            <div class='value'>{{property.value}}</div>
+                        </div>
+
+                        <div ng-switch-when="scalar" ng-switch="property.returnType">
+
+                            <div ng-switch-when="string" ng-switch="property.format">
+                                <div ng-switch-when="date-time" class='value'>{{property.value}}</div>
+                                <div ng-switch-default class='value'>{{property.value}}</div>
+                            </div>
+
+                            <div ng-switch-when="boolean">
+                                <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                            </div>
+
+                            <div ng-switch-default>
+                                <div class='value'>{{property.value}}</div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>-->
     </div>
 </div>
