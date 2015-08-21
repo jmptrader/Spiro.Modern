@@ -532,6 +532,10 @@ module Spiro.Angular.Modern{
             objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection); });
             objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, null); });
 
+            objectViewModel.toggleActionMenu = () => {
+                urlManager.toggleObjectMenu();
+            }
+
             return objectViewModel;
         };
     });

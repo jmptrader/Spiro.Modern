@@ -275,6 +275,7 @@ module Spiro.Angular.Modern {
         color: string; 
         href: string; 
         cancelEdit: string; 
-        doSave(): void {}
+        doSave(): void { }
+        toggleActionMenu(): void {}
     } 
 }

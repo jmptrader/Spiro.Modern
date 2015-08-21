@@ -20,6 +20,7 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\footer.html" />
     <Content Include="Content\partials\query.html" />
     <Content Include="Content\partials\singleQueryPage.html" />

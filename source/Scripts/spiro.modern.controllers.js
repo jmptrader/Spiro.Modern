@@ -30,12 +30,9 @@ var Spiro;
             });
             Angular.app.controller("Pane1ObjectController", function ($scope, $routeParams, handlers) {
                 // get parm match type and call correct handler. 
-                $scope.$on('$routeChangeStart', function (event, next, current) {
-                    var a = next;
-                    var b = current;
-                });
                 var objectId = $routeParams.object1;
-                handlers.handlePaneObject($scope, objectId);
+                var menuId = $routeParams.menu1;
+                handlers.handlePaneObject($scope, objectId, menuId);
             });
             Angular.app.controller("Pane2ObjectController", function ($scope, $routeParams, handlers) {
                 handlers.handlePaneObject($scope, "todo");

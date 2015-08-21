@@ -33,7 +33,7 @@ module Spiro.Angular.Modern {
         handleTransientObject($scope): void;
 
 
-        handlePaneObject($scope, objectId : string): void;
+        handlePaneObject($scope, objectId : string, menuId? : string): void;
         handleAppBar($scope): void;
 
         handleHome($scope, currentMenu? : string, currentDialog? : string): void;
@@ -413,7 +413,7 @@ module Spiro.Angular.Modern {
 
         };
 
-        handlers.handlePaneObject = ($scope, objectId : string) => {
+        handlers.handlePaneObject = ($scope, objectId : string, menuId? : string) => {
 
             var [dt, id] = objectId.split("-");
 
@@ -422,7 +422,7 @@ module Spiro.Angular.Modern {
                     context.setNestedObject(null);
                     $scope.object = viewModelFactory.domainObjectViewModel(object);
                     $scope.objectTemplate = objectTemplate;
-                    $scope.actionsTemplate = actionsTemplate;
+                    $scope.actionsTemplate = menuId ? actionsTemplate : nullTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
                     $scope.collectionsTemplate = collectionsTemplate;
 

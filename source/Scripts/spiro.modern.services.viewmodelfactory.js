@@ -404,6 +404,9 @@ var Spiro;
                     objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id); });
                     objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection); });
                     objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, null); });
+                    objectViewModel.toggleActionMenu = function () {
+                        urlManager.toggleObjectMenu();
+                    };
                     return objectViewModel;
                 };
             });

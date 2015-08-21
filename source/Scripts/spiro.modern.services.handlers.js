@@ -318,14 +318,14 @@ var Spiro;
                         setError(error);
                     });
                 };
-                handlers.handlePaneObject = function ($scope, objectId) {
+                handlers.handlePaneObject = function ($scope, objectId, menuId) {
                     var _a = objectId.split("-"), dt = _a[0], id = _a[1];
                     context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);
                         $scope.object = viewModelFactory.domainObjectViewModel(object);
                         $scope.objectTemplate = Angular.objectTemplate;
-                        $scope.actionsTemplate = Angular.actionsTemplate;
+                        $scope.actionsTemplate = menuId ? Angular.actionsTemplate : Angular.nullTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
                         $scope.collectionsTemplate = Angular.collectionsTemplate;
                         // cache

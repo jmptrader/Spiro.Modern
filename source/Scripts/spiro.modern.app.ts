@@ -60,6 +60,8 @@ module Spiro.Angular {
     export var actionsTemplate = getSvrPath() + "Content/partials/actions.html";
     export var errorTemplate = getSvrPath() + "Content/partials/error.html";
     export var appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
+    export var nullTemplate = getSvrPath() + "Content/partials/null.html";
+
 
     export var viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";
     export var editPropertiesTemplate = getSvrPath() + "Content/partials/editProperties.html";

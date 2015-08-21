@@ -221,6 +221,7 @@ var Spiro;
                     _super.apply(this, arguments);
                 }
                 DomainObjectViewModel.prototype.doSave = function () { };
+                DomainObjectViewModel.prototype.toggleActionMenu = function () { };
                 return DomainObjectViewModel;
             })(MessageViewModel);
             Modern.DomainObjectViewModel = DomainObjectViewModel;

@@ -24,6 +24,8 @@ module Spiro.Angular.Modern {
         setQuery(action : ActionMember, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember);
         setItem(link: Link): void;
+
+        toggleObjectMenu() : void;
     }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
@@ -78,6 +80,20 @@ module Spiro.Angular.Modern {
             const oid = `${results[2]}-${results[3]}`;
             $location.path("/object").search({ object1: oid });
         }
+
+        helper.toggleObjectMenu = () => {
+            var search = $location.search();
+            var menu = search.menu1;
+
+            if (menu) {
+                search = _.omit(search, "menu1");
+            } else {
+                search.menu1 = "actions";
+            }
+
+            $location.search(search);
+        }
+
     });
 
 }

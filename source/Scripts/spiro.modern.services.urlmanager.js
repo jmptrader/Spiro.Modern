@@ -58,6 +58,17 @@ var Spiro;
                     var oid = results[2] + "-" + results[3];
                     $location.path("/object").search({ object1: oid });
                 };
+                helper.toggleObjectMenu = function () {
+                    var search = $location.search();
+                    var menu = search.menu1;
+                    if (menu) {
+                        search = _.omit(search, "menu1");
+                    }
+                    else {
+                        search.menu1 = "actions";
+                    }
+                    $location.search(search);
+                };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));
