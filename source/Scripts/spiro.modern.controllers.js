@@ -32,7 +32,8 @@ var Spiro;
                 // get parm match type and call correct handler. 
                 var objectId = $routeParams.object1;
                 var menuId = $routeParams.menu1;
-                handlers.handlePaneObject($scope, objectId, menuId);
+                var dialogId = $routeParams.dialog1;
+                handlers.handlePaneObject($scope, objectId, menuId, dialogId);
             });
             Angular.app.controller("Pane2ObjectController", function ($scope, $routeParams, handlers) {
                 handlers.handlePaneObject($scope, "todo");

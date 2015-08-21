@@ -318,7 +318,7 @@ var Spiro;
                         setError(error);
                     });
                 };
-                handlers.handlePaneObject = function ($scope, objectId, menuId) {
+                handlers.handlePaneObject = function ($scope, objectId, menuId, dialogId) {
                     var _a = objectId.split("-"), dt = _a[0], id = _a[1];
                     context.getObject(dt, id).
                         then(function (object) {
@@ -330,6 +330,11 @@ var Spiro;
                         $scope.collectionsTemplate = Angular.collectionsTemplate;
                         // cache
                         cacheRecentlyViewed(object);
+                        if (dialogId) {
+                            $scope.dialogTemplate = Angular.dialogTemplate;
+                            var action = object.actionMember(dialogId);
+                            $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, action));
+                        }
                     }, function (error) {
                         setError(error);
                     });

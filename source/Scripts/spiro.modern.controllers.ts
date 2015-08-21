@@ -38,8 +38,9 @@ module Spiro.Angular.Modern {
 
         var objectId = $routeParams.object1;
         var menuId = $routeParams.menu1;
+        var dialogId = $routeParams.dialog1;
 
-        handlers.handlePaneObject($scope, objectId, menuId);
+        handlers.handlePaneObject($scope, objectId, menuId, dialogId);
     });
 
     app.controller("Pane2ObjectController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {

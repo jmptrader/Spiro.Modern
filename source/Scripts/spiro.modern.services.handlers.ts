@@ -33,7 +33,7 @@ module Spiro.Angular.Modern {
         handleTransientObject($scope): void;
 
 
-        handlePaneObject($scope, objectId : string, menuId? : string): void;
+        handlePaneObject($scope, objectId : string, menuId? : string, dialogId? : string): void;
         handleAppBar($scope): void;
 
         handleHome($scope, currentMenu? : string, currentDialog? : string): void;
@@ -413,7 +413,7 @@ module Spiro.Angular.Modern {
 
         };
 
-        handlers.handlePaneObject = ($scope, objectId : string, menuId? : string) => {
+        handlers.handlePaneObject = ($scope, objectId : string, menuId? : string, dialogId? : string) => {
 
             var [dt, id] = objectId.split("-");
 
@@ -428,6 +428,12 @@ module Spiro.Angular.Modern {
 
                     // cache
                     cacheRecentlyViewed(object);
+
+                    if (dialogId) {
+                        $scope.dialogTemplate = dialogTemplate;
+                        const action = object.actionMember(dialogId);
+                        $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, action));
+                    }
 
                 }, error => {
                     setError(error);
