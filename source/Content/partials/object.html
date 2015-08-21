@@ -6,11 +6,10 @@
             <div class="menu clickable-area" ng-class="menu.color">
                 <a href="" ng-click="object.toggleActionMenu()">Actions</a>
             </div>
-            <div class="actions" ng-include="actionsTemplate"></div>
         </div>
         <div class="messages">{{object.message}}</div>
     </div>
-    
+    <div class="actions" ng-include="actionsTemplate"></div>
     <div class="main-column">
         <div class="dialog" ng-include="dialogTemplate"></div>
         <div class="properties" ng-include="propertiesTemplate"></div>
