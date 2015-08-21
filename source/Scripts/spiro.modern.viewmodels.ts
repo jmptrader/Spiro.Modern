@@ -76,13 +76,14 @@ module Spiro.Angular.Modern {
         color: string;
 
         doClick() {}
-    } 
+    }
 
     export class ItemViewModel {
         title: string;
         href: string;
         color: string;
-        target : DomainObjectViewModel;
+        target: DomainObjectViewModel;
+        doClick() : void {}
     }
 
     export class MessageViewModel {

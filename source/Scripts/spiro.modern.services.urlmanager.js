@@ -51,6 +51,13 @@ var Spiro;
                     var oid = results[2] + "-" + results[3];
                     $location.search({ object1: oid });
                 };
+                helper.setItem = function (link) {
+                    var href = link.href();
+                    var urlRegex = /(objects|services)\/(.*)\/(.*)/;
+                    var results = (urlRegex).exec(href);
+                    var oid = results[2] + "-" + results[3];
+                    $location.path("/object").search({ object1: oid });
+                };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));

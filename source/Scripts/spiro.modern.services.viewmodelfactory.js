@@ -38,11 +38,14 @@ var Spiro;
                     return linkViewModel;
                 };
                 // tested
-                viewModelFactory.itemViewModel = function (linkRep, parentHref) {
+                viewModelFactory.itemViewModel = function (linkRep, parentHref, click) {
                     var itemViewModel = new Modern.ItemViewModel();
                     itemViewModel.title = linkRep.title();
                     itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
                     itemViewModel.color = color.toColorFromHref(linkRep.href());
+                    if (click) {
+                        itemViewModel.doClick = click;
+                    }
                     return itemViewModel;
                 };
                 function addAutoAutoComplete(valueViewModel, currentChoice, id, currentValue) {
@@ -318,7 +321,11 @@ var Spiro;
                         });
                     }
                     else {
-                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, href); });
+                        return _.map(links, function (link) {
+                            return viewModelFactory.itemViewModel(link, href, function () {
+                                urlManager.setItem(link);
+                            });
+                        });
                     }
                 }
                 function createFromDetails(collectionRep, populateItems) {

@@ -36,6 +36,13 @@ module Spiro.Angular.Modern {
     app.controller("Pane1ObjectController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams,   handlers: IHandlers) => {
         // get parm match type and call correct handler. 
 
+        $scope.$on('$routeChangeStart', (event, next, current) => {
+            var a = next;
+            var b = current;
+
+        });
+
+
         var objectId = $routeParams.object1;
 
         handlers.handlePaneObject($scope, objectId);

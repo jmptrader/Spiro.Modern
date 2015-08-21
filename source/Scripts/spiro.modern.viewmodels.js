@@ -77,6 +77,7 @@ var Spiro;
             var ItemViewModel = (function () {
                 function ItemViewModel() {
                 }
+                ItemViewModel.prototype.doClick = function () { };
                 return ItemViewModel;
             })();
             Modern.ItemViewModel = ItemViewModel;

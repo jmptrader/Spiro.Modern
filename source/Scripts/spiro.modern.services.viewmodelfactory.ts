@@ -20,7 +20,7 @@ module Spiro.Angular.Modern{
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, click? : () => void): LinkViewModel;
-        itemViewModel(linkRep: Link, parentHref: string): ItemViewModel;
+        itemViewModel(linkRep: Link, parentHref: string, click?: ($event : any) => void): ItemViewModel;
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember,  id : string, invoke : () => void): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
@@ -63,11 +63,15 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string, click?: () => void) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
             itemViewModel.color = color.toColorFromHref(linkRep.href());
+
+            if (click) {
+                itemViewModel.doClick = click;
+            }
 
             return itemViewModel;
         };
@@ -410,7 +414,12 @@ module Spiro.Angular.Modern{
                     return ivm;
                 });
             } else {
-                return _.map(links, (link) => { return viewModelFactory.itemViewModel(link, href); });
+                return _.map(links, (link) => {
+                    return viewModelFactory.itemViewModel(link, href, () => {             
+                        urlManager.setItem(link);
+                    });
+
+                }); 
             }
         }
 
@@ -445,13 +454,13 @@ module Spiro.Angular.Modern{
       
         viewModelFactory.collectionViewModel = (collection: any, populateItems?: boolean) => {
             if (collection instanceof CollectionMember) {
-                return create(<CollectionMember>collection);
+                return create(collection);
             }
             if (collection instanceof CollectionRepresentation) {
-                return createFromDetails(<CollectionRepresentation>collection, populateItems);
+                return createFromDetails(collection, populateItems);
             }
             if (collection instanceof ListRepresentation) {
-                return createFromList(<ListRepresentation>collection, populateItems);
+                return createFromList(collection, populateItems);
             }
             return null;
         };

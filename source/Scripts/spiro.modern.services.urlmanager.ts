@@ -23,6 +23,7 @@ module Spiro.Angular.Modern {
         setObject(resultObject: DomainObjectRepresentation);
         setQuery(action : ActionMember, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember);
+        setItem(link: Link): void;
     }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
@@ -69,6 +70,14 @@ module Spiro.Angular.Modern {
             $location.search({ object1: oid });
         }
 
+        helper.setItem = (link: Link) => {
+            var href = link.href();
+            const urlRegex = /(objects|services)\/(.*)\/(.*)/;
+            const results = (urlRegex).exec(href);
+
+            const oid = `${results[2]}-${results[3]}`;
+            $location.path("/object").search({ object1: oid });
+        }
     });
 
 }
