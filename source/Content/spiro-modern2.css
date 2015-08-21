@@ -183,20 +183,27 @@
     outline-width: 1px;
     outline-color: white;
 }
-/*Collections*/
-.collection {
-    margin-bottom: 20px;
-}
 
+/*Collections */
+    .collection {
+        margin-bottom: 20px;
+    }
     .collection .summary {
         font-size: 12pt;
         margin-bottom: 10px;
     }
-
-    .collection .name, .collection .details {
+    /*Collections within object*/
+    .object .collection .name, .object .collection .details {
         padding-left: 0px; /*Because it is a heading, so outdented*/
         float: left;
     }
+    /*Collections within query*/
+    .query .collection .details {
+        padding-left: 40px; /*To align with first column text, allowing for checkbox*/
+        width: 350px;
+        float: left;
+    }
+
 /*List*/
 .list .reference {
     width: 390px;
