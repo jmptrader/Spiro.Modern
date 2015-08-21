@@ -418,7 +418,11 @@ th, td {
 }
 
 .icon-summary:before {
-    content: "\e083";
+    content: "\e088";
+}
+
+.icon-list:before {
+    content: "\e084";
 }
 
 .icon-table:before {
