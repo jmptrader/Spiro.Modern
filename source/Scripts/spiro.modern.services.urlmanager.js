@@ -69,6 +69,15 @@ var Spiro;
                     }
                     $location.search(search);
                 };
+                helper.setCollectionSummary = function (collection) {
+                    setSearch("collection1_" + collection.collectionId(), "summary", false);
+                };
+                helper.setCollectionList = function (collection) {
+                    setSearch("collection1_" + collection.collectionId(), "list", false);
+                };
+                helper.setCollectionTable = function (collection) {
+                    setSearch("collection1_" + collection.collectionId(), "table", false);
+                };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));

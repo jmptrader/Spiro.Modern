@@ -20,6 +20,9 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\partials\collectionList.html" />
+    <Content Include="Content\partials\collectionTable.html" />
+    <Content Include="Content\partials\collectionSummary.html" />
     <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\footer.html" />
     <Content Include="Content\partials\query.html" />
@@ -35,6 +38,8 @@
     <Content Include="Content\partials\singleObjectPage.html" />
     <Content Include="Content\partials\collections.html" />
     <Content Include="Content\spiro-modern2.css" />
+    <Content Include="Scripts\lodash.js" />
+    <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\spiro.angular.services.color.js" />
     <Content Include="Scripts\spiro.angular.services.loaderwithtransform.js" />
     <Content Include="Scripts\spiro.angular.services.mask.js" />
@@ -149,8 +154,6 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
-    <Content Include="Scripts\lodash.js" />
-    <Content Include="Scripts\lodash.min.js" />
     <Content Include="SpiroReadMe.txt" />
     <Content Include="Temp - Restyling\Notes on colour schemes.txt" />
     <Content Include="Tests\specs\contextService.js" />

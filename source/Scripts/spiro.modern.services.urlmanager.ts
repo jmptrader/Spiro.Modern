@@ -21,12 +21,16 @@ module Spiro.Angular.Modern {
         setMenu(menuId: string);
         setDialog(id: string);
         setObject(resultObject: DomainObjectRepresentation);
-        setQuery(action : ActionMember, dvm?: DialogViewModel);
+        setQuery(action: ActionMember, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember);
         setItem(link: Link): void;
 
-        toggleObjectMenu() : void;
-    }
+        toggleObjectMenu(): void;
+
+        setCollectionSummary(collection : CollectionMember);
+        setCollectionList(collection: CollectionMember);
+        setCollectionTable(collection: CollectionMember);
+}
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
@@ -92,6 +96,18 @@ module Spiro.Angular.Modern {
             }
 
             $location.search(search);
+        }
+
+        helper.setCollectionSummary = (collection: CollectionMember) => {
+            setSearch(`collection1_${collection.collectionId()}`, "summary", false);
+        }
+
+        helper.setCollectionList = (collection: CollectionMember) => {
+            setSearch(`collection1_${collection.collectionId() }`, "list", false);
+        }
+
+        helper.setCollectionTable = (collection: CollectionMember) => {
+            setSearch(`collection1_${collection.collectionId() }`, "table", false);
         }
 
     });

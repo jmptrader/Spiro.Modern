@@ -89,7 +89,7 @@ describe('handlers Service', () => {
         describe('if it finds object', () => {
 
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.CollectionMember({}, testObject);
+            var testMember = new Spiro.CollectionMember({}, testObject, "");
             var testDetails = new Spiro.CollectionRepresentation();
             var testViewModel = { test: testObject };
 
@@ -439,7 +439,7 @@ describe('handlers Service', () => {
         describe('if it finds object', () => {
 
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject);
+            var testMember = new Spiro.PropertyMember({}, testObject, "");
             var testValue = new Spiro.Value({});
             var testLink = new Spiro.Link();
             var testTarget = new Spiro.DomainObjectRepresentation();
@@ -828,7 +828,7 @@ describe('handlers Service', () => {
 
             describe('in edit mode', () => {
 
-                var propertyMem = new Spiro.PropertyMember({}, testObject);
+                var propertyMem = new Spiro.PropertyMember({}, testObject, "");
 
                 var populate;
 
@@ -891,7 +891,7 @@ describe('handlers Service', () => {
             var objectViewModel;
             var setNestedObject;
 
-            var propertyMem = new Spiro.PropertyMember({}, testObject);
+            var propertyMem = new Spiro.PropertyMember({}, testObject, "");
 
             var populate;
 
@@ -1093,7 +1093,7 @@ describe('handlers Service', () => {
         describe('handleAppBar when viewing an editable object', () => {
 
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject);
+            var testMember = new Spiro.PropertyMember({}, testObject, "");
 
 
             beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
@@ -1124,7 +1124,7 @@ describe('handlers Service', () => {
         describe('handleAppBar when viewing a non editable object', () => {
 
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject);
+            var testMember = new Spiro.PropertyMember({}, testObject, "");
 
 
             beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {

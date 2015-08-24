@@ -61,6 +61,9 @@ var Spiro;
         Angular.footerTemplate = getSvrPath() + "Content/partials/footer.html";
         Angular.actionsTemplate = getSvrPath() + "Content/partials/actions.html";
         Angular.collectionsTemplate = getSvrPath() + "Content/partials/collections.html";
+        Angular.collectionSummaryTemplate = getSvrPath() + "Content/partials/collectionSummary.html";
+        Angular.collectionListTemplate = getSvrPath() + "Content/partials/collectionList.html";
+        Angular.collectionTableTemplate = getSvrPath() + "Content/partials/collectionTable.html";
         Angular.app.config(function ($routeProvider) {
             $routeProvider.
                 //Modern2 Urls below:

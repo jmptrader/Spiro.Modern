@@ -1,0 +1,40 @@
+﻿<a class="icon-summary" href="" ng-click="collection.doSummary()"></a>
+<a class="icon-list" href="" ng-click="collection.doList()"></a>
+<a class="icon-table" href="" ng-click="collection.doTable()"></a>
+    <table >
+        <thead>
+            <tr>
+                <th ng-repeat="heading in collection.header">
+                    {{heading}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in collection.items">
+                <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+
+                    <div ng-switch-when="ref">
+                        <div class='value'>{{property.value}}</div>
+                    </div>
+
+                    <div ng-switch-when="scalar" ng-switch="property.returnType">
+                        TODO: Lots of these cases end up with property.value
+                        so can't we just reduce them?
+                        <div ng-switch-when="string" ng-switch="property.format">
+                            <div ng-switch-when="date-time" class='value'>{{property.value}}</div>
+                            <div ng-switch-default class='value'>{{property.value}}</div>
+                        </div>
+
+                        <div ng-switch-when="boolean">
+                            <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                        </div>
+
+                        <div ng-switch-default>
+                            <div class='value'>{{property.value}}</div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>

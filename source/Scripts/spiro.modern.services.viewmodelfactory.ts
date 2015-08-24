@@ -25,14 +25,14 @@ module Spiro.Angular.Modern{
         actionViewModel(actionRep: ActionMember,  id : string, invoke : () => void): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
-        collectionViewModel(collection: any, populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: CollectionMember, populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: CollectionRepresentation, populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: ListRepresentation, populateItems?: boolean): CollectionViewModel;
+        collectionViewModel(collection: any, state : string, populateItems?: boolean): CollectionViewModel;
+        collectionViewModel(collection: CollectionMember, state: string,populateItems?: boolean): CollectionViewModel;
+        collectionViewModel(collection: CollectionRepresentation, state: string,populateItems?: boolean): CollectionViewModel;
+        collectionViewModel(collection: ListRepresentation, state: string, populateItems?: boolean): CollectionViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
-        domainObjectViewModel(objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
+        domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: string }, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
 
     app.service('viewModelFactory', function($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory : ng.ICacheFactoryService, urlManager : IUrlManager ) {
@@ -383,20 +383,6 @@ module Spiro.Angular.Modern{
         };
         
          // tested
-        function create(collectionRep: CollectionMember) {
-            const collectionViewModel = new CollectionViewModel();
-            collectionViewModel.title = collectionRep.extensions().friendlyName;
-            collectionViewModel.size = collectionRep.size();
-            collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-
-            collectionViewModel.href = collectionRep.detailsLink() ? urlHelper.toCollectionUrl(collectionRep.detailsLink().href()) : "";
-            collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-
-            collectionViewModel.items = [];
-
-            return collectionViewModel;
-        }
-
         function getItems(cvm : CollectionViewModel, links: Link[], href: string, populateItems?: boolean) {
 
             if (populateItems) {
@@ -404,7 +390,7 @@ module Spiro.Angular.Modern{
                     var ivm = viewModelFactory.itemViewModel(link, href);
                     var tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).then((obj: DomainObjectRepresentation) => {
-                        ivm.target = viewModelFactory.domainObjectViewModel(obj);
+                        ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
 
                         if (!cvm.header) {
                             cvm.header = _.map(ivm.target.properties, (property: PropertyViewModel) => property.title);
@@ -423,8 +409,33 @@ module Spiro.Angular.Modern{
             }
         }
 
-     
-        function createFromDetails(collectionRep: CollectionRepresentation, populateItems?: boolean) {
+        function create(collectionRep: CollectionMember, state : string) {
+            const collectionViewModel = new CollectionViewModel();
+            const links = collectionRep.value().models;
+            collectionViewModel.title = collectionRep.extensions().friendlyName;
+            collectionViewModel.size = links.length;
+            collectionViewModel.pluralName = collectionRep.extensions().pluralName;
+
+            //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
+            collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
+
+            collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, false);
+
+            switch (state) {
+            case "list":
+                collectionViewModel.template = collectionListTemplate;
+                break;
+            case "table":
+                collectionViewModel.template = collectionTableTemplate;
+                break;
+            default: 
+                collectionViewModel.template = collectionSummaryTemplate;
+            }
+
+            return collectionViewModel;
+        }
+
+        function createFromDetails(collectionRep: CollectionRepresentation, state: string,populateItems?: boolean) {
             const collectionViewModel = new CollectionViewModel();
             const links = collectionRep.value().models;
             collectionViewModel.title = collectionRep.extensions().friendlyName;
@@ -440,7 +451,7 @@ module Spiro.Angular.Modern{
         }
 
        
-        function createFromList(listRep: ListRepresentation, populateItems?: boolean) {
+        function createFromList(listRep: ListRepresentation, state: string,populateItems?: boolean) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
             collectionViewModel.size = links.length;
@@ -452,17 +463,27 @@ module Spiro.Angular.Modern{
         }
 
       
-        viewModelFactory.collectionViewModel = (collection: any, populateItems?: boolean) => {
+        viewModelFactory.collectionViewModel = (collection: any, state : string,  populateItems?: boolean) => {
+            let collectionVm: CollectionViewModel = null;
+
             if (collection instanceof CollectionMember) {
-                return create(collection);
+                collectionVm = create(collection, state);
             }
             if (collection instanceof CollectionRepresentation) {
-                return createFromDetails(collection, populateItems);
+                collectionVm = createFromDetails(collection, state, populateItems);
             }
             if (collection instanceof ListRepresentation) {
-                return createFromList(collection, populateItems);
+                collectionVm = createFromList(collection, state, populateItems);
             }
-            return null;
+
+            if (collectionVm) {
+                collectionVm.doSummary = () => urlManager.setCollectionSummary(collection);
+                collectionVm.doList = () => urlManager.setCollectionList(collection);
+                collectionVm.doTable = () => urlManager.setCollectionTable(collection);            
+            }
+
+
+            return collectionVm;
         };
 
      
@@ -507,7 +528,7 @@ module Spiro.Angular.Modern{
         };
 
     
-        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, save?: (ovm: DomainObjectViewModel) => void) => {
+        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: string }, save?: (ovm: DomainObjectViewModel) => void, previousUrl?: string): DomainObjectViewModel => {
             var objectViewModel = new DomainObjectViewModel();
             var isTransient = !!objectRep.persistLink();
 
@@ -529,7 +550,7 @@ module Spiro.Angular.Modern{
             objectViewModel.message = "";
 
             objectViewModel.properties = _.map(properties, (property, id?) => { return viewModelFactory.propertyViewModel(property, id); });
-            objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection); });
+            objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()] ); });
             objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, () => repHandlers.invokeAction(action)); });
 
             objectViewModel.toggleActionMenu = () => {

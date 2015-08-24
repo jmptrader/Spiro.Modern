@@ -188,6 +188,9 @@ var Spiro;
             var CollectionViewModel = (function () {
                 function CollectionViewModel() {
                 }
+                CollectionViewModel.prototype.doSummary = function () { };
+                CollectionViewModel.prototype.doTable = function () { };
+                CollectionViewModel.prototype.doList = function () { };
                 return CollectionViewModel;
             })();
             Modern.CollectionViewModel = CollectionViewModel;

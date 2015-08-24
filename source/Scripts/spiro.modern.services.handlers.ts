@@ -32,8 +32,8 @@ module Spiro.Angular.Modern {
         handleEditObject($scope): void;
         handleTransientObject($scope): void;
 
-
-        handlePaneObject($scope, objectId : string, menuId? : string, dialogId? : string): void;
+        // make state enum ?
+        handlePaneObject($scope, objectId: string, collections: {[index: string] : string},   menuId? : string, dialogId? : string): void;
         handleAppBar($scope): void;
 
         handleHome($scope, currentMenu? : string, currentDialog? : string): void;
@@ -79,11 +79,11 @@ module Spiro.Angular.Modern {
 
 
             if ($routeParams.tableMode) {
-                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, true);
+                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, "table", true);
                 $scope.modeCollection = urlHelper.toAppUrl($location.path(), []);
                 $scope.collectionTemplate = nestedCollectionTableTemplate;
             } else {
-                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection);
+                $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, "");
                 $scope.modeCollection = urlHelper.toAppUrl($location.path(), []) + "&tableMode=true";
                 $scope.collectionTemplate = nestedCollectionTemplate;
             }
@@ -183,7 +183,7 @@ module Spiro.Angular.Modern {
         
          // tested
         function setNestedObject(object: DomainObjectRepresentation, $scope) {
-            $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
+            $scope.result = viewModelFactory.domainObjectViewModel(object, {}); // todo rename result
             $scope.nestedTemplate = nestedObjectTemplate;
             context.setNestedObject(object);
             cacheRecentlyViewed(object);
@@ -290,7 +290,7 @@ module Spiro.Angular.Modern {
             context.getQuery(menuId, actionId, parms).
                 then((list: ListRepresentation) => {
                     $scope.queryTemplate = queryTemplate;
-                    $scope.collection = viewModelFactory.collectionViewModel(list);
+                    $scope.collection = viewModelFactory.collectionViewModel(list, "list");
                 }, error => {
                     setError(error);
                 });
@@ -320,7 +320,7 @@ module Spiro.Angular.Modern {
                 then((object: DomainObjectRepresentation) => {
                     cacheRecentlyViewed(object);
 
-                    $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
+                    $scope.result = viewModelFactory.domainObjectViewModel(object, {}); // todo rename result
                     $scope.nestedTemplate = nestedObjectTemplate;
                     context.setNestedObject(object);
                 }, error => {
@@ -399,7 +399,7 @@ module Spiro.Angular.Modern {
             context.getObject($routeParams.dt, $routeParams.id).
                 then((object: DomainObjectRepresentation) => {
                     context.setNestedObject(null);
-                    $scope.object = viewModelFactory.domainObjectViewModel(object);
+                    $scope.object = viewModelFactory.domainObjectViewModel(object, {});
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionsTemplate = actionsTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
@@ -413,14 +413,14 @@ module Spiro.Angular.Modern {
 
         };
 
-        handlers.handlePaneObject = ($scope, objectId : string, menuId? : string, dialogId? : string) => {
+        handlers.handlePaneObject = ($scope, objectId: string, collections: { [index: string] : string },  menuId? : string, dialogId? : string) => {
 
             var [dt, id] = objectId.split("-");
 
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
                     context.setNestedObject(null);
-                    $scope.object = viewModelFactory.domainObjectViewModel(object);
+                    $scope.object = viewModelFactory.domainObjectViewModel(object, collections);
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionsTemplate = menuId ? actionsTemplate : nullTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
@@ -454,7 +454,7 @@ module Spiro.Angular.Modern {
                         $scope.backgroundColor = color.toColorFromType(object.domainType());
 
                         context.setNestedObject(null);
-                        const obj = viewModelFactory.domainObjectViewModel(object, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
+                        const obj = viewModelFactory.domainObjectViewModel(object, {}, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
                         obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
 
                         $scope.object = obj;
@@ -481,7 +481,7 @@ module Spiro.Angular.Modern {
                 then((object: DomainObjectRepresentation) => {
 
                     context.setNestedObject(null);
-                    $scope.object = viewModelFactory.domainObjectViewModel(object, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
+                    $scope.object = viewModelFactory.domainObjectViewModel(object, {}, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionTemplate = "";
                     $scope.propertiesTemplate = editPropertiesTemplate;

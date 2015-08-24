@@ -136,7 +136,7 @@ describe('viewModelFactory Service', function () {
         var rawCollection = { size: 0, extensions: { friendlyName: "a title", pluralName: "somethings", elementType: "AdventureWorksModel.Product" }, links: [rawDetailsLink] };
         describe('from collection member rep', function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}));
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}, ""), "");
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");
@@ -151,7 +151,7 @@ describe('viewModelFactory Service', function () {
             beforeEach(inject(function (viewModelFactory) {
                 rawCollection.value = [];
                 rawCollection.links.push(rawSelfLink);
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection));
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection), "");
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");
@@ -165,7 +165,7 @@ describe('viewModelFactory Service', function () {
         describe('from list rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 var rawList = { value: [], links: [rawSelfLink] };
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList));
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList), "");
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.size).toBe(0);
@@ -211,7 +211,7 @@ describe('viewModelFactory Service', function () {
         var rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
         describe('from populated rep', function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject));
+                resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject), {});
             }));
             it('creates a object view model', function () {
                 expect(resultVm.domainType).toBe("an object");
@@ -231,7 +231,7 @@ describe('viewModelFactory Service', function () {
                 rawObject.links.push(rawPersistLink);
                 var doRep = new Spiro.DomainObjectRepresentation(rawObject);
                 doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
-                resultVm = viewModelFactory.domainObjectViewModel(doRep);
+                resultVm = viewModelFactory.domainObjectViewModel(doRep, {});
             }));
             it('creates a object view model', function () {
                 expect(resultVm.domainType).toBe("an object");

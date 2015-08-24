@@ -33,10 +33,14 @@ var Spiro;
                 var objectId = $routeParams.object1;
                 var menuId = $routeParams.menu1;
                 var dialogId = $routeParams.dialog1;
-                handlers.handlePaneObject($scope, objectId, menuId, dialogId);
+                // (k.substr(k.indexOf("_") + 1))
+                var collIds = _.pick($routeParams, function (v, k) { return k.indexOf("collection1") === 0; });
+                //missing from lodash types :-( 
+                var collections = _.mapKeys(collIds, function (v, k) { return k.substr(k.indexOf("_") + 1); });
+                handlers.handlePaneObject($scope, objectId, collections, menuId, dialogId);
             });
             Angular.app.controller("Pane2ObjectController", function ($scope, $routeParams, handlers) {
-                handlers.handlePaneObject($scope, "todo");
+                handlers.handlePaneObject($scope, "todo", {});
             });
             Angular.app.controller("Pane1QueryController", function ($scope, $routeParams, handlers) {
                 var menuId = $routeParams.menu1;
@@ -49,7 +53,7 @@ var Spiro;
                 var p2 = $routeParams["pane2"];
                 var rx = /(.*)-(.*)/;
                 var results = rx.exec(p2);
-                handlers.handlePaneObject($scope, "todo");
+                handlers.handlePaneObject($scope, "todo", {});
             });
             // tested
             Angular.app.controller("BackgroundController", function ($scope, handlers) {

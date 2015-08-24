@@ -59,7 +59,7 @@ describe('handlers Service', function () {
         var getObject;
         describe('if it finds object', function () {
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.CollectionMember({}, testObject);
+            var testMember = new Spiro.CollectionMember({}, testObject, "");
             var testDetails = new Spiro.CollectionRepresentation();
             var testViewModel = { test: testObject };
             var collectionMember;
@@ -296,7 +296,7 @@ describe('handlers Service', function () {
         var getObject;
         describe('if it finds object', function () {
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject);
+            var testMember = new Spiro.PropertyMember({}, testObject, "");
             var testValue = new Spiro.Value({});
             var testLink = new Spiro.Link();
             var testTarget = new Spiro.DomainObjectRepresentation();
@@ -540,7 +540,7 @@ describe('handlers Service', function () {
                 });
             });
             describe('in edit mode', function () {
-                var propertyMem = new Spiro.PropertyMember({}, testObject);
+                var propertyMem = new Spiro.PropertyMember({}, testObject, "");
                 var populate;
                 beforeEach(inject(function ($rootScope, $q, $routeParams, repLoader, handlers) {
                     spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
@@ -584,7 +584,7 @@ describe('handlers Service', function () {
             var testViewModel = { test: testObject };
             var objectViewModel;
             var setNestedObject;
-            var propertyMem = new Spiro.PropertyMember({}, testObject);
+            var propertyMem = new Spiro.PropertyMember({}, testObject, "");
             var populate;
             beforeEach(inject(function ($rootScope, $routeParams, $q, repLoader, handlers, context, viewModelFactory) {
                 $scope = $rootScope.$new();
@@ -720,7 +720,7 @@ describe('handlers Service', function () {
         });
         describe('handleAppBar when viewing an editable object', function () {
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject);
+            var testMember = new Spiro.PropertyMember({}, testObject, "");
             beforeEach(inject(function ($rootScope, $location, $routeParams, handlers, context) {
                 $scope = $rootScope.$new();
                 $routeParams.dt = "test";
@@ -740,7 +740,7 @@ describe('handlers Service', function () {
         });
         describe('handleAppBar when viewing a non editable object', function () {
             var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject);
+            var testMember = new Spiro.PropertyMember({}, testObject, "");
             beforeEach(inject(function ($rootScope, $location, $routeParams, handlers, context) {
                 $scope = $rootScope.$new();
                 $routeParams.dt = "test";

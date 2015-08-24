@@ -46,12 +46,12 @@ var Spiro;
                 // tested
                 function setNestedCollection($scope, listOrCollection) {
                     if ($routeParams.tableMode) {
-                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, true);
+                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, "table", true);
                         $scope.modeCollection = urlHelper.toAppUrl($location.path(), []);
                         $scope.collectionTemplate = Angular.nestedCollectionTableTemplate;
                     }
                     else {
-                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection);
+                        $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, "");
                         $scope.modeCollection = urlHelper.toAppUrl($location.path(), []) + "&tableMode=true";
                         $scope.collectionTemplate = Angular.nestedCollectionTemplate;
                     }
@@ -138,7 +138,7 @@ var Spiro;
                 };
                 // tested
                 function setNestedObject(object, $scope) {
-                    $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
+                    $scope.result = viewModelFactory.domainObjectViewModel(object, {}); // todo rename result
                     $scope.nestedTemplate = Angular.nestedObjectTemplate;
                     context.setNestedObject(object);
                     cacheRecentlyViewed(object);
@@ -225,7 +225,7 @@ var Spiro;
                     context.getQuery(menuId, actionId, parms).
                         then(function (list) {
                         $scope.queryTemplate = Angular.queryTemplate;
-                        $scope.collection = viewModelFactory.collectionViewModel(list);
+                        $scope.collection = viewModelFactory.collectionViewModel(list, "list");
                     }, function (error) {
                         setError(error);
                     });
@@ -249,7 +249,7 @@ var Spiro;
                     context.getNestedObject(dt, id).
                         then(function (object) {
                         cacheRecentlyViewed(object);
-                        $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
+                        $scope.result = viewModelFactory.domainObjectViewModel(object, {}); // todo rename result
                         $scope.nestedTemplate = Angular.nestedObjectTemplate;
                         context.setNestedObject(object);
                     }, function (error) {
@@ -308,7 +308,7 @@ var Spiro;
                     context.getObject($routeParams.dt, $routeParams.id).
                         then(function (object) {
                         context.setNestedObject(null);
-                        $scope.object = viewModelFactory.domainObjectViewModel(object);
+                        $scope.object = viewModelFactory.domainObjectViewModel(object, {});
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionsTemplate = Angular.actionsTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
@@ -318,12 +318,12 @@ var Spiro;
                         setError(error);
                     });
                 };
-                handlers.handlePaneObject = function ($scope, objectId, menuId, dialogId) {
+                handlers.handlePaneObject = function ($scope, objectId, collections, menuId, dialogId) {
                     var _a = objectId.split("-"), dt = _a[0], id = _a[1];
                     context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);
-                        $scope.object = viewModelFactory.domainObjectViewModel(object);
+                        $scope.object = viewModelFactory.domainObjectViewModel(object, collections);
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionsTemplate = menuId ? Angular.actionsTemplate : Angular.nullTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
@@ -346,7 +346,7 @@ var Spiro;
                         if (object) {
                             $scope.backgroundColor = color.toColorFromType(object.domainType());
                             context.setNestedObject(null);
-                            var obj = viewModelFactory.domainObjectViewModel(object, _.partial(repHandlers.saveObject, $scope, object));
+                            var obj = viewModelFactory.domainObjectViewModel(object, {}, _.partial(repHandlers.saveObject, $scope, object));
                             obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
                             $scope.object = obj;
                             $scope.objectTemplate = Angular.objectTemplate;
@@ -367,7 +367,7 @@ var Spiro;
                     context.getObject($routeParams.dt, $routeParams.id).
                         then(function (object) {
                         context.setNestedObject(null);
-                        $scope.object = viewModelFactory.domainObjectViewModel(object, _.partial(repHandlers.updateObject, $scope, object));
+                        $scope.object = viewModelFactory.domainObjectViewModel(object, {}, _.partial(repHandlers.updateObject, $scope, object));
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionTemplate = "";
                         $scope.propertiesTemplate = Angular.editPropertiesTemplate;

@@ -234,7 +234,13 @@ module Spiro.Angular.Modern {
         href: string;
         color: string; 
         items: ItemViewModel[];
-        header : string[];      
+        header: string[];
+
+        doSummary(): void { }
+        doTable(): void { }
+        doList(): void { }
+
+        template: string;
     } 
 
     export class ServicesViewModel {
