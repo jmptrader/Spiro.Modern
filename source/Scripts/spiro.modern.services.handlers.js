@@ -87,7 +87,7 @@ var Spiro;
                 }
                 // tested
                 handlers.handleCollection = function ($scope) {
-                    context.getObject($routeParams.dt, $routeParams.id).
+                    context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {
                         var collectionDetails = object.collectionMember($routeParams.collection).getDetails();
                         cacheRecentlyViewed(object);
@@ -101,7 +101,7 @@ var Spiro;
                 };
                 // tested
                 handlers.handleActionDialog = function ($scope) {
-                    context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
+                    context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
                         then(function (object) {
                         var action = object.actionMember(urlHelper.action());
                         cacheRecentlyViewed(object);
@@ -115,7 +115,7 @@ var Spiro;
                 };
                 // tested
                 handlers.handleActionResult = function ($scope) {
-                    context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
+                    context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
                         then(function (object) {
                         cacheRecentlyViewed(object);
                         var action = object.actionMember(urlHelper.action());
@@ -144,7 +144,7 @@ var Spiro;
                     cacheRecentlyViewed(object);
                 }
                 handlers.handleProperty = function ($scope) {
-                    context.getObject($routeParams.dt, $routeParams.id).
+                    context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {
                         cacheRecentlyViewed(object);
                         var target = object.propertyMember($routeParams.property).value().link().getTarget();
@@ -294,7 +294,7 @@ var Spiro;
                     $scope.appBar.hideEdit = true;
                     // TODO create appbar viewmodel 
                     if ($routeParams.dt && $routeParams.id) {
-                        context.getObject($routeParams.dt, $routeParams.id).
+                        context.getObject($routeParams.dt, [$routeParams.id]).
                             then(function (object) {
                             var pms = _.toArray(object.propertyMembers());
                             var anyEditableField = _.any(pms, function (pm) { return !pm.disabledReason(); });
@@ -305,7 +305,7 @@ var Spiro;
                     }
                 }; //tested
                 handlers.handleObject = function ($scope) {
-                    context.getObject($routeParams.dt, $routeParams.id).
+                    context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {
                         context.setNestedObject(null);
                         $scope.object = viewModelFactory.domainObjectViewModel(object, {});
@@ -319,7 +319,7 @@ var Spiro;
                     });
                 };
                 handlers.handlePaneObject = function ($scope, objectId, collections, menuId, dialogId) {
-                    var _a = objectId.split("-"), dt = _a[0], id = _a[1];
+                    var _a = objectId.split("-"), dt = _a[0], id = _a.slice(1);
                     context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);
@@ -364,7 +364,7 @@ var Spiro;
                 };
                 // tested
                 handlers.handleEditObject = function ($scope) {
-                    context.getObject($routeParams.dt, $routeParams.id).
+                    context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {
                         context.setNestedObject(null);
                         $scope.object = viewModelFactory.domainObjectViewModel(object, {}, _.partial(repHandlers.updateObject, $scope, object));

@@ -125,7 +125,7 @@ module Spiro.Angular.Modern {
 
          // tested
         handlers.handleCollection = $scope => {
-            context.getObject($routeParams.dt, $routeParams.id).
+            context.getObject($routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
                 var collectionDetails = object.collectionMember($routeParams.collection).getDetails();
                     cacheRecentlyViewed(object);
@@ -141,7 +141,7 @@ module Spiro.Angular.Modern {
         // tested
         handlers.handleActionDialog = $scope => {
 
-            context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
+            context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
                     var action = object.actionMember(urlHelper.action());
                     cacheRecentlyViewed(object);
@@ -157,7 +157,7 @@ module Spiro.Angular.Modern {
 
         // tested
         handlers.handleActionResult = $scope => {
-            context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
+            context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
                     cacheRecentlyViewed(object);
 
@@ -190,7 +190,7 @@ module Spiro.Angular.Modern {
         }
 
         handlers.handleProperty = $scope => {
-            context.getObject($routeParams.dt, $routeParams.id).
+            context.getObject($routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
                     cacheRecentlyViewed(object);
 
@@ -379,7 +379,7 @@ module Spiro.Angular.Modern {
             // TODO create appbar viewmodel 
 
             if ($routeParams.dt && $routeParams.id) {
-                context.getObject($routeParams.dt, $routeParams.id).
+                context.getObject($routeParams.dt, [$routeParams.id]).
                     then((object: DomainObjectRepresentation) => {
 
                         var pms = _.toArray(object.propertyMembers());
@@ -396,7 +396,7 @@ module Spiro.Angular.Modern {
         }; //tested
         handlers.handleObject = $scope => {
 
-            context.getObject($routeParams.dt, $routeParams.id).
+            context.getObject($routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
                     context.setNestedObject(null);
                     $scope.object = viewModelFactory.domainObjectViewModel(object, {});
@@ -415,7 +415,7 @@ module Spiro.Angular.Modern {
 
         handlers.handlePaneObject = ($scope, objectId: string, collections: { [index: string] : string },  menuId? : string, dialogId? : string) => {
 
-            var [dt, id] = objectId.split("-");
+            var [dt, ...id] = objectId.split("-");
 
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
@@ -477,7 +477,7 @@ module Spiro.Angular.Modern {
         // tested
         handlers.handleEditObject = $scope => {
 
-            context.getObject($routeParams.dt, $routeParams.id).
+            context.getObject($routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
 
                     context.setNestedObject(null);

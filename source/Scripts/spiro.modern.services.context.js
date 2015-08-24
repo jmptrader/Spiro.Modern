@@ -142,11 +142,12 @@ var Spiro;
                 currentObject = null; // tested
                 context.getObject = function (type, id) {
                     var delay = $q.defer();
-                    if (currentObject && isSameObject(currentObject, type, id)) {
+                    var oid = _.reduce(id || [], function (a, v) { return ("" + a + (a ? "-" : "") + v); }, "");
+                    if (currentObject && isSameObject(currentObject, type, oid)) {
                         delay.resolve(currentObject);
                     }
                     else {
-                        var promise = id ? this.getDomainObject(type, id) : this.getService(type);
+                        var promise = oid ? this.getDomainObject(type, oid) : this.getService(type);
                         promise.then(function (object) {
                             currentObject = object;
                             delay.resolve(object);

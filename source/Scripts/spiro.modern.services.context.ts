@@ -24,7 +24,7 @@ module Spiro.Angular.Modern {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (type: string, id?: string) => ng.IPromise<DomainObjectRepresentation>;
+        getObject: (type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (object: DomainObjectRepresentation) => void;
         getNestedObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         setNestedObject: (object: DomainObjectRepresentation) => void;
@@ -196,14 +196,14 @@ module Spiro.Angular.Modern {
             return delay.promise;
         };
         currentObject = null; // tested
-        context.getObject = function (type: string, id?: string) {
-            var delay = $q.defer<DomainObjectRepresentation>();
-
-            if (currentObject && isSameObject(currentObject, type, id)) {
+        context.getObject = function(type: string, id?: string[]) {
+            const delay = $q.defer<DomainObjectRepresentation>();
+            const oid = _.reduce(id || [], (a, v) => `${a}${a ? "-" : ""}${v}`, "");
+            if (currentObject && isSameObject(currentObject, type, oid)) {
                 delay.resolve(currentObject);
             }
             else {
-                const promise = id ? this.getDomainObject(type, id) : this.getService(type);
+                const promise = oid ? this.getDomainObject(type, oid) : this.getService(type);
                 promise.then((object: DomainObjectRepresentation) => {
                     currentObject = object;
                     delay.resolve(object);
