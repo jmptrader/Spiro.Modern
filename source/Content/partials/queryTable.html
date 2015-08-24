@@ -41,18 +41,18 @@ under the License.-->
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in collection.items">
+                <tr ng-repeat="item in collection.items" ng-class="item.color">
                     <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
 
                         <div ng-switch-when="ref">
-                            <div class='value'>{{property.value}}</div>
+                            <div>{{property.value}}</div>
                         </div>
 
                         <div ng-switch-when="scalar" ng-switch="property.returnType">
 
                             <div ng-switch-when="string" ng-switch="property.format">
-                                <div ng-switch-when="date-time" class='value'>{{property.value}}</div>
-                                <div ng-switch-default class='value'>{{property.value}}</div>
+                                <div ng-switch-when="date-time">{{property.value}}</div>
+                                <div ng-switch-default>{{property.value}}</div>
                             </div>
 
                             <div ng-switch-when="boolean">
@@ -60,7 +60,7 @@ under the License.-->
                             </div>
 
                             <div ng-switch-default>
-                                <div class='value'>{{property.value}}</div>
+                                <div>{{property.value}}</div>
                             </div>
                         </div>
 
