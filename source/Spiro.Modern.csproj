@@ -25,7 +25,8 @@
     <Content Include="Content\partials\collectionSummary.html" />
     <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\footer.html" />
-    <Content Include="Content\partials\query.html" />
+    <Content Include="Content\partials\queryTable.html" />
+    <Content Include="Content\partials\queryList.html" />
     <Content Include="Content\partials\singleQueryPage.html" />
     <Content Include="Content\partials\splitHomeQuerytPage.html" />
     <Content Include="Content\partials\splitObjectQueryPage.html" />

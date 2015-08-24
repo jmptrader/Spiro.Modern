@@ -221,11 +221,11 @@ var Spiro;
                         });
                     }
                 };
-                handlers.handleQuery = function ($scope, menuId, actionId, parms) {
+                handlers.handleQuery = function ($scope, menuId, actionId, state, parms) {
                     context.getQuery(menuId, actionId, parms).
                         then(function (list) {
-                        $scope.queryTemplate = Angular.queryTemplate;
-                        $scope.collection = viewModelFactory.collectionViewModel(list, "list");
+                        $scope.queryTemplate = state === "list" ? Angular.queryListTemplate : Angular.queryTableTemplate;
+                        $scope.collection = viewModelFactory.collectionViewModel(list, state);
                     }, function (error) {
                         setError(error);
                     });

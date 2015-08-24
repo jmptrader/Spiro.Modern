@@ -30,6 +30,9 @@ module Spiro.Angular.Modern {
         setCollectionSummary(collection : CollectionMember);
         setCollectionList(collection: CollectionMember);
         setCollectionTable(collection: CollectionMember);
+        setCollectionSummary(collection: ListRepresentation);
+        setCollectionList(collection: ListRepresentation);
+        setCollectionTable(collection: ListRepresentation);
 }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
@@ -98,16 +101,28 @@ module Spiro.Angular.Modern {
             $location.search(search);
         }
 
-        helper.setCollectionSummary = (collection: CollectionMember) => {
-            setSearch(`collection1_${collection.collectionId()}`, "summary", false);
+        helper.setCollectionSummary = (collection: any) => {
+            if (collection instanceof CollectionMember) {
+                setSearch(`collection1_${collection.collectionId()}`, "summary", false);
+            } else {
+                setSearch("collection1", "summary", false);
+            }
         }
 
-        helper.setCollectionList = (collection: CollectionMember) => {
-            setSearch(`collection1_${collection.collectionId() }`, "list", false);
+        helper.setCollectionList = (collection: any) => {
+            if (collection instanceof CollectionMember) {
+                setSearch(`collection1_${collection.collectionId() }`, "list", false);
+            } else {
+                setSearch("collection1", "list", false);
+            }
         }
 
-        helper.setCollectionTable = (collection: CollectionMember) => {
-            setSearch(`collection1_${collection.collectionId() }`, "table", false);
+        helper.setCollectionTable = (collection: any) => {
+            if (collection instanceof CollectionMember) {
+                setSearch(`collection1_${collection.collectionId() }`, "table", false);
+            } else {
+                setSearch("collection1", "table", false);
+            }
         }
 
     });

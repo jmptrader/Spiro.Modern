@@ -44,10 +44,11 @@ var Spiro;
             Angular.app.controller("Pane1QueryController", function ($scope, $routeParams, handlers) {
                 var menuId = $routeParams.menu1;
                 var actionId = $routeParams.action1;
+                var state = $routeParams.collection1 || "list";
                 // todo make parm ids dictionary same as collections ids ? 
                 var parmIds = _.pick($routeParams, function (v, k) { return k.indexOf("parm1") === 0; });
                 var parms = _.map(parmIds, function (v, k) { return { id: k.substr(k.indexOf("_") + 1), val: v }; });
-                handlers.handleQuery($scope, menuId, actionId, parms);
+                handlers.handleQuery($scope, menuId, actionId, state, parms);
             });
             Angular.app.controller("Pane2QueryController", function ($scope, $routeParams, handlers) {
                 var p2 = $routeParams["pane2"];

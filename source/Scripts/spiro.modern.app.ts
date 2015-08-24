@@ -36,6 +36,7 @@ module Spiro.Angular {
         dialog1: string;
         object1: string;
         action1: string;
+        collection1: string;
 
 
 
@@ -88,7 +89,11 @@ module Spiro.Angular {
 
     export var homeTemplate = getSvrPath() + "Content/partials/home.html";
     export var objectTemplate = getSvrPath() + "Content/partials/object.html";
-    export var queryTemplate = getSvrPath() + "Content/partials/query.html";
+
+    export var queryListTemplate = getSvrPath() + "Content/partials/queryList.html";
+    export var queryTableTemplate = getSvrPath() + "Content/partials/queryTable.html";
+
+
     export var footerTemplate = getSvrPath() + "Content/partials/footer.html";
     export var actionsTemplate = getSvrPath() + "Content/partials/actions.html";
     export var collectionsTemplate = getSvrPath() + "Content/partials/collections.html";
