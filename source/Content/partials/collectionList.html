@@ -1,10 +1,13 @@
-﻿<a class="icon-summary" href="" ng-click="collection.doSummary()"></a>
-<a class="icon-list" href="" ng-click="collection.doList()"></a>
-<a class="icon-table" href="" ng-click="collection.doTable()"></a>
+﻿<div class="summary">
+    <div class='name'>{{collection.title}}:</div>
+    <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
+    <a class="icon-summary" href="" ng-click="collection.doSummary()"></a>
+    <a class="icon-table" href="" ng-click="collection.doTable()"></a>
+</div>
     <table >
         <tbody>
-            <tr ng-repeat="item in collection.items">
-                <td class="reference clickable-area" ng-class="item.color">
+            <tr ng-repeat="item in collection.items" ng-class="item.color">
+                <td class="reference clickable-area" >
                     <a href="" ng-click="item.doClick()"><span></span>{{item.title}}</a>
                 </td>
             </tr>
