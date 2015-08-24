@@ -17,6 +17,7 @@ under the License.-->
         </div>
         <div class="menus">
             <div class="menu clickable-area">
+                <span></span> <!--Needed for clickable-area-->
                 <a href="x">Actions</a>
             </div>
         </div>
@@ -38,7 +39,10 @@ under the License.-->
                         <input type="checkbox">
                     </td>
                     <td class="reference clickable-area" ng-class="item.color">
-                        <a href="" ng-click="item.doClick()"><span></span>{{item.title}}</a>
+                        <a href="" ng-click="item.doClick()">
+                            <span></span> <!--Needed for clickable-area-->
+                            {{item.title}}
+                        </a>
                     </td>
                 </tr>
             </tbody>

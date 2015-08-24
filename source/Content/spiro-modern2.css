@@ -93,6 +93,18 @@
     .menu a {
         font-size: 14pt;
     }
+/*Fix to make menus/actions/reference properties clickable*/
+    .clickable-area
+    {
+        position: relative;
+    }
+
+    .clickable-area a span
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
 
 /*Actions*/
     .action {

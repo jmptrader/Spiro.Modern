@@ -19,7 +19,8 @@ under the License.-->
 <div class="properties-pane" ng-class="services.color">
     <div class="service clickable-area" ng-class="service.color" ng-repeat="service in services.items">
         <a href="{{service.href}}">
-            <span></span>{{service.title}}
+            <span></span> <!--Needed for clickable-area-->
+            {{service.title}}
         </a>
     </div>
 </div>
