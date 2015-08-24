@@ -23,6 +23,10 @@
         background-color: black;
     }
 
+    .single, .split {
+        padding-bottom: 60px; /*So bottom content doesn't get cut off by footer*/
+    }
+
     .single {
         width: 100%;
     }
@@ -52,7 +56,7 @@
         margin-bottom: 20px;
     }
 
-    .action, .main-column, .collections {
+    .action, .main-column, .collections { 
         margin-right: 20px;
     }
 
@@ -197,7 +201,7 @@
 }
 
 /*Collections */
-    .collection {
+    .collection:not(:last-child){
         margin-bottom: 20px;
     }
     .collection .summary {
@@ -222,7 +226,7 @@
 }
 
 td.reference {
-    width: 350px;
+    width: 415px;
 }
 
 td.checkbox {
