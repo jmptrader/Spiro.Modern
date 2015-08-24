@@ -445,7 +445,7 @@ module Spiro.Angular.Modern{
             collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
 
-            collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, populateItems);
+            collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === "table");
 
             return collectionViewModel;
         }
@@ -457,7 +457,7 @@ module Spiro.Angular.Modern{
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
 
-            collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), populateItems);
+            collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), state === "table");
 
             return collectionViewModel;
         }

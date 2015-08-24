@@ -347,7 +347,7 @@ var Spiro;
                     collectionViewModel.pluralName = collectionRep.extensions().pluralName;
                     collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
                     collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, populateItems);
+                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === "table");
                     return collectionViewModel;
                 }
                 function createFromList(listRep, state, populateItems) {
@@ -355,7 +355,7 @@ var Spiro;
                     var links = listRep.value().models;
                     collectionViewModel.size = links.length;
                     collectionViewModel.pluralName = "Objects";
-                    collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), populateItems);
+                    collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), state === "table");
                     return collectionViewModel;
                 }
                 viewModelFactory.collectionViewModel = function (collection, state, populateItems) {

@@ -70,13 +70,28 @@ var Spiro;
                     $location.search(search);
                 };
                 helper.setCollectionSummary = function (collection) {
-                    setSearch("collection1_" + collection.collectionId(), "summary", false);
+                    if (collection instanceof Spiro.CollectionMember) {
+                        setSearch("collection1_" + collection.collectionId(), "summary", false);
+                    }
+                    else {
+                        setSearch("collection1", "summary", false);
+                    }
                 };
                 helper.setCollectionList = function (collection) {
-                    setSearch("collection1_" + collection.collectionId(), "list", false);
+                    if (collection instanceof Spiro.CollectionMember) {
+                        setSearch("collection1_" + collection.collectionId(), "list", false);
+                    }
+                    else {
+                        setSearch("collection1", "list", false);
+                    }
                 };
                 helper.setCollectionTable = function (collection) {
-                    setSearch("collection1_" + collection.collectionId(), "table", false);
+                    if (collection instanceof Spiro.CollectionMember) {
+                        setSearch("collection1_" + collection.collectionId(), "table", false);
+                    }
+                    else {
+                        setSearch("collection1", "table", false);
+                    }
                 };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));

@@ -26,28 +26,13 @@ under the License.-->
         <div class="summary">
             <div class="name"></div>
             <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
-            <a class="icon-list" href="x"></a>
-            <a class="icon-table" href="x"></a>
+            <a class="icon-list" href="" ng-click="collection.doList()" ></a>
+            <a class="icon-table" href="" ng-click="collection.doTable()"></a>
             <!--<a ng-switch-when="list" ng-switch="collection.display" class="icon-table" href="x"></a>
                 <a ng-switch-when="table" ng-switch="collection.display" class="icon-list" href="x"></a>-->
         </div>
-        <table>
-            <!--ng-switch-when="list" ng-switch="collection.display">-->
-            <tbody>
-                <tr ng-repeat="item in collection.items">
-                    <td class="checkbox">
-                        <input type="checkbox">
-                    </td>
-                    <td class="reference clickable-area" ng-class="item.color">
-                        <a href="" ng-click="item.doClick()">
-                            <span></span> <!--Needed for clickable-area-->
-                            {{item.title}}
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <!--<table ng-switch-when="table" ng-switch="collection.display">
+      
+        <table >
             <thead>
                 <tr>
                     <th ng-repeat="heading in collection.header">
@@ -82,6 +67,6 @@ under the License.-->
                     </td>
                 </tr>
             </tbody>
-        </table>-->
+        </table>
     </div>
 </div>
