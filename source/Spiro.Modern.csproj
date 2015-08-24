@@ -37,6 +37,7 @@
     <Content Include="Content\partials\splitObjectObjectPage.html" />
     <Content Include="Content\partials\singleObjectPage.html" />
     <Content Include="Content\partials\collections.html" />
+    <Content Include="Content\spiro-modern3.css" />
     <Content Include="Content\spiro-modern2.css" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
@@ -50,6 +51,7 @@
     <Content Include="Scripts\spiro.models.js" />
     <Content Include="Scripts\spiro.models.shims.js" />
     <Content Include="Temp - Restyling\singleQuery.html" />
+    <Content Include="Temp - Restyling\spiro-modern3.css" />
     <Content Include="Temp - Restyling\spiro-modern.css" />
     <Content Include="Temp - Restyling\splitHomeQuery_list.html" />
     <Content Include="Content\partials\home.html" />
