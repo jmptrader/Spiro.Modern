@@ -33,7 +33,6 @@ var Spiro;
                 var objectId = $routeParams.object1;
                 var menuId = $routeParams.menu1;
                 var dialogId = $routeParams.dialog1;
-                // (k.substr(k.indexOf("_") + 1))
                 var collIds = _.pick($routeParams, function (v, k) { return k.indexOf("collection1") === 0; });
                 //missing from lodash types :-( 
                 var collections = _.mapKeys(collIds, function (v, k) { return k.substr(k.indexOf("_") + 1); });
@@ -45,6 +44,7 @@ var Spiro;
             Angular.app.controller("Pane1QueryController", function ($scope, $routeParams, handlers) {
                 var menuId = $routeParams.menu1;
                 var actionId = $routeParams.action1;
+                // todo make parm ids dictionary same as collections ids ? 
                 var parmIds = _.pick($routeParams, function (v, k) { return k.indexOf("parm1") === 0; });
                 var parms = _.map(parmIds, function (v, k) { return { id: k.substr(k.indexOf("_") + 1), val: v }; });
                 handlers.handleQuery($scope, menuId, actionId, parms);

@@ -326,7 +326,7 @@ var Spiro;
                     collectionViewModel.pluralName = collectionRep.extensions().pluralName;
                     //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
                     collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, false);
+                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === "table");
                     switch (state) {
                         case "list":
                             collectionViewModel.template = Angular.collectionListTemplate;

@@ -18,8 +18,8 @@
                     </div>
 
                     <div ng-switch-when="scalar" ng-switch="property.returnType">
-                        TODO: Lots of these cases end up with property.value
-                        so can't we just reduce them?
+                        <!--TODO: Lots of these cases end up with property.value
+                        so can't we just reduce them?-->
                         <div ng-switch-when="string" ng-switch="property.format">
                             <div ng-switch-when="date-time" class='value'>{{property.value}}</div>
                             <div ng-switch-default class='value'>{{property.value}}</div>

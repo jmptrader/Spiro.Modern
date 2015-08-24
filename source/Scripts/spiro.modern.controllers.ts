@@ -40,8 +40,6 @@ module Spiro.Angular.Modern {
         var menuId = $routeParams.menu1;
         var dialogId = $routeParams.dialog1;
 
-        // (k.substr(k.indexOf("_") + 1))
-
         var collIds = <{ [index: string]: string }> _.pick($routeParams, (v : string, k : string) => k.indexOf("collection1") === 0);
         //missing from lodash types :-( 
         var collections : {[index : string] : string}  = (<any>_).mapKeys(collIds, (v, k) =>  k.substr(k.indexOf("_") + 1) );
@@ -59,6 +57,8 @@ module Spiro.Angular.Modern {
 
         var menuId = $routeParams.menu1;
         var actionId = $routeParams.action1;
+
+        // todo make parm ids dictionary same as collections ids ? 
         var parmIds = <{[index :string] : string}> _.pick($routeParams, (v, k) => k.indexOf("parm1") === 0);
         var parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
 
