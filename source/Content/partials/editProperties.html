@@ -11,7 +11,7 @@ specific language governing permissions and limitations
 under the License.-->
 
 <div class="object-properties" ng-class="object.color">
-    <a href='{{object.cancelEdit}}' class="cancel icon-cancel"></a>
+    <a href='' class="cancel icon-cancel"  ng-click="object.doEditCancel()"></a>
     <input class="save" type="submit" value="Save" ng-click="object.doSave()">
     <div class="properties edit">
         <div class="property" id="{{property.argId}}" ng-repeat="property in object.properties" ng-switch="property.type">

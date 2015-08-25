@@ -126,7 +126,7 @@ var Spiro;
                         // remove pre-changed object from cache
                         $cacheFactory.get("$http").remove(updatedObject.url());
                         context.setObject(updatedObject);
-                        $location.search("");
+                        urlManager.setObject(updatedObject);
                     }, function (error) {
                         repHandlers.setInvokeUpdateError(error, properties, ovm);
                     });

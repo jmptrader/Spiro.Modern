@@ -166,7 +166,7 @@ module Spiro.Angular.Modern {
                     $cacheFactory.get("$http").remove(updatedObject.url());
 
                     context.setObject(updatedObject);
-                    $location.search("");
+                    urlManager.setObject(updatedObject);
                 }, (error: any) => {
                     repHandlers.setInvokeUpdateError( error, properties, ovm);
                 });

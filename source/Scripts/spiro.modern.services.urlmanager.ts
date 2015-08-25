@@ -34,7 +34,7 @@ module Spiro.Angular.Modern {
         setCollectionList(collection: ListRepresentation);
         setCollectionTable(collection: ListRepresentation);
 
-        setObjectEdit();
+        setObjectEdit(edit : boolean);
 }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
@@ -127,10 +127,8 @@ module Spiro.Angular.Modern {
             }
         }
 
-        helper.setObjectEdit = () => {
-           
-           setSearch("edit1", "true", false);
-            
+        helper.setObjectEdit = (edit : boolean) => {       
+           setSearch("edit1", edit.toString(), false);            
         }
 
     });

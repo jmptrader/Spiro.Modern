@@ -285,6 +285,7 @@ module Spiro.Angular.Modern {
         toggleActionMenu(): void { }
 
         doEdit(): void { }
+        doEditCancel(): void { }
 
         showEdit(): boolean {
             return _.any(this.properties, (p) => p.isEditable);

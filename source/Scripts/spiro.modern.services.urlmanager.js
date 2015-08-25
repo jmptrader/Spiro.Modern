@@ -93,8 +93,8 @@ var Spiro;
                         setSearch("collection1", "table", false);
                     }
                 };
-                helper.setObjectEdit = function () {
-                    setSearch("edit1", "true", false);
+                helper.setObjectEdit = function (edit) {
+                    setSearch("edit1", edit.toString(), false);
                 };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
