@@ -33,6 +33,8 @@ module Spiro.Angular.Modern {
         setCollectionSummary(collection: ListRepresentation);
         setCollectionList(collection: ListRepresentation);
         setCollectionTable(collection: ListRepresentation);
+
+        setObjectEdit();
 }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
@@ -123,6 +125,12 @@ module Spiro.Angular.Modern {
             } else {
                 setSearch("collection1", "table", false);
             }
+        }
+
+        helper.setObjectEdit = () => {
+           
+           setSearch("edit1", "true", false);
+            
         }
 
     });

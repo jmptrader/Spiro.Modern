@@ -282,6 +282,12 @@ module Spiro.Angular.Modern {
         href: string; 
         cancelEdit: string; 
         doSave(): void { }
-        toggleActionMenu(): void {}
+        toggleActionMenu(): void { }
+
+        doEdit(): void { }
+
+        showEdit(): boolean {
+            return _.any(this.properties, (p) => p.isEditable);
+        }
     } 
 }

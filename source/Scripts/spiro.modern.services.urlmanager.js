@@ -93,6 +93,9 @@ var Spiro;
                         setSearch("collection1", "table", false);
                     }
                 };
+                helper.setObjectEdit = function () {
+                    setSearch("edit1", "true", false);
+                };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));

@@ -376,24 +376,20 @@ module Spiro.Angular.Modern {
 
             $scope.appBar.hideEdit = true;
 
-            // TODO create appbar viewmodel 
+            $scope.$parent.$watch("object", () => {
+                // look for object on root
 
-            if ($routeParams.dt && $routeParams.id) {
-                context.getObject($routeParams.dt, [$routeParams.id]).
-                    then((object: DomainObjectRepresentation) => {
+                if ($scope.$parent.object) {
+                    var ovm = <DomainObjectViewModel> $scope.$parent.object;
+                    $scope.appBar.hideEdit = !ovm.showEdit();
+                    $scope.appBar.doEdit = () => ovm.doEdit();
+                }
+            });
 
-                        var pms = _.toArray(object.propertyMembers());
 
-                        var anyEditableField = _.any(pms, (pm: PropertyMember) => !pm.disabledReason());
-
-                        $scope.appBar.hideEdit = !(object) || $routeParams.editMode || !anyEditableField;
-
-                        // rework to use viewmodel code
-
-                        $scope.appBar.doEdit = urlHelper.toAppUrl($location.path()) + "?editMode=true";
-                    });
-            }
-        }; //tested
+        }; 
+        
+        //tested
         handlers.handleObject = $scope => {
 
             context.getObject($routeParams.dt, [$routeParams.id]).
@@ -417,10 +413,18 @@ module Spiro.Angular.Modern {
 
             var [dt, ...id] = objectId.split("-");
 
+            //$scope.$parent.object = null;
+
+
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
-                    context.setNestedObject(null);
-                    $scope.object = viewModelFactory.domainObjectViewModel(object, collections);
+                context.setNestedObject(null);
+                    let ovm = viewModelFactory.domainObjectViewModel(object, collections);
+
+                    $scope.object = ovm;    
+                    // also put on root so appbar can see
+                    $scope.$parent.object = ovm;
+
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionsTemplate = menuId ? actionsTemplate : nullTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;

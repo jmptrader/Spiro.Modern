@@ -292,18 +292,16 @@ var Spiro;
                         navigation.forward();
                     };
                     $scope.appBar.hideEdit = true;
-                    // TODO create appbar viewmodel 
-                    if ($routeParams.dt && $routeParams.id) {
-                        context.getObject($routeParams.dt, [$routeParams.id]).
-                            then(function (object) {
-                            var pms = _.toArray(object.propertyMembers());
-                            var anyEditableField = _.any(pms, function (pm) { return !pm.disabledReason(); });
-                            $scope.appBar.hideEdit = !(object) || $routeParams.editMode || !anyEditableField;
-                            // rework to use viewmodel code
-                            $scope.appBar.doEdit = urlHelper.toAppUrl($location.path()) + "?editMode=true";
-                        });
-                    }
-                }; //tested
+                    $scope.$parent.$watch("object", function () {
+                        // look for object on root
+                        if ($scope.$parent.object) {
+                            var ovm = $scope.$parent.object;
+                            $scope.appBar.hideEdit = !ovm.showEdit();
+                            $scope.appBar.doEdit = function () { return ovm.doEdit(); };
+                        }
+                    });
+                };
+                //tested
                 handlers.handleObject = function ($scope) {
                     context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {
@@ -320,10 +318,14 @@ var Spiro;
                 };
                 handlers.handlePaneObject = function ($scope, objectId, collections, menuId, dialogId) {
                     var _a = objectId.split("-"), dt = _a[0], id = _a.slice(1);
+                    //$scope.$parent.object = null;
                     context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);
-                        $scope.object = viewModelFactory.domainObjectViewModel(object, collections);
+                        var ovm = viewModelFactory.domainObjectViewModel(object, collections);
+                        $scope.object = ovm;
+                        // also put on root so appbar can see
+                        $scope.$parent.object = ovm;
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionsTemplate = menuId ? Angular.actionsTemplate : Angular.nullTemplate;
                         $scope.propertiesTemplate = Angular.viewPropertiesTemplate;

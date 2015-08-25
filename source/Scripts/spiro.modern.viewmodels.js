@@ -225,6 +225,10 @@ var Spiro;
                 }
                 DomainObjectViewModel.prototype.doSave = function () { };
                 DomainObjectViewModel.prototype.toggleActionMenu = function () { };
+                DomainObjectViewModel.prototype.doEdit = function () { };
+                DomainObjectViewModel.prototype.showEdit = function () {
+                    return _.any(this.properties, function (p) { return p.isEditable; });
+                };
                 return DomainObjectViewModel;
             })(MessageViewModel);
             Modern.DomainObjectViewModel = DomainObjectViewModel;

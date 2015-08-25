@@ -540,6 +540,8 @@ module Spiro.Angular.Modern{
 
             objectViewModel.doSave = save ? () => save(objectViewModel) : () => { };
 
+            objectViewModel.doEdit = () => urlManager.setObjectEdit();
+
             var properties = objectRep.propertyMembers();
             var collections = objectRep.collectionMembers();
             var actions = objectRep.actionMembers();

@@ -412,6 +412,7 @@ var Spiro;
                     objectViewModel.cancelEdit = isTransient ? "" : urlHelper.toAppUrl(objectRep.getUrl());
                     objectViewModel.color = color.toColorFromType(objectRep.domainType());
                     objectViewModel.doSave = save ? function () { return save(objectViewModel); } : function () { };
+                    objectViewModel.doEdit = function () { return urlManager.setObjectEdit(); };
                     var properties = objectRep.propertyMembers();
                     var collections = objectRep.collectionMembers();
                     var actions = objectRep.actionMembers();
