@@ -316,20 +316,22 @@ var Spiro;
                         setError(error);
                     });
                 };
-                handlers.handlePaneObject = function ($scope, objectId, collections, menuId, dialogId) {
+                handlers.handlePaneObject = function ($scope, objectId, collections, edit, menuId, dialogId) {
                     var _a = objectId.split("-"), dt = _a[0], id = _a.slice(1);
-                    //$scope.$parent.object = null;
                     context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);
-                        var ovm = viewModelFactory.domainObjectViewModel(object, collections);
+                        var ovm = viewModelFactory.domainObjectViewModel(object, collections, _.partial(repHandlers.updateObject, $scope, object));
                         $scope.object = ovm;
                         // also put on root so appbar can see
                         $scope.$parent.object = ovm;
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionsTemplate = menuId ? Angular.actionsTemplate : Angular.nullTemplate;
-                        $scope.propertiesTemplate = Angular.viewPropertiesTemplate;
+                        $scope.propertiesTemplate = edit ? Angular.editPropertiesTemplate : Angular.viewPropertiesTemplate;
                         $scope.collectionsTemplate = Angular.collectionsTemplate;
+                        if (edit) {
+                            $scope.actionsTemplate = "";
+                        }
                         // cache
                         cacheRecentlyViewed(object);
                         if (dialogId) {

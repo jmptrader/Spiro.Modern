@@ -33,7 +33,7 @@ module Spiro.Angular.Modern {
         handleTransientObject($scope): void;
 
         // make state enum ?
-        handlePaneObject($scope, objectId: string, collections: {[index: string] : string},   menuId? : string, dialogId? : string): void;
+        handlePaneObject($scope, objectId: string, collections: {[index: string] : string}, edit : boolean,  menuId? : string, dialogId? : string): void;
         handleAppBar($scope): void;
 
         handleHome($scope, currentMenu? : string, currentDialog? : string): void;
@@ -409,26 +409,26 @@ module Spiro.Angular.Modern {
 
         };
 
-        handlers.handlePaneObject = ($scope, objectId: string, collections: { [index: string] : string },  menuId? : string, dialogId? : string) => {
+        handlers.handlePaneObject = ($scope, objectId: string, collections: { [index: string] : string }, edit : boolean,  menuId? : string, dialogId? : string) => {
 
             var [dt, ...id] = objectId.split("-");
-
-            //$scope.$parent.object = null;
-
 
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
                 context.setNestedObject(null);
-                    let ovm = viewModelFactory.domainObjectViewModel(object, collections);
-
+                const ovm = viewModelFactory.domainObjectViewModel(object, collections, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
                     $scope.object = ovm;    
                     // also put on root so appbar can see
                     $scope.$parent.object = ovm;
 
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionsTemplate = menuId ? actionsTemplate : nullTemplate;
-                    $scope.propertiesTemplate = viewPropertiesTemplate;
+                    $scope.propertiesTemplate = edit ? editPropertiesTemplate :  viewPropertiesTemplate;
                     $scope.collectionsTemplate = collectionsTemplate;
+
+                    if (edit) {
+                        $scope.actionsTemplate = "";
+                    }
 
                     // cache
                     cacheRecentlyViewed(object);
@@ -444,7 +444,6 @@ module Spiro.Angular.Modern {
                 });
 
         };
-
 
 
         // tested

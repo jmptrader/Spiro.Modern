@@ -37,6 +37,7 @@ module Spiro.Angular {
         object1: string;
         action1: string;
         collection1: string;
+        edit1 : string;
 
 
 

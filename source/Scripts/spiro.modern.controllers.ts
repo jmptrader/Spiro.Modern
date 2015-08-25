@@ -44,12 +44,14 @@ module Spiro.Angular.Modern {
         //missing from lodash types :-( 
         var collections : {[index : string] : string}  = (<any>_).mapKeys(collIds, (v, k) =>  k.substr(k.indexOf("_") + 1) );
 
-        handlers.handlePaneObject($scope, objectId, collections, menuId, dialogId);
+        var edit = $routeParams.edit1 === "true";
+
+        handlers.handlePaneObject($scope, objectId, collections, edit, menuId, dialogId);
     });
 
     app.controller("Pane2ObjectController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
 
-        handlers.handlePaneObject($scope, "todo", {});
+        handlers.handlePaneObject($scope, "todo", {}, false);
     });
 
     app.controller("Pane1QueryController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
@@ -72,7 +74,7 @@ module Spiro.Angular.Modern {
 
         var results = rx.exec(p2);
 
-        handlers.handlePaneObject($scope, "todo", {});
+        handlers.handlePaneObject($scope, "todo", {}, false);
     });
 
 
