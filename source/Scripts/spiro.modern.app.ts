@@ -90,6 +90,8 @@ module Spiro.Angular {
 
     export var homeTemplate = getSvrPath() + "Content/partials/home.html";
     export var objectTemplate = getSvrPath() + "Content/partials/object.html";
+    export var transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
+
 
     export var queryListTemplate = getSvrPath() + "Content/partials/queryList.html";
     export var queryTableTemplate = getSvrPath() + "Content/partials/queryTable.html";

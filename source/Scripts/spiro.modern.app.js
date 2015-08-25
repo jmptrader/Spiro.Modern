@@ -57,6 +57,7 @@ var Spiro;
         var splitQueryQueryPageTemplate = getSvrPath() + "Content/partials/splitQueryQueryPage.html";
         Angular.homeTemplate = getSvrPath() + "Content/partials/home.html";
         Angular.objectTemplate = getSvrPath() + "Content/partials/object.html";
+        Angular.transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
         Angular.queryListTemplate = getSvrPath() + "Content/partials/queryList.html";
         Angular.queryTableTemplate = getSvrPath() + "Content/partials/queryTable.html";
         Angular.footerTemplate = getSvrPath() + "Content/partials/footer.html";

@@ -35,7 +35,7 @@ module Spiro.Angular.Modern{
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: string }, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
 
-    app.service('viewModelFactory', function($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory : ng.ICacheFactoryService, urlManager : IUrlManager ) {
+    app.service('viewModelFactory', function ($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory: ng.ICacheFactoryService, urlManager: IUrlManager, navigation: INavigation ) {
 
         var viewModelFactory = <IViewModelFactory>this;
 
@@ -530,25 +530,23 @@ module Spiro.Angular.Modern{
     
         viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: string }, save?: (ovm: DomainObjectViewModel) => void, previousUrl?: string): DomainObjectViewModel => {
             var objectViewModel = new DomainObjectViewModel();
-            var isTransient = !!objectRep.persistLink();
+            objectViewModel.isTransient = !!objectRep.persistLink();
 
             objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
-
-            objectViewModel.cancelEdit =  isTransient ? ""  :  urlHelper.toAppUrl(objectRep.getUrl());
 
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
 
             objectViewModel.doSave = save ? () => save(objectViewModel) : () => { };
 
             objectViewModel.doEdit = () => urlManager.setObjectEdit(true);
-            objectViewModel.doEditCancel = () => urlManager.setObjectEdit(false);
+            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => {navigation.back()} : () => urlManager.setObjectEdit(false);
 
             var properties = objectRep.propertyMembers();
             var collections = objectRep.collectionMembers();
             var actions = objectRep.actionMembers();
 
             objectViewModel.domainType = objectRep.domainType();
-            objectViewModel.title = isTransient ? `Unsaved ${objectRep.extensions().friendlyName}` : objectRep.title();
+            objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName}` : objectRep.title();
 
             objectViewModel.message = "";
 

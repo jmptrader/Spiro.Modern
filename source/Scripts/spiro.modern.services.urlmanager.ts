@@ -20,7 +20,7 @@ module Spiro.Angular.Modern {
     export interface IUrlManager {
         setMenu(menuId: string);
         setDialog(id: string);
-        setObject(resultObject: DomainObjectRepresentation);
+        setObject(resultObject: DomainObjectRepresentation, transient? : boolean);
         setQuery(action: ActionMember, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember);
         setItem(link: Link): void;
@@ -54,9 +54,11 @@ module Spiro.Angular.Modern {
             setSearch("dialog1", dialogId, false);
         };
 
-        helper.setObject = (resultObject: DomainObjectRepresentation) => {
-            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
-            $location.path("/object").search({ object1: oid });
+        helper.setObject = (resultObject: DomainObjectRepresentation, transient? : boolean) => {
+            const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
+            const search = { object1: oid };
+
+            $location.path("/object").search(search);
         };
 
         helper.setQuery = (action : ActionMember, dvm?: DialogViewModel) => {

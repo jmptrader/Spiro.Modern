@@ -57,16 +57,17 @@ var Spiro;
                         resultObject.set("domainType", domainType);
                         resultObject.set("instanceId", "0");
                         resultObject.hateoasUrl = "/" + domainType + "/0";
-                        context.setTransientObject(resultObject);
-                        context.setPreviousUrl($location.path());
-                        $location.path(urlHelper.toTransientObjectPath(resultObject));
+                        context.setObject(resultObject);
+                        //context.setPreviousUrl($location.path());
+                        //$location.path(urlHelper.toTransientObjectPath(resultObject));
+                        urlManager.setObject(resultObject);
                     }
                     // persistent object
                     if (result.resultType() === "object" && !resultObject.persistLink()) {
                         // set the nested object here and then update the url. That should reload the page but pick up this object 
                         // so we don't hit the server again. 
-                        context.setNestedObject(resultObject);
-                        urlManager.setObject(resultObject);
+                        context.setObject(resultObject);
+                        urlManager.setObject(resultObject, true);
                     }
                     if (result.resultType() === "list") {
                         var resultList = result.result().list();

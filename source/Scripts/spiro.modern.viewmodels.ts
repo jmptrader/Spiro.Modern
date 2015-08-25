@@ -280,15 +280,15 @@ module Spiro.Angular.Modern {
         actions: ActionViewModel[];
         color: string; 
         href: string; 
-        cancelEdit: string; 
         doSave(): void { }
         toggleActionMenu(): void { }
+        isTransient : boolean;
 
         doEdit(): void { }
         doEditCancel(): void { }
 
         showEdit(): boolean {
-            return _.any(this.properties, (p) => p.isEditable);
+            return  !this.isTransient &&  _.any(this.properties, (p) => p.isEditable);
         }
     } 
 }

@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask, $cacheFactory, urlManager) {
+            Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask, $cacheFactory, urlManager, navigation) {
                 var viewModelFactory = this;
                 viewModelFactory.errorViewModel = function (errorRep) {
                     var errorViewModel = new Modern.ErrorViewModel();
@@ -407,18 +407,17 @@ var Spiro;
                 };
                 viewModelFactory.domainObjectViewModel = function (objectRep, collectionStates, save, previousUrl) {
                     var objectViewModel = new Modern.DomainObjectViewModel();
-                    var isTransient = !!objectRep.persistLink();
+                    objectViewModel.isTransient = !!objectRep.persistLink();
                     objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
-                    objectViewModel.cancelEdit = isTransient ? "" : urlHelper.toAppUrl(objectRep.getUrl());
                     objectViewModel.color = color.toColorFromType(objectRep.domainType());
                     objectViewModel.doSave = save ? function () { return save(objectViewModel); } : function () { };
                     objectViewModel.doEdit = function () { return urlManager.setObjectEdit(true); };
-                    objectViewModel.doEditCancel = function () { return urlManager.setObjectEdit(false); };
+                    objectViewModel.doEditCancel = objectViewModel.isTransient ? function () { navigation.back(); } : function () { return urlManager.setObjectEdit(false); };
                     var properties = objectRep.propertyMembers();
                     var collections = objectRep.collectionMembers();
                     var actions = objectRep.actionMembers();
                     objectViewModel.domainType = objectRep.domainType();
-                    objectViewModel.title = isTransient ? "Unsaved " + objectRep.extensions().friendlyName : objectRep.title();
+                    objectViewModel.title = objectViewModel.isTransient ? "Unsaved " + objectRep.extensions().friendlyName : objectRep.title();
                     objectViewModel.message = "";
                     objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id); });
                     objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()]); });

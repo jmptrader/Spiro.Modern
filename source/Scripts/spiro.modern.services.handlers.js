@@ -25,7 +25,6 @@ var Spiro;
                     context.setError(errorRep);
                     $location.path(urlHelper.toErrorPath());
                 }
-                // tested
                 handlers.handleBackground = function ($scope) {
                     $scope.backgroundColor = color.toColorFromHref($location.absUrl());
                     $scope.closeNestedObject = urlHelper.toAppUrl($location.path(), ["property", "collectionItem", "resultObject"]);
@@ -43,7 +42,6 @@ var Spiro;
                         }
                     });
                 };
-                // tested
                 function setNestedCollection($scope, listOrCollection) {
                     if ($routeParams.tableMode) {
                         $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, "table", true);
@@ -85,7 +83,6 @@ var Spiro;
                         cache.put(key, dict);
                     }
                 }
-                // tested
                 handlers.handleCollection = function ($scope) {
                     context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {
@@ -99,7 +96,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleActionDialog = function ($scope) {
                     context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
                         then(function (object) {
@@ -113,7 +109,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleActionResult = function ($scope) {
                     context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
                         then(function (object) {
@@ -136,7 +131,6 @@ var Spiro;
                         // otherwise just action with parms 
                     });
                 };
-                // tested
                 function setNestedObject(object, $scope) {
                     $scope.result = viewModelFactory.domainObjectViewModel(object, {}); // todo rename result
                     $scope.nestedTemplate = Angular.nestedObjectTemplate;
@@ -158,7 +152,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                //tested
                 handlers.handleCollectionItem = function ($scope) {
                     var collectionItemTypeKey = $routeParams.collectionItem.split("/");
                     var collectionItemType = collectionItemTypeKey[0];
@@ -171,7 +164,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleServices = function ($scope) {
                     context.getServices().
                         then(function (services) {
@@ -230,7 +222,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleService = function ($scope) {
                     context.getObject($routeParams.sid).
                         then(function (service) {
@@ -241,7 +232,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleResult = function ($scope) {
                     var result = $routeParams.resultObject.split("-");
                     var dt = result[0];
@@ -256,7 +246,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleError = function ($scope) {
                     var error = context.getError();
                     if (error) {
@@ -265,7 +254,6 @@ var Spiro;
                         $scope.errorTemplate = Angular.errorTemplate;
                     }
                 };
-                // tested
                 handlers.handleAppBar = function ($scope) {
                     $scope.appBar = {};
                     $scope.$on("ajax-change", function (event, count) {
@@ -291,17 +279,16 @@ var Spiro;
                     $scope.appBar.goForward = function () {
                         navigation.forward();
                     };
-                    $scope.appBar.hideEdit = true;
+                    $scope.appBar.hideEdit = function () { return true; };
                     $scope.$parent.$watch("object", function () {
                         // look for object on root
                         if ($scope.$parent.object) {
                             var ovm = $scope.$parent.object;
-                            $scope.appBar.hideEdit = !ovm.showEdit();
+                            $scope.appBar.hideEdit = function () { return !ovm.showEdit() || ($routeParams.edit1 === "true"); };
                             $scope.appBar.doEdit = function () { return ovm.doEdit(); };
                         }
                     });
                 };
-                //tested
                 handlers.handleObject = function ($scope) {
                     context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {
@@ -321,15 +308,18 @@ var Spiro;
                     context.getObject(dt, id).
                         then(function (object) {
                         context.setNestedObject(null);
-                        var ovm = viewModelFactory.domainObjectViewModel(object, collections, _.partial(repHandlers.updateObject, $scope, object));
+                        var isTransient = !!object.persistLink();
+                        var handler = isTransient ? repHandlers.saveObject : repHandlers.updateObject;
+                        var saveHandler = _.partial(handler, $scope, object);
+                        var ovm = viewModelFactory.domainObjectViewModel(object, collections, saveHandler);
                         $scope.object = ovm;
                         // also put on root so appbar can see
                         $scope.$parent.object = ovm;
                         $scope.objectTemplate = Angular.objectTemplate;
                         $scope.actionsTemplate = menuId ? Angular.actionsTemplate : Angular.nullTemplate;
-                        $scope.propertiesTemplate = edit ? Angular.editPropertiesTemplate : Angular.viewPropertiesTemplate;
+                        $scope.propertiesTemplate = edit || isTransient ? Angular.editPropertiesTemplate : Angular.viewPropertiesTemplate;
                         $scope.collectionsTemplate = Angular.collectionsTemplate;
-                        if (edit) {
+                        if (edit || isTransient) {
                             $scope.actionsTemplate = "";
                         }
                         // cache
@@ -343,7 +333,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleTransientObject = function ($scope) {
                     context.getTransientObject().
                         then(function (object) {
@@ -351,7 +340,7 @@ var Spiro;
                             $scope.backgroundColor = color.toColorFromType(object.domainType());
                             context.setNestedObject(null);
                             var obj = viewModelFactory.domainObjectViewModel(object, {}, _.partial(repHandlers.saveObject, $scope, object));
-                            obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
+                            //obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
                             $scope.object = obj;
                             $scope.objectTemplate = Angular.objectTemplate;
                             $scope.actionTemplate = "";
@@ -366,7 +355,6 @@ var Spiro;
                         setError(error);
                     });
                 };
-                // tested
                 handlers.handleEditObject = function ($scope) {
                     context.getObject($routeParams.dt, [$routeParams.id]).
                         then(function (object) {

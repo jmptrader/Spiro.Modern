@@ -228,7 +228,7 @@ var Spiro;
                 DomainObjectViewModel.prototype.doEdit = function () { };
                 DomainObjectViewModel.prototype.doEditCancel = function () { };
                 DomainObjectViewModel.prototype.showEdit = function () {
-                    return _.any(this.properties, function (p) { return p.isEditable; });
+                    return !this.isTransient && _.any(this.properties, function (p) { return p.isEditable; });
                 };
                 return DomainObjectViewModel;
             })(MessageViewModel);

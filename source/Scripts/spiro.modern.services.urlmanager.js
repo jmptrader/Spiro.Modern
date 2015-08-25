@@ -31,9 +31,10 @@ var Spiro;
                 helper.setDialog = function (dialogId) {
                     setSearch("dialog1", dialogId, false);
                 };
-                helper.setObject = function (resultObject) {
+                helper.setObject = function (resultObject, transient) {
                     var oid = resultObject.domainType() + "-" + resultObject.instanceId();
-                    $location.path("/object").search({ object1: oid });
+                    var search = { object1: oid };
+                    $location.path("/object").search(search);
                 };
                 helper.setQuery = function (action, dvm) {
                     var aid = action.actionId();

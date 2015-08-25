@@ -51,7 +51,6 @@ module Spiro.Angular.Modern {
             $location.path(urlHelper.toErrorPath());
         }
 
-         // tested
         handlers.handleBackground = $scope => {
             $scope.backgroundColor = color.toColorFromHref($location.absUrl());
             $scope.closeNestedObject = urlHelper.toAppUrl($location.path(), ["property", "collectionItem", "resultObject"]);
@@ -74,7 +73,6 @@ module Spiro.Angular.Modern {
             });
         };
 
-        // tested
         function setNestedCollection($scope, listOrCollection: IListOrCollection) {
 
 
@@ -108,8 +106,7 @@ module Spiro.Angular.Modern {
                     setError(error);
                 });
         };
-
-       
+   
         function cacheRecentlyViewed(object: DomainObjectRepresentation) {
             const cache = $cacheFactory.get("recentlyViewed");
            
@@ -123,7 +120,6 @@ module Spiro.Angular.Modern {
 
         }
 
-         // tested
         handlers.handleCollection = $scope => {
             context.getObject($routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
@@ -138,7 +134,6 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        // tested
         handlers.handleActionDialog = $scope => {
 
             context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
@@ -155,7 +150,6 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        // tested
         handlers.handleActionResult = $scope => {
             context.getObject($routeParams.sid || $routeParams.dt, [$routeParams.id]).
                 then((object: DomainObjectRepresentation) => {
@@ -181,7 +175,6 @@ module Spiro.Angular.Modern {
                 });
         };
         
-         // tested
         function setNestedObject(object: DomainObjectRepresentation, $scope) {
             $scope.result = viewModelFactory.domainObjectViewModel(object, {}); // todo rename result
             $scope.nestedTemplate = nestedObjectTemplate;
@@ -209,7 +202,6 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        //tested
         handlers.handleCollectionItem = $scope => {
             var collectionItemTypeKey = $routeParams.collectionItem.split("/");
             var collectionItemType = collectionItemTypeKey[0];
@@ -225,7 +217,6 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        // tested
         handlers.handleServices = $scope => {
             context.getServices().
                 then((services: DomainServicesRepresentation) => {
@@ -238,7 +229,7 @@ module Spiro.Angular.Modern {
                 });
         };
 
-       function getMenus ($scope) {
+        function getMenus ($scope) {
             context.getMenus().
                 then((menus: MenusRepresentation) => {
                     $scope.menus = viewModelFactory.menusViewModel(menus);
@@ -250,7 +241,6 @@ module Spiro.Angular.Modern {
                     setError(error);
                 });
         };
-
 
         handlers.handleHome = ($scope, currentMenu?: string, currentDialog?: string) => {
 
@@ -296,7 +286,6 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        // tested
         handlers.handleService = $scope => {
             context.getObject($routeParams.sid).
                 then((service: DomainObjectRepresentation) => {
@@ -309,7 +298,6 @@ module Spiro.Angular.Modern {
 
         };
 
-        // tested
         handlers.handleResult = $scope => {
 
             var result = $routeParams.resultObject.split("-");
@@ -329,7 +317,6 @@ module Spiro.Angular.Modern {
 
         };
 
-        // tested
         handlers.handleError = $scope => {
             var error = context.getError();
             if (error) {
@@ -339,7 +326,6 @@ module Spiro.Angular.Modern {
             }
         };
 
-        // tested
         handlers.handleAppBar = $scope => {
 
             $scope.appBar = {};
@@ -374,14 +360,14 @@ module Spiro.Angular.Modern {
                 navigation.forward();
             };
 
-            $scope.appBar.hideEdit = true;
+            $scope.appBar.hideEdit = () => true;
 
             $scope.$parent.$watch("object", () => {
                 // look for object on root
 
                 if ($scope.$parent.object) {
                     var ovm = <DomainObjectViewModel> $scope.$parent.object;
-                    $scope.appBar.hideEdit = !ovm.showEdit();
+                    $scope.appBar.hideEdit =  () => !ovm.showEdit() || ($routeParams.edit1 === "true");
                     $scope.appBar.doEdit = () => ovm.doEdit();
                 }
             });
@@ -389,7 +375,6 @@ module Spiro.Angular.Modern {
 
         }; 
         
-        //tested
         handlers.handleObject = $scope => {
 
             context.getObject($routeParams.dt, [$routeParams.id]).
@@ -415,18 +400,23 @@ module Spiro.Angular.Modern {
 
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
-                context.setNestedObject(null);
-                const ovm = viewModelFactory.domainObjectViewModel(object, collections, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
+                    context.setNestedObject(null);
+                    const isTransient = !!object.persistLink();
+
+                    const handler = isTransient ? repHandlers.saveObject : repHandlers.updateObject;
+                    const saveHandler = <(ovm: DomainObjectViewModel) => void> _.partial(handler, $scope, object);
+                    const ovm = viewModelFactory.domainObjectViewModel(object, collections, saveHandler);
+
                     $scope.object = ovm;    
                     // also put on root so appbar can see
                     $scope.$parent.object = ovm;
 
-                    $scope.objectTemplate = objectTemplate;
+                    $scope.objectTemplate =   objectTemplate;
                     $scope.actionsTemplate = menuId ? actionsTemplate : nullTemplate;
-                    $scope.propertiesTemplate = edit ? editPropertiesTemplate :  viewPropertiesTemplate;
+                    $scope.propertiesTemplate = edit || isTransient ? editPropertiesTemplate :  viewPropertiesTemplate;
                     $scope.collectionsTemplate = collectionsTemplate;
 
-                    if (edit) {
+                    if (edit || isTransient) {
                         $scope.actionsTemplate = "";
                     }
 
@@ -445,8 +435,6 @@ module Spiro.Angular.Modern {
 
         };
 
-
-        // tested
         handlers.handleTransientObject = $scope => {
 
             context.getTransientObject().
@@ -458,7 +446,7 @@ module Spiro.Angular.Modern {
 
                         context.setNestedObject(null);
                         const obj = viewModelFactory.domainObjectViewModel(object, {}, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
-                        obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
+                        //obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
 
                         $scope.object = obj;
                         $scope.objectTemplate = objectTemplate;
@@ -476,8 +464,6 @@ module Spiro.Angular.Modern {
                 });
         };
 
-
-        // tested
         handlers.handleEditObject = $scope => {
 
             context.getObject($routeParams.dt, [$routeParams.id]).
