@@ -72,6 +72,7 @@ var Spiro;
                     if (result.resultType() === "list") {
                         var resultList = result.result().list();
                         context.setCollection(resultList);
+                        context.setLastActionFriendlyName(action.extensions().friendlyName);
                         urlManager.setQuery(action, dvm);
                     }
                 };

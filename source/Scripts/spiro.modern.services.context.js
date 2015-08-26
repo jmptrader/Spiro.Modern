@@ -156,6 +156,7 @@ var Spiro;
                     return delay.promise;
                 };
                 var currentCollection = null; // tested
+                var lastActionFriendlyName = "";
                 context.getQuery = function (menuId, actionId, parms) {
                     var _this = this;
                     var delay = $q.defer();
@@ -166,6 +167,7 @@ var Spiro;
                         this.getMenu(menuId).then(function (menu) {
                             var action = menu.actionMember(actionId);
                             var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
+                            lastActionFriendlyName = action.extensions().friendlyName;
                             return repLoader.invoke(action, valueParms);
                         }).then(function (result) {
                             if (result.resultType() === "list") {
@@ -226,6 +228,12 @@ var Spiro;
                     selectedChoice[parm][search].push(cvm);
                 };
                 context.clearSelectedChoice = function (parm) { return selectedChoice[parm] = null; };
+                context.getLastActionFriendlyName = function () {
+                    return lastActionFriendlyName;
+                };
+                context.setLastActionFriendlyName = function (fn) {
+                    lastActionFriendlyName = fn;
+                };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));

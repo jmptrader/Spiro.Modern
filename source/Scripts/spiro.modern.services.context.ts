@@ -41,6 +41,8 @@ module Spiro.Angular.Modern {
         setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
         getQuery: (menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
 
+        getLastActionFriendlyName : () => string;
+        setLastActionFriendlyName: (fn : string) => void;
     }
 
     interface IContextInternal extends IContext {
@@ -214,6 +216,7 @@ module Spiro.Angular.Modern {
         };
 
         var currentCollection = null; // tested
+        var lastActionFriendlyName: string = "";
 
         context.getQuery = function (menuId: string, actionId: string, parms : {id: string, val: string }[]) {
             var delay = $q.defer<ListRepresentation>();
@@ -225,7 +228,9 @@ module Spiro.Angular.Modern {
 
                 this.getMenu(menuId).then((menu: MenuRepresentation) => {
                     const action = menu.actionMember(actionId);               
-                    const valueParms = _.map(parms, (p) => { return {id : p.id,  val : new Value(p.val)} });  
+                    const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
+                    lastActionFriendlyName = action.extensions().friendlyName;
+
                     return repLoader.invoke(action, valueParms);
                 }).then((result: ActionResultRepresentation) => {
 
@@ -310,6 +315,15 @@ module Spiro.Angular.Modern {
         }
 
         context.clearSelectedChoice = (parm: string) => selectedChoice[parm] = null;
+        context.getLastActionFriendlyName = () => {
+            return lastActionFriendlyName;
+        }
+
+        context.setLastActionFriendlyName = (fn : string) => {
+            lastActionFriendlyName = fn;
+        }
+
+
     });
 
 }

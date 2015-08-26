@@ -218,6 +218,7 @@ var Spiro;
                         then(function (list) {
                         $scope.queryTemplate = state === "list" ? Angular.queryListTemplate : Angular.queryTableTemplate;
                         $scope.collection = viewModelFactory.collectionViewModel(list, state);
+                        $scope.title = context.getLastActionFriendlyName();
                     }, function (error) {
                         setError(error);
                     });

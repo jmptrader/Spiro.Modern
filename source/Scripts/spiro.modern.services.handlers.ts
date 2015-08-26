@@ -281,6 +281,7 @@ module Spiro.Angular.Modern {
                 then((list: ListRepresentation) => {
                     $scope.queryTemplate = state === "list" ? queryListTemplate : queryTableTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel(list, state);
+                    $scope.title = context.getLastActionFriendlyName(); 
                 }, error => {
                     setError(error);
                 });
