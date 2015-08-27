@@ -24,14 +24,9 @@ under the License.-->
     </div>
     <div class="collection">
         <div class="summary">
-            <div class="name"></div>
             <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
             <a class="icon-list" href="" ng-click="collection.doList()" ></a>
-            <a class="icon-table" href="" ng-click="collection.doTable()"></a>
-            <!--<a ng-switch-when="list" ng-switch="collection.display" class="icon-table" href="x"></a>
-                <a ng-switch-when="table" ng-switch="collection.display" class="icon-list" href="x"></a>-->
-        </div>
-      
+        </div>      
         <table >
             <thead>
                 <tr>
@@ -41,26 +36,21 @@ under the License.-->
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in collection.items" ng-class="item.color">
+                <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" ng-click="item.doClick()">
                     <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
-
-                        <div ng-switch-when="ref">
-                            <div>{{property.value}}</div>
+                        <div ng-switch-when="ref" class="clickable-area">
+                            <span></span>{{property.value}}
                         </div>
-
                         <div ng-switch-when="scalar" ng-switch="property.returnType">
-
                             <div ng-switch-when="string" ng-switch="property.format">
-                                <div ng-switch-when="date-time">{{property.value}}</div>
-                                <div ng-switch-default>{{property.value}}</div>
+                                <div ng-switch-when="date-time" class="clickable-area"><span></span>{{property.value}}</div>
+                                <div ng-switch-default class="clickable-area"><span></span>{{property.value}}</div>
                             </div>
-
-                            <div ng-switch-when="boolean">
-                                <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                            <div ng-switch-when="boolean" class="clickable-area">
+                                <input type="checkbox" onclick=" return false " ng-checked="property.value" /><span></span>
                             </div>
-
-                            <div ng-switch-default>
-                                <div>{{property.value}}</div>
+                            <div ng-switch-default class="clickable-area">
+                                <span></span>{{property.value}}
                             </div>
                         </div>
 
