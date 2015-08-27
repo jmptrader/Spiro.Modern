@@ -365,10 +365,9 @@ module Spiro.Angular.Modern{
                 }
             } 
 
-            var remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
-
-            if (remoteMask && propertyRep.isScalar()) {
-                var localFilter = mask.toLocalFilter(remoteMask);
+            if (propertyRep.isScalar()) {
+                var remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
+                var localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
                 if (localFilter) {
                     propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                 }
