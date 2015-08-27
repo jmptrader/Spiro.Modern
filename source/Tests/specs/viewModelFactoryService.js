@@ -122,7 +122,7 @@ describe('viewModelFactory Service', function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.isQuery).toBe(false);
                 expect(resultVm.message).toBe("");
-                expect(resultVm.close).toBe("#/objects/AdventureWorksModel.Product/1");
+                // expect(resultVm.close).toBe("#/objects/AdventureWorksModel.Product/1");
                 expect(resultVm.parameters.length).toBe(0);
                 expect(resultVm.doShow).toBeTruthy();
                 expect(resultVm.doInvoke).toBeTruthy();

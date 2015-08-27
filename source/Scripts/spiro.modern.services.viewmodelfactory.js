@@ -216,7 +216,7 @@ var Spiro;
                     dialogViewModel.title = actionMember.extensions().friendlyName;
                     dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
                     dialogViewModel.message = "";
-                    dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
+                    dialogViewModel.doClose = function () { return urlManager.closeDialog(); };
                     dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, ""); });
                     dialogViewModel.doShow = function () {
                         dialogViewModel.show = true;

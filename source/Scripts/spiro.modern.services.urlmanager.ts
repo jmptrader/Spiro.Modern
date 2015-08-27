@@ -20,6 +20,7 @@ module Spiro.Angular.Modern {
     export interface IUrlManager {
         setMenu(menuId: string);
         setDialog(id: string);
+        closeDialog();
         setObject(resultObject: DomainObjectRepresentation, transient? : boolean);
         setQuery(action: ActionMember, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember);
@@ -35,7 +36,7 @@ module Spiro.Angular.Modern {
         setCollectionTable(collection: ListRepresentation);
 
         setObjectEdit(edit : boolean);
-}
+    }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
@@ -46,6 +47,13 @@ module Spiro.Angular.Modern {
             $location.search(search);
         }
 
+        function clearSearch(parmId: string) {
+            let search =  $location.search();
+            search = _.omit(search, parmId);
+            $location.search(search);
+        }
+
+
         helper.setMenu = (menuId: string) => {
             setSearch("menu1", menuId, true);
         };
@@ -53,6 +61,10 @@ module Spiro.Angular.Modern {
         helper.setDialog = (dialogId: string) => {
             setSearch("dialog1", dialogId, false);
         };
+
+        helper.closeDialog = () => {
+            clearSearch("dialog1");
+        }
 
         helper.setObject = (resultObject: DomainObjectRepresentation, transient? : boolean) => {
             const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;

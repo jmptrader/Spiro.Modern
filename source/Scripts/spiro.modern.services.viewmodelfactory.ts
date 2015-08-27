@@ -278,7 +278,7 @@ module Spiro.Angular.Modern{
 
             dialogViewModel.message = "";
 
-            dialogViewModel.close = urlHelper.toAppUrl(actionMember.parent.selfLink().href(), ["action"]);
+            dialogViewModel.doClose =  () => urlManager.closeDialog();
 
             dialogViewModel.parameters = _.map(parameters, (parm, id?) => { return viewModelFactory.parameterViewModel(parm, id, ""); });
 
@@ -394,9 +394,8 @@ module Spiro.Angular.Modern{
                             ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
 
                             if (!cvm.header) {
-                                cvm.header = _.map(ivm.target.properties, (property: PropertyViewModel) => property.title);
+                                cvm.header = _.map(ivm.target.properties, property => property.title);
                             }
-
                         });
                     return ivm;
                 });

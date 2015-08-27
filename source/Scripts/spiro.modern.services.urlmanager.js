@@ -25,11 +25,19 @@ var Spiro;
                     search[parmId] = parmValue;
                     $location.search(search);
                 }
+                function clearSearch(parmId) {
+                    var search = $location.search();
+                    search = _.omit(search, parmId);
+                    $location.search(search);
+                }
                 helper.setMenu = function (menuId) {
                     setSearch("menu1", menuId, true);
                 };
                 helper.setDialog = function (dialogId) {
                     setSearch("dialog1", dialogId, false);
+                };
+                helper.closeDialog = function () {
+                    clearSearch("dialog1");
                 };
                 helper.setObject = function (resultObject, transient) {
                     var oid = resultObject.domainType() + "-" + resultObject.instanceId();

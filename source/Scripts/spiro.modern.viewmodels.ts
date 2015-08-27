@@ -200,12 +200,12 @@ module Spiro.Angular.Modern {
 
         title: string;
         message: string;
-        close: string; 
         isQuery: boolean; 
         show: boolean; 
 
         parameters: ParameterViewModel[];
 
+        doClose(): void { }
         doShow() : void { }
         doInvoke() : void { }
 
