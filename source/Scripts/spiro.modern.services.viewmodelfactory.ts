@@ -383,29 +383,25 @@ module Spiro.Angular.Modern{
         };
         
          // tested
-        function getItems(cvm : CollectionViewModel, links: Link[], href: string, populateItems?: boolean) {
+        function getItems(cvm: CollectionViewModel, links: Link[], href: string, populateItems?: boolean) {
 
             if (populateItems) {
                 return _.map(links, (link) => {
-                    var ivm = viewModelFactory.itemViewModel(link, href);
+                    var ivm = viewModelFactory.itemViewModel(link, href, () => urlManager.setItem(link));
                     var tempTgt = link.getTarget();
-                    repLoader.populate<DomainObjectRepresentation>(tempTgt).then((obj: DomainObjectRepresentation) => {
-                        ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
+                    repLoader.populate<DomainObjectRepresentation>(tempTgt).
+                        then((obj: DomainObjectRepresentation) => {
+                            ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
 
-                        if (!cvm.header) {
-                            cvm.header = _.map(ivm.target.properties, (property: PropertyViewModel) => property.title);
-                        }
+                            if (!cvm.header) {
+                                cvm.header = _.map(ivm.target.properties, (property: PropertyViewModel) => property.title);
+                            }
 
-                    });
+                        });
                     return ivm;
                 });
             } else {
-                return _.map(links, (link) => {
-                    return viewModelFactory.itemViewModel(link, href, () => {             
-                        urlManager.setItem(link);
-                    });
-
-                }); 
+                return _.map(links, (link) => viewModelFactory.itemViewModel(link, href, () => urlManager.setItem(link)));
             }
         }
 

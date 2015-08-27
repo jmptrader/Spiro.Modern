@@ -299,9 +299,10 @@ var Spiro;
                 function getItems(cvm, links, href, populateItems) {
                     if (populateItems) {
                         return _.map(links, function (link) {
-                            var ivm = viewModelFactory.itemViewModel(link, href);
+                            var ivm = viewModelFactory.itemViewModel(link, href, function () { return urlManager.setItem(link); });
                             var tempTgt = link.getTarget();
-                            repLoader.populate(tempTgt).then(function (obj) {
+                            repLoader.populate(tempTgt).
+                                then(function (obj) {
                                 ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
                                 if (!cvm.header) {
                                     cvm.header = _.map(ivm.target.properties, function (property) { return property.title; });
@@ -311,11 +312,7 @@ var Spiro;
                         });
                     }
                     else {
-                        return _.map(links, function (link) {
-                            return viewModelFactory.itemViewModel(link, href, function () {
-                                urlManager.setItem(link);
-                            });
-                        });
+                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, href, function () { return urlManager.setItem(link); }); });
                     }
                 }
                 function create(collectionRep, state) {
