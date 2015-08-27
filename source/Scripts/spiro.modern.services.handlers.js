@@ -213,8 +213,10 @@ var Spiro;
                         });
                     }
                 };
-                handlers.handleQuery = function ($scope, menuId, actionId, state, parms) {
-                    context.getQuery(menuId, actionId, parms).
+                handlers.handleQuery = function ($scope, menuId, objectId, actionId, state, parms) {
+                    var promise = objectId ? context.getQueryFromObject(objectId, actionId, parms) :
+                        context.getQuery(menuId, actionId, parms);
+                    promise.
                         then(function (list) {
                         $scope.queryTemplate = state === "list" ? Angular.queryListTemplate : Angular.queryTableTemplate;
                         $scope.collection = viewModelFactory.collectionViewModel(list, state);

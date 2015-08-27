@@ -57,6 +57,8 @@ module Spiro.Angular.Modern {
     app.controller("Pane1QueryController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {
 
         var menuId = $routeParams.menu1;
+        var objectId = $routeParams.object1;
+
         var actionId = $routeParams.action1;
         var state = $routeParams.collection1 || "list";
 
@@ -64,7 +66,7 @@ module Spiro.Angular.Modern {
         var parmIds = <{[index :string] : string}> _.pick($routeParams, (v, k) => k.indexOf("parm1") === 0);
         var parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
 
-        handlers.handleQuery($scope, menuId, actionId, state, parms);
+        handlers.handleQuery($scope, menuId, objectId, actionId, state, parms);
     });
 
     app.controller("Pane2QueryController", ($scope: ng.IScope, $routeParams: ISpiroRouteParams, handlers: IHandlers) => {

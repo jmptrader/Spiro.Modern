@@ -25,6 +25,7 @@ module Spiro.Angular.Modern {
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
+        getObjectByOid: (objectId : string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (object: DomainObjectRepresentation) => void;
         getNestedObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         setNestedObject: (object: DomainObjectRepresentation) => void;
@@ -40,6 +41,8 @@ module Spiro.Angular.Modern {
         clearSelectedChoice: (parm: string) => void;
         setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
         getQuery: (menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
+
+        getQueryFromObject: (objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
 
         getLastActionFriendlyName : () => string;
         setLastActionFriendlyName: (fn : string) => void;
@@ -96,7 +99,7 @@ module Spiro.Angular.Modern {
         context.getMenu = function (menuId: string): ng.IPromise<MenuRepresentation> {
             var delay = $q.defer<MenuRepresentation>();
 
-            this.getMenus().
+            context.getMenus().
                 then((menus: MenusRepresentation) => {
                 var menuLink = _.find(menus.value().models, (model: Link) => { return model.rel().parms[0].value ===  menuId; });
                     var menu = menuLink.getTarget();
@@ -184,7 +187,7 @@ module Spiro.Angular.Modern {
                 delay.resolve(currentVersion);
             }
             else {
-                this.getHome().
+                context.getHome().
                     then((home: HomePageRepresentation) => {
                         var v = home.getVersion();
                         return repLoader.populate<VersionRepresentation>(v);
@@ -198,14 +201,36 @@ module Spiro.Angular.Modern {
             return delay.promise;
         };
         currentObject = null; // tested
-        context.getObject = function(type: string, id?: string[]) {
+
+        context.getObject = (type: string, id ?: string[]) => {
+
             const delay = $q.defer<DomainObjectRepresentation>();
-            const oid = _.reduce(id || [], (a, v) => `${a}${a ? "-" : ""}${v}`, "");
+            const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
             if (currentObject && isSameObject(currentObject, type, oid)) {
                 delay.resolve(currentObject);
             }
             else {
                 const promise = oid ? this.getDomainObject(type, oid) : this.getService(type);
+                promise.then((object: DomainObjectRepresentation) => {
+                    currentObject = object;
+                    delay.resolve(object);
+                }, error => delay.reject(error));
+            }
+
+            return delay.promise;
+        };
+
+        context.getObjectByOid = function (objectId : string) {
+
+            var [dt, ...id] = objectId.split("-");
+
+            const delay = $q.defer<DomainObjectRepresentation>();
+            const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
+            if (currentObject && isSameObject(currentObject, dt, oid)) {
+                delay.resolve(currentObject);
+            }
+            else {
+                const promise = oid ? this.getDomainObject(dt, oid) : this.getService(dt);
                 promise.then((object: DomainObjectRepresentation) => {
                     currentObject = object;
                     delay.resolve(object);
@@ -226,8 +251,37 @@ module Spiro.Angular.Modern {
             }
             else {
 
-                this.getMenu(menuId).then((menu: MenuRepresentation) => {
+                context.getMenu(menuId).then((menu: MenuRepresentation) => {
                     const action = menu.actionMember(actionId);               
+                    const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
+                    lastActionFriendlyName = action.extensions().friendlyName;
+
+                    return repLoader.invoke(action, valueParms);
+                }).then((result: ActionResultRepresentation) => {
+
+                    if (result.resultType() === "list") {
+                        const resultList = result.result().list();
+                        this.setCollection(resultList);
+                        delay.resolve(currentCollection);
+                    } else {
+                        delay.reject("expect list");
+                    }
+                }, error => delay.reject(error));
+            }
+
+            return delay.promise;
+        };
+
+        context.getQueryFromObject = function (objectId: string, actionId: string, parms: { id: string, val: string }[]) {
+            var delay = $q.defer<ListRepresentation>();
+
+            if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
+                delay.resolve(currentCollection);
+            }
+            else {
+
+                context.getObjectByOid(objectId).then((object: DomainObjectRepresentation) => {
+                    const action = object.actionMember(actionId);
                     const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
                     lastActionFriendlyName = action.extensions().friendlyName;
 

@@ -19,6 +19,7 @@ var Spiro;
         var Modern;
         (function (Modern) {
             Angular.app.service("context", function ($q, repLoader) {
+                var _this = this;
                 var context = this;
                 var currentHome = null;
                 function getAppPath() {
@@ -55,7 +56,7 @@ var Spiro;
                 };
                 context.getMenu = function (menuId) {
                     var delay = $q.defer();
-                    this.getMenus().
+                    context.getMenus().
                         then(function (menus) {
                         var menuLink = _.find(menus.value().models, function (model) { return model.rel().parms[0].value === menuId; });
                         var menu = menuLink.getTarget();
@@ -127,7 +128,7 @@ var Spiro;
                         delay.resolve(currentVersion);
                     }
                     else {
-                        this.getHome().
+                        context.getHome().
                             then(function (home) {
                             var v = home.getVersion();
                             return repLoader.populate(v);
@@ -142,12 +143,28 @@ var Spiro;
                 currentObject = null; // tested
                 context.getObject = function (type, id) {
                     var delay = $q.defer();
-                    var oid = _.reduce(id || [], function (a, v) { return ("" + a + (a ? "-" : "") + v); }, "");
+                    var oid = _.reduce(id, function (a, v) { return ("" + a + (a ? "-" : "") + v); }, "");
                     if (currentObject && isSameObject(currentObject, type, oid)) {
                         delay.resolve(currentObject);
                     }
                     else {
-                        var promise = oid ? this.getDomainObject(type, oid) : this.getService(type);
+                        var promise = oid ? _this.getDomainObject(type, oid) : _this.getService(type);
+                        promise.then(function (object) {
+                            currentObject = object;
+                            delay.resolve(object);
+                        }, function (error) { return delay.reject(error); });
+                    }
+                    return delay.promise;
+                };
+                context.getObjectByOid = function (objectId) {
+                    var _a = objectId.split("-"), dt = _a[0], id = _a.slice(1);
+                    var delay = $q.defer();
+                    var oid = _.reduce(id, function (a, v) { return ("" + a + (a ? "-" : "") + v); }, "");
+                    if (currentObject && isSameObject(currentObject, dt, oid)) {
+                        delay.resolve(currentObject);
+                    }
+                    else {
+                        var promise = oid ? this.getDomainObject(dt, oid) : this.getService(dt);
                         promise.then(function (object) {
                             currentObject = object;
                             delay.resolve(object);
@@ -164,8 +181,33 @@ var Spiro;
                         delay.resolve(currentCollection);
                     }
                     else {
-                        this.getMenu(menuId).then(function (menu) {
+                        context.getMenu(menuId).then(function (menu) {
                             var action = menu.actionMember(actionId);
+                            var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
+                            lastActionFriendlyName = action.extensions().friendlyName;
+                            return repLoader.invoke(action, valueParms);
+                        }).then(function (result) {
+                            if (result.resultType() === "list") {
+                                var resultList = result.result().list();
+                                _this.setCollection(resultList);
+                                delay.resolve(currentCollection);
+                            }
+                            else {
+                                delay.reject("expect list");
+                            }
+                        }, function (error) { return delay.reject(error); });
+                    }
+                    return delay.promise;
+                };
+                context.getQueryFromObject = function (objectId, actionId, parms) {
+                    var _this = this;
+                    var delay = $q.defer();
+                    if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
+                        delay.resolve(currentCollection);
+                    }
+                    else {
+                        context.getObjectByOid(objectId).then(function (object) {
+                            var action = object.actionMember(actionId);
                             var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
                             lastActionFriendlyName = action.extensions().friendlyName;
                             return repLoader.invoke(action, valueParms);

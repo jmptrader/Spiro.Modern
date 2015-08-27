@@ -39,7 +39,7 @@ module Spiro.Angular.Modern {
         handleHome($scope, currentMenu? : string, currentDialog? : string): void;
         handleObject($scope): void;
         // obviously will have to change to generalize
-        handleQuery($scope, menuId : string, actionId :string, state : string,  parms : {id : string, val : string}[]): void;
+        handleQuery($scope, menuId : string, objectId : string, actionId :string, state : string,  parms : {id : string, val : string}[]): void;
     }
 
     app.service("handlers", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color: IColor, repHandlers: IRepHandlers, navigation: INavigation) {
@@ -275,9 +275,12 @@ module Spiro.Angular.Modern {
 
         };
 
-        handlers.handleQuery = ($scope, menuId : string, actionId :string, state : string,  parms : {id : string, val : string}[]) => {
+        handlers.handleQuery = ($scope, menuId: string, objectId: string, actionId :string, state : string,  parms : {id : string, val : string}[]) => {
 
-            context.getQuery(menuId, actionId, parms).
+            var promise = objectId ? context.getQueryFromObject(objectId, actionId, parms) :
+                                     context.getQuery(menuId, actionId, parms);
+                                   
+            promise.
                 then((list: ListRepresentation) => {
                     $scope.queryTemplate = state === "list" ? queryListTemplate : queryTableTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel(list, state);
