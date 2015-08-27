@@ -101,9 +101,10 @@
     .clickable-area
     {
         position: relative;
+        cursor: pointer; 
     }
 
-    .clickable-area a span
+    .clickable-area  span, .clickable-area a span
     {
         position: absolute;
         width: 100%;

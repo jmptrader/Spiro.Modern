@@ -6,9 +6,9 @@
 </div>
     <table >
         <tbody>
-            <tr ng-repeat="item in collection.items" ng-class="item.color">
+            <tr ng-repeat="item in collection.items" ng-class="item.color" ng-click="item.doClick()">
                 <td class="reference clickable-area" >
-                    <a href="" ng-click="item.doClick()"><span></span>{{item.title}}</a>
+                    <span></span>{{item.title}}
                 </td>
             </tr>
         </tbody>

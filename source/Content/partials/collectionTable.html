@@ -13,27 +13,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in collection.items" ng-class="item.color">
-                <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
-
-                    <div ng-switch-when="ref">
-                        {{property.value}}
+            <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" ng-click="item.doClick()">
+                <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type" >
+                    <div  ng-switch-when="ref" class="clickable-area">
+                        <span></span>{{property.value}}
                     </div>
 
                     <div ng-switch-when="scalar" ng-switch="property.returnType">
-                        <!--TODO: Lots of these cases end up with property.value
-                        so can't we just reduce them?-->
                         <div ng-switch-when="string" ng-switch="property.format">
-                            <div ng-switch-when="date-time">{{property.value}}</div>
-                            <div ng-switch-default>{{property.value}}</div>
+                            <div ng-switch-when="date-time" class="clickable-area"><span></span>{{property.value}}</div>
+                            <div ng-switch-default class="clickable-area"><span></span>{{property.value}}</div>
                         </div>
-
-                        <div ng-switch-when="boolean">
-                            <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                        <div ng-switch-when="boolean" class="clickable-area">
+                            <input type="checkbox" onclick=" return false " ng-checked="property.value" /><span></span>
                         </div>
-
-                        <div ng-switch-default>
-                            <div>{{property.value}}</div>
+                        <div ng-switch-default class="clickable-area">
+                            <span></span>{{property.value}}
                         </div>
                     </div>
 
