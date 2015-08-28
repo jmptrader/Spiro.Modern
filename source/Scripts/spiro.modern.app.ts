@@ -90,6 +90,8 @@ module Spiro.Angular {
 
     export var homeTemplate = getSvrPath() + "Content/partials/home.html";
     export var objectTemplate = getSvrPath() + "Content/partials/object.html";
+    export var objectViewTemplate = getSvrPath() + "Content/partials/objectView.html";
+    export var objectEditTemplate = getSvrPath() + "Content/partials/objectEdit.html";
     export var transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
 
 

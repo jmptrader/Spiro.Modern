@@ -78,49 +78,44 @@
         margin-right: 20px;
     }
 
-/*Menus*/
-    .menu {
+/*Menus & actions*/
+    .menu, .header .action {
         float: left;
         padding: 5px;
         margin-top: 20px;
         margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
         margin-right: 10px;
         margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
+        font-size: 14pt;
     }
 
-    .menu:hover, .menu.selected {
+    .object .header .menu, .object .header .action {
+        background-color: white;
+        color: black;
+    }
+
+    .menu:hover, .menu.selected,  .action:hover, .action.selected {
         outline: solid;
         outline-width: 1px;
         outline-color: white;
     }
 
-    .menu a {
-        font-size: 14pt;
+    .object .menu:hover, .object .menu.selected, .object .action:hover, .object .action.selected {
+        outline-color: black;
     }
+
 /*Fix to make menus/actions/reference properties clickable*/
     .clickable-area
     {
-        position: relative;
-   
-    }
-
-    .clickable-area a span
-    {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+        cursor: pointer;
     }
 
 /*Actions*/
-    .action {
+    .actions .action {
         width: 150px;
         padding: 2px 5px;
         margin-bottom: 5px;
         background-color: white;
-        color: black;
-    }
-
-    .action a {
         color: black;
         font-weight: bolder; /*Because black on white light looks too faint*/
     }

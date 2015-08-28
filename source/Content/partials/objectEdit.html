@@ -1,0 +1,17 @@
+﻿<div class="object" ng-class="object.color">
+    <div class="header">
+        <div class="type">Editing - </div> <!--TODO: Add type reference-->
+        <div class="title">{{object.title}}</div>
+            <div class="menu clickable-area" ng-class="menu.color">
+                <!--Stef: Does this need to be an input still, or can it just be another div?-->
+                <input class="save" type="submit" value="Save" ng-click="object.doSave()">
+            </div>
+            <div class="menu clickable-area" ng-class="menu.color">
+                <div class="cancel" value="Cancel" ng-click="object.doEditCancel()"></div>
+            </div>
+    </div>
+    <div class="main-column">
+        <div class="properties" ng-include="editPropertiesTemplate"></div>
+    </div>
+    <div class="collections" ng-include="collectionsTemplate"></div>
+</div>

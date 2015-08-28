@@ -25,6 +25,9 @@
     <Content Include="Content\partials\collectionSummary.html" />
     <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\footer.html" />
+    <Content Include="Content\partials\objectEdit.html" />
+    <Content Include="Content\partials\objectView.html" />
+    <Content Include="Content\partials\object.html" />
     <Content Include="Content\partials\queryTable.html" />
     <Content Include="Content\partials\queryList.html" />
     <Content Include="Content\partials\singleQueryPage.html" />
@@ -73,15 +76,6 @@
     <Content Include="Content\partials\editProperties.html" />
     <Content Include="Content\partials\error.html" />
     <Content Include="Content\partials\errorPage.html" />
-    <Content Include="Content\partials\nestedCollection.html" />
-    <Content Include="Content\partials\nestedCollectionTable.html" />
-    <Content Include="Content\partials\nestedObject.html" />
-    <Content Include="Content\partials\object.html" />
-    <Content Include="Content\partials\objectPage.html" />
-    <Content Include="Content\partials\service.html" />
-    <Content Include="Content\partials\servicePage.html" />
-    <Content Include="Content\partials\services.html" />
-    <Content Include="Content\partials\servicesPage.html" />
     <Content Include="Content\partials\transientObjectPage.html" />
     <Content Include="Content\partials\viewProperties.html" />
     <Content Include="Content\spiro-modern.css" />

@@ -1,12 +1,10 @@
 ﻿<div class="home">
     <div class="header">
         <div class="title">Home</div>
-            <div class="menu clickable-area" ng-class="menu.color" ng-repeat="menu in menus.items">
-                <a href="" ng-click="menu.doClick()">
-                   <span></span> <!--Needed for clickable-area-->
-                   {{menu.title}}
-                </a>
-            </div>
+        <div class="menu clickable-area" ng-class="menu.color" ng-repeat="menu in menus.items" ng-click="menu.doClick()">
+                {{menu.title}}
+        </div>
+        <div class="messages">{{object.message}}</div>
     </div>
     <div class="actions" ng-include="actionsTemplate"></div>
     <div class="main-column">

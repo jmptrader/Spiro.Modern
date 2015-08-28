@@ -5,11 +5,12 @@
         <div class="menu clickable-area" ng-class="menu.color" ng-click="object.toggleActionMenu()">
             Actions
         </div>
+        <div class="messages">{{object.message}}</div>
     </div>
     <div class="actions" ng-include="actionsTemplate"></div>
     <div class="main-column">
         <div class="dialog" ng-include="dialogTemplate"></div>
-        <div class="properties" ng-include="propertiesTemplate"></div>
+        <div class="properties" ng-include="viewPropertiesTemplate"></div>
     </div>
     <div class="collections" ng-include="collectionsTemplate"></div>
 </div>
