@@ -14,38 +14,41 @@
 /// <reference path="typings/angularjs/angular-route.d.ts" />
 
 module Spiro.Angular {
-
-    /* Declare app level module */
+    import AppBarViewModel = Spiro.Angular.Modern.AppBarViewModel; /* Declare app level module */
    
     export var app = angular.module("app", ["ngRoute", "ngTouch"]);
 
     export interface ISpiroRouteParams extends ng.route.IRouteParamsService {
-        action: string;
-        property: string;
-        collectionItem: string;
-        resultObject: string; 
-        resultCollection: string; 
-        collection: string; 
-        editMode: string; 
-        tableMode: string; 
-        dt: string; 
-        id: string; 
-        sid: string; 
-
         menu1: string;
         dialog1: string;
         object1: string;
         action1: string;
         collection1: string;
         edit1 : string;
-
-
-
     }
 
-    function getSvrPath() {
-        var trimmedPath = svrPath.trim();
+    export interface ISpiroScope extends ng.IScope {
+        backgroundColor: string;
+        menus: Angular.Modern.MenusViewModel;
+        homeTemplate: string;
+        actionsTemplate: string;
+        // todo this is ugly - fix 
+        object: { actions: Angular.Modern.ActionViewModel[] };
+        dialogTemplate: string;
+        dialog: Angular.Modern.DialogViewModel;
+        error: Angular.Modern.ErrorViewModel;
+        errorTemplate: string;
+        queryTemplate: string;
+        collection: Angular.Modern.CollectionViewModel;
+        title: string;
+        appBar: AppBarViewModel;
+        objectTemplate: string;
+        collectionsTemplate: string;
+    }
 
+
+    function getSvrPath() {
+        const trimmedPath = svrPath.trim();
         if (trimmedPath.length === 0 || trimmedPath.charAt(svrPath.length - 1) === "/") {
             return trimmedPath;
         }
@@ -107,7 +110,7 @@ module Spiro.Angular {
     export var collectionTableTemplate = getSvrPath() + "Content/partials/collectionTable.html";
 
 
-    app.config(($routeProvider: ng.route.IRouteProvider) => {
+    Angular.app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
             
             //Modern2 Urls below:
@@ -166,7 +169,7 @@ module Spiro.Angular {
        
     });
 
-    app.run((color: Angular.IColor, mask: Angular.IMask, $cacheFactory) => {
+    app.run((color: IColor, mask: IMask, $cacheFactory) => {
 
         $cacheFactory("recentlyViewed");
 

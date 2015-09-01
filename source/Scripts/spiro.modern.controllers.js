@@ -18,108 +18,36 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.controller("Pane1HomeController", function ($scope, $routeParams, handlers) {
-                // get parm match type and call correct handler.     
-                var menuId = $routeParams.menu1;
-                var dialogId = $routeParams.dialog1;
-                handlers.handleHome($scope, menuId, dialogId);
+            Angular.app.controller("Pane1HomeController", function ($scope, handlers, urlManager) {
+                var routeData = urlManager.getRouteData();
+                handlers.handleHome($scope, routeData.pane1);
             });
-            Angular.app.controller("Pane2HomeController", function ($scope, $routeParams, handlers) {
-                // get parm match type and call correct handler. 
-                handlers.handleHome($scope);
+            Angular.app.controller("Pane2HomeController", function ($scope, handlers, urlManager) {
+                var routeData = urlManager.getRouteData();
+                handlers.handleHome($scope, routeData.pane2);
             });
-            Angular.app.controller("Pane1ObjectController", function ($scope, $routeParams, handlers) {
-                // get parm match type and call correct handler. 
-                var objectId = $routeParams.object1;
-                var menuId = $routeParams.menu1;
-                var dialogId = $routeParams.dialog1;
-                var collIds = _.pick($routeParams, function (v, k) { return k.indexOf("collection1") === 0; });
-                //missing from lodash types :-( 
-                var collections = _.mapKeys(collIds, function (v, k) { return k.substr(k.indexOf("_") + 1); });
-                var edit = $routeParams.edit1 === "true";
-                handlers.handlePaneObject($scope, objectId, collections, edit, menuId, dialogId);
+            Angular.app.controller("Pane1ObjectController", function ($scope, handlers, urlManager) {
+                var routeData = urlManager.getRouteData();
+                handlers.handleObject($scope, routeData.pane1);
             });
-            Angular.app.controller("Pane2ObjectController", function ($scope, $routeParams, handlers) {
-                handlers.handlePaneObject($scope, "todo", {}, false);
+            Angular.app.controller("Pane2ObjectController", function ($scope, handlers, urlManager) {
+                var routeData = urlManager.getRouteData();
+                handlers.handleObject($scope, routeData.pane2);
             });
-            Angular.app.controller("Pane1QueryController", function ($scope, $routeParams, handlers) {
-                var menuId = $routeParams.menu1;
-                var objectId = $routeParams.object1;
-                var actionId = $routeParams.action1;
-                var state = $routeParams.collection1 || "list";
-                // todo make parm ids dictionary same as collections ids ? 
-                var parmIds = _.pick($routeParams, function (v, k) { return k.indexOf("parm1") === 0; });
-                var parms = _.map(parmIds, function (v, k) { return { id: k.substr(k.indexOf("_") + 1), val: v }; });
-                handlers.handleQuery($scope, menuId, objectId, actionId, state, parms);
+            Angular.app.controller("Pane1QueryController", function ($scope, handlers, urlManager) {
+                var routeData = urlManager.getRouteData();
+                handlers.handleQuery($scope, routeData.pane1);
             });
-            Angular.app.controller("Pane2QueryController", function ($scope, $routeParams, handlers) {
-                var p2 = $routeParams["pane2"];
-                var rx = /(.*)-(.*)/;
-                var results = rx.exec(p2);
-                handlers.handlePaneObject($scope, "todo", {}, false);
+            Angular.app.controller("Pane2QueryController", function ($scope, handlers, urlManager) {
+                var routeData = urlManager.getRouteData();
+                handlers.handleQuery($scope, routeData.pane2);
             });
-            // tested
             Angular.app.controller("BackgroundController", function ($scope, handlers) {
                 handlers.handleBackground($scope);
             });
-            // tested
-            Angular.app.controller("ServicesController", function ($scope, handlers) {
-                handlers.handleServices($scope);
-            });
-            // tested
-            Angular.app.controller("ServiceController", function ($scope, handlers) {
-                handlers.handleService($scope);
-            });
-            // tested
-            Angular.app.controller("DialogController", function ($scope, $routeParams, handlers) {
-                if ($routeParams.action) {
-                    handlers.handleActionDialog($scope);
-                }
-            });
-            // tested
-            Angular.app.controller("NestedObjectController", function ($scope, $routeParams, handlers) {
-                // action takes priority 
-                if ($routeParams.action) {
-                    handlers.handleActionResult($scope);
-                }
-                // action + one of  
-                if ($routeParams.property) {
-                    handlers.handleProperty($scope);
-                }
-                else if ($routeParams.collectionItem) {
-                    handlers.handleCollectionItem($scope);
-                }
-                else if ($routeParams.resultObject) {
-                    handlers.handleResult($scope);
-                }
-            });
-            // tested
-            Angular.app.controller("CollectionController", function ($scope, $routeParams, handlers) {
-                if ($routeParams.resultCollection) {
-                    handlers.handleCollectionResult($scope);
-                }
-                else if ($routeParams.collection) {
-                    handlers.handleCollection($scope);
-                }
-            });
-            // tested
-            Angular.app.controller("ObjectController", function ($scope, $routeParams, handlers) {
-                if ($routeParams.editMode) {
-                    handlers.handleEditObject($scope);
-                }
-                else {
-                    handlers.handleObject($scope);
-                }
-            });
-            // tested
-            Angular.app.controller("TransientObjectController", function ($scope, handlers) {
-                handlers.handleTransientObject($scope);
-            });
-            // tested
             Angular.app.controller("ErrorController", function ($scope, handlers) {
                 handlers.handleError($scope);
             });
-            // tested
             Angular.app.controller("AppBarController", function ($scope, handlers) {
                 handlers.handleAppBar($scope);
             });

@@ -18,24 +18,29 @@
 module Spiro.Angular.Modern {
 
     export interface IUrlManager {
+        getRouteData(): RouteData;
+
+        setError();
+
+
         setMenu(menuId: string);
         setDialog(id: string);
         closeDialog();
-        setObject(resultObject: DomainObjectRepresentation, transient? : boolean);
+        setObject(resultObject: DomainObjectRepresentation, transient?: boolean);
         setQuery(action: ActionMember, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember);
         setItem(link: Link): void;
 
         toggleObjectMenu(): void;
 
-        setCollectionSummary(collection : CollectionMember);
+        setCollectionSummary(collection: CollectionMember);
         setCollectionList(collection: CollectionMember);
         setCollectionTable(collection: CollectionMember);
         setCollectionSummary(collection: ListRepresentation);
         setCollectionList(collection: ListRepresentation);
         setCollectionTable(collection: ListRepresentation);
 
-        setObjectEdit(edit : boolean);
+        setObjectEdit(edit: boolean);
     }
 
     app.service("urlManager", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService) {
@@ -48,7 +53,7 @@ module Spiro.Angular.Modern {
         }
 
         function clearSearch(parmId: string) {
-            let search =  $location.search();
+            let search = $location.search();
             search = _.omit(search, parmId);
             $location.search(search);
         }
@@ -64,16 +69,15 @@ module Spiro.Angular.Modern {
 
         helper.closeDialog = () => {
             clearSearch("dialog1");
-        }
-
-        helper.setObject = (resultObject: DomainObjectRepresentation, transient? : boolean) => {
-            const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
+        };
+        helper.setObject = (resultObject: DomainObjectRepresentation, transient?: boolean) => {
+            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
             const search = { object1: oid };
 
             $location.path("/object").search(search);
         };
 
-        helper.setQuery = (action : ActionMember, dvm?: DialogViewModel) => {
+        helper.setQuery = (action: ActionMember, dvm?: DialogViewModel) => {
             const aid = action.actionId();
             const search = $location.search();
 
@@ -91,10 +95,9 @@ module Spiro.Angular.Modern {
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
             const results = (urlRegex).exec(href);
 
-            const oid = `${results[2]}-${results[3] }`;
+            const oid = `${results[2]}-${results[3]}`;
             $location.search({ object1: oid });
-        }
-
+        };
         helper.setItem = (link: Link) => {
             var href = link.href();
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
@@ -102,8 +105,7 @@ module Spiro.Angular.Modern {
 
             const oid = `${results[2]}-${results[3]}`;
             $location.path("/object").search({ object1: oid });
-        }
-
+        };
         helper.toggleObjectMenu = () => {
             var search = $location.search();
             var menu = search.menu1;
@@ -115,36 +117,57 @@ module Spiro.Angular.Modern {
             }
 
             $location.search(search);
-        }
-
+        };
         helper.setCollectionSummary = (collection: any) => {
             if (collection instanceof CollectionMember) {
                 setSearch(`collection1_${collection.collectionId()}`, "summary", false);
             } else {
                 setSearch("collection1", "summary", false);
             }
-        }
-
+        };
         helper.setCollectionList = (collection: any) => {
             if (collection instanceof CollectionMember) {
-                setSearch(`collection1_${collection.collectionId() }`, "list", false);
+                setSearch(`collection1_${collection.collectionId()}`, "list", false);
             } else {
                 setSearch("collection1", "list", false);
             }
-        }
-
+        };
         helper.setCollectionTable = (collection: any) => {
             if (collection instanceof CollectionMember) {
-                setSearch(`collection1_${collection.collectionId() }`, "table", false);
+                setSearch(`collection1_${collection.collectionId()}`, "table", false);
             } else {
                 setSearch("collection1", "table", false);
             }
-        }
+        };
+        helper.setObjectEdit = (edit: boolean) => {
+            setSearch("edit1", edit.toString(), false);
+        };
+        helper.setError = () => {
+            $location.path("/error");
+        };
 
-        helper.setObjectEdit = (edit : boolean) => {       
-           setSearch("edit1", edit.toString(), false);            
-        }
+        helper.getRouteData = () => {
+            const routeData = new RouteData();
 
+            routeData.pane1.menuId = $routeParams.menu1;
+            routeData.pane1.dialogId = $routeParams.dialog1;
+            routeData.pane1.objectId = $routeParams.object1;
+
+            var collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf("collection1") === 0);
+            //missing from lodash types :-( 
+            routeData.pane1.collections = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
+
+            routeData.pane1.edit = $routeParams.edit1 === "true";
+
+            routeData.pane1.actionId = $routeParams.action1;
+            routeData.pane1.state = $routeParams.collection1 || "list";
+
+            // todo make parm ids dictionary same as collections ids ? 
+            var parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf("parm1") === 0);
+            routeData.pane1.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
+
+            return routeData;
+        };
     });
 
 }

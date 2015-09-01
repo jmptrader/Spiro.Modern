@@ -234,6 +234,12 @@ var Spiro;
                 return DomainObjectViewModel;
             })(MessageViewModel);
             Modern.DomainObjectViewModel = DomainObjectViewModel;
+            var AppBarViewModel = (function () {
+                function AppBarViewModel() {
+                }
+                return AppBarViewModel;
+            })();
+            Modern.AppBarViewModel = AppBarViewModel;
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));
 })(Spiro || (Spiro = {}));

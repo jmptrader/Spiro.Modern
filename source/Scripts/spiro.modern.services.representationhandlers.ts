@@ -27,7 +27,7 @@ module Spiro.Angular.Modern {
         saveObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
     }
 
-    app.service("repHandlers", function ($q: ng.IQService, $location: ng.ILocationService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context : IContext, urlHelper : IUrlHelper, urlManager : IUrlManager) {
+    app.service("repHandlers", function ($q: ng.IQService, $location: ng.ILocationService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context : IContext, urlManager : IUrlManager) {
 
         const repHandlers = <IRepHandlers>this;
 
@@ -122,7 +122,7 @@ module Spiro.Angular.Modern {
             }
             else if (error instanceof ErrorRepresentation) {
                 context.setError(error);
-                $location.path(urlHelper.toErrorPath());
+                urlManager.setError();
             }
             else {
                 if (vm) {
@@ -183,7 +183,7 @@ module Spiro.Angular.Modern {
             repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
                     context.setObject(updatedObject);
-                    $location.path(urlHelper.toObjectPath(updatedObject));
+                    //$location.path(urlHelper.toObjectPath(updatedObject));
                 }, (error: any) => {
                     repHandlers.setInvokeUpdateError( error, properties, ovm);
                 });

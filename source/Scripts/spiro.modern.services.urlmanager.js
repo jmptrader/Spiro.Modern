@@ -105,6 +105,25 @@ var Spiro;
                 helper.setObjectEdit = function (edit) {
                     setSearch("edit1", edit.toString(), false);
                 };
+                helper.setError = function () {
+                    $location.path("/error");
+                };
+                helper.getRouteData = function () {
+                    var routeData = new Modern.RouteData();
+                    routeData.pane1.menuId = $routeParams.menu1;
+                    routeData.pane1.dialogId = $routeParams.dialog1;
+                    routeData.pane1.objectId = $routeParams.object1;
+                    var collIds = _.pick($routeParams, function (v, k) { return k.indexOf("collection1") === 0; });
+                    //missing from lodash types :-( 
+                    routeData.pane1.collections = _.mapKeys(collIds, function (v, k) { return k.substr(k.indexOf("_") + 1); });
+                    routeData.pane1.edit = $routeParams.edit1 === "true";
+                    routeData.pane1.actionId = $routeParams.action1;
+                    routeData.pane1.state = $routeParams.collection1 || "list";
+                    // todo make parm ids dictionary same as collections ids ? 
+                    var parmIds = _.pick($routeParams, function (v, k) { return k.indexOf("parm1") === 0; });
+                    routeData.pane1.parms = _.map(parmIds, function (v, k) { return { id: k.substr(k.indexOf("_") + 1), val: v }; });
+                    return routeData;
+                };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));

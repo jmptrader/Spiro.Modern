@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask, $cacheFactory, urlManager, navigation) {
+            Angular.app.service('viewModelFactory', function ($q, $location, $filter, repLoader, color, context, repHandlers, mask, $cacheFactory, urlManager, navigation) {
                 var viewModelFactory = this;
                 viewModelFactory.errorViewModel = function (errorRep) {
                     var errorViewModel = new Modern.ErrorViewModel();
@@ -30,7 +30,7 @@ var Spiro;
                 viewModelFactory.linkViewModel = function (linkRep, click) {
                     var linkViewModel = new Modern.LinkViewModel();
                     linkViewModel.title = linkRep.title();
-                    linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
+                    //linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
                     linkViewModel.color = color.toColorFromHref(linkRep.href());
                     if (click) {
                         linkViewModel.doClick = click;
@@ -41,7 +41,7 @@ var Spiro;
                 viewModelFactory.itemViewModel = function (linkRep, parentHref, click) {
                     var itemViewModel = new Modern.ItemViewModel();
                     itemViewModel.title = linkRep.title();
-                    itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
+                    //itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
                     itemViewModel.color = color.toColorFromHref(linkRep.href());
                     if (click) {
                         itemViewModel.doClick = click;
@@ -195,7 +195,7 @@ var Spiro;
                 viewModelFactory.actionViewModel = function (actionRep, id, invoke) {
                     var actionViewModel = new Modern.ActionViewModel();
                     actionViewModel.title = actionRep.extensions().friendlyName;
-                    actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
+                    //actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
                     actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
                     if (actionRep.extensions().hasParams) {
                         actionViewModel.doInvoke = function () {
@@ -235,8 +235,8 @@ var Spiro;
                     propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
                     propertyViewModel.returnType = propertyRep.extensions().returnType;
                     propertyViewModel.format = propertyRep.extensions().format;
-                    propertyViewModel.href = propertyRep.isScalar() || propertyRep.value().isNull() || propertyRep.detailsLink() == null ? "" : urlHelper.toNewAppUrl2(propertyRep.value().link().href());
-                    propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
+                    //propertyViewModel.href = propertyRep.isScalar() || propertyRep.value().isNull() || propertyRep.detailsLink() == null ? "" : urlHelper.toNewAppUrl2(propertyRep.value().link().href());
+                    //propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
                     propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
                     propertyViewModel.doClick = function () {
                         urlManager.setProperty(propertyRep);
@@ -342,7 +342,7 @@ var Spiro;
                     collectionViewModel.title = collectionRep.extensions().friendlyName;
                     collectionViewModel.size = links.length;
                     collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-                    collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
+                    //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
                     collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
                     collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === "table");
                     return collectionViewModel;
@@ -399,13 +399,13 @@ var Spiro;
                     serviceViewModel.title = serviceRep.title();
                     serviceViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, function () { return null; }); });
                     serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
-                    serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
+                    //serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
                     return serviceViewModel;
                 };
                 viewModelFactory.domainObjectViewModel = function (objectRep, collectionStates, save, previousUrl) {
                     var objectViewModel = new Modern.DomainObjectViewModel();
                     objectViewModel.isTransient = !!objectRep.persistLink();
-                    objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
+                    //objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
                     objectViewModel.color = color.toColorFromType(objectRep.domainType());
                     objectViewModel.doSave = save ? function () { return save(objectViewModel); } : function () { };
                     objectViewModel.doEdit = function () { return urlManager.setObjectEdit(true); };

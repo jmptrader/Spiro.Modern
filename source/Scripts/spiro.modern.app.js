@@ -15,7 +15,6 @@ var Spiro;
 (function (Spiro) {
     var Angular;
     (function (Angular) {
-        /* Declare app level module */
         Angular.app = angular.module("app", ["ngRoute", "ngTouch"]);
         function getSvrPath() {
             var trimmedPath = Spiro.svrPath.trim();

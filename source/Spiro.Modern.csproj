@@ -128,13 +128,13 @@
     <TypeScriptCompile Include="Scripts\spiro.modern.app.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.controllers.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.directives.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.modern.routedata.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.context.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.handlers.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.navigation.browser.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.navigation.simple.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.representationhandlers.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.urlmanager.ts" />
-    <TypeScriptCompile Include="Scripts\spiro.modern.services.urlhelper.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\spiro.modern.viewmodels.ts" />
     <Content Include="Scripts\angular-route.js" />

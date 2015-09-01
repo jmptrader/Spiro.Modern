@@ -290,5 +290,16 @@ module Spiro.Angular.Modern {
         showEdit(): boolean {
             return  !this.isTransient &&  _.any(this.properties, (p) => p.isEditable);
         }
-    } 
+    }
+
+    export class AppBarViewModel {
+        loading: string;
+        template: string;
+        footerTemplate: string;
+        goHome: string;
+        goBack: () => void;
+        goForward: () => void;
+        hideEdit: () => boolean;
+        doEdit: () => void;
+    }
 }

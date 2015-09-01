@@ -35,7 +35,7 @@ module Spiro.Angular.Modern{
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: string }, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
 
-    app.service('viewModelFactory', function ($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, urlHelper: IUrlHelper, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory: ng.ICacheFactoryService, urlManager: IUrlManager, navigation: INavigation ) {
+    app.service('viewModelFactory', function ($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory: ng.ICacheFactoryService, urlManager: IUrlManager, navigation: INavigation ) {
 
         var viewModelFactory = <IViewModelFactory>this;
 
@@ -52,7 +52,7 @@ module Spiro.Angular.Modern{
             const linkViewModel = new LinkViewModel();
 
             linkViewModel.title = linkRep.title();
-            linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
+            //linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
             linkViewModel.color = color.toColorFromHref(linkRep.href());
 
             if (click) {
@@ -66,7 +66,7 @@ module Spiro.Angular.Modern{
         viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string, click?: () => void) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
-            itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
+            //itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
             itemViewModel.color = color.toColorFromHref(linkRep.href());
 
             if (click) {
@@ -251,7 +251,7 @@ module Spiro.Angular.Modern{
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
-            actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
+            //actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
 
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
 
@@ -301,8 +301,8 @@ module Spiro.Angular.Modern{
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType;
             propertyViewModel.format = propertyRep.extensions().format;
-            propertyViewModel.href = propertyRep.isScalar() || propertyRep.value().isNull() || propertyRep.detailsLink() == null ? "" : urlHelper.toNewAppUrl2(propertyRep.value().link().href());
-            propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
+            //propertyViewModel.href = propertyRep.isScalar() || propertyRep.value().isNull() || propertyRep.detailsLink() == null ? "" : urlHelper.toNewAppUrl2(propertyRep.value().link().href());
+            //propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
             propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
 
             propertyViewModel.doClick = () => {
@@ -436,7 +436,7 @@ module Spiro.Angular.Modern{
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = collectionRep.extensions().pluralName;
 
-            collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
+            //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
 
             collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === "table");
@@ -515,7 +515,7 @@ module Spiro.Angular.Modern{
             serviceViewModel.title = serviceRep.title();
             serviceViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, () => null); });
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
-            serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
+            //serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
           
 
             return serviceViewModel;
@@ -526,7 +526,7 @@ module Spiro.Angular.Modern{
             var objectViewModel = new DomainObjectViewModel();
             objectViewModel.isTransient = !!objectRep.persistLink();
 
-            objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
+            //objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
 
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
 

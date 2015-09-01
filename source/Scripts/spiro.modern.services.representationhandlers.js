@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service("repHandlers", function ($q, $location, $cacheFactory, repLoader, context, urlHelper, urlManager) {
+            Angular.app.service("repHandlers", function ($q, $location, $cacheFactory, repLoader, context, urlManager) {
                 var repHandlers = this;
                 repHandlers.prompt = function (promptRep, id, searchTerm) {
                     promptRep.reset();
@@ -91,7 +91,7 @@ var Spiro;
                     }
                     else if (error instanceof Spiro.ErrorRepresentation) {
                         context.setError(error);
-                        $location.path(urlHelper.toErrorPath());
+                        urlManager.setError();
                     }
                     else {
                         if (vm) {
@@ -140,7 +140,7 @@ var Spiro;
                     repLoader.populate(persist, true, new Spiro.DomainObjectRepresentation()).
                         then(function (updatedObject) {
                         context.setObject(updatedObject);
-                        $location.path(urlHelper.toObjectPath(updatedObject));
+                        //$location.path(urlHelper.toObjectPath(updatedObject));
                     }, function (error) {
                         repHandlers.setInvokeUpdateError(error, properties, ovm);
                     });

@@ -25,13 +25,9 @@ module Spiro.Angular.Modern {
     app.service('navigation', function($location: ng.ILocationService, $routeParams: ISpiroRouteParams) {
         const nav = <INavigation>this;
         nav.back = () => {
-            
-            if ($routeParams.resultObject || $routeParams.resultCollection) {
-                // looking at an action result = so go back two 
-                parent.history.back(2);
-            } else {
+           
                 parent.history.back(1);
-            }
+            
         };
 
         nav.forward = () => {

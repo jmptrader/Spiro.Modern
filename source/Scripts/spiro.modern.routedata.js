@@ -9,7 +9,7 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="typings/lodash/lodash.d.ts" />
+/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="spiro.models.ts" />
 var Spiro;
 (function (Spiro) {
@@ -17,18 +17,21 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service('navigation', function ($location, $routeParams) {
-                var nav = this;
-                nav.back = function () {
-                    parent.history.back(1);
-                };
-                nav.forward = function () {
-                    parent.history.forward(1);
-                };
-                nav.push = function () {
-                };
-            });
+            var RouteData = (function () {
+                function RouteData() {
+                    this.pane1 = new PaneRouteData();
+                    this.pane2 = new PaneRouteData();
+                }
+                return RouteData;
+            })();
+            Modern.RouteData = RouteData;
+            var PaneRouteData = (function () {
+                function PaneRouteData() {
+                }
+                return PaneRouteData;
+            })();
+            Modern.PaneRouteData = PaneRouteData;
         })(Modern = Angular.Modern || (Angular.Modern = {}));
     })(Angular = Spiro.Angular || (Spiro.Angular = {}));
 })(Spiro || (Spiro = {}));
-//# sourceMappingURL=spiro.modern.services.navigation.browser.js.map
+//# sourceMappingURL=spiro.modern.routedata.js.map
