@@ -272,37 +272,37 @@ describe('context Service', function () {
         beforeEach(inject(function ($rootScope, $routeParams, context) {
             localContext = context;
         }));
-        describe('when transient is set', function () {
-            beforeEach(inject(function ($rootScope) {
-                localContext.setTransientObject(testObject);
-                runs(function () {
-                    localContext.getTransientObject().then(function (object) {
-                        result = object;
-                    });
-                    $rootScope.$apply();
-                });
-                waitsFor(function () { return !!result; }, "result not set", 1000);
-            }));
-            it('returns transient representation', function () {
-                expect(result).toBe(testObject);
-            });
-        });
-        describe('when transient is not set', function () {
-            beforeEach(inject(function ($rootScope) {
-                var getTransientRun = false;
-                runs(function () {
-                    localContext.getCollection().then(function (object) {
-                        result = object;
-                        getTransientRun = true;
-                    });
-                    $rootScope.$apply();
-                });
-                waitsFor(function () { return getTransientRun; }, "result not set", 1000);
-            }));
-            it('returns object representation', function () {
-                expect(result).toBeNull();
-            });
-        });
+        //describe('when transient is set', () => {
+        //    beforeEach(inject($rootScope => {
+        //        localContext.setTransientObject(testObject);
+        //        runs(() => {
+        //            localContext.getTransientObject().then(object => {
+        //                result = object;
+        //            });
+        //            $rootScope.$apply();
+        //        });
+        //        waitsFor(() => !!result, "result not set", 1000);
+        //    }));
+        //    it('returns transient representation', () => {
+        //        expect(result).toBe(testObject);
+        //    });
+        //});
+        //describe('when transient is not set', () => {
+        //    beforeEach(inject($rootScope => {
+        //        var getTransientRun = false;
+        //        runs(() => {
+        //            localContext.getCollection().then(object => {
+        //                result = object;
+        //                getTransientRun = true;
+        //            });
+        //            $rootScope.$apply();
+        //        });
+        //        waitsFor(() => getTransientRun, "result not set", 1000);
+        //    }));
+        //    it('returns object representation', () => {
+        //        expect(result).toBeNull();
+        //    });
+        //});
     });
     describe('getService', function () {
         var testObject = new Spiro.DomainObjectRepresentation();

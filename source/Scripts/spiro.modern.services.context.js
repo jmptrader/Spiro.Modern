@@ -21,7 +21,15 @@ var Spiro;
             Angular.app.service("context", function ($q, repLoader) {
                 var _this = this;
                 var context = this;
+                // cached values
                 var currentHome = null;
+                var currentObject = null;
+                var currentMenu = null;
+                var currentServices = null;
+                var currentMenus = null;
+                var currentVersion = null;
+                var currentCollection = null;
+                var lastActionFriendlyName = "";
                 function getAppPath() {
                     if (Spiro.appPath.charAt(Spiro.appPath.length - 1) === "/") {
                         return Spiro.appPath.length > 1 ? Spiro.appPath.substring(0, Spiro.appPath.length - 2) : "";
@@ -32,17 +40,25 @@ var Spiro;
                     var sid = object.serviceId();
                     return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
                 }
+                function isSameQuery(object, type, id) {
+                    var sid = object.serviceId();
+                    return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
+                }
                 // exposed for test mocking
                 context.getDomainObject = function (type, id) {
                     var object = new Spiro.DomainObjectRepresentation();
                     object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
-                    return repLoader.populate(object);
+                    return repLoader.populate(object).
+                        then(function (service) {
+                        currentObject = service;
+                        return $q.when(service);
+                    });
                 };
-                // exposed for test mocking
-                var currentObject;
                 context.getService = function (serviceType) {
-                    var delay = $q.defer();
-                    this.getServices().
+                    if (currentObject && isSameObject(currentObject, serviceType)) {
+                        return $q.when(currentObject);
+                    }
+                    return this.getServices().
                         then(function (services) {
                         var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0].value === serviceType; });
                         var service = serviceLink.getTarget();
@@ -50,215 +66,125 @@ var Spiro;
                     }).
                         then(function (service) {
                         currentObject = service;
-                        delay.resolve(service);
-                    }, function (error) { return delay.reject(error); });
-                    return delay.promise;
+                        return $q.when(service);
+                    });
                 };
                 context.getMenu = function (menuId) {
-                    var delay = $q.defer();
-                    context.getMenus().
+                    if (currentMenu) {
+                        return $q.when(currentMenu);
+                    }
+                    return context.getMenus().
                         then(function (menus) {
                         var menuLink = _.find(menus.value().models, function (model) { return model.rel().parms[0].value === menuId; });
                         var menu = menuLink.getTarget();
                         return repLoader.populate(menu);
                     }).
                         then(function (menu) {
-                        delay.resolve(menu);
-                    }, function (error) { return delay.reject(error); });
-                    return delay.promise;
+                        currentMenu = menu;
+                        return $q.when(menu);
+                    });
                 };
-                // tested
                 context.getHome = function () {
-                    var delay = $q.defer();
                     if (currentHome) {
-                        delay.resolve(currentHome);
+                        return $q.when(currentHome);
                     }
-                    else {
-                        repLoader.populate(new Spiro.HomePageRepresentation()).
-                            then(function (home) {
-                            currentHome = home;
-                            delay.resolve(home);
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
+                    return repLoader.populate(new Spiro.HomePageRepresentation()).
+                        then(function (home) {
+                        currentHome = home;
+                        return $q.when(home);
+                    });
                 };
-                var currentServices = null;
-                // tested
                 context.getServices = function () {
-                    var delay = $q.defer();
                     if (currentServices) {
-                        delay.resolve(currentServices);
+                        return $q.when(currentServices);
                     }
-                    else {
-                        this.getHome().
-                            then(function (home) {
-                            var ds = home.getDomainServices();
-                            return repLoader.populate(ds);
-                        }).
-                            then(function (services) {
-                            currentServices = services;
-                            delay.resolve(services);
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
+                    return this.getHome().
+                        then(function (home) {
+                        var ds = home.getDomainServices();
+                        return repLoader.populate(ds);
+                    }).
+                        then(function (services) {
+                        currentServices = services;
+                        $q.when(services);
+                    });
                 };
-                var currentMenus = null;
                 context.getMenus = function () {
-                    var delay = $q.defer();
                     if (currentMenus) {
-                        delay.resolve(currentMenus);
+                        return $q.when(currentMenus);
                     }
-                    else {
-                        this.getHome().
-                            then(function (home) {
-                            var ds = home.getMenus();
-                            return repLoader.populate(ds);
-                        }).
-                            then(function (menus) {
-                            currentMenus = menus;
-                            delay.resolve(menus);
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
+                    return this.getHome().
+                        then(function (home) {
+                        var ds = home.getMenus();
+                        return repLoader.populate(ds);
+                    }).
+                        then(function (menus) {
+                        currentMenus = menus;
+                        return $q.when(currentMenus);
+                    });
                 };
-                var currentVersion = null;
                 context.getVersion = function () {
-                    var delay = $q.defer();
                     if (currentVersion) {
-                        delay.resolve(currentVersion);
+                        return $q.when(currentVersion);
                     }
-                    else {
-                        context.getHome().
-                            then(function (home) {
-                            var v = home.getVersion();
-                            return repLoader.populate(v);
-                        }).
-                            then(function (version) {
-                            currentVersion = version;
-                            delay.resolve(version);
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
+                    return context.getHome().
+                        then(function (home) {
+                        var v = home.getVersion();
+                        return repLoader.populate(v);
+                    }).
+                        then(function (version) {
+                        currentVersion = version;
+                        return $q.when(version);
+                    });
                 };
-                currentObject = null; // tested
                 context.getObject = function (type, id) {
-                    var delay = $q.defer();
                     var oid = _.reduce(id, function (a, v) { return ("" + a + (a ? "-" : "") + v); }, "");
-                    if (currentObject && isSameObject(currentObject, type, oid)) {
-                        delay.resolve(currentObject);
-                    }
-                    else {
-                        var promise = oid ? _this.getDomainObject(type, oid) : _this.getService(type);
-                        promise.then(function (object) {
-                            currentObject = object;
-                            delay.resolve(object);
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
+                    return oid ? _this.getDomainObject(type, oid) : _this.getService(type);
                 };
                 context.getObjectByOid = function (objectId) {
                     var _a = objectId.split("-"), dt = _a[0], id = _a.slice(1);
-                    var delay = $q.defer();
-                    var oid = _.reduce(id, function (a, v) { return ("" + a + (a ? "-" : "") + v); }, "");
-                    if (currentObject && isSameObject(currentObject, dt, oid)) {
-                        delay.resolve(currentObject);
-                    }
-                    else {
-                        var promise = oid ? this.getDomainObject(dt, oid) : this.getService(dt);
-                        promise.then(function (object) {
-                            currentObject = object;
-                            delay.resolve(object);
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
+                    return this.getObject(dt, id);
                 };
-                var currentCollection = null; // tested
-                var lastActionFriendlyName = "";
-                context.getQuery = function (menuId, actionId, parms) {
-                    var _this = this;
-                    var delay = $q.defer();
-                    if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
-                        delay.resolve(currentCollection);
+                var handleResult = function (result) {
+                    if (result.resultType() === "list") {
+                        var resultList = result.result().list();
+                        _this.setCollection(resultList);
+                        return $q.when(currentCollection);
                     }
                     else {
-                        context.getMenu(menuId).then(function (menu) {
-                            var action = menu.actionMember(actionId);
-                            var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
-                            lastActionFriendlyName = action.extensions().friendlyName;
-                            return repLoader.invoke(action, valueParms);
-                        }).then(function (result) {
-                            if (result.resultType() === "list") {
-                                var resultList = result.result().list();
-                                _this.setCollection(resultList);
-                                delay.resolve(currentCollection);
-                            }
-                            else {
-                                delay.reject("expect list");
-                            }
-                        }, function (error) { return delay.reject(error); });
+                        return $q.reject("expect list");
                     }
-                    return delay.promise;
+                };
+                context.setQuery = function (query) {
+                    currentCollection = query;
+                };
+                context.getQuery = function (menuId, actionId, parms) {
+                    if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
+                        return $q.when(currentCollection);
+                    }
+                    return context.getMenu(menuId).
+                        then(function (menu) {
+                        var action = menu.actionMember(actionId);
+                        var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
+                        lastActionFriendlyName = action.extensions().friendlyName;
+                        return repLoader.invoke(action, valueParms);
+                    }).then(handleResult);
                 };
                 context.getQueryFromObject = function (objectId, actionId, parms) {
-                    var _this = this;
-                    var delay = $q.defer();
                     if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
-                        delay.resolve(currentCollection);
+                        return $q.when(currentCollection);
                     }
-                    else {
-                        context.getObjectByOid(objectId).then(function (object) {
-                            var action = object.actionMember(actionId);
-                            var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
-                            lastActionFriendlyName = action.extensions().friendlyName;
-                            return repLoader.invoke(action, valueParms);
-                        }).then(function (result) {
-                            if (result.resultType() === "list") {
-                                var resultList = result.result().list();
-                                _this.setCollection(resultList);
-                                delay.resolve(currentCollection);
-                            }
-                            else {
-                                delay.reject("expect list");
-                            }
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
+                    return context.getObjectByOid(objectId).
+                        then(function (object) {
+                        var action = object.actionMember(actionId);
+                        var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
+                        lastActionFriendlyName = action.extensions().friendlyName;
+                        return repLoader.invoke(action, valueParms);
+                    }).then(handleResult);
                 };
                 context.setObject = function (co) { return currentObject = co; };
-                var currentNestedObject = null;
-                context.getNestedObject = function (type, id) {
-                    var delay = $q.defer();
-                    if (currentNestedObject && isSameObject(currentNestedObject, type, id)) {
-                        delay.resolve(currentNestedObject);
-                    }
-                    else {
-                        var domainObjectRepresentation = new Spiro.DomainObjectRepresentation();
-                        domainObjectRepresentation.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
-                        repLoader.populate(domainObjectRepresentation).
-                            then(function (dor) {
-                            currentNestedObject = dor;
-                            delay.resolve(dor);
-                        }, function (error) { return delay.reject(error); });
-                    }
-                    return delay.promise;
-                };
-                context.setNestedObject = function (cno) { return currentNestedObject = cno; };
                 var currentError = null;
                 context.getError = function () { return currentError; };
                 context.setError = function (e) { return currentError = e; };
-                context.getCollection = function () {
-                    var delay = $q.defer();
-                    delay.resolve(currentCollection);
-                    return delay.promise;
-                };
-                context.setCollection = function (c) { return currentCollection = c; };
-                var currentTransient = null;
-                context.getTransientObject = function () {
-                    var delay = $q.defer();
-                    delay.resolve(currentTransient);
-                    return delay.promise;
-                };
-                context.setTransientObject = function (t) { return currentTransient = t; };
                 var previousUrl = null;
                 context.getPreviousUrl = function () { return previousUrl; };
                 context.setPreviousUrl = function (url) { return previousUrl = url; };

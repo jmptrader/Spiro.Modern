@@ -100,7 +100,7 @@ module Spiro.Angular.Modern {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setCollection(resultList);
+                context.setQuery(resultList);
                 context.setLastActionFriendlyName(action.extensions().friendlyName);
                 urlManager.setQuery(action, dvm);
             }

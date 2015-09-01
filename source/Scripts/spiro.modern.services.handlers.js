@@ -67,8 +67,6 @@ var Spiro;
                         then(function (menus) {
                         $scope.menus = viewModelFactory.menusViewModel(menus);
                         $scope.homeTemplate = Angular.homeTemplate;
-                        context.setObject(null);
-                        context.setNestedObject(null);
                     }).catch(function (error) {
                         setError(error);
                     });
@@ -151,7 +149,6 @@ var Spiro;
                     var _a = routeData.objectId.split("-"), dt = _a[0], id = _a.slice(1);
                     context.getObject(dt, id).
                         then(function (object) {
-                        context.setNestedObject(null);
                         var isTransient = !!object.persistLink();
                         var handler = isTransient ? repHandlers.saveObject : repHandlers.updateObject;
                         var saveHandler = _.partial(handler, $scope, object);
@@ -175,7 +172,7 @@ var Spiro;
                             var action = object.actionMember(routeData.dialogId);
                             $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, action));
                         }
-                    }, function (error) {
+                    }).catch(function (error) {
                         setError(error);
                     });
                 };

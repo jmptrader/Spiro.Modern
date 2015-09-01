@@ -396,48 +396,48 @@ describe('context Service', () => {
             localContext = context;
         }));
 
-        describe('when transient is set', () => {
+        //describe('when transient is set', () => {
 
-            beforeEach(inject($rootScope => {
+        //    beforeEach(inject($rootScope => {
 
-                localContext.setTransientObject(testObject);
+        //        localContext.setTransientObject(testObject);
 
-                runs(() => {
-                    localContext.getTransientObject().then(object => {
-                        result = object;
-                    });
-                    $rootScope.$apply();
-                });
+        //        runs(() => {
+        //            localContext.getTransientObject().then(object => {
+        //                result = object;
+        //            });
+        //            $rootScope.$apply();
+        //        });
 
-                waitsFor(() => !!result, "result not set", 1000);
-            }));
+        //        waitsFor(() => !!result, "result not set", 1000);
+        //    }));
 
-            it('returns transient representation', () => {
-                expect(result).toBe(testObject);
-            });
-        });
+        //    it('returns transient representation', () => {
+        //        expect(result).toBe(testObject);
+        //    });
+        //});
 
-        describe('when transient is not set', () => {
+        //describe('when transient is not set', () => {
 
-            beforeEach(inject($rootScope => {
+        //    beforeEach(inject($rootScope => {
 
-                var getTransientRun = false;
+        //        var getTransientRun = false;
 
-                runs(() => {
-                    localContext.getCollection().then(object => {
-                        result = object;
-                        getTransientRun = true;
-                    });
-                    $rootScope.$apply();
-                });
+        //        runs(() => {
+        //            localContext.getCollection().then(object => {
+        //                result = object;
+        //                getTransientRun = true;
+        //            });
+        //            $rootScope.$apply();
+        //        });
 
-                waitsFor(() => getTransientRun, "result not set", 1000);
-            }));
+        //        waitsFor(() => getTransientRun, "result not set", 1000);
+        //    }));
 
-            it('returns object representation', () => {
-                expect(result).toBeNull();
-            });
-        });
+        //    it('returns object representation', () => {
+        //        expect(result).toBeNull();
+        //    });
+        //});
 
     });
 

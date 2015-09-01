@@ -89,9 +89,6 @@ module Spiro.Angular.Modern {
                 then((menus: MenusRepresentation) => {
                     $scope.menus = viewModelFactory.menusViewModel(menus);
                     $scope.homeTemplate = homeTemplate;
-                    context.setObject(null);
-                    context.setNestedObject(null);
-
                 }).catch(error => {
                     setError(error);
                 });
@@ -196,7 +193,6 @@ module Spiro.Angular.Modern {
 
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
-                    context.setNestedObject(null);
                     const isTransient = !!object.persistLink();
 
                     const handler = isTransient ? repHandlers.saveObject : repHandlers.updateObject;
@@ -226,7 +222,7 @@ module Spiro.Angular.Modern {
                         $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, action));
                     }
 
-                }, error => {
+                }).catch(error => {
                     setError(error);
                 });
 
