@@ -136,7 +136,7 @@ describe('viewModelFactory Service', function () {
         var rawCollection = { size: 0, extensions: { friendlyName: "a title", pluralName: "somethings", elementType: "AdventureWorksModel.Product" }, links: [rawDetailsLink] };
         describe('from collection member rep', function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}, ""), "");
+                // resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}, ""), "");
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");
@@ -151,7 +151,7 @@ describe('viewModelFactory Service', function () {
             beforeEach(inject(function (viewModelFactory) {
                 rawCollection.value = [];
                 rawCollection.links.push(rawSelfLink);
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection), "");
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection), Spiro.Angular.Modern.CollectionViewState.Summary);
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.title).toBe("a title");
@@ -165,7 +165,7 @@ describe('viewModelFactory Service', function () {
         describe('from list rep', function () {
             beforeEach(inject(function (viewModelFactory) {
                 var rawList = { value: [], links: [rawSelfLink] };
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList), "");
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList), Spiro.Angular.Modern.CollectionViewState.Summary);
             }));
             it('creates a dialog view model', function () {
                 expect(resultVm.size).toBe(0);

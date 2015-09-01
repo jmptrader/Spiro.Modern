@@ -6162,6 +6162,23 @@ declare module _ {
         gte(other: any): boolean;
     }
 
+    //_.isArguments
+    interface LoDashStatic {
+        /**
+         * Checks if value is classified as an arguments object.
+         * @param value The value to check.
+         * @return Returns true if value is correctly classified, else false.
+         */
+        isArguments(value?: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * @see _.isArguments
+         */
+        isArguments(): boolean;
+    }
+
     //_.isArray
     interface LoDashStatic {
         /**
@@ -6177,6 +6194,40 @@ declare module _ {
          * @see _.isArray
          */
         isArray(): boolean;
+    }
+
+    //_.isBoolean
+    interface LoDashStatic {
+        /**
+         * Checks if value is classified as a boolean primitive or object.
+         * @param value The value to check.
+         * @return Returns true if value is correctly classified, else false.
+         **/
+        isBoolean(value?: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * @see _.isBoolean
+         */
+        isBoolean(): boolean;
+    }
+
+    //_.isDate
+    interface LoDashStatic {
+        /**
+         * Checks if value is classified as a Date object.
+         * @param value The value to check.
+         * @return Returns true if value is correctly classified, else false.
+         **/
+        isDate(value?: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * @see _.isDate
+         */
+        isDate(): boolean;
     }
 
     //_.isEmpty
@@ -6197,6 +6248,24 @@ declare module _ {
         isEmpty(): boolean;
     }
 
+    //_.isError
+    interface LoDashStatic {
+        /**
+         * Checks if value is an Error, EvalError, RangeError, ReferenceError, SyntaxError, TypeError, or URIError
+         * object.
+         * @param value The value to check.
+         * @return Returns true if value is an error object, else false.
+         */
+        isError(value: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * @see _.isError
+         */
+        isError(): boolean;
+    }
+
     //_.isFinite
     interface LoDashStatic {
         /**
@@ -6213,6 +6282,23 @@ declare module _ {
          * @see _.isFinite
          */
         isFinite(): boolean;
+    }
+
+    //_.isFunction
+    interface LoDashStatic {
+        /**
+         * Checks if value is classified as a Function object.
+         * @param value The value to check.
+         * @return Returns true if value is correctly classified, else false.
+         **/
+        isFunction(value?: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * @see _.isFunction
+         */
+        isFunction(): boolean;
     }
 
     //_.isMatch
@@ -6277,6 +6363,41 @@ declare module _ {
         isNative(): boolean;
     }
 
+    //_.isNull
+    interface LoDashStatic {
+        /**
+         * Checks if value is null.
+         * @param value The value to check.
+         * @return Returns true if value is null, else false.
+         **/
+        isNull(value?: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * see _.isNull
+         */
+        isNull(): boolean;
+    }
+
+    //_.isNumber
+    interface LoDashStatic {
+        /**
+         * Checks if value is classified as a Number primitive or object.
+         * Note: To exclude Infinity, -Infinity, and NaN, which are classified as numbers, use the _.isFinite method.
+         * @param value The value to check.
+         * @return Returns true if value is correctly classified, else false.
+         */
+        isNumber(value?: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * see _.isNumber
+         */
+        isNumber(): boolean;
+    }
+
     //_.isRegExp
     interface LoDashStatic {
         /**
@@ -6292,6 +6413,23 @@ declare module _ {
          * see _.isRegExp
          */
         isRegExp(): boolean;
+    }
+
+    //_.isString
+    interface LoDashStatic {
+        /**
+         * Checks if value is classified as a String primitive or object.
+         * @param value The value to check.
+         * @return Returns true if value is correctly classified, else false.
+         **/
+        isString(value?: any): boolean;
+    }
+
+    interface LoDashWrapperBase<T, TWrapper> {
+        /**
+         * see _.isString
+         */
+        isString(): boolean;
     }
 
     //_.isTypedArray
@@ -6959,36 +7097,6 @@ declare module _ {
         invert(object: any): any;
     }
 
-    //_.isArguments
-    interface LoDashStatic {
-        /**
-        * Checks if value is an arguments object.
-        * @param value The value to check.
-        * @return True if the value is an arguments object, else false.
-        **/
-        isArguments(value?: any): boolean;
-    }
-
-    //_.isBoolean
-    interface LoDashStatic {
-        /**
-        * Checks if value is a boolean value.
-        * @param value The value to check.
-        * @return True if the value is a boolean value, else false.
-        **/
-        isBoolean(value?: any): boolean;
-    }
-
-    //_.isDate
-    interface LoDashStatic {
-        /**
-        * Checks if value is a date.
-        * @param value The value to check.
-        * @return True if the value is a date, else false.
-        **/
-        isDate(value?: any): boolean;
-    }
-
     //_.isElement
     interface LoDashStatic {
         /**
@@ -6997,17 +7105,6 @@ declare module _ {
         * @return True if the value is a DOM element, else false.
         **/
         isElement(value?: any): boolean;
-    }
-
-    //_.isError
-    interface LoDashStatic {
-        /**
-        * Checks if value is an Error, EvalError, RangeError, ReferenceError, SyntaxError, TypeError,
-        * or URIError object.
-        * @param value The value to check.
-        * @return True if value is an error object, else false.
-        */
-        isError(value: any): boolean;
     }
 
     //_.isEqual
@@ -7090,38 +7187,6 @@ declare module _ {
            thisArg?: any): boolean;
     }
 
-    //_.isFunction
-    interface LoDashStatic {
-        /**
-        * Checks if value is a function.
-        * @param value The value to check.
-        * @return True if the value is a function, else false.
-        **/
-        isFunction(value?: any): boolean;
-    }
-
-    //_.isNull
-    interface LoDashStatic {
-        /**
-        * Checks if value is null.
-        * @param value The value to check.
-        * @return True if the value is null, else false.
-        **/
-        isNull(value?: any): boolean;
-    }
-
-    //_.isNumber
-    interface LoDashStatic {
-        /**
-        * Checks if value is a number.
-        *
-        * Note: NaN is considered a number. See http://es5.github.io/#x8.5.
-        * @param value The value to check.
-        * @return True if the value is a number, else false.
-        **/
-        isNumber(value?: any): boolean;
-    }
-
     //_.isObject
     interface LoDashStatic {
         /**
@@ -7141,16 +7206,6 @@ declare module _ {
         * @return True if value is a plain object, else false.
         **/
         isPlainObject(value?: any): boolean;
-    }
-
-    //_.isString
-    interface LoDashStatic {
-        /**
-        * Checks if value is a string.
-        * @param value The value to check.
-        * @return True if the value is a string, else false.
-        **/
-        isString(value?: any): boolean;
     }
 
     //_.keys
@@ -7525,9 +7580,33 @@ declare module _ {
      * String *
      **********/
 
+    //_.camelCase
     interface LoDashStatic {
-        camelCase(str?: string): string;
-        capitalize(str?: string): string;
+        /**
+         * Converts string to camel case.
+         * @param string The string to convert.
+         * @return Returns the camel cased string.
+         */
+        camelCase(string?: string): string;
+    }
+
+    interface LoDashWrapper<T> {
+        /**
+         * @see _.camelCase
+         */
+        camelCase(): string;
+    }
+
+    //_.capitalize
+    interface LoDashStatic {
+        capitalize(string?: string): string;
+    }
+
+    interface LoDashWrapper<T> {
+        /**
+         * @see _.capitalize
+         */
+        capitalize(): string;
     }
 
     //_.deburr
@@ -7548,8 +7627,23 @@ declare module _ {
         deburr(): string;
     }
 
+    //_.endsWith
     interface LoDashStatic {
-        endsWith(str?: string, target?: string, position?: number): boolean;
+        /**
+         * Checks if string ends with the given target string.
+         * @param string The string to search.
+         * @param target The string to search for.
+         * @param position The position to search from.
+         * @return Returns true if string ends with target, else false.
+         */
+        endsWith(string?: string, target?: string, position?: number): boolean;
+    }
+
+    interface LoDashWrapper<T> {
+        /**
+         * @see _.endsWith
+         */
+        endsWith(target?: string, position?: number): boolean;
     }
 
     // _.escape
@@ -7587,8 +7681,21 @@ declare module _ {
         escapeRegExp(): string;
     }
 
+    //_.kebabCase
     interface LoDashStatic {
-        kebabCase(str?: string): string;
+        /**
+         * Converts string to kebab case.
+         * @param string The string to convert.
+         * @return Returns the kebab cased string.
+         */
+        kebabCase(string?: string): string;
+    }
+
+    interface LoDashWrapper<T> {
+        /**
+         * @see _.kebabCase
+         */
+        kebabCase(): string;
     }
 
     interface LoDashStatic {
@@ -7672,8 +7779,22 @@ declare module _ {
         parseInt(radix?: number): number;
     }
 
+    //_.repeat
     interface LoDashStatic {
-        repeat(str?: string, n?: number): string;
+        /**
+         * Repeats the given string n times.
+         * @param string The string to repeat.
+         * @param n The number of times to repeat the string.
+         * @return Returns the repeated string.
+         */
+        repeat(string?: string, n?: number): string;
+    }
+
+    interface LoDashWrapper<T> {
+        /**
+         * @see _.repeat
+         */
+        repeat(n?: number): string;
     }
 
     //_.snakeCase
@@ -7693,8 +7814,21 @@ declare module _ {
         snakeCase(): string;
     }
 
+    //_.startCase
     interface LoDashStatic {
-        startCase(str?: string): string;
+        /**
+         * Converts string to start case.
+         * @param string The string to convert.
+         * @return Returns the start cased string.
+         */
+        startCase(string?: string): string;
+    }
+
+    interface LoDashWrapper<T> {
+        /**
+         * @see _.startCase
+         */
+        startCase(): string;
     }
 
     //_.startsWith
@@ -7816,8 +7950,22 @@ declare module _ {
         unescape(): string;
     }
 
+    //_.words
     interface LoDashStatic {
-        words(str?: string, pattern?: string|RegExp): string[];
+        /**
+         * Splits string into an array of its words.
+         * @param string The string to inspect.
+         * @param pattern The pattern to match words.
+         * @return Returns the words of string.
+         */
+        words(string?: string, pattern?: string|RegExp): string[];
+    }
+
+    interface LoDashWrapper<T> {
+        /**
+         * @see _.words
+         */
+        words(pattern?: string|RegExp): string[];
     }
 
     /***********

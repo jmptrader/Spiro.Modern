@@ -188,7 +188,7 @@ describe('viewModelFactory Service', () => {
 
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
 
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}, ""), "");
+               // resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}, ""), "");
             }));
 
             it('creates a dialog view model', () => {
@@ -207,7 +207,7 @@ describe('viewModelFactory Service', () => {
                 (<any>rawCollection).value = [];
                 (<any>rawCollection).links.push(rawSelfLink);
 
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection), "");
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection), Spiro.Angular.Modern.CollectionViewState.Summary);
             }));
 
             it('creates a dialog view model', () => {
@@ -226,7 +226,7 @@ describe('viewModelFactory Service', () => {
               
                 var rawList = { value: [], links: [rawSelfLink] };
 
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList), "");
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList), Spiro.Angular.Modern.CollectionViewState.Summary);
             }));
 
             it('creates a dialog view model', () => {

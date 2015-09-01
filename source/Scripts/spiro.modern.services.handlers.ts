@@ -17,7 +17,6 @@
 module Spiro.Angular.Modern {
 
     // todo make state enum ?
-    // todo move various flags onto urldata object 
     // todo improve error handling
 
     export interface IHandlers {
@@ -38,15 +37,18 @@ module Spiro.Angular.Modern {
             urlManager.setError();
         }
 
-        // todo fix type here 
+        function setError(error: ErrorRepresentation);
+        function setError(error: ErrorMap);
+
         function setError(error: any) {
-            let errorRep: ErrorRepresentation;
             if (error instanceof ErrorRepresentation) {
-                errorRep = <ErrorRepresentation>error;
-            } else {
-                errorRep = new ErrorRepresentation({ message: "an unrecognised error has occurred" });
+                context.setError(error);
             }
-            context.setError(errorRep);
+            if (error instanceof ErrorMap) {
+                let em = <ErrorMap>error;
+                const errorRep = new ErrorRepresentation({ message: `unexpected error map ${em.warningMessage}` });
+                context.setError(errorRep);
+            }
             urlManager.setError();
         }
 
@@ -119,7 +121,7 @@ module Spiro.Angular.Modern {
 
             promise.
                 then((list: ListRepresentation) => {
-                    $scope.queryTemplate = routeData.state === "list" ? queryListTemplate : queryTableTemplate;
+                    $scope.queryTemplate = routeData.state === CollectionViewState.List ? queryListTemplate : queryTableTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel(list, routeData.state);
                     $scope.title = context.getLastActionFriendlyName();
                 }).catch( error => {

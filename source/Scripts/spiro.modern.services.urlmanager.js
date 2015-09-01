@@ -78,28 +78,12 @@ var Spiro;
                     }
                     $location.search(search);
                 };
-                helper.setCollectionSummary = function (collection) {
+                helper.setCollectionState = function (collection, state) {
                     if (collection instanceof Spiro.CollectionMember) {
-                        setSearch("collection1_" + collection.collectionId(), "summary", false);
+                        setSearch("collection1_" + collection.collectionId(), Modern.CollectionViewState[state], false);
                     }
                     else {
-                        setSearch("collection1", "summary", false);
-                    }
-                };
-                helper.setCollectionList = function (collection) {
-                    if (collection instanceof Spiro.CollectionMember) {
-                        setSearch("collection1_" + collection.collectionId(), "list", false);
-                    }
-                    else {
-                        setSearch("collection1", "list", false);
-                    }
-                };
-                helper.setCollectionTable = function (collection) {
-                    if (collection instanceof Spiro.CollectionMember) {
-                        setSearch("collection1_" + collection.collectionId(), "table", false);
-                    }
-                    else {
-                        setSearch("collection1", "table", false);
+                        setSearch("collection1", Modern.CollectionViewState[state], false);
                     }
                 };
                 helper.setObjectEdit = function (edit) {
@@ -115,10 +99,11 @@ var Spiro;
                     routeData.pane1.objectId = $routeParams.object1;
                     var collIds = _.pick($routeParams, function (v, k) { return k.indexOf("collection1") === 0; });
                     //missing from lodash types :-( 
-                    routeData.pane1.collections = _.mapKeys(collIds, function (v, k) { return k.substr(k.indexOf("_") + 1); });
+                    var keysMapped = _.mapKeys(collIds, function (v, k) { return k.substr(k.indexOf("_") + 1); });
+                    routeData.pane1.collections = _.mapValues(keysMapped, function (v) { return Modern.CollectionViewState[v]; });
                     routeData.pane1.edit = $routeParams.edit1 === "true";
                     routeData.pane1.actionId = $routeParams.action1;
-                    routeData.pane1.state = $routeParams.collection1 || "list";
+                    routeData.pane1.state = $routeParams.collection1 ? Modern.CollectionViewState[$routeParams.collection1] : Modern.CollectionViewState.List;
                     // todo make parm ids dictionary same as collections ids ? 
                     var parmIds = _.pick($routeParams, function (v, k) { return k.indexOf("parm1") === 0; });
                     routeData.pane1.parms = _.map(parmIds, function (v, k) { return { id: k.substr(k.indexOf("_") + 1), val: v }; });

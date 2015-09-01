@@ -16,6 +16,12 @@
 
 module Spiro.Angular.Modern {
 
+    export enum CollectionViewState {
+        Summary, 
+        List,
+        Table
+    }
+
     export class RouteData {
         constructor() {
             this.pane1 = new PaneRouteData();
@@ -30,10 +36,10 @@ module Spiro.Angular.Modern {
         objectId : string;
         menuId : string;
         dialogId: string;
-        collections : _.Dictionary<string>;
+        collections: _.Dictionary<CollectionViewState>;
         edit: boolean;
         actionId: string;
-        state: string;
+        state: CollectionViewState;
         // todo make parm ids dictionary same as collections ids ? 
         parms: { id: string; val: string }[];
     }

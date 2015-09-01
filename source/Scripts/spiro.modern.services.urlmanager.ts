@@ -21,8 +21,6 @@ module Spiro.Angular.Modern {
         getRouteData(): RouteData;
 
         setError();
-
-
         setMenu(menuId: string);
         setDialog(id: string);
         closeDialog();
@@ -33,12 +31,8 @@ module Spiro.Angular.Modern {
 
         toggleObjectMenu(): void;
 
-        setCollectionSummary(collection: CollectionMember);
-        setCollectionList(collection: CollectionMember);
-        setCollectionTable(collection: CollectionMember);
-        setCollectionSummary(collection: ListRepresentation);
-        setCollectionList(collection: ListRepresentation);
-        setCollectionTable(collection: ListRepresentation);
+        setCollectionState(collection: CollectionMember, state: CollectionViewState);
+        setCollectionState(collection: ListRepresentation, state: CollectionViewState);
 
         setObjectEdit(edit: boolean);
     }
@@ -118,27 +112,15 @@ module Spiro.Angular.Modern {
 
             $location.search(search);
         };
-        helper.setCollectionSummary = (collection: any) => {
+
+        helper.setCollectionState = (collection: any, state: CollectionViewState) => {
             if (collection instanceof CollectionMember) {
-                setSearch(`collection1_${collection.collectionId()}`, "summary", false);
+                setSearch(`collection1_${collection.collectionId() }`, CollectionViewState[state], false);
             } else {
-                setSearch("collection1", "summary", false);
+                setSearch("collection1", CollectionViewState[state], false);
             }
         };
-        helper.setCollectionList = (collection: any) => {
-            if (collection instanceof CollectionMember) {
-                setSearch(`collection1_${collection.collectionId()}`, "list", false);
-            } else {
-                setSearch("collection1", "list", false);
-            }
-        };
-        helper.setCollectionTable = (collection: any) => {
-            if (collection instanceof CollectionMember) {
-                setSearch(`collection1_${collection.collectionId()}`, "table", false);
-            } else {
-                setSearch("collection1", "table", false);
-            }
-        };
+      
         helper.setObjectEdit = (edit: boolean) => {
             setSearch("edit1", edit.toString(), false);
         };
@@ -153,14 +135,15 @@ module Spiro.Angular.Modern {
             routeData.pane1.dialogId = $routeParams.dialog1;
             routeData.pane1.objectId = $routeParams.object1;
 
-            var collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf("collection1") === 0);
+            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf("collection1") === 0);
             //missing from lodash types :-( 
-            routeData.pane1.collections = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
+            const keysMapped : _.Dictionary<string>  = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
+            routeData.pane1.collections = _.mapValues(keysMapped, (v) => CollectionViewState[v] );
 
             routeData.pane1.edit = $routeParams.edit1 === "true";
 
             routeData.pane1.actionId = $routeParams.action1;
-            routeData.pane1.state = $routeParams.collection1 || "list";
+            routeData.pane1.state = $routeParams.collection1 ? CollectionViewState[$routeParams.collection1] : CollectionViewState.List;
 
             // todo make parm ids dictionary same as collections ids ? 
             var parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf("parm1") === 0);

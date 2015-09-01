@@ -70,9 +70,10 @@ var Spiro;
                     });
                 };
                 context.getMenu = function (menuId) {
-                    if (currentMenu) {
-                        return $q.when(currentMenu);
-                    }
+                    // todo fix menu id
+                    //if (currentMenu && currentMenu.menuId == menuId) {
+                    //    return $q.when(currentMenu);
+                    //}
                     return context.getMenus().
                         then(function (menus) {
                         var menuLink = _.find(menus.value().models, function (model) { return model.rel().parms[0].value === menuId; });

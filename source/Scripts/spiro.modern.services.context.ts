@@ -107,9 +107,10 @@ module Spiro.Angular.Modern {
 
         context.getMenu = (menuId: string): ng.IPromise<MenuRepresentation> => {
 
-            if (currentMenu) {
-                return $q.when(currentMenu);
-            }
+            // todo fix menu id
+            //if (currentMenu && currentMenu.menuId == menuId) {
+            //    return $q.when(currentMenu);
+            //}
 
             return context.getMenus().
                 then((menus: MenusRepresentation) => {

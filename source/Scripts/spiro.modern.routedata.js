@@ -17,6 +17,12 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
+            (function (CollectionViewState) {
+                CollectionViewState[CollectionViewState["Summary"] = 0] = "Summary";
+                CollectionViewState[CollectionViewState["List"] = 1] = "List";
+                CollectionViewState[CollectionViewState["Table"] = 2] = "Table";
+            })(Modern.CollectionViewState || (Modern.CollectionViewState = {}));
+            var CollectionViewState = Modern.CollectionViewState;
             var RouteData = (function () {
                 function RouteData() {
                     this.pane1 = new PaneRouteData();

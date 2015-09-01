@@ -25,16 +25,15 @@ var Spiro;
                     context.setError(errorRep);
                     urlManager.setError();
                 }
-                // todo fix type here 
                 function setError(error) {
-                    var errorRep;
                     if (error instanceof Spiro.ErrorRepresentation) {
-                        errorRep = error;
+                        context.setError(error);
                     }
-                    else {
-                        errorRep = new Spiro.ErrorRepresentation({ message: "an unrecognised error has occurred" });
+                    if (error instanceof Spiro.ErrorMap) {
+                        var em = error;
+                        var errorRep = new Spiro.ErrorRepresentation({ message: "unexpected error map " + em.warningMessage });
+                        context.setError(errorRep);
                     }
-                    context.setError(errorRep);
                     urlManager.setError();
                 }
                 function cacheRecentlyViewed(object) {
@@ -91,7 +90,7 @@ var Spiro;
                         context.getQuery(routeData.menuId, routeData.actionId, routeData.parms);
                     promise.
                         then(function (list) {
-                        $scope.queryTemplate = routeData.state === "list" ? Angular.queryListTemplate : Angular.queryTableTemplate;
+                        $scope.queryTemplate = routeData.state === Modern.CollectionViewState.List ? Angular.queryListTemplate : Angular.queryTableTemplate;
                         $scope.collection = viewModelFactory.collectionViewModel(list, routeData.state);
                         $scope.title = context.getLastActionFriendlyName();
                     }).catch(function (error) {

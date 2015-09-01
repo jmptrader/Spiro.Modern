@@ -323,12 +323,12 @@ var Spiro;
                     collectionViewModel.pluralName = collectionRep.extensions().pluralName;
                     //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
                     collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === "table");
+                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === Modern.CollectionViewState.Table);
                     switch (state) {
-                        case "list":
+                        case Modern.CollectionViewState.List:
                             collectionViewModel.template = Angular.collectionListTemplate;
                             break;
-                        case "table":
+                        case Modern.CollectionViewState.Table:
                             collectionViewModel.template = Angular.collectionTableTemplate;
                             break;
                         default:
@@ -336,7 +336,7 @@ var Spiro;
                     }
                     return collectionViewModel;
                 }
-                function createFromDetails(collectionRep, state, populateItems) {
+                function createFromDetails(collectionRep, state) {
                     var collectionViewModel = new Modern.CollectionViewModel();
                     var links = collectionRep.value().models;
                     collectionViewModel.title = collectionRep.extensions().friendlyName;
@@ -344,32 +344,32 @@ var Spiro;
                     collectionViewModel.pluralName = collectionRep.extensions().pluralName;
                     //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
                     collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === "table");
+                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === Modern.CollectionViewState.Table);
                     return collectionViewModel;
                 }
-                function createFromList(listRep, state, populateItems) {
+                function createFromList(listRep, state) {
                     var collectionViewModel = new Modern.CollectionViewModel();
                     var links = listRep.value().models;
                     collectionViewModel.size = links.length;
                     collectionViewModel.pluralName = "Objects";
-                    collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), state === "table");
+                    collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), state === Modern.CollectionViewState.Table);
                     return collectionViewModel;
                 }
-                viewModelFactory.collectionViewModel = function (collection, state, populateItems) {
+                viewModelFactory.collectionViewModel = function (collection, state) {
                     var collectionVm = null;
                     if (collection instanceof Spiro.CollectionMember) {
                         collectionVm = create(collection, state);
                     }
                     if (collection instanceof Spiro.CollectionRepresentation) {
-                        collectionVm = createFromDetails(collection, state, populateItems);
+                        collectionVm = createFromDetails(collection, state);
                     }
                     if (collection instanceof Spiro.ListRepresentation) {
-                        collectionVm = createFromList(collection, state, populateItems);
+                        collectionVm = createFromList(collection, state);
                     }
                     if (collectionVm) {
-                        collectionVm.doSummary = function () { return urlManager.setCollectionSummary(collection); };
-                        collectionVm.doList = function () { return urlManager.setCollectionList(collection); };
-                        collectionVm.doTable = function () { return urlManager.setCollectionTable(collection); };
+                        collectionVm.doSummary = function () { return urlManager.setCollectionState(collection, Modern.CollectionViewState.Summary); };
+                        collectionVm.doList = function () { return urlManager.setCollectionState(collection, Modern.CollectionViewState.List); };
+                        collectionVm.doTable = function () { return urlManager.setCollectionState(collection, Modern.CollectionViewState.Table); };
                     }
                     return collectionVm;
                 };
