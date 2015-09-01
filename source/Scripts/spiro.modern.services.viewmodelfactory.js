@@ -284,7 +284,7 @@ var Spiro;
                     }
                     if (propertyRep.isScalar()) {
                         var remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
-                        var localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
+                        var localFilter = mask.toLocalFilter(remoteMask);
                         if (localFilter) {
                             propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                         }

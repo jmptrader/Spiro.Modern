@@ -318,13 +318,15 @@ var Spiro;
                         $scope.object = ovm;
                         // also put on root so appbar can see
                         $scope.$parent.object = ovm;
-                        $scope.objectTemplate = Angular.objectTemplate;
-                        $scope.actionsTemplate = menuId ? Angular.actionsTemplate : Angular.nullTemplate;
-                        $scope.propertiesTemplate = edit || isTransient ? Angular.editPropertiesTemplate : Angular.viewPropertiesTemplate;
-                        $scope.collectionsTemplate = Angular.collectionsTemplate;
                         if (edit || isTransient) {
-                            $scope.actionsTemplate = "";
+                            $scope.objectTemplate = Angular.objectEditTemplate;
+                            $scope.actionsTemplate = Angular.nullTemplate;
                         }
+                        else {
+                            $scope.objectTemplate = Angular.objectViewTemplate;
+                            $scope.actionsTemplate = menuId ? Angular.actionsTemplate : Angular.nullTemplate;
+                        }
+                        $scope.collectionsTemplate = Angular.collectionsTemplate;
                         // cache
                         cacheRecentlyViewed(object);
                         if (dialogId) {

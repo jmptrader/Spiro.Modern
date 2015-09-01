@@ -415,14 +415,15 @@ module Spiro.Angular.Modern {
                     // also put on root so appbar can see
                     $scope.$parent.object = ovm;
 
-                    $scope.objectTemplate =   objectTemplate;
-                    $scope.actionsTemplate = menuId ? actionsTemplate : nullTemplate;
-                    $scope.propertiesTemplate = edit || isTransient ? editPropertiesTemplate :  viewPropertiesTemplate;
-                    $scope.collectionsTemplate = collectionsTemplate;
-
                     if (edit || isTransient) {
-                        $scope.actionsTemplate = "";
+                        $scope.objectTemplate = objectEditTemplate;
+                        $scope.actionsTemplate = nullTemplate;
+                    } else {
+                        $scope.objectTemplate = objectViewTemplate;
+                        $scope.actionsTemplate = menuId ? actionsTemplate : nullTemplate;
                     }
+
+                    $scope.collectionsTemplate = collectionsTemplate;
 
                     // cache
                     cacheRecentlyViewed(object);
