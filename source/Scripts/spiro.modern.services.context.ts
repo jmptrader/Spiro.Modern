@@ -24,33 +24,41 @@ module Spiro.Angular.Modern {
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (objectId : string) => ng.IPromise<DomainObjectRepresentation>;
-        setObject: (object: DomainObjectRepresentation) => void;
+        
         getError: () => ErrorRepresentation;
-        setError: (object: ErrorRepresentation) => void;
+      
         getPreviousUrl: () => string;
-        setPreviousUrl: (url: string) => void;
+        
         getSelectedChoice: (parm: string, search: string) => ChoiceViewModel[];
-        clearSelectedChoice: (parm: string) => void;
-        setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
+       
         getQuery: (menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
         getQueryFromObject: (objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
         getLastActionFriendlyName : () => string;
-        setLastActionFriendlyName: (fn : string) => void;
-        setQuery(listRepresentation: ListRepresentation);
+      
 
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
-        setResult(action: ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel);
-        setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
+      
         invokeAction(action: ActionMember, dvm?: DialogViewModel);
         updateObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
 
+        setError: (object: ErrorRepresentation) => void;
+        clearSelectedChoice: (parm: string) => void;
+        setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
     }
 
     interface IContextInternal extends IContext {
         getDomainObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         getService: (type: string) => ng.IPromise<DomainObjectRepresentation>;
+
+        setObject: (object: DomainObjectRepresentation) => void;
+           
+        setLastActionFriendlyName: (fn : string) => void;
+        setQuery(listRepresentation: ListRepresentation);
+        setResult(action: ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel);
+        setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
+        setPreviousUrl: (url: string) => void;
     }
 
     app.service("context", function ($q: ng.IQService, repLoader: IRepLoader, urlManager, $cacheFactory: ng.ICacheFactoryService) {
@@ -279,7 +287,9 @@ module Spiro.Angular.Modern {
             selectedChoice[parm][search] = selectedChoice[parm][search] || [];
             selectedChoice[parm][search].push(cvm);
         };
+
         context.clearSelectedChoice = (parm: string) => selectedChoice[parm] = null;
+
         context.getLastActionFriendlyName = () => {
             return lastActionFriendlyName;
         };
@@ -289,38 +299,29 @@ module Spiro.Angular.Modern {
 
         // from rh
 
-        context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]> => {
+        const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) => {
+            const delay = $q.defer<ChoiceViewModel[]>();
 
+            const cvms = _.map(p.choices(), (v, k) => {
+                return ChoiceViewModel.create(v, id, k, searchTerm);
+            });
+
+            delay.resolve(cvms);
+            return delay.promise;
+        }
+
+        context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]> => {
             promptRep.reset();
             promptRep.setSearchTerm(searchTerm);
-
-            return repLoader.populate(promptRep, true).then((p: PromptRepresentation) => {
-                const delay = $q.defer<ChoiceViewModel[]>();
-
-                const cvms = _.map(p.choices(), (v, k) => {
-                    return ChoiceViewModel.create(v, id, k, searchTerm);
-                });
-
-                delay.resolve(cvms);
-                return delay.promise;
-            });
+            const createcvm = <(p: PromptRepresentation) => angular.IPromise<Modern.ChoiceViewModel[]>>(_.partial(createChoiceViewModels, id, searchTerm));
+            return repLoader.populate(promptRep, true).then(createcvm);
         };
 
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]> => {
-
             promptRep.reset();
             promptRep.setArguments(args);
-
-            return repLoader.populate(promptRep, true).then((p: PromptRepresentation) => {
-                const delay = $q.defer<ChoiceViewModel[]>();
-
-                const cvms = _.map(p.choices(), (v, k) => {
-                    return ChoiceViewModel.create(v, id, k);
-                });
-
-                delay.resolve(cvms);
-                return delay.promise;
-            });
+            const createcvm = <(p: PromptRepresentation) => angular.IPromise<Modern.ChoiceViewModel[]>>(_.partial(createChoiceViewModels, id, null));
+            return repLoader.populate(promptRep, true).then(createcvm);
         };
 
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel) => {
@@ -340,16 +341,13 @@ module Spiro.Angular.Modern {
                 resultObject.hateoasUrl = `/${domainType}/0`;
 
                 context.setObject(resultObject);
-
-                //context.setPreviousUrl($location.path());
-                //$location.path(urlHelper.toTransientObjectPath(resultObject));
                 urlManager.setObject(resultObject);
             }
 
             // persistent object
             if (result.resultType() === "object" && !resultObject.persistLink()) {
 
-                // set the nested object here and then update the url. That should reload the page but pick up this object 
+                // set the object here and then update the url. That should reload the page but pick up this object 
                 // so we don't hit the server again. 
 
                 context.setObject(resultObject);
@@ -404,7 +402,8 @@ module Spiro.Angular.Modern {
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
                     context.setResult(action, result, dvm);
-                }, (error: any) => {
+                }).
+                catch((error: any) => {
                     context.setInvokeUpdateError(error, parameters, dvm);
                 });
         };
@@ -427,7 +426,8 @@ module Spiro.Angular.Modern {
 
                     context.setObject(updatedObject);
                     urlManager.setObject(updatedObject);
-                }, (error: any) => {
+                }).
+                catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);
                 });
         };
@@ -440,18 +440,12 @@ module Spiro.Angular.Modern {
 
             repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    context.setObject(updatedObject);
-                    //$location.path(urlHelper.toObjectPath(updatedObject));
-                }, (error: any) => {
+                    context.setObject(updatedObject);                
+                }).
+                catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);
                 });
         };
-
-
-
-
-
-
 
     });
 

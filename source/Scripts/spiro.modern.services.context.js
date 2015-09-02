@@ -204,29 +204,25 @@ var Spiro;
                     lastActionFriendlyName = fn;
                 };
                 // from rh
+                var createChoiceViewModels = function (id, searchTerm, p) {
+                    var delay = $q.defer();
+                    var cvms = _.map(p.choices(), function (v, k) {
+                        return Modern.ChoiceViewModel.create(v, id, k, searchTerm);
+                    });
+                    delay.resolve(cvms);
+                    return delay.promise;
+                };
                 context.prompt = function (promptRep, id, searchTerm) {
                     promptRep.reset();
                     promptRep.setSearchTerm(searchTerm);
-                    return repLoader.populate(promptRep, true).then(function (p) {
-                        var delay = $q.defer();
-                        var cvms = _.map(p.choices(), function (v, k) {
-                            return Modern.ChoiceViewModel.create(v, id, k, searchTerm);
-                        });
-                        delay.resolve(cvms);
-                        return delay.promise;
-                    });
+                    var createcvm = (_.partial(createChoiceViewModels, id, searchTerm));
+                    return repLoader.populate(promptRep, true).then(createcvm);
                 };
                 context.conditionalChoices = function (promptRep, id, args) {
                     promptRep.reset();
                     promptRep.setArguments(args);
-                    return repLoader.populate(promptRep, true).then(function (p) {
-                        var delay = $q.defer();
-                        var cvms = _.map(p.choices(), function (v, k) {
-                            return Modern.ChoiceViewModel.create(v, id, k);
-                        });
-                        delay.resolve(cvms);
-                        return delay.promise;
-                    });
+                    var createcvm = (_.partial(createChoiceViewModels, id, null));
+                    return repLoader.populate(promptRep, true).then(createcvm);
                 };
                 context.setResult = function (action, result, dvm) {
                     if (result.result().isNull() && result.resultType() !== "void") {
@@ -242,13 +238,11 @@ var Spiro;
                         resultObject.set("instanceId", "0");
                         resultObject.hateoasUrl = "/" + domainType + "/0";
                         context.setObject(resultObject);
-                        //context.setPreviousUrl($location.path());
-                        //$location.path(urlHelper.toTransientObjectPath(resultObject));
                         urlManager.setObject(resultObject);
                     }
                     // persistent object
                     if (result.resultType() === "object" && !resultObject.persistLink()) {
-                        // set the nested object here and then update the url. That should reload the page but pick up this object 
+                        // set the object here and then update the url. That should reload the page but pick up this object 
                         // so we don't hit the server again. 
                         context.setObject(resultObject);
                         urlManager.setObject(resultObject, true);
@@ -296,7 +290,8 @@ var Spiro;
                     repLoader.populate(invoke, true).
                         then(function (result) {
                         context.setResult(action, result, dvm);
-                    }, function (error) {
+                    }).
+                        catch(function (error) {
                         context.setInvokeUpdateError(error, parameters, dvm);
                     });
                 };
@@ -313,7 +308,8 @@ var Spiro;
                         $cacheFactory.get("$http").remove(updatedObject.url());
                         context.setObject(updatedObject);
                         urlManager.setObject(updatedObject);
-                    }, function (error) {
+                    }).
+                        catch(function (error) {
                         context.setInvokeUpdateError(error, properties, ovm);
                     });
                 };
@@ -324,8 +320,8 @@ var Spiro;
                     repLoader.populate(persist, true, new Spiro.DomainObjectRepresentation()).
                         then(function (updatedObject) {
                         context.setObject(updatedObject);
-                        //$location.path(urlHelper.toObjectPath(updatedObject));
-                    }, function (error) {
+                    }).
+                        catch(function (error) {
                         context.setInvokeUpdateError(error, properties, ovm);
                     });
                 };
