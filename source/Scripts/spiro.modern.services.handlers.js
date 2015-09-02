@@ -73,12 +73,12 @@ var Spiro;
                         context.getMenu(routeData.menuId).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
-                            var actions = { actions: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return repHandlers.invokeAction(am); }); }) };
+                            var actions = { actions: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return context.invokeAction(am); }); }) };
                             $scope.object = actions;
                             if (routeData.dialogId) {
                                 $scope.dialogTemplate = Angular.dialogTemplate;
                                 var action = menu.actionMember(routeData.dialogId);
-                                $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, action));
+                                $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(context.invokeAction, action));
                             }
                         }).catch(function (error) {
                             setError(error);
@@ -149,7 +149,7 @@ var Spiro;
                     context.getObject(dt, id).
                         then(function (object) {
                         var isTransient = !!object.persistLink();
-                        var handler = isTransient ? repHandlers.saveObject : repHandlers.updateObject;
+                        var handler = isTransient ? context.saveObject : context.updateObject;
                         var saveHandler = _.partial(handler, $scope, object);
                         var ovm = viewModelFactory.domainObjectViewModel(object, routeData.collections, saveHandler);
                         $scope.object = ovm;
@@ -169,7 +169,7 @@ var Spiro;
                         if (routeData.dialogId) {
                             $scope.dialogTemplate = Angular.dialogTemplate;
                             var action = object.actionMember(routeData.dialogId);
-                            $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(repHandlers.invokeAction, action));
+                            $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(context.invokeAction, action));
                         }
                     }).catch(function (error) {
                         setError(error);

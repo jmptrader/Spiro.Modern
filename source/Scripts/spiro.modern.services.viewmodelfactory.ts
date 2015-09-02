@@ -135,12 +135,12 @@ module Spiro.Angular.Modern{
 
                 var promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
-                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.prompt, promptRep, id);
+                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);
                     parmViewModel.minLength = parmRep.promptLink().extensions().minLength;
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.conditionalChoices, promptRep, id);
+                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
                     parmViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
@@ -344,12 +344,12 @@ module Spiro.Angular.Modern{
                 var promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 if (propertyViewModel.hasPrompt) {         
-                    propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.prompt, promptRep, id);
+                    propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);
                     propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength;
                 } 
 
                 if (propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(repHandlers.conditionalChoices, promptRep, id);
+                    propertyViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
                     propertyViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
                 }
             }
@@ -367,7 +367,7 @@ module Spiro.Angular.Modern{
 
             if (propertyRep.isScalar()) {
                 var remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
-                var localFilter = mask.toLocalFilter(remoteMask) /*|| mask.defaultLocalFilter(propertyRep.extensions().format)*/;
+                var localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
                 if (localFilter) {
                     propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                 }
@@ -545,7 +545,7 @@ module Spiro.Angular.Modern{
 
             objectViewModel.properties = _.map(properties, (property, id?) => { return viewModelFactory.propertyViewModel(property, id); });
             objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()] ); });
-            objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, () => repHandlers.invokeAction(action)); });
+            objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, () => context.invokeAction(action)); });
 
             objectViewModel.toggleActionMenu = () => {
                 urlManager.toggleObjectMenu();

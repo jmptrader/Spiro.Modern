@@ -18,7 +18,7 @@ var Spiro;
     (function (Angular) {
         var Modern;
         (function (Modern) {
-            Angular.app.service("context", function ($q, repLoader) {
+            Angular.app.service("context", function ($q, repLoader, urlManager, $cacheFactory) {
                 var _this = this;
                 var context = this;
                 // cached values
@@ -202,6 +202,132 @@ var Spiro;
                 };
                 context.setLastActionFriendlyName = function (fn) {
                     lastActionFriendlyName = fn;
+                };
+                // from rh
+                context.prompt = function (promptRep, id, searchTerm) {
+                    promptRep.reset();
+                    promptRep.setSearchTerm(searchTerm);
+                    return repLoader.populate(promptRep, true).then(function (p) {
+                        var delay = $q.defer();
+                        var cvms = _.map(p.choices(), function (v, k) {
+                            return Modern.ChoiceViewModel.create(v, id, k, searchTerm);
+                        });
+                        delay.resolve(cvms);
+                        return delay.promise;
+                    });
+                };
+                context.conditionalChoices = function (promptRep, id, args) {
+                    promptRep.reset();
+                    promptRep.setArguments(args);
+                    return repLoader.populate(promptRep, true).then(function (p) {
+                        var delay = $q.defer();
+                        var cvms = _.map(p.choices(), function (v, k) {
+                            return Modern.ChoiceViewModel.create(v, id, k);
+                        });
+                        delay.resolve(cvms);
+                        return delay.promise;
+                    });
+                };
+                context.setResult = function (action, result, dvm) {
+                    if (result.result().isNull() && result.resultType() !== "void") {
+                        if (dvm) {
+                            dvm.message = "no result found";
+                        }
+                        return;
+                    }
+                    var resultObject = result.result().object(); // transient object
+                    if (result.resultType() === "object" && resultObject.persistLink()) {
+                        var domainType = resultObject.extensions().domainType;
+                        resultObject.set("domainType", domainType);
+                        resultObject.set("instanceId", "0");
+                        resultObject.hateoasUrl = "/" + domainType + "/0";
+                        context.setObject(resultObject);
+                        //context.setPreviousUrl($location.path());
+                        //$location.path(urlHelper.toTransientObjectPath(resultObject));
+                        urlManager.setObject(resultObject);
+                    }
+                    // persistent object
+                    if (result.resultType() === "object" && !resultObject.persistLink()) {
+                        // set the nested object here and then update the url. That should reload the page but pick up this object 
+                        // so we don't hit the server again. 
+                        context.setObject(resultObject);
+                        urlManager.setObject(resultObject, true);
+                    }
+                    if (result.resultType() === "list") {
+                        var resultList = result.result().list();
+                        context.setQuery(resultList);
+                        context.setLastActionFriendlyName(action.extensions().friendlyName);
+                        urlManager.setQuery(action, dvm);
+                    }
+                };
+                context.setInvokeUpdateError = function (error, vms, vm) {
+                    if (error instanceof Spiro.ErrorMap) {
+                        _.each(vms, function (vmi) {
+                            var errorValue = error.valuesMap()[vmi.id];
+                            if (errorValue) {
+                                vmi.value = errorValue.value.toValueString();
+                                vmi.message = errorValue.invalidReason;
+                            }
+                        });
+                        if (vm) {
+                            vm.message = error.invalidReason();
+                        }
+                    }
+                    else if (error instanceof Spiro.ErrorRepresentation) {
+                        context.setError(error);
+                        urlManager.setError();
+                    }
+                    else {
+                        if (vm) {
+                            vm.message = error;
+                        }
+                    }
+                };
+                // todo this code is nearly duplicated in context - DRY it
+                context.invokeAction = function (action, dvm) {
+                    var invoke = action.getInvoke();
+                    var parameters = [];
+                    if (dvm) {
+                        dvm.clearMessages();
+                        parameters = dvm.parameters;
+                        _.each(parameters, function (parm) { return invoke.setParameter(parm.id, parm.getValue()); });
+                        _.each(parameters, function (parm) { return parm.setSelectedChoice(); });
+                    }
+                    repLoader.populate(invoke, true).
+                        then(function (result) {
+                        context.setResult(action, result, dvm);
+                    }, function (error) {
+                        context.setInvokeUpdateError(error, parameters, dvm);
+                    });
+                };
+                context.updateObject = function ($scope, object, ovm) {
+                    var update = object.getUpdateMap();
+                    var properties = _.filter(ovm.properties, function (property) { return property.isEditable; });
+                    _.each(properties, function (property) { return update.setProperty(property.id, property.getValue()); });
+                    repLoader.populate(update, true, new Spiro.DomainObjectRepresentation()).
+                        then(function (updatedObject) {
+                        // This is a kludge because updated object has no self link.
+                        var rawLinks = object.get("links");
+                        updatedObject.set("links", rawLinks);
+                        // remove pre-changed object from cache
+                        $cacheFactory.get("$http").remove(updatedObject.url());
+                        context.setObject(updatedObject);
+                        urlManager.setObject(updatedObject);
+                    }, function (error) {
+                        context.setInvokeUpdateError(error, properties, ovm);
+                    });
+                };
+                context.saveObject = function ($scope, object, ovm) {
+                    var persist = object.getPersistMap();
+                    var properties = _.filter(ovm.properties, function (property) { return property.isEditable; });
+                    _.each(properties, function (property) { return persist.setMember(property.id, property.getValue()); });
+                    repLoader.populate(persist, true, new Spiro.DomainObjectRepresentation()).
+                        then(function (updatedObject) {
+                        context.setObject(updatedObject);
+                        //$location.path(urlHelper.toObjectPath(updatedObject));
+                    }, function (error) {
+                        context.setInvokeUpdateError(error, properties, ovm);
+                    });
                 };
             });
         })(Modern = Angular.Modern || (Angular.Modern = {}));

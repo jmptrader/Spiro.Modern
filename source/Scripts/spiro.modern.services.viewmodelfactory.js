@@ -91,11 +91,11 @@ var Spiro;
                     if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                         var promptRep = parmRep.getPrompts();
                         if (parmViewModel.hasPrompt) {
-                            parmViewModel.prompt = _.partial(repHandlers.prompt, promptRep, id);
+                            parmViewModel.prompt = _.partial(context.prompt, promptRep, id);
                             parmViewModel.minLength = parmRep.promptLink().extensions().minLength;
                         }
                         if (parmViewModel.hasConditionalChoices) {
-                            parmViewModel.conditionalChoices = _.partial(repHandlers.conditionalChoices, promptRep, id);
+                            parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id);
                             parmViewModel.arguments = _.object(_.map(parmRep.promptLink().arguments(), function (v, key) { return [key, new Spiro.Value(v.value)]; }));
                         }
                     }
@@ -265,11 +265,11 @@ var Spiro;
                     if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
                         var promptRep = propertyRep.getPrompts();
                         if (propertyViewModel.hasPrompt) {
-                            propertyViewModel.prompt = _.partial(repHandlers.prompt, promptRep, id);
+                            propertyViewModel.prompt = _.partial(context.prompt, promptRep, id);
                             propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength;
                         }
                         if (propertyViewModel.hasConditionalChoices) {
-                            propertyViewModel.conditionalChoices = _.partial(repHandlers.conditionalChoices, promptRep, id);
+                            propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id);
                             propertyViewModel.arguments = _.object(_.map(propertyRep.promptLink().arguments(), function (v, key) { return [key, new Spiro.Value(v.value)]; }));
                         }
                     }
@@ -284,7 +284,7 @@ var Spiro;
                     }
                     if (propertyRep.isScalar()) {
                         var remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
-                        var localFilter = mask.toLocalFilter(remoteMask);
+                        var localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
                         if (localFilter) {
                             propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                         }
@@ -418,7 +418,7 @@ var Spiro;
                     objectViewModel.message = "";
                     objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id); });
                     objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()]); });
-                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, function () { return repHandlers.invokeAction(action); }); });
+                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, function () { return context.invokeAction(action); }); });
                     objectViewModel.toggleActionMenu = function () {
                         urlManager.toggleObjectMenu();
                     };

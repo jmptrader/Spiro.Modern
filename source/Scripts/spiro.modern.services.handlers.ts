@@ -99,13 +99,13 @@ module Spiro.Angular.Modern {
                 context.getMenu(routeData.menuId).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        const actions = { actions: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => repHandlers.invokeAction(am))) };
+                        const actions = { actions: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => context.invokeAction(am))) };
                         $scope.object = actions;
 
                         if (routeData.dialogId) {
                             $scope.dialogTemplate = dialogTemplate;
                             const action = menu.actionMember(routeData.dialogId);
-                            $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, action));
+                            $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(context.invokeAction, action));
                         }
                     }).catch(error => {
                         setError(error);
@@ -197,7 +197,7 @@ module Spiro.Angular.Modern {
                 then((object: DomainObjectRepresentation) => {
                     const isTransient = !!object.persistLink();
 
-                    const handler = isTransient ? repHandlers.saveObject : repHandlers.updateObject;
+                    const handler = isTransient ? context.saveObject : context.updateObject;
                     const saveHandler = <(ovm: DomainObjectViewModel) => void> _.partial(handler, $scope, object);
                     const ovm = viewModelFactory.domainObjectViewModel(object, routeData.collections, saveHandler);
 
@@ -221,7 +221,7 @@ module Spiro.Angular.Modern {
                     if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
                         const action = object.actionMember(routeData.dialogId);
-                        $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, action));
+                        $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(context.invokeAction, action));
                     }
 
                 }).catch(error => {

@@ -37,6 +37,15 @@ module Spiro.Angular.Modern {
         getLastActionFriendlyName : () => string;
         setLastActionFriendlyName: (fn : string) => void;
         setQuery(listRepresentation: ListRepresentation);
+
+        prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
+        conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
+        setResult(action: ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel);
+        setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
+        invokeAction(action: ActionMember, dvm?: DialogViewModel);
+        updateObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
+        saveObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
+
     }
 
     interface IContextInternal extends IContext {
@@ -44,7 +53,7 @@ module Spiro.Angular.Modern {
         getService: (type: string) => ng.IPromise<DomainObjectRepresentation>;
     }
 
-    app.service("context", function ($q: ng.IQService, repLoader: IRepLoader) {
+    app.service("context", function ($q: ng.IQService, repLoader: IRepLoader, urlManager, $cacheFactory: ng.ICacheFactoryService) {
         const context = <IContextInternal>this;
 
         // cached values
@@ -247,8 +256,7 @@ module Spiro.Angular.Modern {
 
         context.setObject = co => currentObject = co;
 
-       
-
+    
         var currentError: ErrorRepresentation = null;
 
         context.getError = () => currentError;
@@ -278,6 +286,173 @@ module Spiro.Angular.Modern {
         context.setLastActionFriendlyName = (fn : string) => {
             lastActionFriendlyName = fn;
         };
+
+        // from rh
+
+        context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]> => {
+
+            promptRep.reset();
+            promptRep.setSearchTerm(searchTerm);
+
+            return repLoader.populate(promptRep, true).then((p: PromptRepresentation) => {
+                const delay = $q.defer<ChoiceViewModel[]>();
+
+                const cvms = _.map(p.choices(), (v, k) => {
+                    return ChoiceViewModel.create(v, id, k, searchTerm);
+                });
+
+                delay.resolve(cvms);
+                return delay.promise;
+            });
+        };
+
+        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]> => {
+
+            promptRep.reset();
+            promptRep.setArguments(args);
+
+            return repLoader.populate(promptRep, true).then((p: PromptRepresentation) => {
+                const delay = $q.defer<ChoiceViewModel[]>();
+
+                const cvms = _.map(p.choices(), (v, k) => {
+                    return ChoiceViewModel.create(v, id, k);
+                });
+
+                delay.resolve(cvms);
+                return delay.promise;
+            });
+        };
+
+        context.setResult = (action: ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel) => {
+            if (result.result().isNull() && result.resultType() !== "void") {
+                if (dvm) {
+                    dvm.message = "no result found";
+                }
+                return;
+            }
+
+            const resultObject = result.result().object(); // transient object
+
+            if (result.resultType() === "object" && resultObject.persistLink()) {
+                const domainType = resultObject.extensions().domainType;
+                resultObject.set("domainType", domainType);
+                resultObject.set("instanceId", "0");
+                resultObject.hateoasUrl = `/${domainType}/0`;
+
+                context.setObject(resultObject);
+
+                //context.setPreviousUrl($location.path());
+                //$location.path(urlHelper.toTransientObjectPath(resultObject));
+                urlManager.setObject(resultObject);
+            }
+
+            // persistent object
+            if (result.resultType() === "object" && !resultObject.persistLink()) {
+
+                // set the nested object here and then update the url. That should reload the page but pick up this object 
+                // so we don't hit the server again. 
+
+                context.setObject(resultObject);
+                urlManager.setObject(resultObject, true);
+            }
+
+            if (result.resultType() === "list") {
+                const resultList = result.result().list();
+                context.setQuery(resultList);
+                context.setLastActionFriendlyName(action.extensions().friendlyName);
+                urlManager.setQuery(action, dvm);
+            }
+        };
+
+        context.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
+            if (error instanceof ErrorMap) {
+                _.each(vms, vmi => {
+                    var errorValue = error.valuesMap()[vmi.id];
+
+                    if (errorValue) {
+                        vmi.value = errorValue.value.toValueString();
+                        vmi.message = errorValue.invalidReason;
+                    }
+                });
+                if (vm) {
+                    vm.message = (<ErrorMap>error).invalidReason();
+                }
+            }
+            else if (error instanceof ErrorRepresentation) {
+                context.setError(error);
+                urlManager.setError();
+            }
+            else {
+                if (vm) {
+                    vm.message = error;
+                }
+            }
+        };
+
+        // todo this code is nearly duplicated in context - DRY it
+        context.invokeAction = (action: ActionMember, dvm?: DialogViewModel) => {
+            const invoke = action.getInvoke();
+            let parameters: ParameterViewModel[] = [];
+
+            if (dvm) {
+                dvm.clearMessages();
+                parameters = dvm.parameters;
+                _.each(parameters, (parm) => invoke.setParameter(parm.id, parm.getValue()));
+                _.each(parameters, (parm) => parm.setSelectedChoice());
+            }
+
+            repLoader.populate(invoke, true).
+                then((result: ActionResultRepresentation) => {
+                    context.setResult(action, result, dvm);
+                }, (error: any) => {
+                    context.setInvokeUpdateError(error, parameters, dvm);
+                });
+        };
+
+        context.updateObject = ($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
+            const update = object.getUpdateMap();
+
+            const properties = _.filter(ovm.properties, property => property.isEditable);
+            _.each(properties, property => update.setProperty(property.id, property.getValue()));
+
+            repLoader.populate(update, true, new DomainObjectRepresentation()).
+                then((updatedObject: DomainObjectRepresentation) => {
+
+                    // This is a kludge because updated object has no self link.
+                    const rawLinks = (<any>object).get("links");
+                    (<any>updatedObject).set("links", rawLinks);
+
+                    // remove pre-changed object from cache
+                    $cacheFactory.get("$http").remove(updatedObject.url());
+
+                    context.setObject(updatedObject);
+                    urlManager.setObject(updatedObject);
+                }, (error: any) => {
+                    context.setInvokeUpdateError(error, properties, ovm);
+                });
+        };
+
+        context.saveObject = ($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
+            const persist = object.getPersistMap();
+
+            const properties = _.filter(ovm.properties, property => property.isEditable);
+            _.each(properties, property => persist.setMember(property.id, property.getValue()));
+
+            repLoader.populate(persist, true, new DomainObjectRepresentation()).
+                then((updatedObject: DomainObjectRepresentation) => {
+                    context.setObject(updatedObject);
+                    //$location.path(urlHelper.toObjectPath(updatedObject));
+                }, (error: any) => {
+                    context.setInvokeUpdateError(error, properties, ovm);
+                });
+        };
+
+
+
+
+
+
+
     });
 
 }
