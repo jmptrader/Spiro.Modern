@@ -31,9 +31,7 @@ var Spiro;
                     var linkViewModel = new Modern.LinkViewModel();
                     linkViewModel.title = linkRep.title();
                     linkViewModel.color = color.toColorFromHref(linkRep.href());
-                    if (click) {
-                        linkViewModel.doClick = click;
-                    }
+                    linkViewModel.doClick = click;
                     return linkViewModel;
                 };
                 // tested
@@ -41,9 +39,7 @@ var Spiro;
                     var itemViewModel = new Modern.ItemViewModel();
                     itemViewModel.title = linkRep.title();
                     itemViewModel.color = color.toColorFromHref(linkRep.href());
-                    if (click) {
-                        itemViewModel.doClick = click;
-                    }
+                    itemViewModel.doClick = click;
                     return itemViewModel;
                 };
                 function addAutoAutoComplete(valueViewModel, currentChoice, id, currentValue) {
@@ -378,7 +374,7 @@ var Spiro;
                     });
                     servicesViewModel.title = "Services";
                     servicesViewModel.color = "bg-color-darkBlue";
-                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link); });
+                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link, function () { }); });
                     return servicesViewModel;
                 };
                 viewModelFactory.menusViewModel = function (menusRep) {

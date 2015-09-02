@@ -70,14 +70,12 @@ var Spiro;
             var LinkViewModel = (function () {
                 function LinkViewModel() {
                 }
-                LinkViewModel.prototype.doClick = function () { };
                 return LinkViewModel;
             })();
             Modern.LinkViewModel = LinkViewModel;
             var ItemViewModel = (function () {
                 function ItemViewModel() {
                 }
-                ItemViewModel.prototype.doClick = function () { };
                 return ItemViewModel;
             })();
             Modern.ItemViewModel = ItemViewModel;

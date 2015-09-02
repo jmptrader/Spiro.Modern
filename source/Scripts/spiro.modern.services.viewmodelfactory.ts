@@ -19,8 +19,8 @@ module Spiro.Angular.Modern{
 
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        linkViewModel(linkRep: Link, click? : () => void): LinkViewModel;
-        itemViewModel(linkRep: Link, click?: ($event : any) => void): ItemViewModel;
+        linkViewModel(linkRep: Link, click : () => void): LinkViewModel;
+        itemViewModel(linkRep: Link, click: () => void): ItemViewModel;
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember,  id : string, invoke : () => void): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
@@ -48,29 +48,23 @@ module Spiro.Angular.Modern{
             return errorViewModel;
         };
 
-        viewModelFactory.linkViewModel = (linkRep: Link, click?: () => void) => {
+        viewModelFactory.linkViewModel = (linkRep: Link, click: () => void) => {
             const linkViewModel = new LinkViewModel();
 
             linkViewModel.title = linkRep.title();
-            linkViewModel.color = color.toColorFromHref(linkRep.href());
-
-            if (click) {
-                linkViewModel.doClick = click;
-            }
-
+            linkViewModel.color = color.toColorFromHref(linkRep.href());      
+            linkViewModel.doClick = click;
+        
             return linkViewModel;
         };
 
         // tested
-        viewModelFactory.itemViewModel = (linkRep: Link, click?: () => void) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, click: () => void) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
-            itemViewModel.color = color.toColorFromHref(linkRep.href());
-
-            if (click) {
-                itemViewModel.doClick = click;
-            }
-
+            itemViewModel.color = color.toColorFromHref(linkRep.href());     
+            itemViewModel.doClick = click;
+          
             return itemViewModel;
         };
 
@@ -487,7 +481,7 @@ module Spiro.Angular.Modern{
             
             servicesViewModel.title = "Services";
             servicesViewModel.color = "bg-color-darkBlue";
-            servicesViewModel.items = _.map(links, (link) => { return viewModelFactory.linkViewModel(link); });
+            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link, () =>{}));
             return servicesViewModel;
         };
 
@@ -496,7 +490,7 @@ module Spiro.Angular.Modern{
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value().models, (link) => { return viewModelFactory.linkViewModel(link, () => urlManager.setMenu(link.rel().parms[0].value) ); });
+            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link, () => urlManager.setMenu(link.rel().parms[0].value)));
             return menusViewModel;
         };
 
