@@ -1,6 +1,6 @@
 ﻿<div class="object edit" ng-class="object.color">
     <div class="header">
-        <div class="type">Editing - </div> <!--TODO: Add type reference-->
+        <div class="type">Editing {{object.domainType}}</div> <!--TODO: Add type reference-->
         <div class="title">{{object.title}}</div>
         <div class="action clickable-area"  ng-click="object.doSave()">
             Save

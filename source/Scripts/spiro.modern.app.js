@@ -118,6 +118,10 @@ var Spiro;
                 templateUrl: splitQueryQueryPageTemplate,
                 controller: "BackgroundController"
             }).
+                when("/error", {
+                templateUrl: errorPageTemplate,
+                controller: "ErrorController"
+            }).
                 //TODO: change default to /home when Modern2 is complete
                 otherwise({
                 redirectTo: "/home"

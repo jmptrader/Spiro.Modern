@@ -9,258 +9,108 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
-/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
+/// <reference path="../../Scripts/spiro.config.ts" />
+/// <reference path="../../Scripts/spiro.models.helpers.ts" />
+/// <reference path="../../Scripts/spiro.models.ts" />
 /// <reference path="../../Scripts/spiro.modern.app.ts" />
+/// <reference path="../../Scripts/spiro.modern.controllers.ts" />
+/// <reference path="../../Scripts/spiro.modern.directives.ts" />
+/// <reference path="../../Scripts/spiro.modern.routedata.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.context.ts" />
 /// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
-describe('Controllers', function () {
+/// <reference path="../../Scripts/spiro.modern.services.navigation.browser.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.navigation.simple.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.representationhandlers.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.urlmanager.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.viewmodelfactory.ts" />
+/// <reference path="../../Scripts/spiro.modern.viewmodels.ts" />
+describe("Controllers", function () {
     var $scope, ctrl;
-    beforeEach(module('app'));
-    describe('BackgroundController', function () {
+    beforeEach(module("app"));
+    describe("Pane1HomeController", function () {
+        var handleHome;
+        var getRouteData;
+        var testRouteData;
+        beforeEach(inject(function ($rootScope, $controller, handlers, urlManager) {
+            $scope = $rootScope.$new();
+            handleHome = spyOn(handlers, "handleHome");
+            testRouteData = new Spiro.Angular.Modern.RouteData();
+            getRouteData = spyOn(urlManager, "getRouteData").andReturn(testRouteData);
+            ctrl = $controller("Pane1HomeController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+        }));
+        it("should call getRouteData", function () {
+            expect(getRouteData).toHaveBeenCalled();
+        });
+        it("should call the handler", function () {
+            expect(handleHome).toHaveBeenCalledWith($scope, testRouteData.pane1);
+        });
+    });
+    describe("Pane1ObjectController", function () {
+        var handleObject;
+        var getRouteData;
+        var testRouteData;
+        beforeEach(inject(function ($rootScope, $controller, handlers, urlManager) {
+            $scope = $rootScope.$new();
+            handleObject = spyOn(handlers, "handleObject");
+            testRouteData = new Spiro.Angular.Modern.RouteData();
+            getRouteData = spyOn(urlManager, "getRouteData").andReturn(testRouteData);
+            ctrl = $controller("Pane1ObjectController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+        }));
+        it("should call getRouteData", function () {
+            expect(getRouteData).toHaveBeenCalled();
+        });
+        it("should call the handler", function () {
+            expect(handleObject).toHaveBeenCalledWith($scope, testRouteData.pane1);
+        });
+    });
+    describe("Pane1QueryController", function () {
+        var handleQuery;
+        var getRouteData;
+        var testRouteData;
+        beforeEach(inject(function ($rootScope, $controller, handlers, urlManager) {
+            $scope = $rootScope.$new();
+            handleQuery = spyOn(handlers, "handleQuery");
+            testRouteData = new Spiro.Angular.Modern.RouteData();
+            getRouteData = spyOn(urlManager, "getRouteData").andReturn(testRouteData);
+            ctrl = $controller("Pane1QueryController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+        }));
+        it("should call getRouteData", function () {
+            expect(getRouteData).toHaveBeenCalled();
+        });
+        it("should call the handler", function () {
+            expect(handleQuery).toHaveBeenCalledWith($scope, testRouteData.pane1);
+        });
+    });
+    describe("BackgroundController", function () {
         var handleBackground;
         beforeEach(inject(function ($rootScope, $controller, handlers) {
             $scope = $rootScope.$new();
-            handleBackground = spyOn(handlers, 'handleBackground');
-            ctrl = $controller('BackgroundController', { $scope: $scope, handlers: handlers });
+            handleBackground = spyOn(handlers, "handleBackground");
+            ctrl = $controller("BackgroundController", { $scope: $scope, handlers: handlers });
         }));
-        it('should call the handler', function () {
+        it("should call the handler", function () {
             expect(handleBackground).toHaveBeenCalledWith($scope);
         });
     });
-    describe('ServicesController', function () {
-        var handleServices;
-        beforeEach(inject(function ($rootScope, $controller, handlers) {
-            $scope = $rootScope.$new();
-            handleServices = spyOn(handlers, 'handleServices');
-            ctrl = $controller('ServicesController', { $scope: $scope, handlers: handlers });
-        }));
-        it('should call the handler', function () {
-            expect(handleServices).toHaveBeenCalledWith($scope);
-        });
-    });
-    describe('ServiceController', function () {
-        var handleService;
-        beforeEach(inject(function ($rootScope, $controller, handlers) {
-            $scope = $rootScope.$new();
-            handleService = spyOn(handlers, 'handleService');
-            ctrl = $controller('ServiceController', { $scope: $scope, handlers: handlers });
-        }));
-        it('should call the handler', function () {
-            expect(handleService).toHaveBeenCalledWith($scope);
-        });
-    });
-    describe('ObjectController', function () {
-        var handleObject;
-        var handleEditObject;
-        beforeEach(inject(function ($rootScope, $controller, handlers) {
-            $scope = $rootScope.$new();
-            handleObject = spyOn(handlers, 'handleObject');
-            handleEditObject = spyOn(handlers, 'handleEditObject');
-        }));
-        describe('if edit mode', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.editMode = "test";
-                ctrl = $controller('ObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should not call the view handler', function () {
-                expect(handleObject).not.toHaveBeenCalled();
-            });
-            it('should call the edit handler', function () {
-                expect(handleEditObject).toHaveBeenCalledWith($scope);
-            });
-        });
-        describe('if not edit mode', function () {
-            beforeEach(inject(function ($controller, handlers) {
-                ctrl = $controller('ObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should not call the edit handler', function () {
-                expect(handleEditObject).not.toHaveBeenCalled();
-            });
-            it('should call the view handler', function () {
-                expect(handleObject).toHaveBeenCalledWith($scope);
-            });
-        });
-    });
-    describe('DialogController', function () {
-        var handleActionDialog;
-        beforeEach(inject(function ($rootScope, handlers) {
-            $scope = $rootScope.$new();
-            handleActionDialog = spyOn(handlers, 'handleActionDialog');
-        }));
-        describe('if action parm set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.action = "test";
-                ctrl = $controller('DialogController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call the handler', function () {
-                expect(handleActionDialog).toHaveBeenCalledWith($scope);
-            });
-        });
-        describe('if action parm not set', function () {
-            beforeEach(inject(function ($controller, handlers) {
-                ctrl = $controller('DialogController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should not call the handler', function () {
-                expect(handleActionDialog).not.toHaveBeenCalled();
-            });
-        });
-    });
-    describe('NestedObjectController', function () {
-        var handleActionResult;
-        var handleProperty;
-        var handleCollectionItem;
-        var handleResult;
-        beforeEach(inject(function ($rootScope, handlers) {
-            $scope = $rootScope.$new();
-            handleActionResult = spyOn(handlers, 'handleActionResult');
-            handleProperty = spyOn(handlers, 'handleProperty');
-            handleCollectionItem = spyOn(handlers, 'handleCollectionItem');
-            handleResult = spyOn(handlers, 'handleResult');
-        }));
-        describe('if action parm set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.action = "test";
-                ctrl = $controller('NestedObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call the action handler only', function () {
-                expect(handleActionResult).toHaveBeenCalledWith($scope);
-                expect(handleProperty).not.toHaveBeenCalled();
-                expect(handleCollectionItem).not.toHaveBeenCalled();
-                expect(handleResult).not.toHaveBeenCalled();
-            });
-        });
-        describe('if property parm set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.property = "test";
-                ctrl = $controller('NestedObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call the property handler only', function () {
-                expect(handleActionResult).not.toHaveBeenCalled();
-                expect(handleProperty).toHaveBeenCalledWith($scope);
-                expect(handleCollectionItem).not.toHaveBeenCalled();
-                expect(handleResult).not.toHaveBeenCalled();
-            });
-        });
-        describe('if collection Item parm set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.collectionItem = "test";
-                ctrl = $controller('NestedObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call the collection item handler only', function () {
-                expect(handleActionResult).not.toHaveBeenCalled();
-                expect(handleProperty).not.toHaveBeenCalled();
-                expect(handleCollectionItem).toHaveBeenCalledWith($scope);
-                expect(handleResult).not.toHaveBeenCalled();
-            });
-        });
-        describe('if result object parm set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.resultObject = "test";
-                ctrl = $controller('NestedObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call the result object handler only', function () {
-                expect(handleActionResult).not.toHaveBeenCalled();
-                expect(handleProperty).not.toHaveBeenCalled();
-                expect(handleCollectionItem).not.toHaveBeenCalled();
-                expect(handleResult).toHaveBeenCalledWith($scope);
-            });
-        });
-        describe('if all parms set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.action = "test";
-                $routeParams.property = "test";
-                $routeParams.collectionItem = "test";
-                $routeParams.resultObject = "test";
-                ctrl = $controller('NestedObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call the action and property handler only', function () {
-                expect(handleActionResult).toHaveBeenCalledWith($scope);
-                expect(handleProperty).toHaveBeenCalledWith($scope);
-                expect(handleCollectionItem).not.toHaveBeenCalled();
-                expect(handleResult).not.toHaveBeenCalled();
-            });
-        });
-        describe('if no parms set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                ctrl = $controller('NestedObjectController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call no handlers', function () {
-                expect(handleActionResult).not.toHaveBeenCalled();
-                expect(handleProperty).not.toHaveBeenCalled();
-                expect(handleCollectionItem).not.toHaveBeenCalled();
-                expect(handleResult).not.toHaveBeenCalled();
-            });
-        });
-    });
-    describe('CollectionController', function () {
-        var handleCollectionResult;
-        var handleCollection;
-        beforeEach(inject(function ($rootScope, handlers) {
-            $scope = $rootScope.$new();
-            handleCollectionResult = spyOn(handlers, 'handleCollectionResult');
-            handleCollection = spyOn(handlers, 'handleCollection');
-        }));
-        describe('if result collection parm set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.resultCollection = "test";
-                ctrl = $controller('CollectionController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should call the result collection handler', function () {
-                expect(handleCollectionResult).toHaveBeenCalledWith($scope);
-                expect(handleCollection).not.toHaveBeenCalled();
-            });
-        });
-        describe('if collection parm set', function () {
-            beforeEach(inject(function ($routeParams, $controller, handlers) {
-                $routeParams.collection = "test";
-                ctrl = $controller('CollectionController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should  call the collection handler', function () {
-                expect(handleCollectionResult).not.toHaveBeenCalled();
-                expect(handleCollection).toHaveBeenCalledWith($scope);
-            });
-        });
-        describe('if no parms set', function () {
-            beforeEach(inject(function ($controller, handlers) {
-                ctrl = $controller('CollectionController', { $scope: $scope, handlers: handlers });
-            }));
-            it('should not call the handler', function () {
-                expect(handleCollectionResult).not.toHaveBeenCalled();
-                expect(handleCollection).not.toHaveBeenCalled();
-            });
-        });
-    });
-    describe('TransientObjectController', function () {
-        var handleTransientObject;
-        beforeEach(inject(function ($rootScope, $controller, handlers) {
-            $scope = $rootScope.$new();
-            handleTransientObject = spyOn(handlers, 'handleTransientObject');
-            ctrl = $controller('TransientObjectController', { $scope: $scope, handlers: handlers });
-        }));
-        it('should call the handler', function () {
-            expect(handleTransientObject).toHaveBeenCalledWith($scope);
-        });
-    });
-    describe('ErrorController', function () {
+    describe("ErrorController", function () {
         var handleError;
         beforeEach(inject(function ($rootScope, $controller, handlers) {
             $scope = $rootScope.$new();
-            handleError = spyOn(handlers, 'handleError');
-            ctrl = $controller('ErrorController', { $scope: $scope, handlers: handlers });
+            handleError = spyOn(handlers, "handleError");
+            ctrl = $controller("ErrorController", { $scope: $scope, handlers: handlers });
         }));
-        it('should call the handler', function () {
+        it("should call the handler", function () {
             expect(handleError).toHaveBeenCalledWith($scope);
         });
     });
-    describe('AppBarController', function () {
+    describe("AppBarController", function () {
         var handleAppBar;
         beforeEach(inject(function ($rootScope, $controller, handlers) {
             $scope = $rootScope.$new();
-            handleAppBar = spyOn(handlers, 'handleAppBar');
-            ctrl = $controller('AppBarController', { $scope: $scope, handlers: handlers });
+            handleAppBar = spyOn(handlers, "handleAppBar");
+            ctrl = $controller("AppBarController", { $scope: $scope, handlers: handlers });
         }));
-        it('should call the handler', function () {
+        it("should call the handler", function () {
             expect(handleAppBar).toHaveBeenCalledWith($scope);
         });
     });

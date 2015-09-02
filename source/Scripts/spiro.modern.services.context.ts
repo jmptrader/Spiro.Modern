@@ -387,7 +387,6 @@ module Spiro.Angular.Modern {
             }
         };
 
-        // todo this code is nearly duplicated in context - DRY it
         context.invokeAction = (action: ActionMember, dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
             let parameters: ParameterViewModel[] = [];
