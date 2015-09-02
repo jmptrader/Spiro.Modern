@@ -20,7 +20,7 @@ module Spiro.Angular.Modern{
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, click? : () => void): LinkViewModel;
-        itemViewModel(linkRep: Link, parentHref: string, click?: ($event : any) => void): ItemViewModel;
+        itemViewModel(linkRep: Link, click?: ($event : any) => void): ItemViewModel;
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember,  id : string, invoke : () => void): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
@@ -52,7 +52,6 @@ module Spiro.Angular.Modern{
             const linkViewModel = new LinkViewModel();
 
             linkViewModel.title = linkRep.title();
-            //linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
             linkViewModel.color = color.toColorFromHref(linkRep.href());
 
             if (click) {
@@ -63,10 +62,9 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string, click?: () => void) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, click?: () => void) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
-            //itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
             itemViewModel.color = color.toColorFromHref(linkRep.href());
 
             if (click) {
@@ -381,12 +379,11 @@ module Spiro.Angular.Modern{
             return propertyViewModel;
         };
         
-         // tested
-        function getItems(cvm: CollectionViewModel, links: Link[], href: string, populateItems?: boolean) {
+        function getItems(cvm: CollectionViewModel, links: Link[],  populateItems?: boolean) {
 
             if (populateItems) {
                 return _.map(links, (link) => {
-                    var ivm = viewModelFactory.itemViewModel(link, href, () => urlManager.setItem(link));
+                    var ivm = viewModelFactory.itemViewModel(link, () => urlManager.setItem(link));
                     var tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
@@ -399,7 +396,7 @@ module Spiro.Angular.Modern{
                     return ivm;
                 });
             } else {
-                return _.map(links, (link) => viewModelFactory.itemViewModel(link, href, () => urlManager.setItem(link)));
+                return _.map(links, (link) => viewModelFactory.itemViewModel(link,  () => urlManager.setItem(link)));
             }
         }
 
@@ -410,10 +407,9 @@ module Spiro.Angular.Modern{
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = collectionRep.extensions().pluralName;
 
-            //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
 
-            collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === CollectionViewState.Table);
+            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
 
             switch (state) {
             case CollectionViewState.List:
@@ -439,7 +435,7 @@ module Spiro.Angular.Modern{
             //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
 
-            collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === CollectionViewState.Table);
+            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
 
             return collectionViewModel;
         }
@@ -451,7 +447,7 @@ module Spiro.Angular.Modern{
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
 
-            collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), state === CollectionViewState.Table);
+            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
 
             return collectionViewModel;
         }

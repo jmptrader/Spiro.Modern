@@ -69,10 +69,8 @@ module Spiro.Angular.Modern {
         stackTrace: string[];   
     } 
 
-
     export class LinkViewModel {
         title: string;
-        href: string;
         color: string;
 
         doClick() {}
@@ -80,7 +78,6 @@ module Spiro.Angular.Modern {
 
     export class ItemViewModel {
         title: string;
-        href: string;
         color: string;
         target: DomainObjectViewModel;
         doClick() : void {}
@@ -191,7 +188,6 @@ module Spiro.Angular.Modern {
   
         menuPath : string;
         title: string;
-        href: string;
 
         doInvoke() {}
     } 
@@ -218,7 +214,6 @@ module Spiro.Angular.Modern {
     
     export class PropertyViewModel extends ValueViewModel {
 
-        href: string;
         target: string;
         color: string;       
         isEditable: boolean;    
@@ -231,7 +226,6 @@ module Spiro.Angular.Modern {
         title: string;
         size: number;
         pluralName: string;
-        href: string;
         color: string; 
         items: ItemViewModel[];
         header: string[];
@@ -261,14 +255,12 @@ module Spiro.Angular.Modern {
         serviceId: string;
         actions: ActionViewModel[];
         color: string; 
-        href: string; 
     } 
 
     export class MenuViewModel {
         title: string;
         actions: ActionViewModel[];
         color: string;
-        href: string;
     } 
 
 
@@ -279,7 +271,6 @@ module Spiro.Angular.Modern {
         collections: CollectionViewModel[];
         actions: ActionViewModel[];
         color: string; 
-        href: string; 
         doSave(): void { }
         toggleActionMenu(): void { }
         isTransient : boolean;

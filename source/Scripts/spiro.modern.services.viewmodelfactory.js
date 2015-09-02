@@ -30,7 +30,6 @@ var Spiro;
                 viewModelFactory.linkViewModel = function (linkRep, click) {
                     var linkViewModel = new Modern.LinkViewModel();
                     linkViewModel.title = linkRep.title();
-                    //linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
                     linkViewModel.color = color.toColorFromHref(linkRep.href());
                     if (click) {
                         linkViewModel.doClick = click;
@@ -38,10 +37,9 @@ var Spiro;
                     return linkViewModel;
                 };
                 // tested
-                viewModelFactory.itemViewModel = function (linkRep, parentHref, click) {
+                viewModelFactory.itemViewModel = function (linkRep, click) {
                     var itemViewModel = new Modern.ItemViewModel();
                     itemViewModel.title = linkRep.title();
-                    //itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
                     itemViewModel.color = color.toColorFromHref(linkRep.href());
                     if (click) {
                         itemViewModel.doClick = click;
@@ -295,11 +293,10 @@ var Spiro;
                     }
                     return propertyViewModel;
                 };
-                // tested
-                function getItems(cvm, links, href, populateItems) {
+                function getItems(cvm, links, populateItems) {
                     if (populateItems) {
                         return _.map(links, function (link) {
-                            var ivm = viewModelFactory.itemViewModel(link, href, function () { return urlManager.setItem(link); });
+                            var ivm = viewModelFactory.itemViewModel(link, function () { return urlManager.setItem(link); });
                             var tempTgt = link.getTarget();
                             repLoader.populate(tempTgt).
                                 then(function (obj) {
@@ -312,7 +309,7 @@ var Spiro;
                         });
                     }
                     else {
-                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, href, function () { return urlManager.setItem(link); }); });
+                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, function () { return urlManager.setItem(link); }); });
                     }
                 }
                 function create(collectionRep, state) {
@@ -321,9 +318,8 @@ var Spiro;
                     collectionViewModel.title = collectionRep.extensions().friendlyName;
                     collectionViewModel.size = links.length;
                     collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-                    //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
                     collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === Modern.CollectionViewState.Table);
+                    collectionViewModel.items = getItems(collectionViewModel, links, state === Modern.CollectionViewState.Table);
                     switch (state) {
                         case Modern.CollectionViewState.List:
                             collectionViewModel.template = Angular.collectionListTemplate;
@@ -344,7 +340,7 @@ var Spiro;
                     collectionViewModel.pluralName = collectionRep.extensions().pluralName;
                     //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
                     collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, collectionViewModel.href, state === Modern.CollectionViewState.Table);
+                    collectionViewModel.items = getItems(collectionViewModel, links, state === Modern.CollectionViewState.Table);
                     return collectionViewModel;
                 }
                 function createFromList(listRep, state) {
@@ -352,7 +348,7 @@ var Spiro;
                     var links = listRep.value().models;
                     collectionViewModel.size = links.length;
                     collectionViewModel.pluralName = "Objects";
-                    collectionViewModel.items = getItems(collectionViewModel, links, $location.path(), state === Modern.CollectionViewState.Table);
+                    collectionViewModel.items = getItems(collectionViewModel, links, state === Modern.CollectionViewState.Table);
                     return collectionViewModel;
                 }
                 viewModelFactory.collectionViewModel = function (collection, state) {
