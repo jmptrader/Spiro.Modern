@@ -43,7 +43,6 @@
     overflow-y: auto;
 }
 
-
 /*Sub-panes - layout */
     .actions, .main-column, .collections {
         float: left;
@@ -76,6 +75,10 @@
     .header .type {
         float: left;
         margin-right: 20px;
+    }
+
+    .type {
+        display: none; /*Change this to display type (e.g. for accessibility)*/
     }
 
 /*Menus & actions*/
