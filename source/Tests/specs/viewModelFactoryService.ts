@@ -29,7 +29,7 @@ describe("viewModelFactory Service", () => {
         const emptyError = {};
 
         describe("from populated rep", () => {
-          
+
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.errorViewModel(new Spiro.ErrorRepresentation(rawError));
             }));
@@ -43,7 +43,7 @@ describe("viewModelFactory Service", () => {
         });
 
         describe("from empty rep", () => {
-          
+
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.errorViewModel(new Spiro.ErrorRepresentation(emptyError));
             }));
@@ -69,7 +69,7 @@ describe("viewModelFactory Service", () => {
 
             let setMenu: jasmine.Spy;
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager : Spiro.Angular.Modern.IUrlManager) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager: Spiro.Angular.Modern.IUrlManager) => {
                 resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink));
                 setMenu = spyOn(urlManager, "setMenu");
             }));
@@ -88,7 +88,7 @@ describe("viewModelFactory Service", () => {
         let resultVm: Spiro.Angular.Modern.ItemViewModel;
         let setItem: jasmine.Spy;
         const rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
-    
+
 
         describe("from populated rep", () => {
 
@@ -109,7 +109,7 @@ describe("viewModelFactory Service", () => {
         });
 
 
-      
+
     });
 
     describe("create actionViewModel", () => {
@@ -133,7 +133,7 @@ describe("viewModelFactory Service", () => {
             let invokeAction: jasmine.Spy;
             const am = new Spiro.ActionMember(rawAction, {}, "anid");
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context : Spiro.Angular.Modern.IContext) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context: Spiro.Angular.Modern.IContext) => {
                 resultVm = viewModelFactory.actionViewModel(am);
                 invokeAction = spyOn(context, "invokeAction");
             }));
@@ -150,7 +150,7 @@ describe("viewModelFactory Service", () => {
 
             let setDialog: jasmine.Spy;
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager : Spiro.Angular.Modern.IUrlManager) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager: Spiro.Angular.Modern.IUrlManager) => {
                 resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawActionParms, {}, "anid"));
                 setDialog = spyOn(urlManager, "setDialog");
             }));
@@ -187,7 +187,7 @@ describe("viewModelFactory Service", () => {
             let closeDialog: jasmine.Spy;
             const am = new Spiro.ActionMember(rawAction, {}, "anid");
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context : Spiro.Angular.Modern.IContext, urlManager : Spiro.Angular.Modern.IUrlManager) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context: Spiro.Angular.Modern.IContext, urlManager: Spiro.Angular.Modern.IUrlManager) => {
                 invokeAction = spyOn(context, "invokeAction");
                 closeDialog = spyOn(urlManager, "closeDialog");
                 resultVm = viewModelFactory.dialogViewModel(am);
@@ -209,39 +209,73 @@ describe("viewModelFactory Service", () => {
 
     });
 
-    // updated to here
-
     describe("create collectionViewModel", () => {
 
         let resultVm: Spiro.Angular.Modern.CollectionViewModel;
-        const rawDetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
-        const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
 
-        const rawCollection = { size : 0, extensions: { friendlyName: "a title", pluralName : "somethings", elementType : "AdventureWorksModel.Product" }, links: [rawDetailsLink] };
+        const rawLink1 = {     
+            type : "application/json;profile=\"urn:org.resfulobjects:repr-types/object\"",  
+            href: "http://objects/AdventureWorksModel.Product/1"
+        };
 
-        describe("from collection member rep", () => {
+        const rawLink2 = {     
+            type: "application/json;profile=\"urn:org.resfulobjects:repr-types/object\"",  
+            href: "http://objects/AdventureWorksModel.Product/2"
+        };
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
 
-               resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}, ""), Spiro.Angular.Modern.CollectionViewState.List);
-            }));
+        const rawDetailsLink = {
+            rel: "urn:org.restfulobjects:rels/details",
+            href: "http://objects/AdventureWorksModel.Product/1/collections/acollection"
+        };
 
-            it("creates a dialog view model", () => {
-                expect(resultVm.title).toBe("a title");
-                expect(resultVm.size).toBe(0);
-                expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.items.length).toBe(0);
-                expect(resultVm.pluralName).toBe("somethings");           
-            });
-        });
 
-        describe("from collection details rep", () => {
+        const rawSelfLink = {
+            rel: "urn:org.restfulobjects:rels/self",
+            href: "http://objects/AdventureWorksModel.Product/1/collections/acollection"
+        };
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                (<any>rawCollection).value = [];
-                (<any>rawCollection).links.push(rawSelfLink);
+        const rawEmptyCollection = {
+            size: 0,
+            extensions: {
+                friendlyName: "a title",
+                pluralName: "somethings",
+                elementType: "AdventureWorksModel.Product"
+            },
+            links: [rawDetailsLink]
+        };
 
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection), Spiro.Angular.Modern.CollectionViewState.Summary);
+        const rawEmptyList = {
+            value: [],
+            links: [rawSelfLink]
+        };
+
+        const rawCollection = {
+            size: 2,
+            extensions: {
+                friendlyName: "a title",
+                pluralName: "somethings",
+                elementType: "AdventureWorksModel.Product"
+            },
+            links: [rawDetailsLink],
+            value : [rawLink1, rawLink2]
+        };
+
+        const rawList = {
+            value: [rawLink1, rawLink2],
+            links: [rawSelfLink]
+        };
+
+
+        describe("from empty collection member rep", () => {
+
+            let setCollectionState: jasmine.Spy;
+            const cm = new Spiro.CollectionMember(rawEmptyCollection, {}, "");
+
+            beforeEach(inject((viewModelFactory, urlManager) => {
+                resultVm = viewModelFactory.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.List);
+
+                setCollectionState = spyOn(urlManager, "setCollectionState");
             }));
 
             it("creates a dialog view model", () => {
@@ -250,29 +284,110 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.color).toBe("bg-color-orangeDark");
                 expect(resultVm.items.length).toBe(0);
                 expect(resultVm.pluralName).toBe("somethings");
+
+                resultVm.doSummary();
+                expect(setCollectionState).toHaveBeenCalledWith(cm, Spiro.Angular.Modern.CollectionViewState.Summary);
+                resultVm.doList();
+                expect(setCollectionState).toHaveBeenCalledWith(cm, Spiro.Angular.Modern.CollectionViewState.List);
+                resultVm.doTable();
+                expect(setCollectionState).toHaveBeenCalledWith(cm, Spiro.Angular.Modern.CollectionViewState.Table);
             });
         });
 
-        describe("from list rep", () => {
+        describe("from non empty collection member rep", () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-              
-                const rawList = { value: [], links: [rawSelfLink] };
+            let setCollectionState: jasmine.Spy;
+            let itemViewModel: jasmine.Spy;
+            let populate: jasmine.Spy;
 
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList), Spiro.Angular.Modern.CollectionViewState.Summary);
+            const cm = new Spiro.CollectionMember(rawCollection, {}, "");
+            let vmf: Spiro.Angular.Modern.IViewModelFactory;
+          
+            beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
+                setCollectionState = spyOn(urlManager, "setCollectionState");
+                itemViewModel = spyOn(viewModelFactory, "itemViewModel");
+                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                vmf = viewModelFactory;                 
+            }));
+
+            it("creates a dialog view model with items", () => {  
+                resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.List);                    
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate).not.toHaveBeenCalled();
+            });
+
+            it("it populates table items", () => {
+                resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.Table);
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate.callCount).toBe(2);
+            });
+        });
+
+        describe("from empty list rep", () => {
+
+            let setCollectionState: jasmine.Spy;
+            const lr = new Spiro.ListRepresentation(rawEmptyList);
+
+            beforeEach(inject((viewModelFactory, urlManager) => {
+                setCollectionState = spyOn(urlManager, "setCollectionState");
+                resultVm = viewModelFactory.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.Summary);
             }));
 
             it("creates a dialog view model", () => {
+                expect(resultVm.title).toBeUndefined();
                 expect(resultVm.size).toBe(0);
+                expect(resultVm.color).toBeUndefined();
                 expect(resultVm.items.length).toBe(0);
                 expect(resultVm.pluralName).toBe("Objects");
+
+                resultVm.doSummary();
+                expect(setCollectionState).toHaveBeenCalledWith(lr, Spiro.Angular.Modern.CollectionViewState.Summary);
+                resultVm.doList();
+                expect(setCollectionState).toHaveBeenCalledWith(lr, Spiro.Angular.Modern.CollectionViewState.List);
+                resultVm.doTable();
+                expect(setCollectionState).toHaveBeenCalledWith(lr, Spiro.Angular.Modern.CollectionViewState.Table);
+            });
+        });
+
+        describe("from non empty list rep", () => {
+
+            let setCollectionState: jasmine.Spy;
+            let itemViewModel: jasmine.Spy;
+            let populate: jasmine.Spy;
+            const lr = new Spiro.ListRepresentation(rawList);
+            let vmf: Spiro.Angular.Modern.IViewModelFactory;
+         
+
+            beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
+                setCollectionState = spyOn(urlManager, "setCollectionState");
+                itemViewModel = spyOn(viewModelFactory, "itemViewModel");
+                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                vmf = viewModelFactory;
+            }));
+
+            it("creates a dialog view model with items", () => {
+                resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.List);
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate).not.toHaveBeenCalled();
+            });
+
+            it("it populates table items", () => {
+                resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.Table);
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate.callCount).toBe(2);
             });
         });
     });
 
+     // updated to here
+
     describe("create services view model", () => {
         let resultVm: Spiro.Angular.Modern.ServicesViewModel;
-        const rawServices = { value : [] };
+        const rawServices = { value: [] };
 
 
         describe("from populated rep", () => {
@@ -286,7 +401,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.color).toBe("bg-color-darkBlue");
                 expect(resultVm.items.length).toBe(0);
             });
-        });        
+        });
 
     });
 
@@ -294,7 +409,7 @@ describe("viewModelFactory Service", () => {
         let resultVm: Spiro.Angular.Modern.ServiceViewModel;
         const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://services/AdventureWorksModel.ProductRepository" };
 
-        const rawService = { serviceId : "a service", value: [] , links : [rawSelfLink],title : "a title" };
+        const rawService = { serviceId: "a service", value: [], links: [rawSelfLink], title: "a title" };
 
         describe("from populated rep", () => {
 
@@ -307,7 +422,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.actions.length).toBe(0);
                 expect(resultVm.color).toBe("bg-color-greenLight");
-                
+
             });
         });
     });
@@ -316,7 +431,7 @@ describe("viewModelFactory Service", () => {
         let resultVm: Spiro.Angular.Modern.DomainObjectViewModel;
         const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
 
-        const rawObject = { domainType : "an object",  links: [rawSelfLink], title: "a title", extensions : {friendlyName : "a name"} };
+        const rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
 
         describe("from populated rep", () => {
 
@@ -331,7 +446,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.properties.length).toBe(0);
                 expect(resultVm.collections.length).toBe(0);
                 expect(resultVm.color).toBe("bg-color-red");
-               // expect(resultVm.cancelEdit).toBe("#/objects/AdventureWorksModel.Product/1");
+                // expect(resultVm.cancelEdit).toBe("#/objects/AdventureWorksModel.Product/1");
             });
         });
 
@@ -354,7 +469,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.properties.length).toBe(0);
                 expect(resultVm.collections.length).toBe(0);
                 expect(resultVm.color).toBe("bg-color-red");
-//expect(resultVm.cancelEdit).toBe("");
+                //expect(resultVm.cancelEdit).toBe("");
 
             });
         });
@@ -363,7 +478,7 @@ describe("viewModelFactory Service", () => {
     describe("create parameter view model", () => {
         let resultVm: Spiro.Angular.Modern.ParameterViewModel;
 
-        const rawParameter : any = { extensions : {friendlyName : "a parm"}, links : [] };
+        const rawParameter: any = { extensions: { friendlyName: "a parm" }, links: [] };
         const rawAction = {};
 
         describe("from populated rep", () => {
@@ -373,7 +488,7 @@ describe("viewModelFactory Service", () => {
             }));
 
             it("creates a parameter view model", () => {
-             
+
                 expect(resultVm.type).toBe("ref");
                 expect(resultVm.title).toBe("a parm");
                 expect(resultVm.dflt).toBe("");
@@ -391,7 +506,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.hasConditionalChoices).toBe(false);
                 expect(resultVm.isMultipleChoices).toBe(false);
                 expect(resultVm.value).toBe("pv");
-              
+
             });
         });
 
@@ -408,7 +523,7 @@ describe("viewModelFactory Service", () => {
 
             it("creates a parameter view model with choices", () => {
 
-             
+
                 expect(resultVm.choices.length).toBe(3);
                 expect(resultVm.hasChoices).toBe(true);
                 expect(resultVm.hasPrompt).toBe(false);
@@ -427,8 +542,8 @@ describe("viewModelFactory Service", () => {
                     rel: "urn:org.restfulobjects:rels/prompt",
                     href: "http://services/AdventureWorksModel.ProductRepository/prompt",
                     arguments: { "x-ro-searchTerm": { value: null } },
-                    extensions: {minLength : 0},
-                    type : "application/json; profile = \"urn:org.restfulobjects:repr-types/prompt\""
+                    extensions: { minLength: 0 },
+                    type: "application/json; profile = \"urn:org.restfulobjects:repr-types/prompt\""
                 };
 
                 rawParameter.choices = null;

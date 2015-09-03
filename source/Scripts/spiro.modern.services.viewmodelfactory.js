@@ -309,17 +309,6 @@ var Spiro;
                     }
                     return collectionViewModel;
                 }
-                function createFromDetails(collectionRep, state) {
-                    var collectionViewModel = new Modern.CollectionViewModel();
-                    var links = collectionRep.value().models;
-                    collectionViewModel.title = collectionRep.extensions().friendlyName;
-                    collectionViewModel.size = links.length;
-                    collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-                    //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
-                    collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, state === Modern.CollectionViewState.Table);
-                    return collectionViewModel;
-                }
                 function createFromList(listRep, state) {
                     var collectionViewModel = new Modern.CollectionViewModel();
                     var links = listRep.value().models;
@@ -332,9 +321,6 @@ var Spiro;
                     var collectionVm = null;
                     if (collection instanceof Spiro.CollectionMember) {
                         collectionVm = create(collection, state);
-                    }
-                    if (collection instanceof Spiro.CollectionRepresentation) {
-                        collectionVm = createFromDetails(collection, state);
                     }
                     if (collection instanceof Spiro.ListRepresentation) {
                         collectionVm = createFromList(collection, state);

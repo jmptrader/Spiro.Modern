@@ -73,11 +73,13 @@ var Spiro;
                 return LinkViewModel;
             })();
             Modern.LinkViewModel = LinkViewModel;
-            var ItemViewModel = (function () {
+            var ItemViewModel = (function (_super) {
+                __extends(ItemViewModel, _super);
                 function ItemViewModel() {
+                    _super.apply(this, arguments);
                 }
                 return ItemViewModel;
-            })();
+            })(LinkViewModel);
             Modern.ItemViewModel = ItemViewModel;
             var MessageViewModel = (function () {
                 function MessageViewModel() {

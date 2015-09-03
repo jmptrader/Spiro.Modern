@@ -20,15 +20,16 @@ module Spiro.Angular.Modern{
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link): LinkViewModel;
-        itemViewModel(linkRep: Link): ItemViewModel;
-        parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
+        itemViewModel(linkRep: Link): ItemViewModel;     
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionMember): DialogViewModel;
+
+        collectionViewModel(collection: CollectionMember, state: CollectionViewState): CollectionViewModel;
+        collectionViewModel(collection: ListRepresentation, state: CollectionViewState): CollectionViewModel;
+
+        parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
-        collectionViewModel(collection: any, state : CollectionViewState, populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: CollectionMember, state: CollectionViewState,populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: CollectionRepresentation, state : CollectionViewState,populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: ListRepresentation, state: CollectionViewState, populateItems?: boolean): CollectionViewModel;
+
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
@@ -42,32 +43,26 @@ module Spiro.Angular.Modern{
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
-            var stackTrace = errorRep.stacktrace();
-
+            const stackTrace = errorRep.stacktrace();
             errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
             return errorViewModel;
         };
 
         viewModelFactory.linkViewModel = (linkRep: Link) => {
             const linkViewModel = new LinkViewModel();
-
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());      
             linkViewModel.doClick = () => urlManager.setMenu(linkRep.rel().parms[0].value);
-        
             return linkViewModel;
         };
-
-    
+   
         viewModelFactory.itemViewModel = (linkRep: Link) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.color = color.toColorFromHref(linkRep.href());     
-            itemViewModel.doClick = () => urlManager.setItem(linkRep);
-          
+            itemViewModel.doClick = () => urlManager.setItem(linkRep);        
             return itemViewModel;
         };
-
        
         function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice : ChoiceViewModel, id : string, currentValue : Value) {
             valueViewModel.hasAutoAutoComplete = true;
@@ -350,12 +345,12 @@ module Spiro.Angular.Modern{
             return propertyViewModel;
         };
         
-        function getItems(cvm: CollectionViewModel, links: Link[],  populateItems?: boolean) {
+        function getItems(cvm: CollectionViewModel, links: Link[],  populateItems: boolean) {
 
             if (populateItems) {
-                return _.map(links, (link) => {
-                    var ivm = viewModelFactory.itemViewModel(link);
-                    var tempTgt = link.getTarget();
+                return _.map(links, link => {
+                    const ivm = viewModelFactory.itemViewModel(link);
+                    const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
                             ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
@@ -367,17 +362,17 @@ module Spiro.Angular.Modern{
                     return ivm;
                 });
             } else {
-                return _.map(links, (link) => viewModelFactory.itemViewModel(link));
+                return _.map(links, link => viewModelFactory.itemViewModel(link));
             }
         }
 
         function create(collectionRep: CollectionMember, state: CollectionViewState) {
             const collectionViewModel = new CollectionViewModel();
             const links = collectionRep.value().models;
+
             collectionViewModel.title = collectionRep.extensions().friendlyName;
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
 
             collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
@@ -395,29 +390,13 @@ module Spiro.Angular.Modern{
 
             return collectionViewModel;
         }
-
-        function createFromDetails(collectionRep: CollectionRepresentation, state: CollectionViewState) {
-            const collectionViewModel = new CollectionViewModel();
-            const links = collectionRep.value().models;
-            collectionViewModel.title = collectionRep.extensions().friendlyName;
-            collectionViewModel.size = links.length;
-            collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-
-            //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
-            collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-
-            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
-
-            return collectionViewModel;
-        }
-
        
         function createFromList(listRep: ListRepresentation, state: CollectionViewState) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
+
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
-
             collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
 
             return collectionViewModel;
@@ -430,9 +409,7 @@ module Spiro.Angular.Modern{
             if (collection instanceof CollectionMember) {
                 collectionVm = create(collection, state);
             }
-            if (collection instanceof CollectionRepresentation) {
-                collectionVm = createFromDetails(collection, state);
-            }
+
             if (collection instanceof ListRepresentation) {
                 collectionVm = createFromList(collection, state);
             }

@@ -75,11 +75,8 @@ module Spiro.Angular.Modern {
         doClick : () => void;
     }
 
-    export class ItemViewModel {
-        title: string;
-        color: string;
-        target: DomainObjectViewModel;
-        doClick: () => void;
+    export class ItemViewModel extends LinkViewModel{
+        target: DomainObjectViewModel;      
     }
 
     export class MessageViewModel {
