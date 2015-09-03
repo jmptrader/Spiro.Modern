@@ -160,7 +160,8 @@ var Spiro;
                                     nArgs[n] = newValue;
                                 });
                             }
-                            if (object) {
+                            // todo had to add object.properties check to get this working again - find out why
+                            if (object && object.properties) {
                                 _.forEach(pArgs, function (v, n) {
                                     var property = _.find(object.properties, function (p) { return p.argId === n; });
                                     var newValue = property.getValue();

@@ -68,7 +68,7 @@ var Spiro;
                     parmViewModel.dflt = parmRep.default().toValueString();
                     parmViewModel.message = "";
                     parmViewModel.id = parmRep.parameterId();
-                    parmViewModel.argId = parmRep.parameterId().toLowerCase();
+                    parmViewModel.argId = parmViewModel.id.toLowerCase();
                     parmViewModel.reference = "";
                     parmViewModel.mask = parmRep.extensions()["x-ro-nof-mask"];
                     parmViewModel.title = parmRep.extensions().friendlyName;

@@ -186,7 +186,8 @@ module Spiro.Angular.Modern {
                         });
                     }
 
-                    if (object) {
+                    // todo had to add object.properties check to get this working again - find out why
+                    if (object && object.properties) {
                         _.forEach(<_.Dictionary<Value>>pArgs, (v, n) => {
 
                             var property = _.find(object.properties, (p: PropertyViewModel) => p.argId === n);
