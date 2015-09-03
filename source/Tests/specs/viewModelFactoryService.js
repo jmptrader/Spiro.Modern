@@ -46,54 +46,40 @@ describe("viewModelFactory Service", function () {
     });
     describe("create linkViewModel", function () {
         var resultVm;
-        var rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
-        var testClickFunc = function () { };
+        var rawLink = {
+            title: "a title",
+            href: "http://objects/AdventureWorksModel.Product/1",
+            rel: 'urn: org.restfulobjects:rels/details;action="anAction"'
+        };
         describe("from populated rep", function () {
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink), testClickFunc);
+            var setMenu;
+            beforeEach(inject(function (viewModelFactory, urlManager) {
+                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink));
+                setMenu = spyOn(urlManager, "setMenu");
             }));
             it("creates a link view model", function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.doClick).toBe(testClickFunc);
-            });
-        });
-        describe("from empty rep", function () {
-            var emptyLink = {};
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(emptyLink), testClickFunc);
-            }));
-            it("creates a link view model", function () {
-                expect(resultVm.title).toBeUndefined();
-                expect(resultVm.color).toBe("bg-color-darkBlue");
-                expect(resultVm.doClick).toBe(testClickFunc);
+                resultVm.doClick();
+                expect(setMenu).toHaveBeenCalledWith("anAction");
             });
         });
     });
     describe("create itemViewModel", function () {
         var resultVm;
+        var setItem;
         var rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
-        var testClickFunc = function () { };
         describe("from populated rep", function () {
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.itemViewModel(new Spiro.Link(rawLink), testClickFunc);
+            var link = new Spiro.Link(rawLink);
+            beforeEach(inject(function (viewModelFactory, urlManager) {
+                resultVm = viewModelFactory.itemViewModel(link);
+                setItem = spyOn(urlManager, "setItem");
             }));
             it("creates an item view model", function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.doClick).toBe(testClickFunc);
-                expect(resultVm.target).toBeUndefined();
-            });
-        });
-        describe("from empty rep", function () {
-            var emptyLink = {};
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.itemViewModel(new Spiro.Link(emptyLink), testClickFunc);
-            }));
-            it("creates an item view model", function () {
-                expect(resultVm.title).toBeUndefined();
-                expect(resultVm.color).toBe("bg-color-darkBlue");
-                expect(resultVm.doClick).toBe(testClickFunc);
+                resultVm.doClick();
+                expect(setItem).toHaveBeenCalledWith(link);
                 expect(resultVm.target).toBeUndefined();
             });
         });

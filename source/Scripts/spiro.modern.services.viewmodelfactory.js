@@ -27,19 +27,18 @@ var Spiro;
                     errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
                     return errorViewModel;
                 };
-                viewModelFactory.linkViewModel = function (linkRep, click) {
+                viewModelFactory.linkViewModel = function (linkRep) {
                     var linkViewModel = new Modern.LinkViewModel();
                     linkViewModel.title = linkRep.title();
                     linkViewModel.color = color.toColorFromHref(linkRep.href());
-                    linkViewModel.doClick = click;
+                    linkViewModel.doClick = function () { return urlManager.setMenu(linkRep.rel().parms[0].value); };
                     return linkViewModel;
                 };
-                // tested
-                viewModelFactory.itemViewModel = function (linkRep, click) {
+                viewModelFactory.itemViewModel = function (linkRep) {
                     var itemViewModel = new Modern.ItemViewModel();
                     itemViewModel.title = linkRep.title();
                     itemViewModel.color = color.toColorFromHref(linkRep.href());
-                    itemViewModel.doClick = click;
+                    itemViewModel.doClick = function () { return urlManager.setItem(linkRep); };
                     return itemViewModel;
                 };
                 function addAutoAutoComplete(valueViewModel, currentChoice, id, currentValue) {
@@ -274,7 +273,7 @@ var Spiro;
                 function getItems(cvm, links, populateItems) {
                     if (populateItems) {
                         return _.map(links, function (link) {
-                            var ivm = viewModelFactory.itemViewModel(link, function () { return urlManager.setItem(link); });
+                            var ivm = viewModelFactory.itemViewModel(link);
                             var tempTgt = link.getTarget();
                             repLoader.populate(tempTgt).
                                 then(function (obj) {
@@ -287,7 +286,7 @@ var Spiro;
                         });
                     }
                     else {
-                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, function () { return urlManager.setItem(link); }); });
+                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link); });
                     }
                 }
                 function create(collectionRep, state) {
@@ -356,14 +355,14 @@ var Spiro;
                     });
                     servicesViewModel.title = "Services";
                     servicesViewModel.color = "bg-color-darkBlue";
-                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link, function () { }); });
+                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link); });
                     return servicesViewModel;
                 };
                 viewModelFactory.menusViewModel = function (menusRep) {
                     var menusViewModel = new Modern.MenusViewModel();
                     menusViewModel.title = "Menus";
                     menusViewModel.color = "bg-color-darkBlue";
-                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link, function () { return urlManager.setMenu(link.rel().parms[0].value); }); });
+                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link); });
                     return menusViewModel;
                 };
                 viewModelFactory.serviceViewModel = function (serviceRep) {

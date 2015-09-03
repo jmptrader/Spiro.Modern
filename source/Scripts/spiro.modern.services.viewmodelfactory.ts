@@ -19,8 +19,8 @@ module Spiro.Angular.Modern{
 
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        linkViewModel(linkRep: Link, click : () => void): LinkViewModel;
-        itemViewModel(linkRep: Link, click: () => void): ItemViewModel;
+        linkViewModel(linkRep: Link): LinkViewModel;
+        itemViewModel(linkRep: Link): ItemViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionMember): DialogViewModel;
@@ -48,22 +48,22 @@ module Spiro.Angular.Modern{
             return errorViewModel;
         };
 
-        viewModelFactory.linkViewModel = (linkRep: Link, click: () => void) => {
+        viewModelFactory.linkViewModel = (linkRep: Link) => {
             const linkViewModel = new LinkViewModel();
 
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());      
-            linkViewModel.doClick = click;
+            linkViewModel.doClick = () => urlManager.setMenu(linkRep.rel().parms[0].value);
         
             return linkViewModel;
         };
 
-        // tested
-        viewModelFactory.itemViewModel = (linkRep: Link, click: () => void) => {
+    
+        viewModelFactory.itemViewModel = (linkRep: Link) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.color = color.toColorFromHref(linkRep.href());     
-            itemViewModel.doClick = click;
+            itemViewModel.doClick = () => urlManager.setItem(linkRep);
           
             return itemViewModel;
         };
@@ -354,7 +354,7 @@ module Spiro.Angular.Modern{
 
             if (populateItems) {
                 return _.map(links, (link) => {
-                    var ivm = viewModelFactory.itemViewModel(link, () => urlManager.setItem(link));
+                    var ivm = viewModelFactory.itemViewModel(link);
                     var tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
@@ -367,7 +367,7 @@ module Spiro.Angular.Modern{
                     return ivm;
                 });
             } else {
-                return _.map(links, (link) => viewModelFactory.itemViewModel(link,  () => urlManager.setItem(link)));
+                return _.map(links, (link) => viewModelFactory.itemViewModel(link));
             }
         }
 
@@ -458,7 +458,7 @@ module Spiro.Angular.Modern{
             
             servicesViewModel.title = "Services";
             servicesViewModel.color = "bg-color-darkBlue";
-            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link, () =>{}));
+            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link));
             return servicesViewModel;
         };
 
@@ -467,7 +467,7 @@ module Spiro.Angular.Modern{
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link, () => urlManager.setMenu(link.rel().parms[0].value)));
+            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link));
             return menusViewModel;
         };
 

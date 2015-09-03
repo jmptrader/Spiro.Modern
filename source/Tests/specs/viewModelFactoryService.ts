@@ -59,34 +59,26 @@ describe("viewModelFactory Service", () => {
     describe("create linkViewModel", () => {
 
         let resultVm: Spiro.Angular.Modern.LinkViewModel;
-        const rawLink = { title: "a title", href : "http://objects/AdventureWorksModel.Product/1" };
-        const testClickFunc = () => {};
+        const rawLink = {
+            title: "a title",
+            href: "http://objects/AdventureWorksModel.Product/1",
+            rel: 'urn: org.restfulobjects:rels/details;action="anAction"'
+        };
 
         describe("from populated rep", () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink), testClickFunc);
+            let setMenu: jasmine.Spy;
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager : Spiro.Angular.Modern.IUrlManager) => {
+                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink));
+                setMenu = spyOn(urlManager, "setMenu");
             }));
 
             it("creates a link view model", () => {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.doClick).toBe(testClickFunc);
-            });
-        });
-
-
-        describe("from empty rep", () => {
-            const emptyLink = {};
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(emptyLink), testClickFunc);
-            }));
-
-            it("creates a link view model", () => {
-                expect(resultVm.title).toBeUndefined();
-                expect(resultVm.color).toBe("bg-color-darkBlue");
-                expect(resultVm.doClick).toBe(testClickFunc);
+                resultVm.doClick();
+                expect(setMenu).toHaveBeenCalledWith("anAction");
             });
         });
     });
@@ -94,38 +86,30 @@ describe("viewModelFactory Service", () => {
     describe("create itemViewModel", () => {
 
         let resultVm: Spiro.Angular.Modern.ItemViewModel;
+        let setItem: jasmine.Spy;
         const rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
-        const testClickFunc = () => { };
+    
 
         describe("from populated rep", () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.itemViewModel(new Spiro.Link(rawLink), testClickFunc);
+            let link = new Spiro.Link(rawLink)
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager: Spiro.Angular.Modern.IUrlManager) => {
+                resultVm = viewModelFactory.itemViewModel(link);
+                setItem = spyOn(urlManager, "setItem");
             }));
 
             it("creates an item view model", () => {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.doClick).toBe(testClickFunc);
+                resultVm.doClick();
+                expect(setItem).toHaveBeenCalledWith(link);
                 expect(resultVm.target).toBeUndefined();
             });
         });
 
 
-        describe("from empty rep", () => {
-            const emptyLink = {};
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.itemViewModel(new Spiro.Link(emptyLink), testClickFunc);
-            }));
-
-            it("creates an item view model", () => {
-                expect(resultVm.title).toBeUndefined();
-                expect(resultVm.color).toBe("bg-color-darkBlue");
-                expect(resultVm.doClick).toBe(testClickFunc);
-                expect(resultVm.target).toBeUndefined();
-            });
-        });
+      
     });
 
     describe("create actionViewModel", () => {
