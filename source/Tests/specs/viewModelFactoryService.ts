@@ -150,15 +150,15 @@ describe("viewModelFactory Service", () => {
             const am = new Spiro.ActionMember(rawAction, {}, "anid");
 
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context : Spiro.Angular.Modern.IContext) => {
-                //resultVm = viewModelFactory.actionViewModel(am);
+                resultVm = viewModelFactory.actionViewModel(am);
                 invokeAction = spyOn(context, "invokeAction");
             }));
 
             it("creates an action view model", () => {
-                //expect(resultVm.title).toBe("a title");
-                //expect(resultVm.menuPath).toBe("a path");
-                //resultVm.doInvoke();
-                //expect(invokeAction).toHaveBeenCalledWith(am);
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.menuPath).toBe("a path");
+                resultVm.doInvoke();
+                expect(invokeAction).toHaveBeenCalledWith(am);
             });
         });
 
@@ -180,8 +180,6 @@ describe("viewModelFactory Service", () => {
         });
     });
 
-   // updated to here
-
     describe("create dialogViewModel", () => {
 
         let resultVm: Spiro.Angular.Modern.DialogViewModel;
@@ -201,9 +199,14 @@ describe("viewModelFactory Service", () => {
 
         describe("from simple rep", () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, $routeParams) => {
-                $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionMember(rawAction, null, ""));
+            let invokeAction: jasmine.Spy;
+            let closeDialog: jasmine.Spy;
+            const am = new Spiro.ActionMember(rawAction, {}, "anid");
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context : Spiro.Angular.Modern.IContext, urlManager : Spiro.Angular.Modern.IUrlManager) => {
+                invokeAction = spyOn(context, "invokeAction");
+                closeDialog = spyOn(urlManager, "closeDialog");
+                resultVm = viewModelFactory.dialogViewModel(am);
             }));
 
             it("creates a dialog view model", () => {
@@ -211,11 +214,18 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.isQuery).toBe(false);
                 expect(resultVm.message).toBe("");
                 expect(resultVm.parameters.length).toBe(0);
-                expect(resultVm.doInvoke).toBeTruthy();
+
+                resultVm.doInvoke();
+                expect(invokeAction).toHaveBeenCalledWith(am, resultVm);
+
+                resultVm.doClose();
+                expect(closeDialog).toHaveBeenCalled();
             });
         });
 
     });
+
+    // updated to here
 
     describe("create collectionViewModel", () => {
 
@@ -375,7 +385,7 @@ describe("viewModelFactory Service", () => {
         describe("from populated rep", () => {
 
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "pv");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anId"), "pv");
             }));
 
             it("creates a parameter view model", () => {
@@ -385,8 +395,8 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.dflt).toBe("");
                 expect(resultVm.message).toBe("");
                 expect(resultVm.mask).toBeUndefined();
-                expect(resultVm.id).toBe("");
-                expect(resultVm.argId).toBe("");
+                expect(resultVm.id).toBe("anId");
+                expect(resultVm.argId).toBe("anid");
                 expect(resultVm.returnType).toBeUndefined();
                 expect(resultVm.format).toBeUndefined();
                 expect(resultVm.reference).toBe("");
@@ -409,7 +419,7 @@ describe("viewModelFactory Service", () => {
                 rawParameter.default = 1;
 
 
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
 
             it("creates a parameter view model with choices", () => {
@@ -441,7 +451,7 @@ describe("viewModelFactory Service", () => {
                 rawParameter.default = 1;
                 rawParameter.links.push(rawPromptLink);
 
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
 
             it("creates a parameter view model with prompt", () => {
@@ -474,7 +484,7 @@ describe("viewModelFactory Service", () => {
                 rawParameter.links.pop();
                 rawParameter.links.push(rawPromptLink);
 
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
 
             it("creates a parameter view model with prompt", () => {

@@ -116,14 +116,14 @@ describe("viewModelFactory Service", function () {
             var invokeAction;
             var am = new Spiro.ActionMember(rawAction, {}, "anid");
             beforeEach(inject(function (viewModelFactory, context) {
-                //resultVm = viewModelFactory.actionViewModel(am);
+                resultVm = viewModelFactory.actionViewModel(am);
                 invokeAction = spyOn(context, "invokeAction");
             }));
             it("creates an action view model", function () {
-                //expect(resultVm.title).toBe("a title");
-                //expect(resultVm.menuPath).toBe("a path");
-                //resultVm.doInvoke();
-                //expect(invokeAction).toHaveBeenCalledWith(am);
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.menuPath).toBe("a path");
+                resultVm.doInvoke();
+                expect(invokeAction).toHaveBeenCalledWith(am);
             });
         });
         describe("from populated rep with parms", function () {
@@ -140,7 +140,6 @@ describe("viewModelFactory Service", function () {
             });
         });
     });
-    // updated to here
     describe("create dialogViewModel", function () {
         var resultVm;
         var rawInvokeLink = {
@@ -156,19 +155,27 @@ describe("viewModelFactory Service", function () {
             links: [rawInvokeLink, rawUpLink]
         };
         describe("from simple rep", function () {
-            beforeEach(inject(function (viewModelFactory, $routeParams) {
-                $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionMember(rawAction, null, ""));
+            var invokeAction;
+            var closeDialog;
+            var am = new Spiro.ActionMember(rawAction, {}, "anid");
+            beforeEach(inject(function (viewModelFactory, context, urlManager) {
+                invokeAction = spyOn(context, "invokeAction");
+                closeDialog = spyOn(urlManager, "closeDialog");
+                resultVm = viewModelFactory.dialogViewModel(am);
             }));
             it("creates a dialog view model", function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.isQuery).toBe(false);
                 expect(resultVm.message).toBe("");
                 expect(resultVm.parameters.length).toBe(0);
-                expect(resultVm.doInvoke).toBeTruthy();
+                resultVm.doInvoke();
+                expect(invokeAction).toHaveBeenCalledWith(am, resultVm);
+                resultVm.doClose();
+                expect(closeDialog).toHaveBeenCalled();
             });
         });
     });
+    // updated to here
     describe("create collectionViewModel", function () {
         var resultVm;
         var rawDetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
@@ -286,7 +293,7 @@ describe("viewModelFactory Service", function () {
         var rawAction = {};
         describe("from populated rep", function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "pv");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anId"), "pv");
             }));
             it("creates a parameter view model", function () {
                 expect(resultVm.type).toBe("ref");
@@ -294,8 +301,8 @@ describe("viewModelFactory Service", function () {
                 expect(resultVm.dflt).toBe("");
                 expect(resultVm.message).toBe("");
                 expect(resultVm.mask).toBeUndefined();
-                expect(resultVm.id).toBe("");
-                expect(resultVm.argId).toBe("");
+                expect(resultVm.id).toBe("anId");
+                expect(resultVm.argId).toBe("anid");
                 expect(resultVm.returnType).toBeUndefined();
                 expect(resultVm.format).toBeUndefined();
                 expect(resultVm.reference).toBe("");
@@ -311,7 +318,7 @@ describe("viewModelFactory Service", function () {
             beforeEach(inject(function (viewModelFactory) {
                 rawParameter.choices = [1, 2, 3];
                 rawParameter.default = 1;
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
             it("creates a parameter view model with choices", function () {
                 expect(resultVm.choices.length).toBe(3);
@@ -335,7 +342,7 @@ describe("viewModelFactory Service", function () {
                 rawParameter.choices = null;
                 rawParameter.default = 1;
                 rawParameter.links.push(rawPromptLink);
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
             it("creates a parameter view model with prompt", function () {
                 expect(resultVm.choices.length).toBe(0);
@@ -360,7 +367,7 @@ describe("viewModelFactory Service", function () {
                 rawParameter.default = 1;
                 rawParameter.links.pop();
                 rawParameter.links.push(rawPromptLink);
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
             it("creates a parameter view model with prompt", function () {
                 expect(resultVm.choices.length).toBe(0);

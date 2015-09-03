@@ -21,7 +21,7 @@ module Spiro.Angular.Modern{
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, click : () => void): LinkViewModel;
         itemViewModel(linkRep: Link, click: () => void): ItemViewModel;
-        parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
+        parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionMember): DialogViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
@@ -99,14 +99,14 @@ module Spiro.Angular.Modern{
         }
 
          // tested
-        viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string) => {
+        viewModelFactory.parameterViewModel = (parmRep: Parameter,  previousValue: string) => {
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.message = "";
-            parmViewModel.id = id;
-            parmViewModel.argId = id.toLowerCase();
+            parmViewModel.id = parmRep.parameterId();
+            parmViewModel.argId = parmRep.parameterId().toLowerCase();
             parmViewModel.reference = "";
 
             parmViewModel.mask = parmRep.extensions()["x-ro-nof-mask"];
@@ -115,7 +115,7 @@ module Spiro.Angular.Modern{
             parmViewModel.format = parmRep.extensions().format;
 
             parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
-                return ChoiceViewModel.create(v, id, n);
+                return ChoiceViewModel.create(v, parmRep.parameterId(), n);
             });
 
             parmViewModel.hasChoices = parmViewModel.choices.length > 0;
@@ -127,12 +127,12 @@ module Spiro.Angular.Modern{
 
                 var promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
-                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);
+                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, parmViewModel.id);
                     parmViewModel.minLength = parmRep.promptLink().extensions().minLength;
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
+                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
                     parmViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
@@ -143,13 +143,13 @@ module Spiro.Angular.Modern{
                     parmViewModel.setSelectedChoice = () => {
                         var search = parmViewModel.getMemento();
                         _.forEach(parmViewModel.multiChoices, (c) => {
-                            context.setSelectedChoice(id, search, c);
+                            context.setSelectedChoice(parmViewModel.id, search, c);
                         });  
                     };         
                 } else {
                    
                     parmViewModel.setSelectedChoice = () =>  {
-                        context.setSelectedChoice(id, parmViewModel.getMemento(), parmViewModel.choice);
+                        context.setSelectedChoice(parmViewModel.id, parmViewModel.getMemento(), parmViewModel.choice);
                     };
                 }
 
@@ -177,10 +177,10 @@ module Spiro.Angular.Modern{
 
                 if (previousValue) {                            
                     if (parmViewModel.isMultipleChoices) {
-                        var scs = context.getSelectedChoice(id, previousValue);
+                        var scs = context.getSelectedChoice(parmViewModel.id, previousValue);
                         setCurrentChoices(scs);
                     } else {
-                        var sc = context.getSelectedChoice(id, previousValue).pop();
+                        var sc = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
                         setCurrentChoice(sc);
                     }
                 } else if (parmViewModel.dflt) {
@@ -221,7 +221,7 @@ module Spiro.Angular.Modern{
                 var currentChoice : ChoiceViewModel = null;
 
                 if (previousValue) {
-                    currentChoice = context.getSelectedChoice(id, previousValue).pop();
+                    currentChoice = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
                 }
                 else if (parmViewModel.dflt) {
                     let dflt = parmRep.default();
@@ -231,7 +231,7 @@ module Spiro.Angular.Modern{
 
                 var currentValue = new Value( currentChoice ?  { href: currentChoice.value, title : currentChoice.name } : "");
               
-                addAutoAutoComplete(parmViewModel, currentChoice, id, currentValue);
+                addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
             } 
 
 
@@ -255,7 +255,7 @@ module Spiro.Angular.Modern{
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
-            dialogViewModel.parameters = _.map(parameters, (parm, id) => viewModelFactory.parameterViewModel(parm, id, ""));
+            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, ""));
 
             dialogViewModel.doClose = () => urlManager.closeDialog();
             dialogViewModel.doInvoke = () => context.invokeAction(actionMember, dialogViewModel);
