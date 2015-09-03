@@ -244,7 +244,7 @@ module Spiro.Angular.Modern{
             
             actionViewModel.title = actionRep.extensions().friendlyName;
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-            actionViewModel.doInvoke = actionRep.extensions().hasParams ? () => urlManager.setDialog(actionRep.actionId()) : context.invokeAction(actionRep);
+            actionViewModel.doInvoke = actionRep.extensions().hasParams ? () => urlManager.setDialog(actionRep.actionId()) : () => context.invokeAction(actionRep);
 
             return actionViewModel;
         };

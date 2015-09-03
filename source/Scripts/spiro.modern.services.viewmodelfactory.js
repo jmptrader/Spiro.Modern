@@ -190,7 +190,7 @@ var Spiro;
                     var actionViewModel = new Modern.ActionViewModel();
                     actionViewModel.title = actionRep.extensions().friendlyName;
                     actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-                    actionViewModel.doInvoke = actionRep.extensions().hasParams ? function () { return urlManager.setDialog(actionRep.actionId()); } : context.invokeAction(actionRep);
+                    actionViewModel.doInvoke = actionRep.extensions().hasParams ? function () { return urlManager.setDialog(actionRep.actionId()); } : function () { return context.invokeAction(actionRep); };
                     return actionViewModel;
                 };
                 viewModelFactory.dialogViewModel = function (actionMember) {
