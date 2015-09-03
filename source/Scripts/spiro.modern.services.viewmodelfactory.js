@@ -186,15 +186,14 @@ var Spiro;
                     return parmViewModel;
                 };
                 // tested
-                viewModelFactory.actionViewModel = function (actionRep, invoke) {
+                viewModelFactory.actionViewModel = function (actionRep) {
                     var actionViewModel = new Modern.ActionViewModel();
                     actionViewModel.title = actionRep.extensions().friendlyName;
                     actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-                    actionViewModel.doInvoke = actionRep.extensions().hasParams ? function () { return urlManager.setDialog(actionRep.actionId()); } : invoke;
+                    actionViewModel.doInvoke = actionRep.extensions().hasParams ? function () { return urlManager.setDialog(actionRep.actionId()); } : context.invokeAction(actionRep);
                     return actionViewModel;
                 };
-                // tested
-                viewModelFactory.dialogViewModel = function (actionMember, invoke) {
+                viewModelFactory.dialogViewModel = function (actionMember) {
                     var dialogViewModel = new Modern.DialogViewModel();
                     var parameters = actionMember.parameters();
                     dialogViewModel.title = actionMember.extensions().friendlyName;
@@ -202,7 +201,7 @@ var Spiro;
                     dialogViewModel.message = "";
                     dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, ""); });
                     dialogViewModel.doClose = function () { return urlManager.closeDialog(); };
-                    dialogViewModel.doInvoke = function () { return invoke(dialogViewModel); };
+                    dialogViewModel.doInvoke = function () { return context.invokeAction(actionMember, dialogViewModel); };
                     return dialogViewModel;
                 };
                 viewModelFactory.propertyViewModel = function (propertyRep, id) {
@@ -372,7 +371,7 @@ var Spiro;
                     var actions = serviceRep.actionMembers();
                     serviceViewModel.serviceId = serviceRep.serviceId();
                     serviceViewModel.title = serviceRep.title();
-                    serviceViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action, function () { return null; }); });
+                    serviceViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action); });
                     serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
                     return serviceViewModel;
                 };
@@ -392,7 +391,7 @@ var Spiro;
                     objectViewModel.message = "";
                     objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id); });
                     objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()]); });
-                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, function () { return context.invokeAction(action); }); });
+                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action); });
                     objectViewModel.toggleActionMenu = function () {
                         urlManager.toggleObjectMenu();
                     };

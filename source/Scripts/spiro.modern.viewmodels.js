@@ -164,8 +164,6 @@ var Spiro;
                 function DialogViewModel() {
                     _super.apply(this, arguments);
                 }
-                DialogViewModel.prototype.doClose = function () { };
-                DialogViewModel.prototype.doInvoke = function () { };
                 DialogViewModel.prototype.clearMessages = function () {
                     this.message = "";
                     _.each(this.parameters, function (parm) { return parm.clearMessage(); });

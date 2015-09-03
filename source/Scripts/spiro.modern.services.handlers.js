@@ -73,12 +73,12 @@ var Spiro;
                         context.getMenu(routeData.menuId).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
-                            var actions = { actions: _.map(menu.actionMembers(), function (am) { return viewModelFactory.actionViewModel(am, function () { return context.invokeAction(am); }); }) };
+                            var actions = { actions: _.map(menu.actionMembers(), function (am) { return viewModelFactory.actionViewModel(am); }) };
                             $scope.object = actions;
                             if (routeData.dialogId) {
                                 $scope.dialogTemplate = Angular.dialogTemplate;
                                 var action = menu.actionMember(routeData.dialogId);
-                                $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(context.invokeAction, action));
+                                $scope.dialog = viewModelFactory.dialogViewModel(action);
                             }
                         }).catch(function (error) {
                             setError(error);
@@ -169,7 +169,7 @@ var Spiro;
                         if (routeData.dialogId) {
                             $scope.dialogTemplate = Angular.dialogTemplate;
                             var action = object.actionMember(routeData.dialogId);
-                            $scope.dialog = viewModelFactory.dialogViewModel(action, _.partial(context.invokeAction, action));
+                            $scope.dialog = viewModelFactory.dialogViewModel(action);
                         }
                     }).catch(function (error) {
                         setError(error);

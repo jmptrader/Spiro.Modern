@@ -99,13 +99,13 @@ module Spiro.Angular.Modern {
                 context.getMenu(routeData.menuId).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am, () => context.invokeAction(am))) };
+                        const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am)) };
                         $scope.object = actions;
 
                         if (routeData.dialogId) {
                             $scope.dialogTemplate = dialogTemplate;
                             const action = menu.actionMember(routeData.dialogId);
-                            $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(context.invokeAction, action));
+                            $scope.dialog = viewModelFactory.dialogViewModel(action);
                         }
                     }).catch(error => {
                         setError(error);
@@ -221,7 +221,7 @@ module Spiro.Angular.Modern {
                     if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
                         const action = object.actionMember(routeData.dialogId);
-                        $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(context.invokeAction, action));
+                        $scope.dialog = viewModelFactory.dialogViewModel(action);
                     }
 
                 }).catch(error => {

@@ -193,15 +193,15 @@ module Spiro.Angular.Modern {
 
         title: string;
         message: string;
-        isQuery: boolean; 
+        isQuery: boolean;
 
         parameters: ParameterViewModel[];
 
-        doClose(): void { }
-        doInvoke() : void { }
+        doClose: () => void;
+        doInvoke: () => void;
 
         clearMessages() {
-            this.message = ""; 
+            this.message = "";
             _.each(this.parameters, parm => parm.clearMessage());
         }
     } 
