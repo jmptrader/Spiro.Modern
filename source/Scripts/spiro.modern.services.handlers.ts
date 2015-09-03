@@ -99,7 +99,7 @@ module Spiro.Angular.Modern {
                 context.getMenu(routeData.menuId).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        const actions = { actions: _.map(menu.actionMembers(), (am, id) => viewModelFactory.actionViewModel(am, id, () => context.invokeAction(am))) };
+                        const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am, () => context.invokeAction(am))) };
                         $scope.object = actions;
 
                         if (routeData.dialogId) {

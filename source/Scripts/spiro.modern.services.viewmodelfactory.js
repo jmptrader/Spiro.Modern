@@ -186,40 +186,23 @@ var Spiro;
                     return parmViewModel;
                 };
                 // tested
-                viewModelFactory.actionViewModel = function (actionRep, id, invoke) {
+                viewModelFactory.actionViewModel = function (actionRep, invoke) {
                     var actionViewModel = new Modern.ActionViewModel();
                     actionViewModel.title = actionRep.extensions().friendlyName;
-                    //actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
                     actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-                    if (actionRep.extensions().hasParams) {
-                        actionViewModel.doInvoke = function () {
-                            // show the dialog 
-                            urlManager.setDialog(id);
-                        };
-                    }
-                    else {
-                        actionViewModel.doInvoke = invoke;
-                    }
+                    actionViewModel.doInvoke = actionRep.extensions().hasParams ? function () { return urlManager.setDialog(actionRep.actionId()); } : invoke;
                     return actionViewModel;
                 };
                 // tested
                 viewModelFactory.dialogViewModel = function (actionMember, invoke) {
                     var dialogViewModel = new Modern.DialogViewModel();
                     var parameters = actionMember.parameters();
-                    //var parms = [];//urlHelper.actionParms();
                     dialogViewModel.title = actionMember.extensions().friendlyName;
                     dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
                     dialogViewModel.message = "";
-                    dialogViewModel.doClose = function () { return urlManager.closeDialog(); };
                     dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, ""); });
-                    dialogViewModel.doShow = function () {
-                        dialogViewModel.show = true;
-                        invoke(dialogViewModel);
-                    };
-                    dialogViewModel.doInvoke = function () {
-                        dialogViewModel.show = false;
-                        invoke(dialogViewModel);
-                    };
+                    dialogViewModel.doClose = function () { return urlManager.closeDialog(); };
+                    dialogViewModel.doInvoke = function () { return invoke(dialogViewModel); };
                     return dialogViewModel;
                 };
                 viewModelFactory.propertyViewModel = function (propertyRep, id) {
@@ -389,9 +372,8 @@ var Spiro;
                     var actions = serviceRep.actionMembers();
                     serviceViewModel.serviceId = serviceRep.serviceId();
                     serviceViewModel.title = serviceRep.title();
-                    serviceViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, function () { return null; }); });
+                    serviceViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action, function () { return null; }); });
                     serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
-                    //serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
                     return serviceViewModel;
                 };
                 viewModelFactory.domainObjectViewModel = function (objectRep, collectionStates, save, previousUrl) {
@@ -410,7 +392,7 @@ var Spiro;
                     objectViewModel.message = "";
                     objectViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id); });
                     objectViewModel.collections = _.map(collections, function (collection) { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()]); });
-                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, id, function () { return context.invokeAction(action); }); });
+                    objectViewModel.actions = _.map(actions, function (action, id) { return viewModelFactory.actionViewModel(action, function () { return context.invokeAction(action); }); });
                     objectViewModel.toggleActionMenu = function () {
                         urlManager.toggleObjectMenu();
                     };

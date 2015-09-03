@@ -22,7 +22,7 @@ module Spiro.Angular.Modern{
         linkViewModel(linkRep: Link, click : () => void): LinkViewModel;
         itemViewModel(linkRep: Link, click: () => void): ItemViewModel;
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
-        actionViewModel(actionRep: ActionMember,  id : string, invoke : () => void): ActionViewModel;
+        actionViewModel(actionRep: ActionMember, invoke : () => void): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
         collectionViewModel(collection: any, state : CollectionViewState, populateItems?: boolean): CollectionViewModel;
@@ -239,22 +239,12 @@ module Spiro.Angular.Modern{
         };
 
         // tested
-        viewModelFactory.actionViewModel = (actionRep: ActionMember, id: string, invoke: () => void) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember,  invoke: () => void) => {
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
-            //actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
-
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-
-            if (actionRep.extensions().hasParams) {
-                actionViewModel.doInvoke = () => {
-                    // show the dialog 
-                    urlManager.setDialog(id);
-                }
-            } else {
-                actionViewModel.doInvoke = invoke;
-            }
+            actionViewModel.doInvoke = actionRep.extensions().hasParams ? () => urlManager.setDialog(actionRep.actionId()) : invoke;
 
             return actionViewModel;
         };
@@ -263,26 +253,15 @@ module Spiro.Angular.Modern{
         viewModelFactory.dialogViewModel = (actionMember: ActionMember, invoke: (dvm: DialogViewModel) => void) => {
             var dialogViewModel = new DialogViewModel();
             var parameters = actionMember.parameters();
-            //var parms = [];//urlHelper.actionParms();
 
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
-
             dialogViewModel.message = "";
+            dialogViewModel.parameters = _.map(parameters, (parm, id) => viewModelFactory.parameterViewModel(parm, id, ""));
 
-            dialogViewModel.doClose =  () => urlManager.closeDialog();
-
-            dialogViewModel.parameters = _.map(parameters, (parm, id?) => { return viewModelFactory.parameterViewModel(parm, id, ""); });
-
-            dialogViewModel.doShow = () => {
-                dialogViewModel.show = true;
-                invoke(dialogViewModel);
-            };
-            dialogViewModel.doInvoke = () => {
-                dialogViewModel.show = false;
-                invoke(dialogViewModel);
-            };
-
+            dialogViewModel.doClose = () => urlManager.closeDialog();
+            dialogViewModel.doInvoke = () => invoke(dialogViewModel);
+         
             return dialogViewModel;
         };
 
@@ -502,10 +481,8 @@ module Spiro.Angular.Modern{
             var actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, () => null); });
-            serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
-            //serviceViewModel.href = urlHelper.toAppUrl(serviceRep.getUrl());
-          
+            serviceViewModel.actions = _.map(actions, action =>  viewModelFactory.actionViewModel(action, () => null));
+            serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());          
 
             return serviceViewModel;
         };
@@ -535,7 +512,7 @@ module Spiro.Angular.Modern{
 
             objectViewModel.properties = _.map(properties, (property, id?) => { return viewModelFactory.propertyViewModel(property, id); });
             objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()] ); });
-            objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, id, () => context.invokeAction(action)); });
+            objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action, () => context.invokeAction(action)); });
 
             objectViewModel.toggleActionMenu = () => {
                 urlManager.toggleObjectMenu();

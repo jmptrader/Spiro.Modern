@@ -98,25 +98,61 @@ describe("viewModelFactory Service", function () {
             });
         });
     });
-    // updated to here
     describe("create actionViewModel", function () {
         var resultVm;
-        var rawdetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction" };
-        var rawAction = { extensions: { friendlyName: "a title" }, links: [rawdetailsLink] };
-        describe("from populated rep", function () {
+        var rawdetailsLink = {
+            rel: "urn:org.restfulobjects:rels/details",
+            href: "http://objects/AdventureWorksModel.Product/1/actions/anaction"
+        };
+        var rawAction = {
+            extensions: {
+                friendlyName: "a title",
+                "x-ro-nof-menuPath": "a path"
+            },
+            links: [rawdetailsLink]
+        };
+        var rawActionParms = _.set(_.cloneDeep(rawAction), "extensions.hasParams", true);
+        var testInvokeFunc = function () { };
+        describe("from populated rep with no parms", function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}, ""), "", null);
+                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}, "anid"), testInvokeFunc);
             }));
             it("creates an action view model", function () {
                 expect(resultVm.title).toBe("a title");
+                expect(resultVm.menuPath).toBe("a path");
+                expect(resultVm.doInvoke).toBe(testInvokeFunc);
+            });
+        });
+        describe("from populated rep with parms", function () {
+            var setDialog;
+            beforeEach(inject(function (viewModelFactory, urlManager) {
+                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawActionParms, {}, "anid"), testInvokeFunc);
+                setDialog = spyOn(urlManager, "setDialog");
+            }));
+            it("creates an action view model", function () {
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.menuPath).toBe("a path");
+                expect(resultVm.doInvoke).toNotBe(testInvokeFunc);
+                resultVm.doInvoke();
+                expect(setDialog).toHaveBeenCalledWith("anid");
             });
         });
     });
+    // updated to here
     describe("create dialogViewModel", function () {
         var resultVm;
-        var rawInvokeLink = { rel: "urn:org.restfulobjects:rels/invoke", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction" };
-        var rawUpLink = { rel: "urn:org.restfulobjects:rels/up", href: "http://objects/AdventureWorksModel.Product/1" };
-        var rawAction = { extensions: { friendlyName: "a title" }, links: [rawInvokeLink, rawUpLink] };
+        var rawInvokeLink = {
+            rel: "urn:org.restfulobjects:rels/invoke",
+            href: "http://objects/AdventureWorksModel.Product/1/actions/anaction"
+        };
+        var rawUpLink = {
+            rel: "urn:org.restfulobjects:rels/up",
+            href: "http://objects/AdventureWorksModel.Product/1"
+        };
+        var rawAction = {
+            extensions: { friendlyName: "a title" },
+            links: [rawInvokeLink, rawUpLink]
+        };
         describe("from simple rep", function () {
             beforeEach(inject(function (viewModelFactory, $routeParams) {
                 $routeParams.action = "";
@@ -126,9 +162,7 @@ describe("viewModelFactory Service", function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.isQuery).toBe(false);
                 expect(resultVm.message).toBe("");
-                // expect(resultVm.close).toBe("#/objects/AdventureWorksModel.Product/1");
                 expect(resultVm.parameters.length).toBe(0);
-                expect(resultVm.doShow).toBeTruthy();
                 expect(resultVm.doInvoke).toBeTruthy();
             });
         });

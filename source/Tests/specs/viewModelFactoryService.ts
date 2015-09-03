@@ -128,34 +128,75 @@ describe("viewModelFactory Service", () => {
         });
     });
 
-    // updated to here
-
     describe("create actionViewModel", () => {
 
         let resultVm: Spiro.Angular.Modern.ActionViewModel;
-        const rawdetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction"} 
-        const rawAction = { extensions: {friendlyName : "a title"}, links : [rawdetailsLink] };
-        
-        describe("from populated rep", () => {
+        const rawdetailsLink = {
+            rel: "urn:org.restfulobjects:rels/details",
+            href: "http://objects/AdventureWorksModel.Product/1/actions/anaction"
+        }
+        const rawAction = {
+            extensions: {
+                friendlyName: "a title",
+                "x-ro-nof-menuPath": "a path"
+            },
+            links: [rawdetailsLink]
+        };
+        const rawActionParms = _.set(_.cloneDeep(rawAction), "extensions.hasParams", true);
+        const testInvokeFunc = () => {};
+
+        describe("from populated rep with no parms", () => {
 
             beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}, ""), "", null);
+                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}, "anid"), testInvokeFunc);
             }));
 
             it("creates an action view model", () => {
                 expect(resultVm.title).toBe("a title");
+                expect(resultVm.menuPath).toBe("a path");
+                expect(resultVm.doInvoke).toBe(testInvokeFunc);
             });
         });
 
+        describe("from populated rep with parms", () => {
+
+            let setDialog: jasmine.Spy;
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager : Spiro.Angular.Modern.IUrlManager) => {
+                resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawActionParms, {}, "anid"), testInvokeFunc);
+
+                setDialog = spyOn(urlManager, "setDialog");
+
+            }));
+
+            it("creates an action view model", () => {
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.menuPath).toBe("a path");
+                expect(resultVm.doInvoke).toNotBe(testInvokeFunc);
+                resultVm.doInvoke();
+                expect(setDialog).toHaveBeenCalledWith("anid");
+            });
+        });
     });
+
+   // updated to here
 
     describe("create dialogViewModel", () => {
 
         let resultVm: Spiro.Angular.Modern.DialogViewModel;
-        const rawInvokeLink = { rel: "urn:org.restfulobjects:rels/invoke", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction" };
-        const rawUpLink = { rel: "urn:org.restfulobjects:rels/up", href: "http://objects/AdventureWorksModel.Product/1" };
 
-        const rawAction = { extensions: { friendlyName: "a title" }, links: [rawInvokeLink, rawUpLink] };
+        const rawInvokeLink = {
+            rel: "urn:org.restfulobjects:rels/invoke",
+            href: "http://objects/AdventureWorksModel.Product/1/actions/anaction"
+        };
+        const rawUpLink = {
+            rel: "urn:org.restfulobjects:rels/up",
+            href: "http://objects/AdventureWorksModel.Product/1"
+        };
+        const rawAction = {
+            extensions: { friendlyName: "a title" },
+            links: [rawInvokeLink, rawUpLink]
+        };
 
         describe("from simple rep", () => {
 
@@ -168,9 +209,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.isQuery).toBe(false);
                 expect(resultVm.message).toBe("");
-               // expect(resultVm.close).toBe("#/objects/AdventureWorksModel.Product/1");
                 expect(resultVm.parameters.length).toBe(0);
-                expect(resultVm.doShow).toBeTruthy();
                 expect(resultVm.doInvoke).toBeTruthy();
             });
         });

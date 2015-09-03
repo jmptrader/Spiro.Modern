@@ -73,7 +73,7 @@ var Spiro;
                         context.getMenu(routeData.menuId).
                             then(function (menu) {
                             $scope.actionsTemplate = Angular.actionsTemplate;
-                            var actions = { actions: _.map(menu.actionMembers(), function (am, id) { return viewModelFactory.actionViewModel(am, id, function () { return context.invokeAction(am); }); }) };
+                            var actions = { actions: _.map(menu.actionMembers(), function (am) { return viewModelFactory.actionViewModel(am, function () { return context.invokeAction(am); }); }) };
                             $scope.object = actions;
                             if (routeData.dialogId) {
                                 $scope.dialogTemplate = Angular.dialogTemplate;

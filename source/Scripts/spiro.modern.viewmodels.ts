@@ -184,11 +184,9 @@ module Spiro.Angular.Modern {
     } 
 
     export class ActionViewModel {
-  
         menuPath : string;
         title: string;
-
-        doInvoke() {}
+        doInvoke : () => void;
     } 
 
     export class DialogViewModel extends MessageViewModel {
@@ -196,19 +194,16 @@ module Spiro.Angular.Modern {
         title: string;
         message: string;
         isQuery: boolean; 
-        show: boolean; 
 
         parameters: ParameterViewModel[];
 
         doClose(): void { }
-        doShow() : void { }
         doInvoke() : void { }
 
         clearMessages() {
             this.message = ""; 
-            _.each(this.parameters, (parm) => parm.clearMessage());
+            _.each(this.parameters, parm => parm.clearMessage());
         }
-
     } 
     
     export class PropertyViewModel extends ValueViewModel {
@@ -247,7 +242,6 @@ module Spiro.Angular.Modern {
         color: string;
         items: LinkViewModel[];
     } 
-
 
     export class ServiceViewModel {
         title: string;
