@@ -36,7 +36,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void Actions() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-            wait.Until(d => d.FindElement(By.ClassName("object")));
+            Assert.IsTrue(br.FindElement(By.ClassName("object")).Displayed);
             Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
@@ -356,7 +356,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region browsers specific subclasses
 
     [TestClass, Ignore]
-    public class ObjectPageTestsIe : ObjectViewTests {
+    public class ObjectViewTestsIe : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -376,7 +376,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class ObjectPageTestsFirefox : ObjectViewTests {
+    public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             SpiroTest.InitialiseClass(context);
@@ -399,7 +399,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass, Ignore]
-    public class ObjectPageTestsChrome : ObjectViewTests {
+    public class ObjectViewTestsChrome : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
