@@ -29,9 +29,13 @@ var Spiro;
                     if (error instanceof Spiro.ErrorRepresentation) {
                         context.setError(error);
                     }
-                    if (error instanceof Spiro.ErrorMap) {
+                    else if (error instanceof Spiro.ErrorMap) {
                         var em = error;
-                        var errorRep = new Spiro.ErrorRepresentation({ message: "unexpected error map " + em.warningMessage });
+                        var errorRep = new Spiro.ErrorRepresentation({ message: "unexpected error map: " + em.warningMessage });
+                        context.setError(errorRep);
+                    }
+                    else {
+                        var errorRep = new Spiro.ErrorRepresentation({ message: "unexpected error: " + error.toString() });
                         context.setError(errorRep);
                     }
                     urlManager.setError();

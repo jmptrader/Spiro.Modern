@@ -124,8 +124,9 @@ module Spiro.Angular.Modern {
         helper.setObjectEdit = (edit: boolean) => {
             setSearch("edit1", edit.toString(), false);
         };
+
         helper.setError = () => {
-            $location.path("/error");
+            $location.path("/error").search({});
         };
 
         helper.getRouteData = () => {
