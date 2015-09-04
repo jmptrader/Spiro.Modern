@@ -416,7 +416,7 @@ th, td {
     content: "\e08f";
 }
 
-.icon-pencil:before {
+.icon-edit:before {
     content: "\e002";
 }
 

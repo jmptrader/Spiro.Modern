@@ -93,7 +93,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const int StoreProperties = 6;
         protected const int StoreCollections = 2;
         protected const int ProductActions = 6;
-        protected const int ProductProperties = 26;
+        protected const int ProductProperties = 23;
 
         //protected const string url = "http://localhost:53103/";
         //protected const string server = @".\SQLEXPRESS";
