@@ -90,7 +90,7 @@ var Spiro;
                     setSearch("edit1", edit.toString(), false);
                 };
                 helper.setError = function () {
-                    $location.path("/error");
+                    $location.path("/error").search({});
                 };
                 helper.getRouteData = function () {
                     var routeData = new Modern.RouteData();

@@ -44,11 +44,15 @@ module Spiro.Angular.Modern {
             if (error instanceof ErrorRepresentation) {
                 context.setError(error);
             }
-            if (error instanceof ErrorMap) {
+            else if (error instanceof ErrorMap) {
                 let em = <ErrorMap>error;
-                const errorRep = new ErrorRepresentation({ message: `unexpected error map ${em.warningMessage}` });
+                const errorRep = new ErrorRepresentation({ message: `unexpected error map: ${em.warningMessage}` });
+                context.setError(errorRep);
+            } else {
+                const errorRep = new ErrorRepresentation({ message: `unexpected error: ${error.toString()}` });
                 context.setError(errorRep);
             }
+
             urlManager.setError();
         }
 
