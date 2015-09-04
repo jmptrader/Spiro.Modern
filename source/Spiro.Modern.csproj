@@ -75,7 +75,7 @@
     <Content Include="Content\partials\dialog.html" />
     <Content Include="Content\partials\editProperties.html" />
     <Content Include="Content\partials\error.html" />
-    <Content Include="Content\partials\errorPage.html" />
+    <Content Include="Content\partials\singleErrorPage.html" />
     <Content Include="Content\partials\viewProperties.html" />
     <Content Include="Content\spiro-modern.css" />
     <Content Include="Content\themes\base\accordion.css" />

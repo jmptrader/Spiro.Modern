@@ -75,7 +75,7 @@ module Spiro.Angular {
     var servicePageTemplate = getSvrPath() + "Content/partials/servicePage.html";
     var objectPageTemplate = getSvrPath() + "Content/partials/objectPage.html";
     var transientObjectPageTemplate = getSvrPath() + "Content/partials/transientObjectPage.html";
-    var errorPageTemplate = getSvrPath() + "Content/partials/errorPage.html";
+    var singleErrorPageTemplate = getSvrPath() + "Content/partials/singleErrorPage.html";
 
     //All Modern2 templates below:
     var singleHomePageTemplate = getSvrPath() + "Content/partials/singleHomePage.html";
@@ -163,7 +163,7 @@ module Spiro.Angular {
                 controller: "BackgroundController"
             }).
             when("/error", {
-                templateUrl: errorPageTemplate,
+                templateUrl: singleErrorPageTemplate,
                 controller: "ErrorController"
             }).
             //TODO: change default to /home when Modern2 is complete

@@ -39,6 +39,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         private void AssertHomeElementsPresent()
         {
+            Assert.IsTrue(br.FindElements(By.ClassName("error")).Count == 0);
             Assert.IsNotNull(br.FindElement(By.ClassName("single")));
             Assert.IsNotNull(br.FindElement(By.ClassName("home")));
             Assert.IsNotNull(br.FindElement(By.ClassName("header")));
@@ -53,10 +54,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsNotNull(br.FindElement(By.ClassName("actions")));
             Assert.IsTrue(br.FindElements(By.ClassName("action"))[0].Text == "Find Customer By Account Number");
         }
-        [TestMethod, Ignore] //Should give error page
+        [TestMethod]
         public virtual void HomeWithNoSuchMenu() {
             br.Navigate().GoToUrl(Url + "#/home?menu1=NoSuchRepository");
-
+            wait.Until(d => d.FindElement(By.ClassName("error")));
         }
 
         [TestMethod]
@@ -71,12 +72,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void Object()
         {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555");
+            wait.Until(d => d.FindElement(By.ClassName("object")));
             AssertObjectElementsPresent();
-            Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
         private void AssertObjectElementsPresent()
         {
+            Assert.IsTrue(br.FindElements(By.ClassName("error")).Count == 0);
             Assert.IsNotNull(br.FindElement(By.ClassName("single")));
             Assert.IsNotNull(br.FindElement(By.ClassName("object")));
             Assert.IsNotNull(br.FindElement(By.ClassName("view")));
@@ -87,15 +89,80 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsNotNull(br.FindElement(By.ClassName("collections")));
         }
 
-        private const string ObjectWithNoSuchObject = Url + "#/object?object1=AdventureWorksModel.Foo-555";
-        private const string ObjectIgnoresInvalidParam = Url + "#/object?object2=AdventureWorksModel.Store-555";
-        private const string ObjectWithActions = Url + "#/object?object1=AdventureWorksModel.Store-555&menu1=Actions";
-        private const string ObjectWithCollections = Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_Addresses=List&collection1_Contacts=Table";
-        private const string ObjectWithNoSuchCollection = Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_NoSuch=List";
-        private const string ObjectWithCollectionInvalidFormat = Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_Addresses=Summary";
-        //TODO: Edit mode
-        private const string UrlQuery = Url + "#/query";
+        [TestMethod, Ignore]
+        public virtual void ObjectWithNoParams()
+        {
+            br.Navigate().GoToUrl(Url + "#/object");
+            wait.Until(d => d.FindElement(By.ClassName("error")));
+        }
 
+        [TestMethod]
+        public virtual void ObjectWithNoSuchObject()
+        {
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Foo-555");
+            wait.Until(d => d.FindElement(By.ClassName("error")));
+        }
+
+        [TestMethod]
+        public virtual void ObjectWithActions()
+        {
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&menu1=Actions");
+            wait.Until(d => d.FindElement(By.ClassName("actions")));
+            AssertObjectElementsPresent();
+            Assert.IsNotNull(br.FindElement(By.ClassName("actions")));
+            Assert.IsTrue(br.FindElements(By.ClassName("action"))[0].Text == "Create New Address");
+
+        }
+
+        [TestMethod]
+        public virtual void ObjectWithCollections()
+        {
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_Addresses=List&collection1_Contacts=Table");
+            wait.Until(d => d.FindElement(By.ClassName("collections")));
+            AssertObjectElementsPresent();
+            wait.Until(d => d.FindElements(By.ClassName("collection")).Count == 2);
+            var collections = br.FindElements(By.ClassName("collection"));
+            Assert.IsNotNull(collections[0].FindElement(By.TagName("table")));
+            Assert.IsNotNull(collections[0].FindElement(By.ClassName("icon-table")));
+            Assert.IsNotNull(collections[0].FindElement(By.ClassName("icon-summary")));
+            Assert.IsTrue(collections[0].FindElements(By.ClassName("icon-list")).Count == 0);
+        }
+
+        [TestMethod, Ignore]
+        public virtual void ObjectWithNoSuchCollection()
+        {
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_NoSuch=List");
+            wait.Until(d => d.FindElement(By.ClassName("error")));
+        }
+
+        [TestMethod, Ignore]
+        public virtual void ObjectWithCollectionInvalidFormat()
+        {
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_Addresses=Summary");
+            wait.Until(d => d.FindElement(By.ClassName("error")));
+        }
+        //TODO: Edit mode
+
+        [TestMethod, Ignore] //Error getting query (or doing refresh on a manually rectrieved query result)
+        public virtual void QueryZeroParameterAction()
+        {
+            br.Navigate().GoToUrl(Url + "#/query?action1=HighestValueOrders");
+            wait.Until(d => d.FindElement(By.ClassName("query")));
+            AssertQueryElementsPresent();
+        }
+
+        private void AssertQueryElementsPresent()
+        {
+            Assert.IsTrue(br.FindElements(By.ClassName("error")).Count == 0);
+            Assert.IsNotNull(br.FindElement(By.ClassName("single")));
+            Assert.IsNotNull(br.FindElement(By.ClassName("query")));
+            Assert.IsNotNull(br.FindElement(By.ClassName("header")));
+            var menu = br.FindElement(By.ClassName("menu"));
+            Assert.AreEqual("Actions", menu.Text);
+            Assert.IsNotNull(br.FindElement(By.ClassName("main-column")));
+            Assert.IsTrue(br.FindElements(By.ClassName("dialog")).Count == 0);
+            Assert.IsTrue(br.FindElements(By.ClassName("action")).Count == 0);
+        }
 
     }
 
