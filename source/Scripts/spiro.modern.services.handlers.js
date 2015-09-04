@@ -25,17 +25,23 @@ var Spiro;
                     context.setError(errorRep);
                     urlManager.setError();
                 }
+                var getStacktrace = function () { return [(new Error()).stack || "no stacktrace"]; };
                 function setError(error) {
                     if (error instanceof Spiro.ErrorRepresentation) {
                         context.setError(error);
                     }
                     else if (error instanceof Spiro.ErrorMap) {
                         var em = error;
-                        var errorRep = new Spiro.ErrorRepresentation({ message: "unexpected error map: " + em.warningMessage });
+                        var errorRep = new Spiro.ErrorRepresentation({
+                            message: "unexpected error map: " + em.warningMessage,
+                            stackTrace: getStacktrace() });
                         context.setError(errorRep);
                     }
                     else {
-                        var errorRep = new Spiro.ErrorRepresentation({ message: "unexpected error: " + error.toString() });
+                        var errorRep = new Spiro.ErrorRepresentation({
+                            message: "unexpected error: " + error.toString(),
+                            stackTrace: getStacktrace()
+                        });
                         context.setError(errorRep);
                     }
                     urlManager.setError();

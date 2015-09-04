@@ -37,19 +37,25 @@ module Spiro.Angular.Modern {
             urlManager.setError();
         }
 
-        function setError(error: ErrorRepresentation);
-        function setError(error: ErrorMap);
+        const getStacktrace = () => [(<any>new Error()).stack || "no stacktrace"];
 
+        function setError(error: ErrorRepresentation);
+        function setError(error: ErrorMap);     
         function setError(error: any) {
             if (error instanceof ErrorRepresentation) {
                 context.setError(error);
             }
             else if (error instanceof ErrorMap) {
                 let em = <ErrorMap>error;
-                const errorRep = new ErrorRepresentation({ message: `unexpected error map: ${em.warningMessage}` });
+                const errorRep = new ErrorRepresentation({
+                    message: `unexpected error map: ${em.warningMessage}`,
+                    stackTrace: getStacktrace() });
                 context.setError(errorRep);
             } else {
-                const errorRep = new ErrorRepresentation({ message: `unexpected error: ${error.toString()}` });
+                const errorRep = new ErrorRepresentation({
+                    message: `unexpected error: ${error.toString()}`,
+                    stackTrace: getStacktrace()
+                });
                 context.setError(errorRep);
             }
 
