@@ -15,25 +15,38 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     [TestClass]
-    public abstract class MenuBarTests : SpiroTest {
+    public abstract class FooterIconTests : SpiroTest {
+        [TestMethod]
+        public virtual void FooterIcons()
+        {
+            wait.Until(d => d.FindElements(By.ClassName("footer")).Count == 1);
+
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
+            //Assert.IsFalse(br.FindElement(By.ClassName("icon-refresh")).Displayed);
+            Assert.IsFalse(br.FindElement(By.ClassName("icon-edit")).Displayed);
+            //Assert.IsFalse(br.FindElement(By.ClassName("icon-help")).Displayed);
+        }
+
         [TestMethod]
         public virtual void Home() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            Click(br.FindElement(By.ClassName("home")));
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
+            Click(br.FindElement(By.ClassName("icon-home")));
+            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
         }
 
         [TestMethod]
         public virtual void BackAndForward() {
             br.Navigate().GoToUrl(Url);
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
-            GoToServiceFromHomePage("Customers");
+            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
+            GoToMenuFromHomePage("Customers");
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            Click(br.FindElement(By.ClassName("back")));
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
-            Click(br.FindElement(By.ClassName("forward")));
+            Click(br.FindElement(By.ClassName("icon-back")));
+            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
+            Click(br.FindElement(By.ClassName("icon-forward")));
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
         }
 
@@ -43,7 +56,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region browsers specific subclasses 
 
     [TestClass, Ignore]
-    public class MenuBarTestsIe : MenuBarTests {
+    public class MenuBarTestsIe : FooterIconTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -62,7 +75,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class MenuBarTestsFirefox : MenuBarTests {
+    public class MenuBarTestsFirefox : FooterIconTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             SpiroTest.InitialiseClass(context);
@@ -80,7 +93,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass, Ignore]
-    public class MenuBarTestsChrome : MenuBarTests {
+    public class MenuBarTestsChrome : FooterIconTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

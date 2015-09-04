@@ -19,27 +19,25 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     [TestClass]
-    public abstract class ObjectPageTests : SpiroTest {
+    public abstract class ObjectViewTests : SpiroTest {
         [TestMethod]
-        public virtual void MenuBar() {
-            br.Navigate().GoToUrl(Store555Url);
+        public virtual void FooterIcons() {
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            wait.Until(d => d.FindElement(By.ClassName("object")));
+            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
 
-            wait.Until(d => d.FindElements(By.ClassName("app-bar")).Count == 1);
-
-            Assert.IsTrue(br.FindElement(By.ClassName("home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("forward")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
-           
-            Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
-
-            wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
-
+            wait.Until(d => d.FindElement(By.ClassName("footer")));
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-edit")).Displayed);
         }
 
         [TestMethod]
         public virtual void Actions() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            wait.Until(d => d.FindElement(By.ClassName("object")));
+            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
@@ -55,54 +53,55 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void Properties() {
-            br.Navigate().GoToUrl(Store555Url);
-
-            wait.Until(d => d.FindElements(By.ClassName("property")).Count == StoreActions);
+        public virtual void PropertiesAndCollections() {
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            wait.Until(d => d.FindElement(By.ClassName("object")));
+            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
             Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
             Assert.AreEqual("Demographics:\r\nAnnualSales: 800000 AnnualRevenue: 80000 BankName: International Security BusinessType: BM YearOpened: 1988 Specialty: Touring SquareFeet: 21000 Brands: AW Internet: T1 NumberEmployees: 11", properties[1].Text);
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
-            Assert.AreEqual("Modified Date:\r\n2004-10-13T11:15:07.497Z", properties[3].Text);
+            Assert.AreEqual("Modified Date:\r\n13 Oct 2004 12:15:07", properties[3].Text);
             Assert.AreEqual("Account Number:\r\nAW00000555", properties[4].Text);
             Assert.AreEqual("Sales Territory:\r\nAustralia", properties[5].Text);
-            Assert.AreEqual("Addresses:\r\n1-Customer Addresses", properties[6].Text);
-            Assert.AreEqual("Contacts:\r\n1-Store Contacts", properties[7].Text);
+
+            ReadOnlyCollection<IWebElement> collections = br.FindElements(By.ClassName("collection"));
+
+            Assert.AreEqual("Addresses:\r\n1-Customer Addresses", collections[0].Text);
+            Assert.AreEqual("Contacts:\r\n1-Store Contacts", collections[1].Text);
         }
 
         [TestMethod]
         public virtual void ClickReferenceProperty() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
-            wait.Until(d => d.FindElements(By.ClassName("property")).Count == StoreActions);
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector("div.property a"));
+            wait.Until(d => d.FindElements(By.ClassName("property")).Count == StoreProperties);
+            ReadOnlyCollection<IWebElement> references = br.FindElements(By.CssSelector("div.property .reference a"));
 
-            Click(properties[0]);
+            Click(references[0]);
 
-            wait.Until(d => d.FindElement(By.ClassName("nested-object")));
+            wait.Until(d => d.FindElement(By.ClassName("object")));
 
-            // cancel object 
-            Click(br.FindElement(By.CssSelector("div.nested-object .cancel")));
-
-            WaitUntilGone(d => d.FindElement(By.ClassName("nested-object")));
+           var title = br.FindElement(By.ClassName("title"));
+            Assert.AreEqual("Lynn Tsoflias", title.Text);
         }
 
         [TestMethod]
         public virtual void ClickCollectionProperty() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
-            wait.Until(d => d.FindElements(By.ClassName("property")).Count == StoreActions);
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector("div.property a"));
+            wait.Until(d => d.FindElements(By.ClassName("collection")).Count == StoreCollections);
+            ReadOnlyCollection<IWebElement> iconLists = br.FindElements(By.CssSelector("a.icon-list"));
 
-            Click(properties[3]);
+            Click(iconLists[0]);
 
-            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+            wait.Until(d => d.FindElement(By.TagName("table")));
 
-            // cancel object 
-            Click(br.FindElement(By.CssSelector("div.list-view .cancel")));
+            // cancel table view 
+            Click(br.FindElement(By.CssSelector("a.icon-summary")));
 
-            WaitUntilGone(d => d.FindElement(By.ClassName("list-view")));
+            WaitUntilGone(d => d.FindElement(By.ClassName("table")));
         }
 
         [TestMethod]
@@ -118,7 +117,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DialogAction() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector("div.action-button a"));
@@ -126,20 +125,20 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // click on action to open dialog 
             Click(actions[4]); // Search For Orders
 
-            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
-            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+            wait.Until(d => d.FindElement(By.ClassName("dialog")));
+            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
 
             Assert.AreEqual("Search For Orders", title);
 
             // cancel dialog 
-            Click(br.FindElement(By.CssSelector("div.action-dialog  .cancel")));
+            Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
 
-            WaitUntilGone(d => d.FindElement(By.ClassName("action-dialog")));
+            WaitUntilGone(d => d.FindElement(By.ClassName("dialog")));
         }
 
         [TestMethod]
         public virtual void DialogActionShow() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
 
@@ -147,8 +146,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 // click on action to open dialog 
                 Click(br.FindElements(By.CssSelector("div.action-button a"))[4]); // Search for orders
 
-                wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
-                string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+                wait.Until(d => d.FindElement(By.ClassName("dialog")));
+                string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
 
                 Assert.AreEqual("Search For Orders", title);
 
@@ -157,24 +156,24 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
                 Thread.Sleep(2000); // need to wait for datepicker :-(
 
-                wait.Until(d => br.FindElement(By.ClassName("show")));
+                wait.Until(d => br.FindElement(By.ClassName("ok")));
 
-                Click(br.FindElement(By.ClassName("show")));
+                Click(br.FindElement(By.ClassName("ok")));
 
-                wait.Until(d => d.FindElement(By.ClassName("list-view")));
+                wait.Until(d => d.FindElement(By.ClassName("query")));
             });
 
             var cancelObject = new Action(() => {
                 // cancel object 
                 Click(br.FindElement(By.CssSelector("div.list-view .cancel")));
 
-                WaitUntilGone(d => d.FindElement(By.ClassName("list-view")));
+                WaitUntilGone(d => d.FindElement(By.ClassName("query")));
             });
 
             var cancelDialog = new Action(() => {
-                Click(br.FindElement(By.CssSelector("div.action-dialog  .cancel")));
+                Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
 
-                WaitUntilGone(d => d.FindElement(By.ClassName("action-dialog")));
+                WaitUntilGone(d => d.FindElement(By.ClassName("dialog")));
             });
 
             showObject();
@@ -188,15 +187,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DialogActionGo() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.CssSelector("div.action-button a"))[4]); // Fisearch for orders
 
-            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
-            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+            wait.Until(d => d.FindElement(By.ClassName("dialog")));
+            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
 
             Assert.AreEqual("Search For Orders", title);
 
@@ -205,21 +204,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
 
-            wait.Until(d => br.FindElement(By.ClassName("go")));
+            wait.Until(d => br.FindElement(By.ClassName("ok")));
 
-            Click(br.FindElement(By.ClassName("go")));
+            Click(br.FindElement(By.ClassName("ok")));
 
-            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+            wait.Until(d => d.FindElement(By.ClassName("query")));
 
             // dialog should be closed
 
-            WaitUntilGone(d => d.FindElement(By.ClassName("action-dialog")));
+            WaitUntilGone(d => d.FindElement(By.ClassName("dialog")));
         }
 
 
         [TestMethod]
         public virtual void ObjectAction() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
 
@@ -238,7 +237,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectActionExpand() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
             IWebElement action = br.FindElements(By.ClassName("action"))[5];
@@ -256,7 +255,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void CollectionAction() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector("div.action-button a"));
@@ -264,17 +263,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // click on action to get collection 
             Click(actions[7]); // recent orders
 
-            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+            wait.Until(d => d.FindElement(By.ClassName("query")));
 
             // cancel collection 
             Click(br.FindElement(By.CssSelector("div.list-view .cancel")));
 
-            WaitUntilGone(d => d.FindElement(By.ClassName("list-view")));
+            WaitUntilGone(d => d.FindElement(By.ClassName("query")));
         }
 
         [TestMethod]
         public virtual void CollectionActionSelectItem() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             var selectItem = new Action(() => {
                 wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
@@ -283,7 +282,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 // click on action to get object 
                 Click(actions[7]); // recent orders
 
-                wait.Until(d => d.FindElement(By.ClassName("list-view")));
+                wait.Until(d => d.FindElement(By.ClassName("query")));
 
                 // select item
                 Click(br.FindElement(By.CssSelector("div.list-item a")));
@@ -302,7 +301,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var cancelCollection = new Action(() => {
                 Click(br.FindElement(By.CssSelector("div.list-view .cancel")));
 
-                WaitUntilGone(d => d.FindElement(By.ClassName("list-view")));
+                WaitUntilGone(d => d.FindElement(By.ClassName("query")));
             });
 
 
@@ -318,7 +317,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void CollectionActionSelectItemExpand() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector("div.action-button a"));
@@ -326,7 +325,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // click on action to get object 
             Click(actions[7]); //recent orders
 
-            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+            wait.Until(d => d.FindElement(By.ClassName("query")));
 
             // select item
             Click(br.FindElement(By.CssSelector("div.list-item a")));
@@ -341,7 +340,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEdit() {
-            br.Navigate().GoToUrl(Store555Url);
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
 
@@ -357,7 +356,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region browsers specific subclasses
 
     [TestClass, Ignore]
-    public class ObjectPageTestsIe : ObjectPageTests {
+    public class ObjectPageTestsIe : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -377,7 +376,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class ObjectPageTestsFirefox : ObjectPageTests {
+    public class ObjectPageTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             SpiroTest.InitialiseClass(context);
@@ -400,7 +399,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass, Ignore]
-    public class ObjectPageTestsChrome : ObjectPageTests {
+    public class ObjectPageTestsChrome : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

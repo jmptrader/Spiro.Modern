@@ -64,9 +64,9 @@
     <Compile Include="tests\ObjectEditPageTests.cs" />
     <Compile Include="tests\DialogTests.cs" />
     <Compile Include="tests\HomePageTests.cs" />
-    <Compile Include="tests\MenuBarTests.cs" />
-    <Compile Include="tests\ObjectPageTests.cs" />
-    <Compile Include="tests\ServicePageTests.cs" />
+    <Compile Include="tests\FooterIconTests.cs" />
+    <Compile Include="tests\ObjectViewTests.cs" />
+    <Compile Include="tests\MainMenuTests.cs" />
     <Compile Include="tests\SpiroTest.cs" />
   </ItemGroup>
   <ItemGroup>

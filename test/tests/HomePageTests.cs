@@ -19,44 +19,31 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class HomePageTests : SpiroTest {
         [TestMethod]
         public virtual void HomePage() {
-            bool found = wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
-            Assert.IsTrue(found, "Services not found on home page");
+            bool found = wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
+            Assert.IsTrue(found, "Menus not found on home page");
         }
 
         [TestMethod]
-        public virtual void Services() {
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
+        public virtual void Menus() {
+            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
 
-            ReadOnlyCollection<IWebElement> services = br.FindElements(By.ClassName("service"));
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.ClassName("menu"));
 
-            Assert.AreEqual("Customers", services[0].Text);
-            Assert.AreEqual("Orders", services[1].Text);
-            Assert.AreEqual("Products", services[2].Text);
-            Assert.AreEqual("Employees", services[3].Text);
-            Assert.AreEqual("Sales", services[4].Text);
-            Assert.AreEqual("Special Offers", services[5].Text);
-            Assert.AreEqual("Contacts", services[6].Text);
-            Assert.AreEqual("Vendors", services[7].Text);
-            Assert.AreEqual("Purchase Orders", services[8].Text);
-            Assert.AreEqual("Work Orders", services[9].Text);
+            Assert.AreEqual("Customers", menus[0].Text);
+            Assert.AreEqual("Orders", menus[1].Text);
+            Assert.AreEqual("Products", menus[2].Text);
+            Assert.AreEqual("Employees", menus[3].Text);
+            Assert.AreEqual("Sales", menus[4].Text);
+            Assert.AreEqual("Special Offers", menus[5].Text);
+            Assert.AreEqual("Contacts", menus[6].Text);
+            Assert.AreEqual("Vendors", menus[7].Text);
+            Assert.AreEqual("Purchase Orders", menus[8].Text);
+            Assert.AreEqual("Work Orders", menus[9].Text);
         }
 
         [TestMethod]
-        public virtual void MenuBar() {
-            wait.Until(d => d.FindElements(By.ClassName("app-bar")).Count == 1);
-
-            Assert.IsTrue(br.FindElement(By.ClassName("home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("forward")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("edit")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
-        }
-
-        [TestMethod]
-        public virtual void GoToService() {
-            GoToServiceFromHomePage("Customers");
-            Assert.AreEqual("Customers", br.FindElement(By.CssSelector("div.object-view > div > div.header > div.title")).Text);
+        public virtual void GoToMenu() {
+            GoToMenuFromHomePage("Customers");
         }
     }
 

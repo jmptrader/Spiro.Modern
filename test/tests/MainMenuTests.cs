@@ -16,17 +16,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
+
+    //TODO: These should be merged with Home page tests?
     [TestClass]
-    public abstract class ServicePageTests : SpiroTest {
+    public abstract class MainMenuTests : SpiroTest {
         [TestMethod]
-        public virtual void MenuBar() {
+        public virtual void FooterIcons() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("app-bar")).Count == 1);
+            wait.Until(d => d.FindElements(By.ClassName("footer")).Count == 1);
 
-            Assert.IsTrue(br.FindElement(By.ClassName("home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("forward")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
             Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
             Assert.IsFalse(br.FindElement(By.ClassName("edit")).Displayed);
             Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
@@ -60,17 +62,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // click on action to open dialog 
             Click(actions[0]); // Find customer by account number
 
-            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
-            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+            wait.Until(d => d.FindElement(By.ClassName("dialog")));
+            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
 
             Assert.AreEqual("Find Customer By Account Number", title);
 
             // cancel dialog 
-            Click(br.FindElement(By.CssSelector("div.action-dialog  .cancel")));
+            Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
 
             wait.Until(d => {
                 try {
-                    br.FindElement(By.ClassName("action-dialog"));
+                    br.FindElement(By.ClassName("dialog"));
                     return false;
                 }
                 catch (NoSuchElementException) {
@@ -89,14 +91,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 // click on action to open dialog 
                 Click(br.FindElements(By.ClassName("action"))[0]); // Find customer by account number
 
-                wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
-                string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+                wait.Until(d => d.FindElement(By.ClassName("dialog")));
+                string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
 
                 Assert.AreEqual("Find Customer By Account Number", title);
 
                 br.FindElement(By.CssSelector(".parameter-value  input")).SendKeys("00022262");
 
-                Click(br.FindElement(By.ClassName("show")));
+                Click(br.FindElement(By.ClassName("ok")));
 
                 wait.Until(d => d.FindElement(By.ClassName("nested-object")));
             });
@@ -117,11 +119,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             });
 
             var cancelDialog = new Action(() => {
-                Click(br.FindElement(By.CssSelector("div.action-dialog  .cancel")));
+                Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
 
                 wait.Until(d => {
                     try {
-                        br.FindElement(By.ClassName("action-dialog"));
+                        br.FindElement(By.ClassName("dialog"));
                         return false;
                     }
                     catch (NoSuchElementException) {
@@ -148,14 +150,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[0]); // Find customer by account number
 
-            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
-            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+            wait.Until(d => d.FindElement(By.ClassName("dialog")));
+            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
 
             Assert.AreEqual("Find Customer By Account Number", title);
 
             br.FindElement(By.CssSelector(".parameter-value  input")).SendKeys("00022262");
 
-            Click(br.FindElement(By.ClassName("go")));
+            Click(br.FindElement(By.ClassName("ok")));
 
             wait.Until(d => d.FindElement(By.ClassName("nested-object")));
 
@@ -163,7 +165,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => {
                 try {
-                    br.FindElement(By.ClassName("action-dialog"));
+                    br.FindElement(By.ClassName("dialog"));
                     return false;
                 }
                 catch (NoSuchElementException) {
@@ -228,14 +230,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // click on action to get collection 
             Click(actions[2]); // highest value orders
 
-            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+            wait.Until(d => d.FindElement(By.ClassName("query")));
 
             // cancel collection 
             Click(br.FindElement(By.CssSelector("div.list-view .cancel")));
 
             wait.Until(d => {
                 try {
-                    br.FindElement(By.ClassName("list-view"));
+                    br.FindElement(By.ClassName("query"));
                     return false;
                 }
                 catch (NoSuchElementException) {
@@ -256,7 +258,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 // click on action to get object 
                 Click(actions[2]); // highest value orders
 
-                wait.Until(d => d.FindElement(By.ClassName("list-view")));
+                wait.Until(d => d.FindElement(By.ClassName("query")));
 
                 // select item
                 Click(br.FindElement(By.CssSelector("div.list-item a")));
@@ -285,7 +287,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
                 wait.Until(d => {
                     try {
-                        br.FindElement(By.ClassName("list-view"));
+                        br.FindElement(By.ClassName("query"));
                         return false;
                     }
                     catch (NoSuchElementException) {
@@ -315,7 +317,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // click on action to get object 
             Click(actions[2]); // highest value orders
 
-            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+            wait.Until(d => d.FindElement(By.ClassName("query")));
 
             // select item
             Click(br.FindElement(By.CssSelector("div.list-item a")));
@@ -332,7 +334,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region browsers specific subclasses
 
     [TestClass, Ignore]
-    public class ServicePageTestsIe : ServicePageTests {
+    public class ServicePageTestsIe : MainMenuTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -351,7 +353,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class ServicePageTestsFirefox : ServicePageTests {
+    public class ServicePageTestsFirefox : MainMenuTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             SpiroTest.InitialiseClass(context);
@@ -369,7 +371,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass, Ignore]
-    public class ServicePageTestsChrome : ServicePageTests {
+    public class ServicePageTestsChrome : MainMenuTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

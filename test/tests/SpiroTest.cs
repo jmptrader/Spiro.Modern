@@ -72,25 +72,26 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string Database = "AdventureWorks";
         protected const string Backup = "AdventureWorks";
 
-        protected const string CustomerServiceUrl = Url + "#/services/AdventureWorksModel.CustomerRepository";
-        protected const string OrderServiceUrl = Url + "#/services/AdventureWorksModel.OrderRepository";
-        protected const string ProductServiceUrl = Url + "#/services/AdventureWorksModel.ProductRepository";
-        protected const string SalesServiceUrl = Url + "#/services/AdventureWorksModel.SalesRepository";
+        protected const string CustomerServiceUrl = Url + "#/home?menu1=CustomerRepository";
+        protected const string OrderServiceUrl = Url + "#/home?menu1=OrderRepository";
+        protected const string ProductServiceUrl = Url + "#/home?menu1=ProductRepository";
+        protected const string SalesServiceUrl = Url + "#/home?menu1=SalesRepository";
 
-        protected const int ServicesCount = 10;
+        protected const int MainMenusCount = 11; //TODO: Should be 10 as Empty menu should not show
 
         protected const int CustomerServiceActions = 9;
         protected const int OrderServiceActions = 6;
         protected const int ProductServiceActions = 12;
         protected const int SalesServiceActions = 4;
 
-
-        protected const string Store555Url = Url + "#/objects/AdventureWorksModel.Store/555";
-        protected const string Product968Url = Url + "#/objects/AdventureWorksModel.Product/968";
-        protected const string Product469Url = Url + "#/objects/AdventureWorksModel.Product/469";
-        protected const string Product870Url = Url + "#/objects/AdventureWorksModel.Product/870";
+        protected const string Store555UrlWithActionsMenuOpen = Url + "#/object?object1=AdventureWorksModel.Store-555&menu1=Actions";
+        protected const string Product968Url = Url + "#/object?object1=AdventureWorksModel.Product-968";
+        protected const string Product469Url = Url + "#/object?object1=AdventureWorksModel.Product-469";
+        protected const string Product870Url = Url + "#/object?object1=AdventureWorksModel.Product-870";
 
         protected const int StoreActions = 8;
+        protected const int StoreProperties = 6;
+        protected const int StoreCollections = 2;
         protected const int ProductActions = 6;
         protected const int ProductProperties = 26;
 
@@ -184,16 +185,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        protected virtual void GoToServiceFromHomePage(string serviceName) {
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
-            ReadOnlyCollection<IWebElement> services = br.FindElements(By.CssSelector("div.service > a"));
-            IWebElement service = services.FirstOrDefault(s => s.Text == serviceName);
-            if (service != null) {
-                Click(service);
-                wait.Until(d => d.FindElements(By.CssSelector(".actions-pane .actions")).Count > 0);
+        protected virtual void GoToMenuFromHomePage(string menuName) {
+            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
+            ReadOnlyCollection<IWebElement> services = br.FindElements(By.CssSelector("div.menu"));
+            IWebElement menu = services.FirstOrDefault(s => s.Text == menuName);
+            if (menu != null) {
+                Click(menu);
+                wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count > 0);
             }
             else {
-                throw new NotFoundException(string.Format("service not found {0}", serviceName));
+                throw new NotFoundException(string.Format("menu not found {0}", menuName));
             }
         }
 
