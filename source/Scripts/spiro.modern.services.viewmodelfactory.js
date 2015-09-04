@@ -27,19 +27,18 @@ var Spiro;
                     errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
                     return errorViewModel;
                 };
-                viewModelFactory.linkViewModel = function (linkRep, click) {
+                viewModelFactory.linkViewModel = function (linkRep) {
                     var linkViewModel = new Modern.LinkViewModel();
                     linkViewModel.title = linkRep.title();
                     linkViewModel.color = color.toColorFromHref(linkRep.href());
-                    linkViewModel.doClick = click;
+                    linkViewModel.doClick = function () { return urlManager.setMenu(linkRep.rel().parms[0].value); };
                     return linkViewModel;
                 };
-                // tested
-                viewModelFactory.itemViewModel = function (linkRep, click) {
+                viewModelFactory.itemViewModel = function (linkRep) {
                     var itemViewModel = new Modern.ItemViewModel();
                     itemViewModel.title = linkRep.title();
                     itemViewModel.color = color.toColorFromHref(linkRep.href());
-                    itemViewModel.doClick = click;
+                    itemViewModel.doClick = function () { return urlManager.setItem(linkRep); };
                     return itemViewModel;
                 };
                 function addAutoAutoComplete(valueViewModel, currentChoice, id, currentValue) {
@@ -63,20 +62,20 @@ var Spiro;
                     };
                 }
                 // tested
-                viewModelFactory.parameterViewModel = function (parmRep, id, previousValue) {
+                viewModelFactory.parameterViewModel = function (parmRep, previousValue) {
                     var parmViewModel = new Modern.ParameterViewModel();
                     parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
                     parmViewModel.dflt = parmRep.default().toValueString();
                     parmViewModel.message = "";
-                    parmViewModel.id = id;
-                    parmViewModel.argId = id.toLowerCase();
+                    parmViewModel.id = parmRep.parameterId();
+                    parmViewModel.argId = parmViewModel.id.toLowerCase();
                     parmViewModel.reference = "";
                     parmViewModel.mask = parmRep.extensions()["x-ro-nof-mask"];
                     parmViewModel.title = parmRep.extensions().friendlyName;
                     parmViewModel.returnType = parmRep.extensions().returnType;
                     parmViewModel.format = parmRep.extensions().format;
                     parmViewModel.choices = _.map(parmRep.choices(), function (v, n) {
-                        return Modern.ChoiceViewModel.create(v, id, n);
+                        return Modern.ChoiceViewModel.create(v, parmRep.parameterId(), n);
                     });
                     parmViewModel.hasChoices = parmViewModel.choices.length > 0;
                     parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
@@ -85,11 +84,11 @@ var Spiro;
                     if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                         var promptRep = parmRep.getPrompts();
                         if (parmViewModel.hasPrompt) {
-                            parmViewModel.prompt = _.partial(context.prompt, promptRep, id);
+                            parmViewModel.prompt = _.partial(context.prompt, promptRep, parmViewModel.id);
                             parmViewModel.minLength = parmRep.promptLink().extensions().minLength;
                         }
                         if (parmViewModel.hasConditionalChoices) {
-                            parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id);
+                            parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
                             parmViewModel.arguments = _.object(_.map(parmRep.promptLink().arguments(), function (v, key) { return [key, new Spiro.Value(v.value)]; }));
                         }
                     }
@@ -98,13 +97,13 @@ var Spiro;
                             parmViewModel.setSelectedChoice = function () {
                                 var search = parmViewModel.getMemento();
                                 _.forEach(parmViewModel.multiChoices, function (c) {
-                                    context.setSelectedChoice(id, search, c);
+                                    context.setSelectedChoice(parmViewModel.id, search, c);
                                 });
                             };
                         }
                         else {
                             parmViewModel.setSelectedChoice = function () {
-                                context.setSelectedChoice(id, parmViewModel.getMemento(), parmViewModel.choice);
+                                context.setSelectedChoice(parmViewModel.id, parmViewModel.getMemento(), parmViewModel.choice);
                             };
                         }
                         function setCurrentChoices(choices) {
@@ -131,11 +130,11 @@ var Spiro;
                         }
                         if (previousValue) {
                             if (parmViewModel.isMultipleChoices) {
-                                var scs = context.getSelectedChoice(id, previousValue);
+                                var scs = context.getSelectedChoice(parmViewModel.id, previousValue);
                                 setCurrentChoices(scs);
                             }
                             else {
-                                var sc = context.getSelectedChoice(id, previousValue).pop();
+                                var sc = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
                                 setCurrentChoice(sc);
                             }
                         }
@@ -173,7 +172,7 @@ var Spiro;
                     if (parmViewModel.type === "ref" && !parmViewModel.hasPrompt && !parmViewModel.hasChoices && !parmViewModel.hasConditionalChoices) {
                         var currentChoice = null;
                         if (previousValue) {
-                            currentChoice = context.getSelectedChoice(id, previousValue).pop();
+                            currentChoice = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
                         }
                         else if (parmViewModel.dflt) {
                             var dflt = parmRep.default();
@@ -181,7 +180,7 @@ var Spiro;
                         }
                         context.clearSelectedChoice(parmViewModel.id);
                         var currentValue = new Spiro.Value(currentChoice ? { href: currentChoice.value, title: currentChoice.name } : "");
-                        addAutoAutoComplete(parmViewModel, currentChoice, id, currentValue);
+                        addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
                     }
                     return parmViewModel;
                 };
@@ -199,7 +198,7 @@ var Spiro;
                     dialogViewModel.title = actionMember.extensions().friendlyName;
                     dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
                     dialogViewModel.message = "";
-                    dialogViewModel.parameters = _.map(parameters, function (parm, id) { return viewModelFactory.parameterViewModel(parm, id, ""); });
+                    dialogViewModel.parameters = _.map(parameters, function (parm) { return viewModelFactory.parameterViewModel(parm, ""); });
                     dialogViewModel.doClose = function () { return urlManager.closeDialog(); };
                     dialogViewModel.doInvoke = function () { return context.invokeAction(actionMember, dialogViewModel); };
                     return dialogViewModel;
@@ -274,7 +273,7 @@ var Spiro;
                 function getItems(cvm, links, populateItems) {
                     if (populateItems) {
                         return _.map(links, function (link) {
-                            var ivm = viewModelFactory.itemViewModel(link, function () { return urlManager.setItem(link); });
+                            var ivm = viewModelFactory.itemViewModel(link);
                             var tempTgt = link.getTarget();
                             repLoader.populate(tempTgt).
                                 then(function (obj) {
@@ -287,7 +286,7 @@ var Spiro;
                         });
                     }
                     else {
-                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link, function () { return urlManager.setItem(link); }); });
+                        return _.map(links, function (link) { return viewModelFactory.itemViewModel(link); });
                     }
                 }
                 function create(collectionRep, state) {
@@ -310,17 +309,6 @@ var Spiro;
                     }
                     return collectionViewModel;
                 }
-                function createFromDetails(collectionRep, state) {
-                    var collectionViewModel = new Modern.CollectionViewModel();
-                    var links = collectionRep.value().models;
-                    collectionViewModel.title = collectionRep.extensions().friendlyName;
-                    collectionViewModel.size = links.length;
-                    collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-                    //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
-                    collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-                    collectionViewModel.items = getItems(collectionViewModel, links, state === Modern.CollectionViewState.Table);
-                    return collectionViewModel;
-                }
                 function createFromList(listRep, state) {
                     var collectionViewModel = new Modern.CollectionViewModel();
                     var links = listRep.value().models;
@@ -333,9 +321,6 @@ var Spiro;
                     var collectionVm = null;
                     if (collection instanceof Spiro.CollectionMember) {
                         collectionVm = create(collection, state);
-                    }
-                    if (collection instanceof Spiro.CollectionRepresentation) {
-                        collectionVm = createFromDetails(collection, state);
                     }
                     if (collection instanceof Spiro.ListRepresentation) {
                         collectionVm = createFromList(collection, state);
@@ -356,14 +341,14 @@ var Spiro;
                     });
                     servicesViewModel.title = "Services";
                     servicesViewModel.color = "bg-color-darkBlue";
-                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link, function () { }); });
+                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link); });
                     return servicesViewModel;
                 };
                 viewModelFactory.menusViewModel = function (menusRep) {
                     var menusViewModel = new Modern.MenusViewModel();
                     menusViewModel.title = "Menus";
                     menusViewModel.color = "bg-color-darkBlue";
-                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link, function () { return urlManager.setMenu(link.rel().parms[0].value); }); });
+                    menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link); });
                     return menusViewModel;
                 };
                 viewModelFactory.serviceViewModel = function (serviceRep) {

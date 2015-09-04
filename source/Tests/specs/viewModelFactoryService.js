@@ -46,54 +46,40 @@ describe("viewModelFactory Service", function () {
     });
     describe("create linkViewModel", function () {
         var resultVm;
-        var rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
-        var testClickFunc = function () { };
+        var rawLink = {
+            title: "a title",
+            href: "http://objects/AdventureWorksModel.Product/1",
+            rel: 'urn: org.restfulobjects:rels/details;action="anAction"'
+        };
         describe("from populated rep", function () {
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink), testClickFunc);
+            var setMenu;
+            beforeEach(inject(function (viewModelFactory, urlManager) {
+                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink));
+                setMenu = spyOn(urlManager, "setMenu");
             }));
             it("creates a link view model", function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.doClick).toBe(testClickFunc);
-            });
-        });
-        describe("from empty rep", function () {
-            var emptyLink = {};
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.linkViewModel(new Spiro.Link(emptyLink), testClickFunc);
-            }));
-            it("creates a link view model", function () {
-                expect(resultVm.title).toBeUndefined();
-                expect(resultVm.color).toBe("bg-color-darkBlue");
-                expect(resultVm.doClick).toBe(testClickFunc);
+                resultVm.doClick();
+                expect(setMenu).toHaveBeenCalledWith("anAction");
             });
         });
     });
     describe("create itemViewModel", function () {
         var resultVm;
+        var setItem;
         var rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
-        var testClickFunc = function () { };
         describe("from populated rep", function () {
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.itemViewModel(new Spiro.Link(rawLink), testClickFunc);
+            var link = new Spiro.Link(rawLink);
+            beforeEach(inject(function (viewModelFactory, urlManager) {
+                resultVm = viewModelFactory.itemViewModel(link);
+                setItem = spyOn(urlManager, "setItem");
             }));
             it("creates an item view model", function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.doClick).toBe(testClickFunc);
-                expect(resultVm.target).toBeUndefined();
-            });
-        });
-        describe("from empty rep", function () {
-            var emptyLink = {};
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.itemViewModel(new Spiro.Link(emptyLink), testClickFunc);
-            }));
-            it("creates an item view model", function () {
-                expect(resultVm.title).toBeUndefined();
-                expect(resultVm.color).toBe("bg-color-darkBlue");
-                expect(resultVm.doClick).toBe(testClickFunc);
+                resultVm.doClick();
+                expect(setItem).toHaveBeenCalledWith(link);
                 expect(resultVm.target).toBeUndefined();
             });
         });
@@ -116,14 +102,14 @@ describe("viewModelFactory Service", function () {
             var invokeAction;
             var am = new Spiro.ActionMember(rawAction, {}, "anid");
             beforeEach(inject(function (viewModelFactory, context) {
-                //resultVm = viewModelFactory.actionViewModel(am);
+                resultVm = viewModelFactory.actionViewModel(am);
                 invokeAction = spyOn(context, "invokeAction");
             }));
             it("creates an action view model", function () {
-                //expect(resultVm.title).toBe("a title");
-                //expect(resultVm.menuPath).toBe("a path");
-                //resultVm.doInvoke();
-                //expect(invokeAction).toHaveBeenCalledWith(am);
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.menuPath).toBe("a path");
+                resultVm.doInvoke();
+                expect(invokeAction).toHaveBeenCalledWith(am);
             });
         });
         describe("from populated rep with parms", function () {
@@ -140,7 +126,6 @@ describe("viewModelFactory Service", function () {
             });
         });
     });
-    // updated to here
     describe("create dialogViewModel", function () {
         var resultVm;
         var rawInvokeLink = {
@@ -156,27 +141,77 @@ describe("viewModelFactory Service", function () {
             links: [rawInvokeLink, rawUpLink]
         };
         describe("from simple rep", function () {
-            beforeEach(inject(function (viewModelFactory, $routeParams) {
-                $routeParams.action = "";
-                resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionMember(rawAction, null, ""));
+            var invokeAction;
+            var closeDialog;
+            var am = new Spiro.ActionMember(rawAction, {}, "anid");
+            beforeEach(inject(function (viewModelFactory, context, urlManager) {
+                invokeAction = spyOn(context, "invokeAction");
+                closeDialog = spyOn(urlManager, "closeDialog");
+                resultVm = viewModelFactory.dialogViewModel(am);
             }));
             it("creates a dialog view model", function () {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.isQuery).toBe(false);
                 expect(resultVm.message).toBe("");
                 expect(resultVm.parameters.length).toBe(0);
-                expect(resultVm.doInvoke).toBeTruthy();
+                resultVm.doInvoke();
+                expect(invokeAction).toHaveBeenCalledWith(am, resultVm);
+                resultVm.doClose();
+                expect(closeDialog).toHaveBeenCalled();
             });
         });
     });
     describe("create collectionViewModel", function () {
         var resultVm;
-        var rawDetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
-        var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
-        var rawCollection = { size: 0, extensions: { friendlyName: "a title", pluralName: "somethings", elementType: "AdventureWorksModel.Product" }, links: [rawDetailsLink] };
-        describe("from collection member rep", function () {
-            beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}, ""), Spiro.Angular.Modern.CollectionViewState.List);
+        var rawLink1 = {
+            type: "application/json;profile=\"urn:org.resfulobjects:repr-types/object\"",
+            href: "http://objects/AdventureWorksModel.Product/1"
+        };
+        var rawLink2 = {
+            type: "application/json;profile=\"urn:org.resfulobjects:repr-types/object\"",
+            href: "http://objects/AdventureWorksModel.Product/2"
+        };
+        var rawDetailsLink = {
+            rel: "urn:org.restfulobjects:rels/details",
+            href: "http://objects/AdventureWorksModel.Product/1/collections/acollection"
+        };
+        var rawSelfLink = {
+            rel: "urn:org.restfulobjects:rels/self",
+            href: "http://objects/AdventureWorksModel.Product/1/collections/acollection"
+        };
+        var rawEmptyCollection = {
+            size: 0,
+            extensions: {
+                friendlyName: "a title",
+                pluralName: "somethings",
+                elementType: "AdventureWorksModel.Product"
+            },
+            links: [rawDetailsLink]
+        };
+        var rawEmptyList = {
+            value: [],
+            links: [rawSelfLink]
+        };
+        var rawCollection = {
+            size: 2,
+            extensions: {
+                friendlyName: "a title",
+                pluralName: "somethings",
+                elementType: "AdventureWorksModel.Product"
+            },
+            links: [rawDetailsLink],
+            value: [rawLink1, rawLink2]
+        };
+        var rawList = {
+            value: [rawLink1, rawLink2],
+            links: [rawSelfLink]
+        };
+        describe("from empty collection member rep", function () {
+            var setCollectionState;
+            var cm = new Spiro.CollectionMember(rawEmptyCollection, {}, "");
+            beforeEach(inject(function (viewModelFactory, urlManager) {
+                resultVm = viewModelFactory.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.List);
+                setCollectionState = spyOn(urlManager, "setCollectionState");
             }));
             it("creates a dialog view model", function () {
                 expect(resultVm.title).toBe("a title");
@@ -184,34 +219,87 @@ describe("viewModelFactory Service", function () {
                 expect(resultVm.color).toBe("bg-color-orangeDark");
                 expect(resultVm.items.length).toBe(0);
                 expect(resultVm.pluralName).toBe("somethings");
+                resultVm.doSummary();
+                expect(setCollectionState).toHaveBeenCalledWith(cm, Spiro.Angular.Modern.CollectionViewState.Summary);
+                resultVm.doList();
+                expect(setCollectionState).toHaveBeenCalledWith(cm, Spiro.Angular.Modern.CollectionViewState.List);
+                resultVm.doTable();
+                expect(setCollectionState).toHaveBeenCalledWith(cm, Spiro.Angular.Modern.CollectionViewState.Table);
             });
         });
-        describe("from collection details rep", function () {
-            beforeEach(inject(function (viewModelFactory) {
-                rawCollection.value = [];
-                rawCollection.links.push(rawSelfLink);
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection), Spiro.Angular.Modern.CollectionViewState.Summary);
+        describe("from non empty collection member rep", function () {
+            var setCollectionState;
+            var itemViewModel;
+            var populate;
+            var cm = new Spiro.CollectionMember(rawCollection, {}, "");
+            var vmf;
+            beforeEach(inject(function (viewModelFactory, urlManager, repLoader, $q) {
+                setCollectionState = spyOn(urlManager, "setCollectionState");
+                itemViewModel = spyOn(viewModelFactory, "itemViewModel");
+                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                vmf = viewModelFactory;
             }));
-            it("creates a dialog view model", function () {
-                expect(resultVm.title).toBe("a title");
-                expect(resultVm.size).toBe(0);
-                expect(resultVm.color).toBe("bg-color-orangeDark");
-                expect(resultVm.items.length).toBe(0);
-                expect(resultVm.pluralName).toBe("somethings");
+            it("creates a dialog view model with items", function () {
+                resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.List);
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate).not.toHaveBeenCalled();
+            });
+            it("it populates table items", function () {
+                resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.Table);
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate.callCount).toBe(2);
             });
         });
-        describe("from list rep", function () {
-            beforeEach(inject(function (viewModelFactory) {
-                var rawList = { value: [], links: [rawSelfLink] };
-                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList), Spiro.Angular.Modern.CollectionViewState.Summary);
+        describe("from empty list rep", function () {
+            var setCollectionState;
+            var lr = new Spiro.ListRepresentation(rawEmptyList);
+            beforeEach(inject(function (viewModelFactory, urlManager) {
+                setCollectionState = spyOn(urlManager, "setCollectionState");
+                resultVm = viewModelFactory.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.Summary);
             }));
             it("creates a dialog view model", function () {
+                expect(resultVm.title).toBeUndefined();
                 expect(resultVm.size).toBe(0);
+                expect(resultVm.color).toBeUndefined();
                 expect(resultVm.items.length).toBe(0);
                 expect(resultVm.pluralName).toBe("Objects");
+                resultVm.doSummary();
+                expect(setCollectionState).toHaveBeenCalledWith(lr, Spiro.Angular.Modern.CollectionViewState.Summary);
+                resultVm.doList();
+                expect(setCollectionState).toHaveBeenCalledWith(lr, Spiro.Angular.Modern.CollectionViewState.List);
+                resultVm.doTable();
+                expect(setCollectionState).toHaveBeenCalledWith(lr, Spiro.Angular.Modern.CollectionViewState.Table);
+            });
+        });
+        describe("from non empty list rep", function () {
+            var setCollectionState;
+            var itemViewModel;
+            var populate;
+            var lr = new Spiro.ListRepresentation(rawList);
+            var vmf;
+            beforeEach(inject(function (viewModelFactory, urlManager, repLoader, $q) {
+                setCollectionState = spyOn(urlManager, "setCollectionState");
+                itemViewModel = spyOn(viewModelFactory, "itemViewModel");
+                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                vmf = viewModelFactory;
+            }));
+            it("creates a dialog view model with items", function () {
+                resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.List);
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate).not.toHaveBeenCalled();
+            });
+            it("it populates table items", function () {
+                resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.Table);
+                expect(resultVm.items.length).toBe(2);
+                expect(itemViewModel.callCount).toBe(2);
+                expect(populate.callCount).toBe(2);
             });
         });
     });
+    // updated to here
     describe("create services view model", function () {
         var resultVm;
         var rawServices = { value: [] };
@@ -286,7 +374,7 @@ describe("viewModelFactory Service", function () {
         var rawAction = {};
         describe("from populated rep", function () {
             beforeEach(inject(function (viewModelFactory) {
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "pv");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anId"), "pv");
             }));
             it("creates a parameter view model", function () {
                 expect(resultVm.type).toBe("ref");
@@ -294,8 +382,8 @@ describe("viewModelFactory Service", function () {
                 expect(resultVm.dflt).toBe("");
                 expect(resultVm.message).toBe("");
                 expect(resultVm.mask).toBeUndefined();
-                expect(resultVm.id).toBe("");
-                expect(resultVm.argId).toBe("");
+                expect(resultVm.id).toBe("anId");
+                expect(resultVm.argId).toBe("anid");
                 expect(resultVm.returnType).toBeUndefined();
                 expect(resultVm.format).toBeUndefined();
                 expect(resultVm.reference).toBe("");
@@ -311,7 +399,7 @@ describe("viewModelFactory Service", function () {
             beforeEach(inject(function (viewModelFactory) {
                 rawParameter.choices = [1, 2, 3];
                 rawParameter.default = 1;
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
             it("creates a parameter view model with choices", function () {
                 expect(resultVm.choices.length).toBe(3);
@@ -335,7 +423,7 @@ describe("viewModelFactory Service", function () {
                 rawParameter.choices = null;
                 rawParameter.default = 1;
                 rawParameter.links.push(rawPromptLink);
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
             it("creates a parameter view model with prompt", function () {
                 expect(resultVm.choices.length).toBe(0);
@@ -360,7 +448,7 @@ describe("viewModelFactory Service", function () {
                 rawParameter.default = 1;
                 rawParameter.links.pop();
                 rawParameter.links.push(rawPromptLink);
-                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "", "");
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction), "anid"), "");
             }));
             it("creates a parameter view model with prompt", function () {
                 expect(resultVm.choices.length).toBe(0);

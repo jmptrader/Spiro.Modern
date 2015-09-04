@@ -19,16 +19,17 @@ module Spiro.Angular.Modern{
 
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        linkViewModel(linkRep: Link, click : () => void): LinkViewModel;
-        itemViewModel(linkRep: Link, click: () => void): ItemViewModel;
-        parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
+        linkViewModel(linkRep: Link): LinkViewModel;
+        itemViewModel(linkRep: Link): ItemViewModel;     
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionMember): DialogViewModel;
+
+        collectionViewModel(collection: CollectionMember, state: CollectionViewState): CollectionViewModel;
+        collectionViewModel(collection: ListRepresentation, state: CollectionViewState): CollectionViewModel;
+
+        parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
-        collectionViewModel(collection: any, state : CollectionViewState, populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: CollectionMember, state: CollectionViewState,populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: CollectionRepresentation, state : CollectionViewState,populateItems?: boolean): CollectionViewModel;
-        collectionViewModel(collection: ListRepresentation, state: CollectionViewState, populateItems?: boolean): CollectionViewModel;
+
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
@@ -42,32 +43,26 @@ module Spiro.Angular.Modern{
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
-            var stackTrace = errorRep.stacktrace();
-
+            const stackTrace = errorRep.stacktrace();
             errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
             return errorViewModel;
         };
 
-        viewModelFactory.linkViewModel = (linkRep: Link, click: () => void) => {
+        viewModelFactory.linkViewModel = (linkRep: Link) => {
             const linkViewModel = new LinkViewModel();
-
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());      
-            linkViewModel.doClick = click;
-        
+            linkViewModel.doClick = () => urlManager.setMenu(linkRep.rel().parms[0].value);
             return linkViewModel;
         };
-
-        // tested
-        viewModelFactory.itemViewModel = (linkRep: Link, click: () => void) => {
+   
+        viewModelFactory.itemViewModel = (linkRep: Link) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.color = color.toColorFromHref(linkRep.href());     
-            itemViewModel.doClick = click;
-          
+            itemViewModel.doClick = () => urlManager.setItem(linkRep);        
             return itemViewModel;
         };
-
        
         function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice : ChoiceViewModel, id : string, currentValue : Value) {
             valueViewModel.hasAutoAutoComplete = true;
@@ -99,14 +94,14 @@ module Spiro.Angular.Modern{
         }
 
          // tested
-        viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string) => {
+        viewModelFactory.parameterViewModel = (parmRep: Parameter,  previousValue: string) => {
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.message = "";
-            parmViewModel.id = id;
-            parmViewModel.argId = id.toLowerCase();
+            parmViewModel.id = parmRep.parameterId();
+            parmViewModel.argId = parmViewModel.id.toLowerCase();
             parmViewModel.reference = "";
 
             parmViewModel.mask = parmRep.extensions()["x-ro-nof-mask"];
@@ -115,7 +110,7 @@ module Spiro.Angular.Modern{
             parmViewModel.format = parmRep.extensions().format;
 
             parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
-                return ChoiceViewModel.create(v, id, n);
+                return ChoiceViewModel.create(v, parmRep.parameterId(), n);
             });
 
             parmViewModel.hasChoices = parmViewModel.choices.length > 0;
@@ -127,12 +122,12 @@ module Spiro.Angular.Modern{
 
                 var promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
-                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);
+                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, parmViewModel.id);
                     parmViewModel.minLength = parmRep.promptLink().extensions().minLength;
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
+                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
                     parmViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
@@ -143,13 +138,13 @@ module Spiro.Angular.Modern{
                     parmViewModel.setSelectedChoice = () => {
                         var search = parmViewModel.getMemento();
                         _.forEach(parmViewModel.multiChoices, (c) => {
-                            context.setSelectedChoice(id, search, c);
+                            context.setSelectedChoice(parmViewModel.id, search, c);
                         });  
                     };         
                 } else {
                    
                     parmViewModel.setSelectedChoice = () =>  {
-                        context.setSelectedChoice(id, parmViewModel.getMemento(), parmViewModel.choice);
+                        context.setSelectedChoice(parmViewModel.id, parmViewModel.getMemento(), parmViewModel.choice);
                     };
                 }
 
@@ -177,10 +172,10 @@ module Spiro.Angular.Modern{
 
                 if (previousValue) {                            
                     if (parmViewModel.isMultipleChoices) {
-                        var scs = context.getSelectedChoice(id, previousValue);
+                        var scs = context.getSelectedChoice(parmViewModel.id, previousValue);
                         setCurrentChoices(scs);
                     } else {
-                        var sc = context.getSelectedChoice(id, previousValue).pop();
+                        var sc = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
                         setCurrentChoice(sc);
                     }
                 } else if (parmViewModel.dflt) {
@@ -221,7 +216,7 @@ module Spiro.Angular.Modern{
                 var currentChoice : ChoiceViewModel = null;
 
                 if (previousValue) {
-                    currentChoice = context.getSelectedChoice(id, previousValue).pop();
+                    currentChoice = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
                 }
                 else if (parmViewModel.dflt) {
                     let dflt = parmRep.default();
@@ -231,7 +226,7 @@ module Spiro.Angular.Modern{
 
                 var currentValue = new Value( currentChoice ?  { href: currentChoice.value, title : currentChoice.name } : "");
               
-                addAutoAutoComplete(parmViewModel, currentChoice, id, currentValue);
+                addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
             } 
 
 
@@ -255,7 +250,7 @@ module Spiro.Angular.Modern{
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
-            dialogViewModel.parameters = _.map(parameters, (parm, id) => viewModelFactory.parameterViewModel(parm, id, ""));
+            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, ""));
 
             dialogViewModel.doClose = () => urlManager.closeDialog();
             dialogViewModel.doInvoke = () => context.invokeAction(actionMember, dialogViewModel);
@@ -350,12 +345,12 @@ module Spiro.Angular.Modern{
             return propertyViewModel;
         };
         
-        function getItems(cvm: CollectionViewModel, links: Link[],  populateItems?: boolean) {
+        function getItems(cvm: CollectionViewModel, links: Link[],  populateItems: boolean) {
 
             if (populateItems) {
-                return _.map(links, (link) => {
-                    var ivm = viewModelFactory.itemViewModel(link, () => urlManager.setItem(link));
-                    var tempTgt = link.getTarget();
+                return _.map(links, link => {
+                    const ivm = viewModelFactory.itemViewModel(link);
+                    const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
                             ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
@@ -367,17 +362,17 @@ module Spiro.Angular.Modern{
                     return ivm;
                 });
             } else {
-                return _.map(links, (link) => viewModelFactory.itemViewModel(link,  () => urlManager.setItem(link)));
+                return _.map(links, link => viewModelFactory.itemViewModel(link));
             }
         }
 
         function create(collectionRep: CollectionMember, state: CollectionViewState) {
             const collectionViewModel = new CollectionViewModel();
             const links = collectionRep.value().models;
+
             collectionViewModel.title = collectionRep.extensions().friendlyName;
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
 
             collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
@@ -395,29 +390,13 @@ module Spiro.Angular.Modern{
 
             return collectionViewModel;
         }
-
-        function createFromDetails(collectionRep: CollectionRepresentation, state: CollectionViewState) {
-            const collectionViewModel = new CollectionViewModel();
-            const links = collectionRep.value().models;
-            collectionViewModel.title = collectionRep.extensions().friendlyName;
-            collectionViewModel.size = links.length;
-            collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-
-            //collectionViewModel.href = urlHelper.toCollectionUrl(collectionRep.selfLink().href());
-            collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
-
-            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
-
-            return collectionViewModel;
-        }
-
        
         function createFromList(listRep: ListRepresentation, state: CollectionViewState) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
+
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
-
             collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
 
             return collectionViewModel;
@@ -430,9 +409,7 @@ module Spiro.Angular.Modern{
             if (collection instanceof CollectionMember) {
                 collectionVm = create(collection, state);
             }
-            if (collection instanceof CollectionRepresentation) {
-                collectionVm = createFromDetails(collection, state);
-            }
+
             if (collection instanceof ListRepresentation) {
                 collectionVm = createFromList(collection, state);
             }
@@ -458,7 +435,7 @@ module Spiro.Angular.Modern{
             
             servicesViewModel.title = "Services";
             servicesViewModel.color = "bg-color-darkBlue";
-            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link, () =>{}));
+            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link));
             return servicesViewModel;
         };
 
@@ -467,7 +444,7 @@ module Spiro.Angular.Modern{
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link, () => urlManager.setMenu(link.rel().parms[0].value)));
+            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link));
             return menusViewModel;
         };
 
