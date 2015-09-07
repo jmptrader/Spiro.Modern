@@ -383,57 +383,6 @@ describe("viewModelFactory Service", () => {
         });
     });
 
-    // updated to here
-    
-
-    describe("create object view model", () => {
-        let resultVm: Spiro.Angular.Modern.DomainObjectViewModel;
-        const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
-
-        const rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
-
-        describe("from populated rep", () => {
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject), {});
-            }));
-
-            it("creates a object view model", () => {
-                expect(resultVm.domainType).toBe("an object");
-                expect(resultVm.title).toBe("a title");
-                expect(resultVm.actions.length).toBe(0);
-                expect(resultVm.properties.length).toBe(0);
-                expect(resultVm.collections.length).toBe(0);
-                expect(resultVm.color).toBe("bg-color-red");
-                // expect(resultVm.cancelEdit).toBe("#/objects/AdventureWorksModel.Product/1");
-            });
-        });
-
-        describe("from transient populated rep", () => {
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                const rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
-                rawObject.links.pop();
-                rawObject.links.push(rawPersistLink);
-                const doRep = new Spiro.DomainObjectRepresentation(rawObject);
-                doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
-
-                resultVm = viewModelFactory.domainObjectViewModel(doRep, {});
-            }));
-
-            it("creates a object view model", () => {
-                expect(resultVm.domainType).toBe("an object");
-                expect(resultVm.title).toBe("Unsaved a name");
-                expect(resultVm.actions.length).toBe(0);
-                expect(resultVm.properties.length).toBe(0);
-                expect(resultVm.collections.length).toBe(0);
-                expect(resultVm.color).toBe("bg-color-red");
-                //expect(resultVm.cancelEdit).toBe("");
-
-            });
-        });
-    });
-
     describe("create parameter view model", () => {
         let resultVm: Spiro.Angular.Modern.ParameterViewModel;
 
@@ -559,6 +508,52 @@ describe("viewModelFactory Service", () => {
             });
         });
 
+    });
+  
+    describe("create object view model", () => {
+        let resultVm: Spiro.Angular.Modern.DomainObjectViewModel;
+        const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
+
+        const rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
+
+        describe("from populated rep", () => {
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
+                resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject), {});
+            }));
+
+            it("creates a object view model", () => {
+                expect(resultVm.domainType).toBe("an object");
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.actions.length).toBe(0);
+                expect(resultVm.properties.length).toBe(0);
+                expect(resultVm.collections.length).toBe(0);
+                expect(resultVm.color).toBe("bg-color-red");
+            });
+        });
+
+        describe("from transient populated rep", () => {
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
+                const rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
+                rawObject.links.pop();
+                rawObject.links.push(rawPersistLink);
+                const doRep = new Spiro.DomainObjectRepresentation(rawObject);
+                doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
+
+                resultVm = viewModelFactory.domainObjectViewModel(doRep, {});
+            }));
+
+            it("creates a object view model", () => {
+                expect(resultVm.domainType).toBe("an object");
+                expect(resultVm.title).toBe("Unsaved a name");
+                expect(resultVm.actions.length).toBe(0);
+                expect(resultVm.properties.length).toBe(0);
+                expect(resultVm.collections.length).toBe(0);
+                expect(resultVm.color).toBe("bg-color-red");
+
+            });
+        });
     });
 
 }); 

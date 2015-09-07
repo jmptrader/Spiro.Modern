@@ -61,7 +61,6 @@ var Spiro;
                         return defer.promise;
                     };
                 }
-                // tested
                 viewModelFactory.parameterViewModel = function (parmRep, previousValue) {
                     var parmViewModel = new Modern.ParameterViewModel();
                     parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
