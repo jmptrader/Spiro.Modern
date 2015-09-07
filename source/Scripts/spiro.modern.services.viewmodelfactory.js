@@ -332,33 +332,12 @@ var Spiro;
                     }
                     return collectionVm;
                 };
-                viewModelFactory.servicesViewModel = function (servicesRep) {
-                    var servicesViewModel = new Modern.ServicesViewModel();
-                    // filter out contributed action services 
-                    var links = _.filter(servicesRep.value().models, function (m) {
-                        var sid = m.rel().parms[0].value;
-                        return sid.indexOf("ContributedActions") === -1;
-                    });
-                    servicesViewModel.title = "Services";
-                    servicesViewModel.color = "bg-color-darkBlue";
-                    servicesViewModel.items = _.map(links, function (link) { return viewModelFactory.linkViewModel(link); });
-                    return servicesViewModel;
-                };
                 viewModelFactory.menusViewModel = function (menusRep) {
                     var menusViewModel = new Modern.MenusViewModel();
                     menusViewModel.title = "Menus";
                     menusViewModel.color = "bg-color-darkBlue";
                     menusViewModel.items = _.map(menusRep.value().models, function (link) { return viewModelFactory.linkViewModel(link); });
                     return menusViewModel;
-                };
-                viewModelFactory.serviceViewModel = function (serviceRep) {
-                    var serviceViewModel = new Modern.ServiceViewModel();
-                    var actions = serviceRep.actionMembers();
-                    serviceViewModel.serviceId = serviceRep.serviceId();
-                    serviceViewModel.title = serviceRep.title();
-                    serviceViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action); });
-                    serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
-                    return serviceViewModel;
                 };
                 viewModelFactory.domainObjectViewModel = function (objectRep, collectionStates, save, previousUrl) {
                     var objectViewModel = new Modern.DomainObjectViewModel();

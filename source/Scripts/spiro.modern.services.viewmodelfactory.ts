@@ -23,16 +23,11 @@ module Spiro.Angular.Modern{
         itemViewModel(linkRep: Link): ItemViewModel;     
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionMember): DialogViewModel;
-
         collectionViewModel(collection: CollectionMember, state: CollectionViewState): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, state: CollectionViewState): CollectionViewModel;
-
         parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
-
-        servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
-        menusViewModel(menusRep: MenusRepresentation): MenusViewModel;
-        serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
+        menusViewModel(menusRep: MenusRepresentation): MenusViewModel;     
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
     }
 
@@ -423,22 +418,7 @@ module Spiro.Angular.Modern{
             return collectionVm;
         };
 
-     
-        viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
-            var servicesViewModel = new ServicesViewModel();
-
-            // filter out contributed action services 
-            var links = _.filter(servicesRep.value().models, (m: Link) => {
-                var sid = m.rel().parms[0].value;
-                return sid.indexOf("ContributedActions") === -1; 
-            });
-            
-            servicesViewModel.title = "Services";
-            servicesViewModel.color = "bg-color-darkBlue";
-            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link));
-            return servicesViewModel;
-        };
-
+    
         viewModelFactory.menusViewModel = (menusRep: MenusRepresentation) => {
             var menusViewModel = new MenusViewModel();
 
@@ -448,19 +428,6 @@ module Spiro.Angular.Modern{
             return menusViewModel;
         };
 
-
-
-       
-        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation) => {
-            var serviceViewModel = new ServiceViewModel();
-            var actions = serviceRep.actionMembers();
-            serviceViewModel.serviceId = serviceRep.serviceId();
-            serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action =>  viewModelFactory.actionViewModel(action));
-            serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());          
-
-            return serviceViewModel;
-        };
 
     
         viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, save?: (ovm: DomainObjectViewModel) => void, previousUrl?: string): DomainObjectViewModel => {

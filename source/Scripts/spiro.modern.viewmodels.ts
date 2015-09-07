@@ -228,11 +228,6 @@ module Spiro.Angular.Modern {
         template: string;
     } 
 
-    export class ServicesViewModel {
-        title: string; 
-        color: string; 
-        items: LinkViewModel[];       
-    } 
 
     export class MenusViewModel {
         title: string;
@@ -240,12 +235,6 @@ module Spiro.Angular.Modern {
         items: LinkViewModel[];
     } 
 
-    export class ServiceViewModel {
-        title: string;
-        serviceId: string;
-        actions: ActionViewModel[];
-        color: string; 
-    } 
 
     export class MenuViewModel {
         title: string;
