@@ -64,7 +64,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class HomePageTestsFirefox : HomePageTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
