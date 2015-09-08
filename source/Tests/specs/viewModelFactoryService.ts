@@ -314,15 +314,15 @@ describe("viewModelFactory Service", () => {
             it("creates a dialog view model with items", () => {  
                 resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.List);                    
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.calls).toBe(2);
+                expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
                 resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.Table);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.calls).toBe(2);
-                expect(populate.calls).toBe(2);
+                expect(itemViewModel.calls.count()).toBe(2);
+                expect(populate.calls.count()).toBe(2);
             });
         });
 
@@ -372,15 +372,15 @@ describe("viewModelFactory Service", () => {
             it("creates a dialog view model with items", () => {
                 resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.List);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.calls).toBe(2);
+                expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
                 resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.Table);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.calls).toBe(2);
-                expect(populate.calls).toBe(2);
+                expect(itemViewModel.calls.count()).toBe(2);
+                expect(populate.calls.count()).toBe(2);
             });
         });
     });

@@ -41,3 +41,5 @@ test/Spiro.Angular.Selenium.Test.csproj.user
 source/Spiro.Modern.v11.suo
 source/.vs/Spiro.Modern/v14/.suo
 source/.vs/config/applicationhost.config
+coverage/IE 11.0.0 (Windows 10 0.0.0)/cobertura-coverage.xml
+TESTS-IE_11.0.0_(Windows_10_0.0.0).xml
