@@ -10,7 +10,7 @@
 //specific language governing permissions and limitations
 //under the License.
 
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+/// <reference path="../../Scripts/typings/karma-jasmine/karma-jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.models.ts" />
@@ -306,22 +306,23 @@ describe("viewModelFactory Service", () => {
             beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
                 setCollectionState = spyOn(urlManager, "setCollectionState");
                 itemViewModel = spyOn(viewModelFactory, "itemViewModel");
-                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when());
                 vmf = viewModelFactory;                 
             }));
 
             it("creates a dialog view model with items", () => {  
                 resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.List);                    
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
+                expect(itemViewModel.calls).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
                 resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.Table);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
-                expect(populate.callCount).toBe(2);
+                expect(itemViewModel.calls).toBe(2);
+                expect(populate.calls).toBe(2);
             });
         });
 
@@ -363,22 +364,23 @@ describe("viewModelFactory Service", () => {
             beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
                 setCollectionState = spyOn(urlManager, "setCollectionState");
                 itemViewModel = spyOn(viewModelFactory, "itemViewModel");
-                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when());
                 vmf = viewModelFactory;
             }));
 
             it("creates a dialog view model with items", () => {
                 resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.List);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
+                expect(itemViewModel.calls).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
                 resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.Table);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
-                expect(populate.callCount).toBe(2);
+                expect(itemViewModel.calls).toBe(2);
+                expect(populate.calls).toBe(2);
             });
         });
     });

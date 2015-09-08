@@ -62,7 +62,7 @@
 //        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
 //            spyOnPromise(repLoader, 'populate', testServices);
 //            spyOnPromise(context, 'getHome', testHome);
-//            spyOn(testHome, 'getDomainServices').andReturn(testServices);
+//            spyOn(testHome, 'getDomainServices').and.returnValue(testServices);
 //            localContext = context;
 //            runs(() => {
 //                localContext.getServices().then(services => {
@@ -104,9 +104,9 @@
 //            spyOnPromise(repLoader, 'populate', testObject);
 //            getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
 //            getService = spyOnPromise(context, 'getService', testObject);
-//            spyOn(testObject, 'domainType').andReturn("test");
-//            spyOn(testObject, 'instanceId').andReturn("1");
-//            spyOn(testObject, 'serviceId').andReturn(undefined);
+//            spyOn(testObject, 'domainType').and.returnValue("test");
+//            spyOn(testObject, 'instanceId').and.returnValue("1");
+//            spyOn(testObject, 'serviceId').and.returnValue(undefined);
 //            localContext = context;
 //        }));
 //        describe('when currentObject is set', () => {
@@ -166,9 +166,9 @@
 //        var result;
 //        var populate;
 //        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {
-//            spyOn(testObject, 'domainType').andReturn("test");
-//            spyOn(testObject, 'instanceId').andReturn("1");
-//            spyOn(testObject, 'serviceId').andReturn(undefined);
+//            spyOn(testObject, 'domainType').and.returnValue("test");
+//            spyOn(testObject, 'instanceId').and.returnValue("1");
+//            spyOn(testObject, 'serviceId').and.returnValue(undefined);
 //            localContext = context;
 //        }));
 //        describe('when nestedObject is set', () => {
@@ -314,9 +314,9 @@
 //            spyOnPromise(repLoader, 'populate', testObject);
 //            getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
 //            getService = spyOnPromise(context, 'getService', testObject);
-//            spyOn(testObject, 'domainType').andReturn(undefined);
-//            spyOn(testObject, 'instanceId').andReturn(undefined);
-//            spyOn(testObject, 'serviceId').andReturn("test");
+//            spyOn(testObject, 'domainType').and.returnValue(undefined);
+//            spyOn(testObject, 'instanceId').and.returnValue(undefined);
+//            spyOn(testObject, 'serviceId').and.returnValue("test");
 //            localContext = context;
 //        }));
 //        describe('when currentObject is set', () => {

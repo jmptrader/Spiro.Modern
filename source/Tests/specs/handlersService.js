@@ -9,7 +9,7 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+/// <reference path="../../Scripts/typings/karma-jasmine/karma-jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
@@ -30,7 +30,7 @@ describe('handlers Service', function () {
     //            $cacheFactory.get("recentlyViewed").destroy();
     //            $scope = $rootScope.$new();
     //            getObject = spyOnPromise(context, 'getObject', testObject);
-    //            objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+    //            objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
     //            setNestedObject = spyOn(context, 'setNestedObject');
     //            $routeParams.dt = "test";
     //            $routeParams.id = "1";
@@ -52,7 +52,7 @@ describe('handlers Service', function () {
     //            var propertyMem = new Spiro.PropertyMember({}, testObject, "");
     //            var populate;
     //            beforeEach(inject(($rootScope, $q, $routeParams, repLoader: Spiro.Angular.IRepLoader, handlers: Spiro.Angular.Modern.IHandlers) => {
-    //                spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
+    //                spyOn(testObject, 'propertyMembers').and.returnValue([propertyMem]);
     //                $routeParams.editMode = "test";
     //                handlers.handleEditObject($scope);
     //            }));
@@ -89,7 +89,7 @@ describe('handlers Service', function () {
     describe('handleError', function () {
         beforeEach(inject(function ($rootScope, handlers, context) {
             $scope = $rootScope.$new();
-            spyOn(context, 'getError').andReturn(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
+            spyOn(context, 'getError').and.returnValue(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
             handlers.handleError($scope);
         }));
         it('should set a error data', function () {
@@ -103,7 +103,7 @@ describe('handlers Service', function () {
         beforeEach(inject(function ($rootScope, handlers, $location, color, navigation, context) {
             $scope = $rootScope.$new();
             navService = navigation;
-            spyOn(color, 'toColorFromHref').andReturn("acolor");
+            spyOn(color, 'toColorFromHref').and.returnValue("acolor");
             spyOn(navigation, 'push');
             setError = spyOn(context, 'setError');
         }));
@@ -117,7 +117,7 @@ describe('handlers Service', function () {
             it('should set scope variables', function () {
                 expect($scope.backgroundColor).toEqual("acolor");
                 expect(navService.push).toHaveBeenCalled();
-                expect(setError).wasNotCalled();
+                expect(setError).not.toHaveBeenCalled();
             });
         });
         describe('if validation fails version', function () {
@@ -170,13 +170,13 @@ describe('handlers Service', function () {
             var testVm = new Spiro.Angular.Modern.DomainObjectViewModel();
             beforeEach(inject(function ($rootScope, $location, $routeParams, handlers, context) {
                 $scope = $rootScope.$new();
-                spyOn(testVm, 'showEdit').andReturn(true);
+                spyOn(testVm, 'showEdit').and.returnValue(true);
                 $scope.$parent.object = testVm;
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
                 spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').andReturn([testMember]);
-                spyOn($location, 'path').andReturn("aPath");
+                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
+                spyOn($location, 'path').and.returnValue("aPath");
                 handlers.handleAppBar($scope);
             }));
             it('should set appBar data', function () {
@@ -194,9 +194,9 @@ describe('handlers Service', function () {
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
                 spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').andReturn([testMember]);
-                spyOn(testMember, 'disabledReason').andReturn("disabled");
-                spyOn($location, 'path').andReturn("aPath");
+                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
+                spyOn(testMember, 'disabledReason').and.returnValue("disabled");
+                spyOn($location, 'path').and.returnValue("aPath");
                 handlers.handleAppBar($scope);
             }));
             it('should set appBar data', function () {

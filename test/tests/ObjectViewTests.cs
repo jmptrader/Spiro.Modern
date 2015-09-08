@@ -36,7 +36,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void Actions() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-            Assert.IsTrue(br.FindElement(By.ClassName("object")).Displayed);
+            wait.Until(d => d.FindElement(By.ClassName("object")));
             Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
