@@ -1,14 +1,9 @@
-﻿//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-//Licensed under the Apache License, Version 2.0(the
-//"License"); you may not use this file except in compliance
-//with the License.You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//Unless required by applicable law or agreed to in writing,
-//software distributed under the License is distributed on an
-//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//KIND, either express or implied.See the License for the
-//specific language governing permissions and limitations
-//under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.ObjectModel;
@@ -16,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-
     //TODO: These should be merged with Home page tests?
     [TestClass]
     public abstract class MainMenuTests : SpiroTest {
@@ -47,7 +41,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Create New Store Customer", actions[3].Text);
             Assert.AreEqual("Create New Individual Customer", actions[4].Text);
             Assert.AreEqual("Random Store", actions[5].Text);
-            Assert.AreEqual("Random Individual", actions[6].Text);          
+            Assert.AreEqual("Random Individual", actions[6].Text);
             Assert.AreEqual("Customer Dashboard", actions[7].Text);
             Assert.AreEqual("Throw Domain Exception", actions[8].Text);
         }
@@ -174,7 +168,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             });
         }
 
-
         [TestMethod, Ignore]
         public virtual void ObjectAction() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
@@ -250,7 +243,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void CollectionActionSelectItem() {
             br.Navigate().GoToUrl(OrderServiceUrl);
 
-
             var selectItem = new Action(() => {
                 wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
                 ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
@@ -295,7 +287,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                     }
                 });
             });
-
 
             selectItem();
             cancelObject();
@@ -352,7 +343,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ServicePageTestsFirefox : MainMenuTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

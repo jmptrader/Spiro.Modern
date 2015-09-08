@@ -1,14 +1,9 @@
-﻿//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-//Licensed under the Apache License, Version 2.0(the
-//"License"); you may not use this file except in compliance
-//with the License.You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//Unless required by applicable law or agreed to in writing,
-//software distributed under the License is distributed on an
-//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//KIND, either express or implied.See the License for the
-//specific language governing permissions and limitations
-//under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.ObjectModel;
@@ -83,7 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElement(By.ClassName("object")));
 
-           var title = br.FindElement(By.ClassName("title"));
+            var title = br.FindElement(By.ClassName("title"));
             Assert.AreEqual("Lynn Tsoflias", title.Text);
         }
 
@@ -111,9 +106,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.ClassName("property")).Count == ProductProperties);
             wait.Until(d => d.FindElements(By.CssSelector("div.property  a > img")).Count == 1);
 
-            Assert.AreEqual(25053, br.FindElements(By.CssSelector("div.property  a > img")).Single().GetAttribute("src").Length, "expect data in data uri"); 
+            Assert.AreEqual(25053, br.FindElements(By.CssSelector("div.property  a > img")).Single().GetAttribute("src").Length, "expect data in data uri");
         }
-
 
         [TestMethod]
         public virtual void DialogAction() {
@@ -215,7 +209,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitUntilGone(d => d.FindElement(By.ClassName("dialog")));
         }
 
-
         [TestMethod]
         public virtual void ObjectAction() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
@@ -304,7 +297,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 WaitUntilGone(d => d.FindElement(By.ClassName("query")));
             });
 
-
             selectItem();
             cancelObject();
             cancelCollection();
@@ -350,7 +342,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => br.FindElement(By.ClassName("save")));
         }
-
     }
 
     #region browsers specific subclasses
@@ -375,7 +366,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

@@ -1,14 +1,9 @@
-﻿//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-//Licensed under the Apache License, Version 2.0(the
-//"License"); you may not use this file except in compliance
-//with the License.You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//Unless required by applicable law or agreed to in writing,
-//software distributed under the License is distributed on an
-//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//KIND, either express or implied.See the License for the
-//specific language governing permissions and limitations
-//under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.ObjectModel;
@@ -20,9 +15,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     [TestClass]
-    public abstract class DialogTests : SpiroTest
-    {
-
+    public abstract class DialogTests : SpiroTest {
         private const int CustomersFindCustomerByAccountNumber = 0;
 
         private const int OrdersOrdersByValue = 3;
@@ -39,7 +32,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         private const int ProductsFindByProductLinesAndClasses = 5;
         private const int ProductsFindProduct = 6;
         private const int ProductsFindProductsByCategory = 7;
-       
 
         [TestMethod]
         public virtual void ChoicesParm() {
@@ -86,8 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void CancelDialog()
-        {
+        public virtual void CancelDialog() {
             br.Navigate().GoToUrl(OrderServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
@@ -107,13 +98,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
 
                 wait.Until(d => {
-                    try
-                    {
+                    try {
                         br.FindElement(By.ClassName("dialog"));
                         return false;
                     }
-                    catch (NoSuchElementException)
-                    {
+                    catch (NoSuchElementException) {
                         return true;
                     }
                 });
@@ -175,8 +164,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElement(By.ClassName("object")));
 
-                // click on action to open dialog 
-                Click(br.FindElements(By.CssSelector("div.action"))[StoresSearchForOrders]); // Search for orders
+            // click on action to open dialog 
+            Click(br.FindElements(By.CssSelector("div.action"))[StoresSearchForOrders]); // Search for orders
 
             wait.Until(d => d.FindElement(By.ClassName("dialog")));
             string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
@@ -220,10 +209,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("HL Fork", topItem);
         }
 
-       
         [TestMethod]
-        public virtual void MultipleRefChoicesDefaults()
-        {
+        public virtual void MultipleRefChoicesDefaults() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
@@ -252,8 +239,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void MultipleRefChoicesChangeDefaults()
-        {
+        public virtual void MultipleRefChoicesChangeDefaults() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
@@ -266,14 +252,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("List Products By Sub Categories", title);
 
-
             br.FindElement(By.CssSelector(".value  select")).SendKeys("Handlebars");
-            IKeyboard kb = ((IHasInputDevices)br).Keyboard;
+            IKeyboard kb = ((IHasInputDevices) br).Keyboard;
 
             kb.PressKey(Keys.Control);
             br.FindElement(By.CssSelector(".value  select option[label='Brakes']")).Click();
             kb.ReleaseKey(Keys.Control);
-
 
             Click(br.FindElement(By.ClassName("ok")));
 
@@ -284,12 +268,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Front Brakes", topItem);
         }
 
-
-
-
         [TestMethod]
-        public virtual void ChoicesDefaults()
-        {
+        public virtual void ChoicesDefaults() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
@@ -318,8 +298,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void ChoicesChangeDefaults()
-        {
+        public virtual void ChoicesChangeDefaults() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
@@ -342,47 +321,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             string topItem = br.FindElement(By.CssSelector(".reference")).Text;
 
             Assert.AreEqual("HL Road Frame - Black, 58", topItem);
-
         }
 
         [TestMethod, Ignore] //Pending fix by Stef
-        public virtual void ConditionalChoicesDefaults()
-        {
-            br.Navigate().GoToUrl(ProductServiceUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
-
-            // click on action to open dialog 
-            Click(br.FindElements(By.ClassName("action"))[ProductsFindProductsByCategory]); 
-
-            wait.Until(d => d.FindElement(By.ClassName("dialog")));
-            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
-
-            Assert.AreEqual("Find Products By Category", title);
-
-            var slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
-
-            Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
-
-
-            var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
-
-            Assert.AreEqual(2, slct.AllSelectedOptions.Count);
-            Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
-            Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
-
-            Click(br.FindElement(By.ClassName("ok")));
-
-            wait.Until(d => d.FindElement(By.ClassName("query")));
-
-            string topItem = br.FindElement(By.CssSelector(".reference")).Text;
-
-            Assert.AreEqual("Mountain-100 Black, 38", topItem);
-        }
-
-        [TestMethod, Ignore] //Pending fix by Stef
-        public virtual void ConditionalChoicesChangeDefaults()
-        {
+        public virtual void ConditionalChoicesDefaults() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
@@ -395,7 +337,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Find Products By Category", title);
 
-
             var slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
@@ -415,6 +356,38 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Mountain-100 Black, 38", topItem);
         }
 
+        [TestMethod, Ignore] //Pending fix by Stef
+        public virtual void ConditionalChoicesChangeDefaults() {
+            br.Navigate().GoToUrl(ProductServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsFindProductsByCategory]);
+
+            wait.Until(d => d.FindElement(By.ClassName("dialog")));
+            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
+
+            Assert.AreEqual("Find Products By Category", title);
+
+            var slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
+
+            Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
+
+            var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+
+            Assert.AreEqual(2, slct.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
+
+            Click(br.FindElement(By.ClassName("ok")));
+
+            wait.Until(d => d.FindElement(By.ClassName("query")));
+
+            string topItem = br.FindElement(By.CssSelector(".reference")).Text;
+
+            Assert.AreEqual("Mountain-100 Black, 38", topItem);
+        }
 
         [TestMethod]
         public virtual void AutoCompleteParmShow() {
@@ -442,8 +415,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void AutoCompleteParmGo()
-        {
+        public virtual void AutoCompleteParmGo() {
             br.Navigate().GoToUrl(SalesServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == SalesServiceActions);
@@ -466,24 +438,18 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElement(By.ClassName("query")));
 
-            try
-            {
+            try {
                 br.FindElement(By.CssSelector(".value input[type='text']"));
                 // found so it fails
                 Assert.Fail();
             }
-            catch 
-            {
+            catch {
                 // all OK 
             }
-
-            
         }
 
-
         [TestMethod]
-        public virtual void AutoCompleteParmDefault()
-        {
+        public virtual void AutoCompleteParmDefault() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
@@ -506,8 +472,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void AutoCompleteParmShowSingleItem()
-        {
+        public virtual void AutoCompleteParmShowSingleItem() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
@@ -521,8 +486,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Find Product", title);
 
             var acElem = br.FindElement(By.CssSelector(".value input[type='text']"));
-
-           
 
             for (int i = 0; i < 15; i++) {
                 acElem.SendKeys(Keys.Backspace);
@@ -540,8 +503,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("BB Ball Bearing", br.FindElement(By.CssSelector(".title")).Text);
         }
-
-
     }
 
     #region browsers specific subclasses
@@ -565,7 +526,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class DialogTestsFirefox : DialogTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
