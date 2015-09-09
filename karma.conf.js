@@ -43,6 +43,7 @@ module.exports = function(config) {
       'source/Tests/specs/controllers.js',
       'source/Tests/specs/contextService.js',
       'source/Tests/specs/handlersService.js',
+      'source/Tests/specs/urlManagerService.js',
       'source/Tests/specs/viewModelFactoryService.js'
     ],
 

@@ -166,10 +166,12 @@
     <TypeScriptCompile Include="Tests\specs\controllers.ts" />
     <TypeScriptCompile Include="Tests\specs\handlersService.ts" />
     <TypeScriptCompile Include="Tests\specs\helpers.ts" />
+    <TypeScriptCompile Include="Tests\specs\urlManagerService.ts" />
     <TypeScriptCompile Include="Tests\specs\viewModelFactoryService.ts" />
     <Content Include="Tests\specs\handlersService.js" />
     <Content Include="Tests\specs\helpers.js" />
     <TypeScriptCompile Include="Tests\specs\contextService.ts" />
+    <Content Include="Tests\specs\urlManagerService.js" />
     <Content Include="Tests\specs\viewModelFactoryService.js" />
     <Content Include="web.config" />
   </ItemGroup>
