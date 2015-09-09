@@ -56,7 +56,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        'Scripts/spiro.angular*.*.js': 'coverage'
+        'source/Scripts/spiro*.js': ['coverage']
     },
 
 
@@ -71,7 +71,7 @@ module.exports = function(config) {
     },
     
     coverageReporter : {
-        type: 'cobertura',
+        type: 'html',
         dir: 'coverage'
     },
 
