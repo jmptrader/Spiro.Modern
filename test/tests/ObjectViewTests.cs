@@ -87,14 +87,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.ClassName("collection")).Count == StoreCollections);
-            ReadOnlyCollection<IWebElement> iconLists = br.FindElements(By.CssSelector("a.icon-list"));
+            ReadOnlyCollection<IWebElement> iconLists = br.FindElements(By.CssSelector(".icon-list"));
 
             Click(iconLists[0]);
 
             wait.Until(d => d.FindElement(By.TagName("table")));
 
             // cancel table view 
-            Click(br.FindElement(By.CssSelector("a.icon-summary")));
+            Click(br.FindElement(By.CssSelector(".icon-summary")));
 
             WaitUntilGone(d => d.FindElement(By.ClassName("table")));
         }

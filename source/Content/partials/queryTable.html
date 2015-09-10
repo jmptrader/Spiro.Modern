@@ -23,7 +23,7 @@ under the License.-->
     <div class="collection">
         <div class="summary">
             <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
-            <a class="icon-list" href="" ng-click="collection.doList()" ></a>
+            <div class="icon-list clickable-area" ng-click="collection.doList()" ></div>
         </div>      
         <table >
             <thead>
@@ -37,18 +37,18 @@ under the License.-->
                 <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" ng-click="item.doClick()">
                     <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
                         <div ng-switch-when="ref" class="clickable-area">
-                            <span></span>{{property.value}}
+                            {{property.value}}
                         </div>
                         <div ng-switch-when="scalar" ng-switch="property.returnType">
                             <div ng-switch-when="string" ng-switch="property.format">
-                                <div ng-switch-when="date-time" class="clickable-area"><span></span>{{property.value}}</div>
-                                <div ng-switch-default class="clickable-area"><span></span>{{property.value}}</div>
+                                <div ng-switch-when="date-time" class="clickable-area">{{property.value}}</div>
+                                <div ng-switch-default class="clickable-area">{{property.value}}</div>
                             </div>
                             <div ng-switch-when="boolean" class="clickable-area">
-                                <input type="checkbox" onclick=" return false " ng-checked="property.value" /><span></span>
+                                <input type="checkbox" onclick=" return false " ng-checked="property.value" />
                             </div>
                             <div ng-switch-default class="clickable-area">
-                                <span></span>{{property.value}}
+                                {{property.value}}
                             </div>
                         </div>
 

@@ -47,23 +47,11 @@
     <Content Include="Scripts\spiro.models.helpers.js" />
     <Content Include="Scripts\spiro.models.js" />
     <Content Include="Scripts\spiro.models.shims.js" />
-    <Content Include="Temp - Restyling\singleQuery.html" />
-    <Content Include="Temp - Restyling\spiro-modern3.css" />
-    <Content Include="Temp - Restyling\spiro-modern.css" />
-    <Content Include="Temp - Restyling\splitHomeQuery_list.html" />
+    <Content Include="Re-design notes\spiro-modern3.css" />
+    <Content Include="Re-design notes\spiro-modern.css" />
     <Content Include="Content\partials\home.html" />
     <Content Include="Content\partials\splitHomeHomePage.html" />
     <Content Include="Content\partials\singleHomePage.html" />
-    <Content Include="Temp - Restyling\home_collection_table.html" />
-    <Content Include="Temp - Restyling\home_object.html" />
-    <Content Include="Temp - Restyling\splitObjectHome.html" />
-    <Content Include="Temp - Restyling\splitObjectObject.html" />
-    <Content Include="Temp - Restyling\singleObject.html" />
-    <Content Include="Temp - Restyling\singleObject_actions_dialog_collections.html" />
-    <Content Include="Temp - Restyling\singleHome_dialog.html" />
-    <Content Include="Temp - Restyling\home_selected_menu.html" />
-    <Content Include="Temp - Restyling\singleHome.html" />
-    <Content Include="Temp - Restyling\Example.html" />
     <Content Include="Content\partials\actions.html" />
     <Content Include="Content\partials\dialog.html" />
     <Content Include="Content\partials\error.html" />
@@ -140,7 +128,7 @@
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="SpiroReadMe.txt" />
-    <Content Include="Temp - Restyling\Notes on colour schemes.txt" />
+    <Content Include="Re-design notes\Notes on colour schemes.txt" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
@@ -173,7 +161,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Temp - Restyling\SpiroUrls.docx" />
+    <Content Include="Re-design notes\SpiroUrls.docx" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -1,14 +1,14 @@
 ﻿<div class="summary">
     <div class='name'>{{collection.title}}:</div>
     <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
-    <a class="icon-summary" href="" ng-click="collection.doSummary()"></a>
-    <a class="icon-table" href="" ng-click="collection.doTable()"></a>
+    <div class="icon-summary clickable-area" ng-click="collection.doSummary()"></div>
+    <div class="icon-table clickable-area" ng-click="collection.doTable()"></div>
 </div>
     <table >
         <tbody>
             <tr ng-repeat="item in collection.items" ng-class="item.color" ng-click="item.doClick()">
                 <td class="reference clickable-area" >
-                    <span></span>{{item.title}}
+                    {{item.title}}
                 </td>
             </tr>
         </tbody>

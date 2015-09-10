@@ -111,14 +111,6 @@
     .clickable-area
     {
         cursor: pointer;
-        position: relative;
-    }
-
-        .clickable-area a span
-    {
-        position: absolute;
-        width: 100%;
-        height: 100%;
     }
 
 /*Actions*/
@@ -134,9 +126,6 @@
     .submenu .name {
         float: none;
         margin-bottom: 5px;
-    }
-
-    .submenu .name a {
         font-size: 12pt;
     }
 
