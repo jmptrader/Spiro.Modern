@@ -45,7 +45,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(Url + "#/home?menu1=CustomerRepository");
             AssertHomeElementsPresent();
-            Assert.IsNotNull(br.FindElement(By.ClassName("actions")));
+            wait.Until(d => d.FindElement(By.ClassName("actions")));
             Assert.IsTrue(br.FindElements(By.ClassName("action"))[0].Text == "Find Customer By Account Number");
         }
 
