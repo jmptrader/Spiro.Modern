@@ -5,6 +5,9 @@
         <div class="menu clickable-area" ng-click="object.toggleActionMenu()">
             Actions
         </div>
+        <div class="action clickable-area" ng-click="object.doEdit()">
+            Edit
+        </div>
         <div class="messages">{{object.message}}</div>
     </div>
     <div class="actions" ng-include="actionsTemplate"></div>
