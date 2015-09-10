@@ -1,14 +1,9 @@
-﻿//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-//Licensed under the Apache License, Version 2.0(the
-//"License"); you may not use this file except in compliance
-//with the License.You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//Unless required by applicable law or agreed to in writing,
-//software distributed under the License is distributed on an
-//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//KIND, either express or implied.See the License for the
-//specific language governing permissions and limitations
-//under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.ObjectModel;
@@ -16,22 +11,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-
     //TODO: These should be merged with Home page tests?
-    [TestClass]
+    //[TestClass]
     public abstract class MainMenuTests : SpiroTest {
         [TestMethod]
         public virtual void FooterIcons() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
-
             wait.Until(d => d.FindElements(By.ClassName("footer")).Count == 1);
-
             Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
             Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
             Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("edit")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
+            //Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
+            //Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
         }
 
         [TestMethod]
@@ -43,17 +34,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
             Assert.AreEqual("Find Store By Name", actions[1].Text);
-            Assert.AreEqual("Find Individual Customer By Name", actions[2].Text);
-            Assert.AreEqual("Create New Store Customer", actions[3].Text);
-            Assert.AreEqual("Create New Individual Customer", actions[4].Text);
-            Assert.AreEqual("Random Store", actions[5].Text);
-            Assert.AreEqual("Random Individual", actions[6].Text);          
+            Assert.AreEqual("Create New Store Customer", actions[2].Text);
+            Assert.AreEqual("Random Store", actions[3].Text);
+            Assert.AreEqual("Find Individual Customer By Name", actions[4].Text);
+            Assert.AreEqual("Create New Individual Customer", actions[5].Text);
+            Assert.AreEqual("Random Individual", actions[6].Text);
             Assert.AreEqual("Customer Dashboard", actions[7].Text);
             Assert.AreEqual("Throw Domain Exception", actions[8].Text);
         }
 
         [TestMethod]
-        public virtual void DialogAction() {
+        public virtual void DialogActionCancel() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
@@ -82,67 +73,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void DialogActionShow() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-
-            var showObject = new Action(() => {
-                // click on action to open dialog 
-                Click(br.FindElements(By.ClassName("action"))[0]); // Find customer by account number
-
-                wait.Until(d => d.FindElement(By.ClassName("dialog")));
-                string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
-
-                Assert.AreEqual("Find Customer By Account Number", title);
-
-                br.FindElement(By.CssSelector(".parameter-value  input")).SendKeys("00022262");
-
-                Click(br.FindElement(By.ClassName("ok")));
-
-                wait.Until(d => d.FindElement(By.ClassName("nested-object")));
-            });
-
-            var cancelObject = new Action(() => {
-                // cancel object 
-                Click(br.FindElement(By.CssSelector("div.nested-object .cancel")));
-
-                wait.Until(d => {
-                    try {
-                        br.FindElement(By.ClassName("nested-object"));
-                        return false;
-                    }
-                    catch (NoSuchElementException) {
-                        return true;
-                    }
-                });
-            });
-
-            var cancelDialog = new Action(() => {
-                Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
-
-                wait.Until(d => {
-                    try {
-                        br.FindElement(By.ClassName("dialog"));
-                        return false;
-                    }
-                    catch (NoSuchElementException) {
-                        return true;
-                    }
-                });
-            });
-
-            showObject();
-            cancelObject();
-            cancelDialog();
-
-            showObject();
-            cancelDialog();
-            cancelObject();
-        }
-
-        [TestMethod]
-        public virtual void DialogActionGo() {
+        public virtual void DialogActionOK() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
@@ -155,69 +86,25 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Find Customer By Account Number", title);
 
-            br.FindElement(By.CssSelector(".parameter-value  input")).SendKeys("00022262");
+            br.FindElement(By.CssSelector(".value  input")).SendKeys("00022262");
 
             Click(br.FindElement(By.ClassName("ok")));
 
-            wait.Until(d => d.FindElement(By.ClassName("nested-object")));
-
-            // dialog should be closed
-
-            wait.Until(d => {
-                try {
-                    br.FindElement(By.ClassName("dialog"));
-                    return false;
-                }
-                catch (NoSuchElementException) {
-                    return true;
-                }
-            });
+            wait.Until(d => d.FindElement(By.ClassName("object")));
         }
 
-
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ObjectAction() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
-            IWebElement action = br.FindElements(By.ClassName("action"))[8];
+            IWebElement action = br.FindElements(By.ClassName("action"))[3];
 
             // click on action to get object 
             Click(action); // random store 
 
-            wait.Until(d => d.FindElement(By.ClassName("nested-object")));
-
-            // cancel object 
-            Click(br.FindElement(By.CssSelector("div.nested-object .cancel")));
-
-            wait.Until(d => {
-                try {
-                    br.FindElement(By.ClassName("nested-object"));
-                    return false;
-                }
-                catch (NoSuchElementException) {
-                    return true;
-                }
-            });
-        }
-
-        [TestMethod, Ignore]
-        public virtual void ObjectActionExpand() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            IWebElement action = br.FindElements(By.ClassName("action"))[8];
-
-            // click on action to get object 
-            Click(action); // random store 
-
-            wait.Until(d => d.FindElement(By.ClassName("nested-object")));
-
-            // expand object
-            Click(br.FindElement(By.CssSelector("div.nested-object .expand")));
-
-            wait.Until(d => br.FindElement(By.ClassName("object-properties")));
+            wait.Until(d => d.FindElement(By.ClassName("object")));
         }
 
         [TestMethod]
@@ -231,25 +118,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(actions[2]); // highest value orders
 
             wait.Until(d => d.FindElement(By.ClassName("query")));
-
-            // cancel collection 
-            Click(br.FindElement(By.CssSelector("div.list-view .cancel")));
-
-            wait.Until(d => {
-                try {
-                    br.FindElement(By.ClassName("query"));
-                    return false;
-                }
-                catch (NoSuchElementException) {
-                    return true;
-                }
-            });
         }
 
         [TestMethod]
         public virtual void CollectionActionSelectItem() {
             br.Navigate().GoToUrl(OrderServiceUrl);
-
 
             var selectItem = new Action(() => {
                 wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
@@ -261,80 +134,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 wait.Until(d => d.FindElement(By.ClassName("query")));
 
                 // select item
-                Click(br.FindElement(By.CssSelector("div.list-item a")));
+                Click(br.FindElement(By.CssSelector("table .reference")));
 
-                wait.Until(d => br.FindElement(By.ClassName("nested-object")));
+                wait.Until(d => br.FindElement(By.ClassName("object")));
             });
-
-            // cancel object 
-
-            var cancelObject = new Action(() => {
-                Click(br.FindElement(By.CssSelector("div.nested-object .cancel")));
-                wait.Until(d => {
-                    try {
-                        br.FindElement(By.ClassName("nested-object"));
-                        return false;
-                    }
-                    catch (NoSuchElementException) {
-                        return true;
-                    }
-                });
-            });
-
-            // cancel collection 
-            var cancelCollection = new Action(() => {
-                Click(br.FindElement(By.CssSelector("div.list-view .cancel")));
-
-                wait.Until(d => {
-                    try {
-                        br.FindElement(By.ClassName("query"));
-                        return false;
-                    }
-                    catch (NoSuchElementException) {
-                        return true;
-                    }
-                });
-            });
-
 
             selectItem();
-            cancelObject();
-            cancelCollection();
-
-            // repeat but first cancel collection 
-            selectItem();
-            cancelCollection();
-            cancelObject();
-        }
-
-        [TestMethod]
-        public virtual void CollectionActionSelectItemExpand() {
-            br.Navigate().GoToUrl(OrderServiceUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
-
-            // click on action to get object 
-            Click(actions[2]); // highest value orders
-
-            wait.Until(d => d.FindElement(By.ClassName("query")));
-
-            // select item
-            Click(br.FindElement(By.CssSelector("div.list-item a")));
-
-            wait.Until(d => br.FindElement(By.ClassName("nested-object")));
-
-            // expand object
-            Click(br.FindElement(By.CssSelector("div.nested-object .expand")));
-
-            wait.Until(d => br.FindElement(By.ClassName("object-properties")));
         }
     }
 
     #region browsers specific subclasses
 
-    [TestClass, Ignore]
-    public class ServicePageTestsIe : MainMenuTests {
+    //[TestClass, Ignore]
+    public class MainMenuTestsIe : MainMenuTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -353,7 +165,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class ServicePageTestsFirefox : MainMenuTests {
+    public class MainMenuTestsFirefox : MainMenuTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             SpiroTest.InitialiseClass(context);
@@ -370,8 +182,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
-    public class ServicePageTestsChrome : MainMenuTests {
+    //[TestClass, Ignore]
+    public class MainMenuTestsChrome : MainMenuTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

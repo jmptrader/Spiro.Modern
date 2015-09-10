@@ -27,7 +27,6 @@
     <Content Include="Content\partials\footer.html" />
     <Content Include="Content\partials\objectEdit.html" />
     <Content Include="Content\partials\objectView.html" />
-    <Content Include="Content\partials\object.html" />
     <Content Include="Content\partials\queryTable.html" />
     <Content Include="Content\partials\queryList.html" />
     <Content Include="Content\partials\singleQueryPage.html" />
@@ -73,10 +72,8 @@
     <Content Include="Temp - Restyling\Example.html" />
     <Content Include="Content\partials\actions.html" />
     <Content Include="Content\partials\dialog.html" />
-    <Content Include="Content\partials\editProperties.html" />
     <Content Include="Content\partials\error.html" />
     <Content Include="Content\partials\singleErrorPage.html" />
-    <Content Include="Content\partials\viewProperties.html" />
     <Content Include="Content\spiro-modern.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -111,7 +108,6 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="css\jasmine.css" />
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
@@ -144,7 +140,6 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\jasmine-html.js" />
-    <Content Include="Scripts\jasmine.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -161,16 +156,19 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine-1.3.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\karma-jasmine\karma-jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
     <TypeScriptCompile Include="Tests\specs\controllers.ts" />
     <TypeScriptCompile Include="Tests\specs\handlersService.ts" />
     <TypeScriptCompile Include="Tests\specs\helpers.ts" />
+    <TypeScriptCompile Include="Tests\specs\urlManagerService.ts" />
     <TypeScriptCompile Include="Tests\specs\viewModelFactoryService.ts" />
     <Content Include="Tests\specs\handlersService.js" />
     <Content Include="Tests\specs\helpers.js" />
     <TypeScriptCompile Include="Tests\specs\contextService.ts" />
+    <Content Include="Tests\specs\urlManagerService.js" />
     <Content Include="Tests\specs\viewModelFactoryService.js" />
     <Content Include="web.config" />
   </ItemGroup>

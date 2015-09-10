@@ -1,14 +1,9 @@
-﻿//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-//Licensed under the Apache License, Version 2.0(the
-//"License"); you may not use this file except in compliance
-//with the License.You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//Unless required by applicable law or agreed to in writing,
-//software distributed under the License is distributed on an
-//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//KIND, either express or implied.See the License for the
-//specific language governing permissions and limitations
-//under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.ObjectModel;
@@ -45,29 +40,31 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             });
         }
 
-        public TimeSpan Timeout {
+        public TimeSpan Timeout
+        {
             get { return wait.Timeout; }
             set { wait.Timeout = value; }
         }
 
-        public TimeSpan PollingInterval {
+        public TimeSpan PollingInterval
+        {
             get { return wait.PollingInterval; }
             set { wait.PollingInterval = value; }
         }
 
-        public string Message {
+        public string Message
+        {
             get { return wait.Message; }
             set { wait.Message = value; }
         }
     }
-
 
     [TestClass]
     public abstract class SpiroTest {
         #region overhead
 
         protected const string Url = "http://localhost:49998/index.html";
-        
+
         protected const string Server = @"Saturn\SqlExpress";
         protected const string Database = "AdventureWorks";
         protected const string Backup = "AdventureWorks";
@@ -103,12 +100,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
 
-        protected const int TimeOut = 20; 
+        protected const int TimeOut = 20;
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
-
-          //DatabaseUtils.RestoreDatabase(Database, Backup, Server);
+            //DatabaseUtils.RestoreDatabase(Database, Backup, Server);
         }
 
         public virtual void CleanUpTest() {
@@ -155,7 +151,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #region Helpers
 
         protected void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition) {
-
             wait.Until(d => {
                 try {
                     condition(d);
@@ -165,9 +160,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                     return true;
                 }
             });
-            
         }
-
 
         protected virtual void Maximize() {
             const string script = "window.moveTo(0, 0); window.resizeTo(screen.availWidth, screen.availHeight);";
@@ -183,7 +176,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ScrollTo(element);
             element.Click();
         }
-
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
             wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);

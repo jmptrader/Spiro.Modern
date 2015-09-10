@@ -1,18 +1,12 @@
-﻿//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-//Licensed under the Apache License, Version 2.0(the
-//"License"); you may not use this file except in compliance
-//with the License.You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//Unless required by applicable law or agreed to in writing,
-//software distributed under the License is distributed on an
-//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//KIND, either express or implied.See the License for the
-//specific language governing permissions and limitations
-//under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -20,7 +14,7 @@ using OpenQA.Selenium.Support.UI;
 namespace NakedObjects.Web.UnitTests.Selenium {
     [TestClass]
     public abstract class ObjectEditPageTests : SpiroTest {
-       
+
         [TestMethod, Ignore] //not saving due to mask issue on decimal fields
         public virtual void ObjectEditChangeScalar() {
             br.Navigate().GoToUrl(Product870Url);
@@ -36,7 +30,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set price and days to mfctr
 
-            br.FindElement(By.CssSelector("div#listprice input")).SendKeys( Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
+            br.FindElement(By.CssSelector("div#listprice input")).SendKeys(Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
 
             Click(br.FindElement(By.ClassName("save")));
@@ -47,13 +41,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("List Price:\r\n4100", properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
-          
         }
 
-
         [TestMethod, Ignore]
-        public virtual void ObjectEditChangeDateTime()
-        {
+        public virtual void ObjectEditChangeDateTime() {
             br.Navigate().GoToUrl(Product870Url);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
@@ -87,8 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void ObjectEditChangeChoices()
-        {
+        public virtual void ObjectEditChangeChoices() {
             br.Navigate().GoToUrl(Product870Url);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
@@ -112,13 +102,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
             Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
-         
-
         }
 
         [TestMethod]
-        public virtual void ObjectEditChangeConditionalChoices()
-        {
+        public virtual void ObjectEditChangeConditionalChoices() {
             br.Navigate().GoToUrl(Product870Url);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
@@ -132,7 +119,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // set product category and sub category
 
             var selected = new SelectElement(br.FindElement(By.CssSelector("#productcategory  select")));
-
 
             // this makes tests really fragile
             //Assert.AreEqual("Accessories", selected.SelectedOption.Text);
@@ -209,12 +195,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
         }
-
-
-
-
-
-
     }
 
     #region browsers specific subclasses
@@ -239,7 +219,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ObjectEditPageTestsFirefox : ObjectEditPageTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

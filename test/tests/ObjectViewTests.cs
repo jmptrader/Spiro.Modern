@@ -1,14 +1,9 @@
-﻿//Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-//Licensed under the Apache License, Version 2.0(the
-//"License"); you may not use this file except in compliance
-//with the License.You may obtain a copy of the License at
-//    http://www.apache.org/licenses/LICENSE-2.0
-//Unless required by applicable law or agreed to in writing,
-//software distributed under the License is distributed on an
-//"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//KIND, either express or implied.See the License for the
-//specific language governing permissions and limitations
-//under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.ObjectModel;
@@ -36,7 +31,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void Actions() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-            Assert.IsTrue(br.FindElement(By.ClassName("object")).Displayed);
+            wait.Until(d => d.FindElement(By.ClassName("object")));
             Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
@@ -83,7 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElement(By.ClassName("object")));
 
-           var title = br.FindElement(By.ClassName("title"));
+            var title = br.FindElement(By.ClassName("title"));
             Assert.AreEqual("Lynn Tsoflias", title.Text);
         }
 
@@ -111,7 +106,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.CssSelector("div.property  a > img")).Count == 1);
             Assert.IsTrue(br.FindElement(By.CssSelector("div.property  a > img")).GetAttribute("src").Length > 0); 
         }
-
 
         [TestMethod]
         public virtual void DialogAction() {
@@ -207,6 +201,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             });
         }
 
+
         [TestMethod]
         public virtual void ObjectEdit() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
@@ -221,12 +216,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Save", br.FindElements(By.ClassName("action")).First().Text);
         }
-
     }
 
     #region browsers specific subclasses
 
-    [TestClass, Ignore]
+    //[TestClass, Ignore]
     public class ObjectViewTestsIe : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -246,7 +240,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -269,7 +263,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
+    //[TestClass, Ignore]
     public class ObjectViewTestsChrome : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
