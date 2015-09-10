@@ -86,6 +86,25 @@ describe('handlers Service', function () {
     //        });
     //    });
     //});
+    // describe('handleHome', () => {
+    //     let menusViewModel;
+    //     const mVm = new Spiro.MenusRepresentation({});
+    //     beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory) => {
+    //         $scope = $rootScope.$new();
+    //         spyOnPromise(context, 'getMenus', mVm);
+    //         menusViewModel = spyOn(viewModelFactory, "menusViewModel");
+    //     }));
+    //     describe('if it has no menu id', () => {
+    //         beforeEach(inject((handlers: Spiro.Angular.Modern.IHandlers) => {
+    //             var routeData = new Spiro.Angular.Modern.RouteData();
+    //             handlers.handleHome($scope, routeData.pane1);
+    //         }));
+    //         it('should set scope variables', () => {
+    //             expect(menusViewModel).toHaveBeenCalledWith(mVm);
+    //             expect($scope.homeTemplate).toBe(Spiro.Angular.homeTemplate);
+    //         });
+    //     });
+    //});
     describe('handleError', function () {
         beforeEach(inject(function ($rootScope, handlers, context) {
             $scope = $rootScope.$new();
