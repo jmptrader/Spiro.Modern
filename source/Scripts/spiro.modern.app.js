@@ -34,8 +34,6 @@ var Spiro;
         Angular.errorTemplate = getSvrPath() + "Content/partials/error.html";
         Angular.appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
         Angular.nullTemplate = getSvrPath() + "Content/partials/null.html";
-        Angular.viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";
-        Angular.editPropertiesTemplate = getSvrPath() + "Content/partials/editProperties.html";
         var servicesPageTemplate = getSvrPath() + "Content/partials/servicesPage.html";
         var servicePageTemplate = getSvrPath() + "Content/partials/servicePage.html";
         var objectPageTemplate = getSvrPath() + "Content/partials/objectPage.html";

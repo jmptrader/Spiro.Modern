@@ -37,7 +37,7 @@
         float: left;
     }
 /*Three main roots*/
-.home, .object, .query {
+.home, .object, .query, .error {
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
@@ -236,6 +236,17 @@ th, td {
     padding-left: 5px;
     padding-right: 5px;
     vertical-align: top;
+}
+
+/*Error*/
+.error {
+    font-size: 16pt;
+    color: red;
+}
+
+.error .stacktrace {
+    font-size: 12pt;
+    color: white;
 }
 
 /*footer*/

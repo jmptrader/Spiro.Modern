@@ -25,7 +25,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Home() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
+            br.Navigate().GoToUrl(CustomersMenuUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
             Click(br.FindElement(By.ClassName("icon-home")));

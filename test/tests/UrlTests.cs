@@ -7,19 +7,20 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Collections.ObjectModel;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
+
     /// <summary>
-    /// Tests only that a given URLs return the correct views
+    /// Tests only that a given URLs return the correct views. No actions performed on them
     /// </summary>
-   // [TestClass]
     public abstract class UrlTests : SpiroTest
     {
         [TestMethod]
         public virtual void UnrecognisedUrlGoesToHome()
         {
             br.Navigate().GoToUrl(Url + "#/unrecognised");
-            AssertHomeElementsPresent();
+            TestThatHomeElementsPresent();
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
@@ -27,39 +28,66 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void Home()
         {
             br.Navigate().GoToUrl(Url + "#/home");
-            AssertHomeElementsPresent();
+            TestThatHomeElementsPresent();
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
-        private void AssertHomeElementsPresent()
+        protected void TestThatHomeElementsPresent()
         {
             wait.Until(d => d.FindElement(By.ClassName("single")));
             Assert.IsNotNull(br.FindElement(By.ClassName("home")));
             Assert.IsNotNull(br.FindElement(By.ClassName("header")));
             Assert.IsNotNull(br.FindElement(By.ClassName("menu")));
             Assert.IsNotNull(br.FindElement(By.ClassName("main-column")));
+
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.ClassName("menu"));
+            Assert.AreEqual("Customers", menus[0].Text);
+            Assert.AreEqual("Orders", menus[1].Text);
+            Assert.AreEqual("Products", menus[2].Text);
+            Assert.AreEqual("Employees", menus[3].Text);
+            Assert.AreEqual("Sales", menus[4].Text);
+            Assert.AreEqual("Special Offers", menus[5].Text);
+            Assert.AreEqual("Contacts", menus[6].Text);
+            Assert.AreEqual("Vendors", menus[7].Text);
+            Assert.AreEqual("Purchase Orders", menus[8].Text);
+            Assert.AreEqual("Work Orders", menus[9].Text);
+            TestThatFooterElementsArePresent();
         }
+
+
 
         [TestMethod]
         public virtual void HomeWithMenu()
         {
             br.Navigate().GoToUrl(Url + "#/home?menu1=CustomerRepository");
-            AssertHomeElementsPresent();
+            TestThatHomeElementsPresent();
             wait.Until(d => d.FindElement(By.ClassName("actions")));
-            Assert.IsTrue(br.FindElements(By.ClassName("action"))[0].Text == "Find Customer By Account Number");
+            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
+
+            Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
+            Assert.AreEqual("Find Store By Name", actions[1].Text);
+            Assert.AreEqual("Create New Store Customer", actions[2].Text);
+            Assert.AreEqual("Random Store", actions[3].Text);
+            Assert.AreEqual("Find Individual Customer By Name", actions[4].Text);
+            Assert.AreEqual("Create New Individual Customer", actions[5].Text);
+            Assert.AreEqual("Random Individual", actions[6].Text);
+            Assert.AreEqual("Customer Dashboard", actions[7].Text);
+            Assert.AreEqual("Throw Domain Exception", actions[8].Text);
         }
 
-        [TestMethod] //Should give error page
+        [TestMethod]
         public virtual void HomeWithNoSuchMenu()
         {
             br.Navigate().GoToUrl(Url + "#/home?menu1=NoSuchRepository");
+            wait.Until(d => d.FindElement(By.ClassName("error")));
+            //TODO: Test for a clearer generic error message e.g. 'Invalid Url' or 'Invalid argument(s)'
         }
 
         [TestMethod]
         public virtual void HomeIgnoredInvalidParam()
         {
             br.Navigate().GoToUrl(Url + "#/home?menu2=Actions");
-            AssertHomeElementsPresent();
+            TestThatHomeElementsPresent();
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 

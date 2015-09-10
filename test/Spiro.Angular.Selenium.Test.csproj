@@ -67,12 +67,13 @@
     <Compile Include="tests\HomePageTests.cs" />
     <Compile Include="tests\FooterIconTests.cs" />
     <Compile Include="tests\ObjectViewTests.cs" />
-    <Compile Include="tests\MainMenuTests.cs" />
+    <Compile Include="tests\ServiceActionTests.cs" />
     <Compile Include="tests\SpiroTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="drivers\chromedriver.exe" />
     <Content Include="drivers\IEDriverServer.exe" />
+    <Content Include="tests\Tests_to_be_written.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

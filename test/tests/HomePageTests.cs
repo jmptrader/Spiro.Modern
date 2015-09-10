@@ -10,35 +10,39 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-    //[TestClass]
+    /// <summary>
+    /// Tests content and navigation from Home representation
+    /// </summary>
     public abstract class HomePageTests : SpiroTest {
-        [TestMethod]
-        public virtual void HomePage() {
-            bool found = wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
-            Assert.IsTrue(found, "Menus not found on home page");
-        }
 
         [TestMethod]
-        public virtual void Menus() {
-            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
-
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.ClassName("menu"));
-
-            Assert.AreEqual("Customers", menus[0].Text);
-            Assert.AreEqual("Orders", menus[1].Text);
-            Assert.AreEqual("Products", menus[2].Text);
-            Assert.AreEqual("Employees", menus[3].Text);
-            Assert.AreEqual("Sales", menus[4].Text);
-            Assert.AreEqual("Special Offers", menus[5].Text);
-            Assert.AreEqual("Contacts", menus[6].Text);
-            Assert.AreEqual("Vendors", menus[7].Text);
-            Assert.AreEqual("Purchase Orders", menus[8].Text);
-            Assert.AreEqual("Work Orders", menus[9].Text);
-        }
-
-        [TestMethod]
-        public virtual void GoToMenu() {
+        public virtual void ClickOnVariousMenus() {
             GoToMenuFromHomePage("Customers");
+
+            wait.Until(d => d.FindElement(By.ClassName("actions")));
+            var actions = br.FindElements(By.ClassName("action"));
+            Assert.AreEqual(9, actions.Count);
+
+            Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
+            Assert.AreEqual("Find Store By Name", actions[1].Text);
+            Assert.AreEqual("Create New Store Customer", actions[2].Text);
+            Assert.AreEqual("Random Store", actions[3].Text);
+            Assert.AreEqual("Find Individual Customer By Name", actions[4].Text);
+            Assert.AreEqual("Create New Individual Customer", actions[5].Text);
+            Assert.AreEqual("Random Individual", actions[6].Text);
+            Assert.AreEqual("Customer Dashboard", actions[7].Text);
+            Assert.AreEqual("Throw Domain Exception", actions[8].Text);
+
+            GoToMenuFromHomePage("Sales");
+
+            wait.Until(d => d.FindElement(By.ClassName("actions")));
+            actions = br.FindElements(By.ClassName("action"));
+            Assert.AreEqual(4, actions.Count);
+
+            Assert.AreEqual("Create New Sales Person", actions[0].Text);
+            Assert.AreEqual("Find Sales Person By Name", actions[1].Text);
+            Assert.AreEqual("List Accounts For Sales Person", actions[2].Text);
+            Assert.AreEqual("Random Sales Person", actions[3].Text);
         }
     }
 

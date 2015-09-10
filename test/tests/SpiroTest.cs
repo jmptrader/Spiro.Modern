@@ -59,7 +59,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
     public abstract class SpiroTest {
         #region overhead
 
@@ -69,7 +68,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string Database = "AdventureWorks";
         protected const string Backup = "AdventureWorks";
 
-        protected const string CustomerServiceUrl = Url + "#/home?menu1=CustomerRepository";
+        protected const string CustomersMenuUrl = Url + "#/home?menu1=CustomerRepository";
         protected const string OrderServiceUrl = Url + "#/home?menu1=OrderRepository";
         protected const string ProductServiceUrl = Url + "#/home?menu1=ProductRepository";
         protected const string SalesServiceUrl = Url + "#/home?menu1=SalesRepository";
@@ -221,5 +220,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         #endregion
+
+        protected virtual void TestThatFooterElementsArePresent()
+        {
+            wait.Until(d => d.FindElements(By.ClassName("footer")).Count == 1);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
+            //Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
+            //Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
+        }
     }
 }

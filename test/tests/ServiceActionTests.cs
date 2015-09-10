@@ -11,52 +11,103 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-    //TODO: These should be merged with Home page tests?
-    //[TestClass]
-    public abstract class MainMenuTests : SpiroTest {
+
+    /// <summary>
+    /// Tests service actions (i.e. from main menus) including: 
+    /// - Execution of zero-param actions
+    /// - Rendering, cancelling, and happy-case execution of dialogs for actions with params
+    /// - Does NOT test full functionality of dialogs (e.g. validation, choices) -  see DialogTests
+    /// </summary>
+    public abstract class ServiceActionTests : SpiroTest {
+
+        //TODO:
+        // disabled action
+        // action throws exception
+
         [TestMethod]
-        public virtual void FooterIcons() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
-            wait.Until(d => d.FindElements(By.ClassName("footer")).Count == 1);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
-            //Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
-            //Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
+        public virtual void ZeroParamReturnsObject()
+        {
+            br.Navigate().GoToUrl(CustomersMenuUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
+
+            IWebElement action = br.FindElements(By.ClassName("action"))[3];
+            Assert.AreEqual("Random Store", action.Text);
+
+            // click on action to get object 
+            Click(action);
+
+            wait.Until(d => d.FindElement(By.ClassName("object")));
         }
 
         [TestMethod]
-        public virtual void Actions() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
+        public virtual void ZeroParamReturnsCollection()
+        {
+            br.Navigate().GoToUrl(OrderServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
+            var action = br.FindElements(By.ClassName("action"))[2];
+
+            Assert.AreEqual("Highest Value Orders", action.Text);
+            Click(action);
+
+            wait.Until(d => d.FindElement(By.ClassName("query")));
+            wait.Until(d => d.FindElements(By.ClassName("reference")).Count == 20);
+        }
+
+        [TestMethod]
+        public virtual void ZeroParamThrowsError()
+        {
+            br.Navigate().GoToUrl(CustomersMenuUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
+            IWebElement action = br.FindElements(By.ClassName("action"))[8];
+            Assert.AreEqual("Throw Domain Exception", action.Text);
+
+            // click on action to get object 
+            Click(action);
+
+            wait.Until(d => d.FindElement(By.ClassName("error")));
+
+            var msg = br.FindElement(By.CssSelector(".message"));
+            Assert.AreEqual("Foo", msg.Text);
+        }
+
+        [TestMethod]
+        public virtual void ZeroParamReturnsEmptyCollection()
+        {
+            br.Navigate().GoToUrl(OrderServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
+            var actions = br.FindElements(By.ClassName("action"));
+
+            Assert.AreEqual("Orders In Process", actions[0].Text);
+            Click(actions[0]);
+
+            wait.Until(d => d.FindElement(By.ClassName("query")));
+            var rows = br.FindElements(By.CssSelector("td"));
+            Assert.AreEqual(0, rows.Count);
+        }
+
+        [TestMethod]
+        public virtual void SelectSuccessiveDialogActionsThenCancel() {
+            br.Navigate().GoToUrl(CustomersMenuUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
+            var actions = br.FindElements(By.ClassName("action"));
             Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
-            Assert.AreEqual("Find Store By Name", actions[1].Text);
-            Assert.AreEqual("Create New Store Customer", actions[2].Text);
-            Assert.AreEqual("Random Store", actions[3].Text);
-            Assert.AreEqual("Find Individual Customer By Name", actions[4].Text);
-            Assert.AreEqual("Create New Individual Customer", actions[5].Text);
-            Assert.AreEqual("Random Individual", actions[6].Text);
-            Assert.AreEqual("Customer Dashboard", actions[7].Text);
-            Assert.AreEqual("Throw Domain Exception", actions[8].Text);
-        }
-
-        [TestMethod]
-        public virtual void DialogActionCancel() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
-
-            // click on action to open dialog 
-            Click(actions[0]); // Find customer by account number
+            Click(actions[0]);
 
             wait.Until(d => d.FindElement(By.ClassName("dialog")));
             string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
-
             Assert.AreEqual("Find Customer By Account Number", title);
+
+            actions = br.FindElements(By.ClassName("action"));
+            Assert.AreEqual("Find Store By Name", actions[1].Text);
+            Click(actions[1]);
+
+            wait.Until(d => d.FindElement(By.CssSelector("div.dialog > div.title")).Text =="Find Store By Name");
 
             // cancel dialog 
             Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
@@ -74,7 +125,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DialogActionOK() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
+            br.Navigate().GoToUrl(CustomersMenuUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
@@ -91,33 +142,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(br.FindElement(By.ClassName("ok")));
 
             wait.Until(d => d.FindElement(By.ClassName("object")));
-        }
-
-        [TestMethod]
-        public virtual void ObjectAction() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-
-            IWebElement action = br.FindElements(By.ClassName("action"))[3];
-
-            // click on action to get object 
-            Click(action); // random store 
-
-            wait.Until(d => d.FindElement(By.ClassName("object")));
-        }
-
-        [TestMethod]
-        public virtual void CollectionAction() {
-            br.Navigate().GoToUrl(OrderServiceUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
-
-            // click on action to get collection 
-            Click(actions[2]); // highest value orders
-
-            wait.Until(d => d.FindElement(By.ClassName("query")));
         }
 
         [TestMethod]
@@ -146,7 +170,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region browsers specific subclasses
 
     //[TestClass, Ignore]
-    public class MainMenuTestsIe : MainMenuTests {
+    public class ServiceActionTestsIe : ServiceActionTests
+    {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -165,7 +190,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class MainMenuTestsFirefox : MainMenuTests {
+    public class ServiceActionTestsFirefox : ServiceActionTests
+    {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             SpiroTest.InitialiseClass(context);
@@ -183,7 +209,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     //[TestClass, Ignore]
-    public class MainMenuTestsChrome : MainMenuTests {
+    public class ServiceActionTestsChrome : ServiceActionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

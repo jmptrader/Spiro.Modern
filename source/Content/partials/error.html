@@ -1,7 +1,5 @@
-﻿<div class="error" >
-    <h1>{{error.message}}</h1>
-    <h1>StackTrace</h1>
-    <ul>
-        <li ng-repeat="line in error.stackTrace">{{line}}</li>
-    </ul>
- </div>
+﻿    <div class="title">Error</div>
+<div class="message">{{error.message}}</div>
+    <div class="stacktrace">
+        <div class="line" ng-repeat="line in error.stackTrace">{{line}}</div>
+    </div>

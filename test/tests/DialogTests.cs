@@ -14,7 +14,10 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-   // [TestClass]
+   /// <summary>
+   /// Tests for the detailed operation of dialogs, including parameter rendering,
+   /// choices, auto-complete, default values, formatting, and validation
+   /// </summary>
     public abstract class DialogTests : SpiroTest {
         private const int CustomersFindCustomerByAccountNumber = 0;
 
@@ -139,7 +142,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ScalarParmKeepsValue() {
-            br.Navigate().GoToUrl(CustomerServiceUrl);
+            br.Navigate().GoToUrl(CustomersMenuUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
