@@ -40,7 +40,8 @@ describe("Controllers", () => {
             $scope = $rootScope.$new();
             handleHome = spyOn(handlers, "handleHome");
             testRouteData = new Spiro.Angular.Modern.RouteData();
-            getRouteData = spyOn(urlManager, "getRouteData").andReturn(testRouteData);
+            getRouteData = spyOn(urlManager, "getRouteData");
+            getRouteData.and.returnValue(testRouteData);
             ctrl = $controller("Pane1HomeController", { $scope: $scope, handlers: handlers, urlManager : urlManager });
         }));
 
@@ -62,7 +63,8 @@ describe("Controllers", () => {
             $scope = $rootScope.$new();
             handleObject = spyOn(handlers, "handleObject");
             testRouteData = new Spiro.Angular.Modern.RouteData();
-            getRouteData = spyOn(urlManager, "getRouteData").andReturn(testRouteData);
+            getRouteData = spyOn(urlManager, "getRouteData");
+            getRouteData.and.returnValue(testRouteData);
             ctrl = $controller("Pane1ObjectController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
         }));
 
@@ -84,7 +86,8 @@ describe("Controllers", () => {
             $scope = $rootScope.$new();
             handleQuery = spyOn(handlers, "handleQuery");
             testRouteData = new Spiro.Angular.Modern.RouteData();
-            getRouteData = spyOn(urlManager, "getRouteData").andReturn(testRouteData);
+            getRouteData = spyOn(urlManager, "getRouteData");
+            getRouteData.and.returnValue(testRouteData);
             ctrl = $controller("Pane1QueryController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
         }));
 

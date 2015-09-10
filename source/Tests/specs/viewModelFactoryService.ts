@@ -10,7 +10,7 @@
 //specific language governing permissions and limitations
 //under the License.
 
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+/// <reference path="../../Scripts/typings/karma-jasmine/karma-jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.models.ts" />
@@ -306,22 +306,23 @@ describe("viewModelFactory Service", () => {
             beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
                 setCollectionState = spyOn(urlManager, "setCollectionState");
                 itemViewModel = spyOn(viewModelFactory, "itemViewModel");
-                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when());
                 vmf = viewModelFactory;                 
             }));
 
             it("creates a dialog view model with items", () => {  
                 resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.List);                    
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
+                expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
                 resultVm = vmf.collectionViewModel(cm, Spiro.Angular.Modern.CollectionViewState.Table);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
-                expect(populate.callCount).toBe(2);
+                expect(itemViewModel.calls.count()).toBe(2);
+                expect(populate.calls.count()).toBe(2);
             });
         });
 
@@ -363,114 +364,23 @@ describe("viewModelFactory Service", () => {
             beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
                 setCollectionState = spyOn(urlManager, "setCollectionState");
                 itemViewModel = spyOn(viewModelFactory, "itemViewModel");
-                populate = spyOn(repLoader, "populate").andReturn($q.when());
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when());
                 vmf = viewModelFactory;
             }));
 
             it("creates a dialog view model with items", () => {
                 resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.List);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
+                expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
                 resultVm = vmf.collectionViewModel(lr, Spiro.Angular.Modern.CollectionViewState.Table);
                 expect(resultVm.items.length).toBe(2);
-                expect(itemViewModel.callCount).toBe(2);
-                expect(populate.callCount).toBe(2);
-            });
-        });
-    });
-
-     // updated to here
-
-    describe("create services view model", () => {
-        let resultVm: Spiro.Angular.Modern.ServicesViewModel;
-        const rawServices = { value: [] };
-
-
-        describe("from populated rep", () => {
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.servicesViewModel(new Spiro.DomainServicesRepresentation(rawServices));
-            }));
-
-            it("creates a services view model", () => {
-                expect(resultVm.title).toBe("Services");
-                expect(resultVm.color).toBe("bg-color-darkBlue");
-                expect(resultVm.items.length).toBe(0);
-            });
-        });
-
-    });
-
-    describe("create service view model", () => {
-        let resultVm: Spiro.Angular.Modern.ServiceViewModel;
-        const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://services/AdventureWorksModel.ProductRepository" };
-
-        const rawService = { serviceId: "a service", value: [], links: [rawSelfLink], title: "a title" };
-
-        describe("from populated rep", () => {
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.serviceViewModel(new Spiro.DomainObjectRepresentation(rawService));
-            }));
-
-            it("creates a service view model", () => {
-                expect(resultVm.serviceId).toBe("a service");
-                expect(resultVm.title).toBe("a title");
-                expect(resultVm.actions.length).toBe(0);
-                expect(resultVm.color).toBe("bg-color-greenLight");
-
-            });
-        });
-    });
-
-    describe("create object view model", () => {
-        let resultVm: Spiro.Angular.Modern.DomainObjectViewModel;
-        const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
-
-        const rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
-
-        describe("from populated rep", () => {
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject), {});
-            }));
-
-            it("creates a object view model", () => {
-                expect(resultVm.domainType).toBe("an object");
-                expect(resultVm.title).toBe("a title");
-                expect(resultVm.actions.length).toBe(0);
-                expect(resultVm.properties.length).toBe(0);
-                expect(resultVm.collections.length).toBe(0);
-                expect(resultVm.color).toBe("bg-color-red");
-                // expect(resultVm.cancelEdit).toBe("#/objects/AdventureWorksModel.Product/1");
-            });
-        });
-
-        describe("from transient populated rep", () => {
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
-                const rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
-                rawObject.links.pop();
-                rawObject.links.push(rawPersistLink);
-                const doRep = new Spiro.DomainObjectRepresentation(rawObject);
-                doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
-
-                resultVm = viewModelFactory.domainObjectViewModel(doRep, {});
-            }));
-
-            it("creates a object view model", () => {
-                expect(resultVm.domainType).toBe("an object");
-                expect(resultVm.title).toBe("Unsaved a name");
-                expect(resultVm.actions.length).toBe(0);
-                expect(resultVm.properties.length).toBe(0);
-                expect(resultVm.collections.length).toBe(0);
-                expect(resultVm.color).toBe("bg-color-red");
-                //expect(resultVm.cancelEdit).toBe("");
-
+                expect(itemViewModel.calls.count()).toBe(2);
+                expect(populate.calls.count()).toBe(2);
             });
         });
     });
@@ -600,6 +510,52 @@ describe("viewModelFactory Service", () => {
             });
         });
 
+    });
+  
+    describe("create object view model", () => {
+        let resultVm: Spiro.Angular.Modern.DomainObjectViewModel;
+        const rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
+
+        const rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
+
+        describe("from populated rep", () => {
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
+                resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject), {});
+            }));
+
+            it("creates a object view model", () => {
+                expect(resultVm.domainType).toBe("an object");
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.actions.length).toBe(0);
+                expect(resultVm.properties.length).toBe(0);
+                expect(resultVm.collections.length).toBe(0);
+                expect(resultVm.color).toBe("bg-color-red");
+            });
+        });
+
+        describe("from transient populated rep", () => {
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
+                const rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
+                rawObject.links.pop();
+                rawObject.links.push(rawPersistLink);
+                const doRep = new Spiro.DomainObjectRepresentation(rawObject);
+                doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
+
+                resultVm = viewModelFactory.domainObjectViewModel(doRep, {});
+            }));
+
+            it("creates a object view model", () => {
+                expect(resultVm.domainType).toBe("an object");
+                expect(resultVm.title).toBe("Unsaved a name");
+                expect(resultVm.actions.length).toBe(0);
+                expect(resultVm.properties.length).toBe(0);
+                expect(resultVm.collections.length).toBe(0);
+                expect(resultVm.color).toBe("bg-color-red");
+
+            });
+        });
     });
 
 }); 

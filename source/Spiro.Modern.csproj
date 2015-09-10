@@ -44,12 +44,6 @@
     <Content Include="Content\spiro-modern2.css" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
-    <Content Include="Scripts\spiro.angular.services.color.js" />
-    <Content Include="Scripts\spiro.angular.services.loaderwithtransform.js" />
-    <Content Include="Scripts\spiro.angular.services.mask.js" />
-    <Content Include="Scripts\spiro.angular.services.representationloader.js" />
-    <Content Include="Scripts\spiro.angular.services.transformstrategy.js" />
-    <Content Include="Scripts\spiro.config.js" />
     <Content Include="Scripts\spiro.models.helpers.js" />
     <Content Include="Scripts\spiro.models.js" />
     <Content Include="Scripts\spiro.models.shims.js" />

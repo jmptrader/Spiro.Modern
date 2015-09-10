@@ -9,7 +9,7 @@
 //KIND, either express or implied.See the License for the
 //specific language governing permissions and limitations
 //under the License.
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+/// <reference path="../../Scripts/typings/karma-jasmine/karma-jasmine.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 function spyOnPromise(tgt, func, mock) {
@@ -17,7 +17,7 @@ function spyOnPromise(tgt, func, mock) {
     mp.then = function (f) {
         return f(mock);
     };
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 function spyOnPromiseConditional(tgt, func, mock1, mock2) {
     var mp = {};
@@ -27,7 +27,7 @@ function spyOnPromiseConditional(tgt, func, mock1, mock2) {
         first = false;
         return result;
     };
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 function mockPromiseFail(mock) {
     var mp = {};
@@ -42,7 +42,7 @@ function spyOnPromiseFail(tgt, func, mock) {
     mp.then = function (fok, fnok) {
         return fnok ? fnok(mock) : fok(mock);
     };
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 function spyOnPromiseNestedFail(tgt, func, mock) {
     var mp = {};
@@ -53,7 +53,7 @@ function spyOnPromiseNestedFail(tgt, func, mock) {
         };
         return mmp;
     };
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 function spyOnPromise2NestedFail(tgt, func, mock) {
     var mp = {};
@@ -68,6 +68,6 @@ function spyOnPromise2NestedFail(tgt, func, mock) {
         };
         return mmp;
     };
-    return spyOn(tgt, func).andReturn(mp);
+    return spyOn(tgt, func).and.returnValue(mp);
 }
 //# sourceMappingURL=helpers.js.map
