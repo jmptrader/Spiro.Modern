@@ -19,13 +19,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void FooterIcons() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             wait.Until(d => d.FindElement(By.ClassName("object")));
-            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
 
-            wait.Until(d => d.FindElement(By.ClassName("footer")));
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-edit")).Displayed);
+            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
+            TestThatFooterElementsArePresent();
         }
 
         [TestMethod]

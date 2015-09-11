@@ -38,7 +38,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ChoicesParm() {
-            br.Navigate().GoToUrl(OrderServiceUrl);
+            br.Navigate().GoToUrl(OrdersMenuUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
@@ -82,7 +82,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void CancelDialog() {
-            br.Navigate().GoToUrl(OrderServiceUrl);
+            br.Navigate().GoToUrl(OrdersMenuUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
@@ -117,7 +117,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ScalarChoicesParmKeepsValue() {
-            br.Navigate().GoToUrl(OrderServiceUrl);
+            br.Navigate().GoToUrl(OrdersMenuUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
 

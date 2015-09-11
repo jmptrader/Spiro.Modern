@@ -2,9 +2,7 @@
 
 MainMenu actions:
 
-- Selecting a menu, then another menu, to show actions.
-(later: opening & closing of sub-menus)
-- Selecting other action opens dialog; another action changes dialog; can close dialog
+- Opening & closing of sub-menus)
 - Selecting another menu loses dialog
 
 Invoking actions (from main menu or object, should be same):

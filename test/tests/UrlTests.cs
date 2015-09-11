@@ -54,8 +54,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             TestThatFooterElementsArePresent();
         }
 
-
-
         [TestMethod]
         public virtual void HomeWithMenu()
         {
@@ -170,21 +168,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(Url + "#/query?action1=HighestValueOrders");
             wait.Until(d => d.FindElement(By.ClassName("query")));
-            AssertQueryElementsPresent();
+            TestThatQueryElementsArePresent();
         }
 
-        private void AssertQueryElementsPresent()
-        {
-            Assert.IsTrue(br.FindElements(By.ClassName("error")).Count == 0);
-            Assert.IsNotNull(br.FindElement(By.ClassName("single")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("query")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("header")));
-            var menu = br.FindElement(By.ClassName("menu"));
-            Assert.AreEqual("Actions", menu.Text);
-            Assert.IsNotNull(br.FindElement(By.ClassName("main-column")));
-            Assert.IsTrue(br.FindElements(By.ClassName("dialog")).Count == 0);
-            Assert.IsTrue(br.FindElements(By.ClassName("action")).Count == 0);
-        }
+
     }
     #region browsers specific subclasses 
 

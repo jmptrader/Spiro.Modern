@@ -69,7 +69,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string Backup = "AdventureWorks";
 
         protected const string CustomersMenuUrl = Url + "#/home?menu1=CustomerRepository";
-        protected const string OrderServiceUrl = Url + "#/home?menu1=OrderRepository";
+        protected const string OrdersMenuUrl = Url + "#/home?menu1=OrderRepository";
         protected const string ProductServiceUrl = Url + "#/home?menu1=ProductRepository";
         protected const string SalesServiceUrl = Url + "#/home?menu1=SalesRepository";
 
@@ -176,6 +176,18 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             element.Click();
         }
 
+        protected virtual void ClickAction(string name)
+        {
+            var action = br.FindElements(By.CssSelector(".actions .action")).Single(a => a.Text == name);
+            Click(action);
+        }
+
+        protected virtual IWebElement WaitForClass(string className)
+        {
+            wait.Until(d => d.FindElement(By.ClassName(className)));
+            return br.FindElement(By.ClassName(className));
+        }
+
         protected virtual void GoToMenuFromHomePage(string menuName) {
             wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
             ReadOnlyCollection<IWebElement> services = br.FindElements(By.CssSelector("div.menu"));
@@ -229,6 +241,29 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
             //Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
             //Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
+        }
+
+        protected void TestThatQueryElementsArePresent()
+        {
+            Assert.IsTrue(br.FindElements(By.ClassName("error")).Count == 0);
+            Assert.IsNotNull(br.FindElement(By.ClassName("single")));
+            Assert.IsNotNull(br.FindElement(By.ClassName("query")));
+            Assert.IsNotNull(br.FindElement(By.ClassName("header")));
+            var menu = br.FindElement(By.ClassName("menu"));
+            Assert.AreEqual("Actions", menu.Text);
+            Assert.IsNotNull(br.FindElement(By.ClassName("collection")));
+            Assert.IsTrue(br.FindElements(By.ClassName("dialog")).Count == 0);
+            Assert.IsTrue(br.FindElements(By.ClassName("action")).Count == 0);
+        }
+
+        protected void AssertClassExists(string className)
+        {
+            Assert.IsTrue(br.FindElements(By.ClassName(className)).Count >= 1);
+        }
+
+        protected void AssertClassDoesNotExist(string className)
+        {
+            Assert.IsTrue(br.FindElements(By.ClassName(className)).Count == 0);
         }
     }
 }

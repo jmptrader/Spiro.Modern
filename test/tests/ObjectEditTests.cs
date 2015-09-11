@@ -12,10 +12,10 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-    [TestClass]
-    public abstract class ObjectEditPageTests : SpiroTest {
 
-        [TestMethod, Ignore] //not saving due to mask issue on decimal fields
+    public abstract class ObjectEditTests : SpiroTest {
+
+        [TestMethod] //not saving due to mask issue on decimal fields
         public virtual void ObjectEditChangeScalar() {
             br.Navigate().GoToUrl(Product870Url);
 
@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ObjectEditChangeDateTime() {
             br.Navigate().GoToUrl(Product870Url);
 
@@ -199,8 +199,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region browsers specific subclasses
 
-    [TestClass, Ignore]
-    public class ObjectEditPageTestsIe : ObjectEditPageTests {
+    //[TestClass, Ignore]
+    public class ObjectEditPageTestsIe : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -219,8 +219,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
-    public class ObjectEditPageTestsFirefox : ObjectEditPageTests {
+    [TestClass]
+    public class ObjectEditPageTestsFirefox : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             SpiroTest.InitialiseClass(context);
@@ -242,8 +242,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
-    public class ObjectEditPageTestsChrome : ObjectEditPageTests {
+    //[TestClass, Ignore]
+    public class ObjectEditPageTestsChrome : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
