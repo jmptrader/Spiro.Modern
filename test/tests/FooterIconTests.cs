@@ -9,19 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-   // [TestClass]
-    public abstract class FooterIconTests : SpiroTest {
-        [TestMethod, Ignore]
-        public virtual void FooterIcons() {
-            wait.Until(d => d.FindElements(By.ClassName("footer")).Count == 1);
 
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
-            //Assert.IsFalse(br.FindElement(By.ClassName("icon-refresh")).Displayed);
-            Assert.IsFalse(br.FindElement(By.ClassName("icon-edit")).Displayed);
-            //Assert.IsFalse(br.FindElement(By.ClassName("icon-help")).Displayed);
-        }
+    public abstract class FooterIconTests : SpiroTest {
 
         [TestMethod]
         public virtual void Home() {

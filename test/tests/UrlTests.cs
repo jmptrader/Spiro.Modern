@@ -24,6 +24,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
+        #region Single pane Urls
         [TestMethod]
         public virtual void Home()
         {
@@ -94,6 +95,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555");
             wait.Until(d => d.FindElement(By.ClassName("object")));
+            wait.Until(d => d.FindElement(By.ClassName("view")));
             AssertObjectElementsPresent();
         }
 
@@ -170,7 +172,50 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElement(By.ClassName("query")));
             TestThatQueryElementsArePresent();
         }
+        #endregion
 
+        #region Split pane Urls
+
+        [TestMethod]
+        public virtual void SplitHomeHome()
+        {
+            br.Navigate().GoToUrl(Url + "#/home/home");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".home")));
+            var panes = br.FindElements(By.CssSelector(".split"));
+            Assert.AreEqual(2, panes.Count);
+            var left = panes[0].FindElement(By.ClassName("home"));
+            Assert.AreEqual("Home", left.FindElement(By.CssSelector(".title")).Text);
+            var right = panes[1].FindElement(By.ClassName("home"));
+            Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
+        }
+
+        [TestMethod]
+        public virtual void SplitObjectHome()
+        {
+            br.Navigate().GoToUrl(Url + "#/object/home?object1=AdventureWorksModel.Store-555");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
+            var panes = br.FindElements(By.CssSelector(".split"));
+            Assert.AreEqual(2, panes.Count);
+            var left = panes[0].FindElement(By.ClassName("object"));
+            Assert.IsTrue(left.GetAttribute("class").Contains("object view"));
+            Assert.AreEqual("Twin Cycles, AW00000555", panes[0].FindElement(By.CssSelector(".title")).Text);;
+            var right = panes[1].FindElement(By.ClassName("home"));
+            Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
+        }
+
+        [TestMethod, Ignore] //Failing due to timing issues?
+        public virtual void SplitQueryHome()
+        {
+            br.Navigate().GoToUrl(Url + "#/query/home?action1=HighestValueOrders");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".query .title")));
+            var panes = br.FindElements(By.CssSelector(".split"));
+            Assert.AreEqual(2, panes.Count);
+            var left = panes[0].FindElement(By.ClassName("query"));
+            Assert.AreEqual("Highest Value Orders", left.FindElement(By.CssSelector(".title")).Text);
+            var right = panes[1].FindElement(By.ClassName("home"));
+            Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
+        }
+        #endregion
 
     }
     #region browsers specific subclasses 
