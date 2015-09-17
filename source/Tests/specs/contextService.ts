@@ -347,9 +347,8 @@ describe("context Service", () => {
 
     });
 
-   
 
-    //describe('getCollection', () => {
+    //describe('getQuery', () => {
 
     //    var testObject = new Spiro.ListRepresentation();
 
@@ -405,270 +404,108 @@ describe("context Service", () => {
 
     //});
 
-    //describe('getTransientObject', () => {
-
-    //    var testObject = new Spiro.DomainObjectRepresentation();
-
-    //    var localContext : Spiro.Angular.Modern.IContext;
-    //    var result;
-
-    //    beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {
-    //        localContext = context;
-    //    }));
-
-    //    //describe('when transient is set', () => {
-
-    //    //    beforeEach(inject($rootScope => {
-
-    //    //        localContext.setTransientObject(testObject);
-
-    //    //        runs(() => {
-    //    //            localContext.getTransientObject().then(object => {
-    //    //                result = object;
-    //    //            });
-    //    //            $rootScope.$apply();
-    //    //        });
-
-    //    //        waitsFor(() => !!result, "result not set", 1000);
-    //    //    }));
-
-    //    //    it('returns transient representation', () => {
-    //    //        expect(result).toBe(testObject);
-    //    //    });
-    //    //});
-
-    //    //describe('when transient is not set', () => {
-
-    //    //    beforeEach(inject($rootScope => {
-
-    //    //        var getTransientRun = false;
-
-    //    //        runs(() => {
-    //    //            localContext.getCollection().then(object => {
-    //    //                result = object;
-    //    //                getTransientRun = true;
-    //    //            });
-    //    //            $rootScope.$apply();
-    //    //        });
-
-    //    //        waitsFor(() => getTransientRun, "result not set", 1000);
-    //    //    }));
-
-    //    //    it('returns object representation', () => {
-    //    //        expect(result).toBeNull();
-    //    //    });
-    //    //});
-
-    //});
-
-    //describe('getService', () => {
-
-    //    var testObject = new Spiro.DomainObjectRepresentation();
-
-    //    var localContext;
-    //    var result;
-
-    //    var getDomainObject;
-    //    var getService;
-
-    //    beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
-    //        spyOnPromise(repLoader, 'populate', testObject);
-    //        getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
-    //        getService = spyOnPromise(context, 'getService', testObject);
-
-    //        spyOn(testObject, 'domainType').and.returnValue(undefined);
-    //        spyOn(testObject, 'instanceId').and.returnValue(undefined);
-    //        spyOn(testObject, 'serviceId').and.returnValue("test");
-
-    //        localContext = context;
-    //    }));
-
-    //    describe('when currentObject is set', () => {
-
-    //        beforeEach(inject($rootScope => {
-
-    //            localContext.setObject(testObject);
-
-    //            runs(() => {
-    //                localContext.getObject("test").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
+   
 
 
-    //        it('returns service representation', () => {
-    //            expect(getDomainObject).not.toHaveBeenCalled();
-    //            expect(getService).not.toHaveBeenCalled();
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
+    describe('getSelectedChoice', () => {
 
-    //    describe('when currentObject is set but is not same', () => {
+        let localContext: Spiro.Angular.Modern.IContext;
+        let result: Spiro.Angular.Modern.ChoiceViewModel[];
+        let timeout;
 
-    //        beforeEach(inject($rootScope => {
-
-    //            localContext.setObject(testObject);
-
-    //            runs(() => {
-    //                localContext.getObject("test2").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
-
-
-    //        it('returns service representation', () => {
-    //            expect(getDomainObject).not.toHaveBeenCalled();
-    //            expect(getService).toHaveBeenCalledWith("test2");
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
-
-    //    describe('when currentObject is not set', () => {
-
-    //        beforeEach(inject($rootScope => {
-
-    //            runs(() => {
-    //                localContext.getObject("test").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
-
-
-    //        it('returns service representation', () => {
-    //            expect(getDomainObject).not.toHaveBeenCalled();
-    //            expect(getService).toHaveBeenCalledWith("test");
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
-
-    //});
-
-    //describe('getSelectedChoice', () => {
-
-    //    var localContext: Spiro.Angular.Modern.IContext;
-    //    var result: Spiro.Angular.Modern.ChoiceViewModel[];
-
-    //    beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {       
-    //        localContext = context;
-    //    }));
+        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {       
+            localContext = context;
+            timeout = $timeout;
+        }));
 
      
-    //    describe('when selected choice is not set', () => {
+        describe('when selected choice is not set', () => {
 
-    //        beforeEach(inject($rootScope => {
-    //            runs(() => {
-    //                result = localContext.getSelectedChoice("test", "test");
-    //                $rootScope.$apply();
-    //            });
-    //        }));
+            beforeEach(inject(() => {
+                result = localContext.getSelectedChoice("test", "test");
+            }));
 
-    //        it('returns empty collection', () => {
-    //            expect(result.length).toBe(0);
-    //        });
-    //    });
+            it("returns empty collection", () => {
+                expect(result.length).toBe(0);
+            });
+        });
 
-    //    describe('when selected choice is set', () => {
+        describe('when selected choice is set', () => {
 
-    //        var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
+            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
-    //        beforeEach(inject($rootScope => {
+            beforeEach(inject(() => {
 
-    //            localContext.setSelectedChoice("test1", "test2", testCvm);
+                localContext.setSelectedChoice("test1", "test2", testCvm);
+                          
+                result = localContext.getSelectedChoice("test1", "test2");
+            }));
 
-    //            runs(() => {
-    //                result = localContext.getSelectedChoice("test1", "test2");
-    //                $rootScope.$apply();
-    //            });
-    //        }));
+            it('returns cvm array', () => {
+                expect(result.length).toBe(1);
+                expect(result.pop()).toBe(testCvm);
+            });
+        });
 
-    //        it('returns cvm array', () => {
-    //            expect(result.length).toBe(1);
-    //            expect(result.pop()).toBe(testCvm);
-    //        });
-    //    });
+        describe('when multiple selected choices are set', () => {
 
-    //    describe('when multiple selected choices are set', () => {
+            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
-    //        var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
-    //        var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
+            beforeEach(inject(() => {
 
-    //        beforeEach(inject($rootScope => {
+                localContext.setSelectedChoice("test3", "test4", testCvm1);
+                localContext.setSelectedChoice("test3", "test4", testCvm2);
+                result = localContext.getSelectedChoice("test3", "test4");
+            }));
 
-    //            localContext.setSelectedChoice("test3", "test4", testCvm1);
-    //            localContext.setSelectedChoice("test3", "test4", testCvm2);
+            it('returns cvm array', () => {
+                expect(result.length).toBe(2);
+                expect(result.pop()).toBe(testCvm2);
+                expect(result.pop()).toBe(testCvm1);
+            });
+        });
 
-    //            runs(() => {
-    //                result = localContext.getSelectedChoice("test3", "test4");
-    //                $rootScope.$apply();
-    //            });
-    //        }));
+        describe('when match parm but not search', () => {
 
-    //        it('returns cvm array', () => {
-    //            expect(result.length).toBe(2);
-    //            expect(result.pop()).toBe(testCvm2);
-    //            expect(result.pop()).toBe(testCvm1);
-    //        });
-    //    });
+            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
-    //    describe('when match parm but not search', () => {
+            beforeEach(inject(() => {
 
-    //        var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
+                localContext.setSelectedChoice("test5", "test6", testCvm);
+                result = localContext.getSelectedChoice("test5", "test7");
+            }));
 
-    //        beforeEach(inject($rootScope => {
+            it('returns undefined', () => {
+                expect(result).toBeUndefined();
+            });
+        });
 
-    //            localContext.setSelectedChoice("test5", "test6", testCvm);
+        describe('when multiple selected choices are set for a parm', () => {
 
-    //            runs(() => {
-    //                result = localContext.getSelectedChoice("test5", "test7");
-    //                $rootScope.$apply();
-    //            });
-    //        }));
+            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
-    //        it('returns undefined', () => {
-    //            expect(result).toBeUndefined();
-    //        });
-    //    });
+            var result1;
 
-    //    describe('when multiple selected choices are set for a parm', () => {
+            beforeEach(inject(() => {
 
-    //        var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
-    //        var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
+                localContext.setSelectedChoice("test6", "test8", testCvm1);
+                localContext.setSelectedChoice("test6", "test9", testCvm2);
 
-    //        var result1;
+                result = localContext.getSelectedChoice("test6", "test8");
+                result1 = localContext.getSelectedChoice("test6", "test9");
+            }));
 
-    //        beforeEach(inject($rootScope => {
-
-    //            localContext.setSelectedChoice("test6", "test8", testCvm1);
-    //            localContext.setSelectedChoice("test6", "test9", testCvm2);
-
-    //            runs(() => {
-    //                result = localContext.getSelectedChoice("test6", "test8");
-    //                result1 = localContext.getSelectedChoice("test6", "test9");
-    //                $rootScope.$apply();
-    //            });
-    //        }));
-
-    //        it('returns cvm arrays', () => {
-    //            expect(result.length).toBe(1);
-    //            expect(result1.length).toBe(1);
-    //            expect(result.pop()).toBe(testCvm1);
-    //            expect(result1.pop()).toBe(testCvm2);
-    //        });
-    //    });
+            it('returns cvm arrays', () => {
+                expect(result.length).toBe(1);
+                expect(result1.length).toBe(1);
+                expect(result.pop()).toBe(testCvm1);
+                expect(result1.pop()).toBe(testCvm2);
+            });
+        });
 
 
-    //});
+    });
 
 });
