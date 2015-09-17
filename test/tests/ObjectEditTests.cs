@@ -15,48 +15,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class ObjectEditTests : SpiroTest {
 
-        protected void EditObject()
-        {
-            Click(GetEditButton());
-            GetSaveButton();
-            GetCancelEditButton();
-            var title = br.FindElement(By.CssSelector(".header .title")).Text;
-            Assert.IsTrue(title.StartsWith("Editing"));
-        }
-
-        protected void SaveObject()
-        {
-            Click(GetSaveButton());
-            GetEditButton(); //To wait for save completed
-            var title = br.FindElement(By.CssSelector(".header .title")).Text;
-            Assert.IsFalse(title.StartsWith("Editing"));
-        }
-
-        protected IWebElement GetEditButton()
-        {
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 1);
-            var edit = br.FindElement(By.CssSelector(".header .action"));
-            Assert.AreEqual("Edit", edit.Text);
-            return edit;
-        }
-
-        protected IWebElement GetSaveButton()
-        {
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
-            var save = br.FindElements(By.CssSelector(".header .action"))[0];
-            Assert.AreEqual("Save", save.Text);
-            return save;
-        }
-
-        protected IWebElement GetCancelEditButton()
-        {
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
-            var cancel = br.FindElements(By.CssSelector(".header .action"))[1];
-            Assert.AreEqual("Cancel", cancel.Text);
-            return cancel;
-        }
-
-
         [TestMethod]
         public virtual void ObjectEditChangeScalar() {
             br.Navigate().GoToUrl(Product870Url);

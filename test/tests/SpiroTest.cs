@@ -176,12 +176,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             element.Click();
         }
 
-        protected virtual void ClickAction(string name)
-        {
-            var action = br.FindElements(By.CssSelector(".actions .action")).Single(a => a.Text == name);
-            Click(action);
-        }
-
         protected virtual IWebElement WaitForClass(string className)
         {
             wait.Until(d => d.FindElement(By.ClassName(className)));
@@ -265,5 +259,92 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Assert.IsTrue(br.FindElements(By.ClassName(className)).Count == 0);
         }
+
+        #region Editing & Saving
+        protected void EditObject()
+        {
+            Click(GetEditButton());
+            GetSaveButton();
+            GetCancelEditButton();
+            var title = br.FindElement(By.CssSelector(".header .title")).Text;
+            Assert.IsTrue(title.StartsWith("Editing"));
+        }
+
+        protected void SaveObject()
+        {
+            Click(GetSaveButton());
+            GetEditButton(); //To wait for save completed
+            var title = br.FindElement(By.CssSelector(".header .title")).Text;
+            Assert.IsFalse(title.StartsWith("Editing"));
+        }
+
+        protected IWebElement GetEditButton()
+        {
+            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 1);
+            var edit = br.FindElement(By.CssSelector(".header .action"));
+            Assert.AreEqual("Edit", edit.Text);
+            return edit;
+        }
+
+        protected IWebElement GetSaveButton()
+        {
+            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
+            var save = br.FindElements(By.CssSelector(".header .action"))[0];
+            Assert.AreEqual("Save", save.Text);
+            return save;
+        }
+
+        protected IWebElement GetCancelEditButton()
+        {
+            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
+            var cancel = br.FindElements(By.CssSelector(".header .action"))[1];
+            Assert.AreEqual("Cancel", cancel.Text);
+            return cancel;
+        }
+        #endregion
+
+        #region Object Actions
+        protected ReadOnlyCollection<IWebElement> GetObjectActions(int? totalNumber = null)
+        {
+            if (totalNumber == null)
+            {
+                wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count > 0);
+            }
+            else
+            {
+                wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count == totalNumber.Value);
+            }
+            return br.FindElements(By.CssSelector(".actions .action"));
+        }
+
+        protected IWebElement GetObjectAction(string actionName)
+        {
+            return GetObjectActions().Where(a => a.Text == actionName).Single();
+        }
+
+        protected virtual void ClickAction(string name)
+        {
+            Click(GetObjectAction(name));
+        }
+
+        protected IWebElement OpenActionDialog(string actionName)
+        {
+            Click(GetObjectAction(actionName));
+            var dialog = wait.Until(d => d.FindElement(By.CssSelector(".dialog")));
+            string title = br.FindElement(By.CssSelector(".dialog > .title")).Text;
+            Assert.AreEqual(actionName, title);
+            //Check it has OK & cancel buttons
+            wait.Until(d => br.FindElement(By.ClassName("ok")));
+            wait.Until(d => br.FindElement(By.ClassName("cancel")));
+            return dialog;
+        }
+
+        protected void ClickOK()
+        {
+            wait.Until(d => br.FindElement(By.CssSelector(".dialog .ok")));
+            Click(br.FindElement(By.CssSelector(".ok")));
+        }
+
+        #endregion
     }
 }

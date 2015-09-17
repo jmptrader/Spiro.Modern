@@ -29,9 +29,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             wait.Until(d => d.FindElement(By.ClassName("object")));
             Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count == StoreActions);
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector(".actions .action"));
+            var actions = GetObjectActions();
 
             Assert.AreEqual("Create New Address", actions[0].Text);
             Assert.AreEqual("Create New Contact", actions[1].Text);
@@ -106,44 +104,20 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void DialogAction() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count == StoreActions);
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector(".actions .action"));
-            Assert.AreEqual("Search For Orders", actions[4].Text);
-            Click(actions[4]); 
-
-            wait.Until(d => d.FindElement(By.ClassName("dialog")));
-            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
-
-            Assert.AreEqual("Search For Orders", title);
-
-            // cancel dialog 
-            Click(br.FindElement(By.CssSelector("div.dialog  .cancel")));
-
-            WaitUntilGone(d => d.FindElement(By.ClassName("dialog")));
+            OpenActionDialog("Search For Orders");
         }
 
         [TestMethod]
         public virtual void DialogActionOk() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
-            wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count == StoreActions);
-            var search = br.FindElements(By.CssSelector(".actions .action"))[4];
-            Assert.AreEqual("Search For Orders", search.Text);
-            Click(search); 
-            wait.Until(d => d.FindElement(By.ClassName("dialog")));
-            string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
+            var dialog = OpenActionDialog("Search For Orders");
 
-            Assert.AreEqual("Search For Orders", title);
-
-            br.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
-            br.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
+            dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
+            dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
-
-            wait.Until(d => br.FindElement(By.ClassName("ok")));
-
-            Click(br.FindElement(By.ClassName("ok")));
+            ClickOK();
 
             wait.Until(d => d.FindElement(By.ClassName("query")));
         }
@@ -151,63 +125,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectAction() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count == StoreActions);
-
-            IWebElement lastOrder = br.FindElements(By.CssSelector(".actions .action"))[5];
-            Assert.AreEqual("Last Order", lastOrder.Text);
-            Click(lastOrder);
-
+            Click(GetObjectAction("Last Order"));
             wait.Until(d => d.FindElement(By.ClassName("object")));
         }
 
         [TestMethod]
         public virtual void CollectionAction() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count == StoreActions);
-            var action = br.FindElements(By.CssSelector(".actions .action"))[7];
-            Assert.AreEqual("Recent Orders", action.Text);
-            Click(action); 
-
+            Click(GetObjectAction("Recent Orders"));
             wait.Until(d => d.FindElement(By.ClassName("query")));
-        }
-
-        [TestMethod]
-        public virtual void CollectionActionSelectItem() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-
-            var selectItem = new Action(() => {
-                wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
-                ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector(".action"));
-
-                // click on action to get object 
-                Click(actions[7]); // recent orders
-
-                wait.Until(d => d.FindElement(By.ClassName("query")));
-
-                // select item
-                Click(br.FindElement(By.CssSelector("table .reference")));
-
-                wait.Until(d => br.FindElement(By.ClassName("object")));
-            });
-        }
-
-
-        [TestMethod]
-        public virtual void ObjectEdit() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 1);
-
-            var edit = br.FindElement(By.CssSelector(".header .action"));
-            Assert.AreEqual("Edit", edit.Text);
-            Click(edit);
-
-            wait.Until(d => br.FindElements(By.ClassName("action")).Count == 2);
-            var buttons = br.FindElements(By.CssSelector(".header .action"));
-            Assert.AreEqual("Save", buttons[0].Text);
-            Assert.AreEqual("Cancel", buttons[1].Text);
         }
     }
 

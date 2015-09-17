@@ -132,7 +132,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&menu1=Actions");
             wait.Until(d => d.FindElement(By.ClassName("actions")));
             AssertObjectElementsPresent();
-            Assert.AreEqual("Create New Address", br.FindElements(By.CssSelector(".actions .action"))[0].Text);
+            GetObjectActions(StoreActions);
+            GetObjectAction("Create New Address");
         }
 
         [TestMethod]

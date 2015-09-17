@@ -167,7 +167,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElement(By.ClassName("object")));
 
-            Click(br.FindElements(By.CssSelector(".actions .action"))[StoresSearchForOrders]); 
+            Click(GetObjectAction("Search For Orders")); 
 
             wait.Until(d => d.FindElement(By.ClassName("dialog")));
             string title = br.FindElement(By.CssSelector("div.dialog > div.title")).Text;
