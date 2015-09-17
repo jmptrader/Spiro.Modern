@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElement(By.ClassName("object")));
 
             Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
-            TestThatFooterElementsArePresent();
+            WaitForSingleObject();
         }
 
         [TestMethod]
@@ -69,11 +69,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ReadOnlyCollection<IWebElement> references = br.FindElements(By.CssSelector("div.property .reference"));
 
             Click(references[0]);
-
-            wait.Until(d => d.FindElement(By.ClassName("object")));
-
-            var title = br.FindElement(By.ClassName("title"));
-            Assert.AreEqual("Lynn Tsoflias", title.Text);
+            WaitForSingleObject("Lynn Tsoflias");
         }
 
         [TestMethod]
@@ -118,8 +114,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             ClickOK();
-
-            wait.Until(d => d.FindElement(By.ClassName("query")));
+            WaitForSingleQuery();
         }
 
         [TestMethod]
@@ -133,7 +128,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void CollectionAction() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             Click(GetObjectAction("Recent Orders"));
-            wait.Until(d => d.FindElement(By.ClassName("query")));
+            WaitForSingleQuery("Recent Orders");
         }
     }
 

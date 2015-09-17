@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForClass("actions");
             ClickAction("Highest Value Orders");
             WaitForClass("query");
-            TestThatQueryElementsArePresent();
+            WaitForSingleQuery();
             //Test content of collection
             Assert.AreEqual("20-Objects", br.FindElement(By.CssSelector(".collection .summary .details")).Text);
             WaitForClass("icon-table");
@@ -71,7 +71,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForClass("actions");
             ClickAction("Highest Value Orders");
             WaitForClass("query");
-            TestThatQueryElementsArePresent();
+            WaitForSingleQuery();
 
             // select item
             var row = wait.Until( dr => dr.FindElement(By.CssSelector("table .reference")));

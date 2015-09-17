@@ -182,6 +182,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return br.FindElement(By.ClassName(className));
         }
 
+        protected virtual IWebElement GetByCss(string cssSelector)
+        {
+            wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
+            return br.FindElement(By.CssSelector(cssSelector));
+        }
+
         protected virtual void GoToMenuFromHomePage(string menuName) {
             wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
             ReadOnlyCollection<IWebElement> services = br.FindElements(By.CssSelector("div.menu"));
@@ -227,29 +233,66 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         #endregion
 
-        protected virtual void TestThatFooterElementsArePresent()
+        #region Resulting page view
+        protected virtual void WaitForSingleObject(string title = null)
         {
-            wait.Until(d => d.FindElements(By.ClassName("footer")).Count == 1);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.ClassName("icon-forward")).Displayed);
-            //Assert.IsFalse(br.FindElement(By.ClassName("refresh")).Displayed);
-            //Assert.IsFalse(br.FindElement(By.ClassName("help")).Displayed);
+            var titleEl = wait.Until(dr => dr.FindElement(By.CssSelector(".single .object .header .title")));
+            if (title != null)
+            {
+                Assert.AreEqual(title, titleEl.Text);
+            }
+            wait.Until(dr => dr.FindElement(By.CssSelector(".single .object .properties")));
+            Assert.AreEqual("Actions", GetByCss(".single .object .header .menu").Text);
+            AssertFooterExists();
         }
 
-        protected void TestThatQueryElementsArePresent()
+        protected virtual void AssertFooterExists()
         {
-            Assert.IsTrue(br.FindElements(By.ClassName("error")).Count == 0);
-            Assert.IsNotNull(br.FindElement(By.ClassName("single")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("query")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("header")));
-            var menu = br.FindElement(By.ClassName("menu"));
-            Assert.AreEqual("Actions", menu.Text);
-            Assert.IsNotNull(br.FindElement(By.ClassName("collection")));
-            Assert.IsTrue(br.FindElements(By.ClassName("dialog")).Count == 0);
-            Assert.IsTrue(br.FindElements(By.ClassName("action")).Count == 0);
+            wait.Until(d => d.FindElement(By.CssSelector(".footer")));
+            Assert.IsTrue(br.FindElement(By.CssSelector(".footer .icon-home")).Displayed);
+            Assert.IsTrue(br.FindElement(By.CssSelector(".footer .icon-back")).Displayed);
+            Assert.IsTrue(br.FindElement(By.CssSelector(".footer .icon-forward")).Displayed);
         }
 
+        protected void WaitForSingleQuery(string title = null)
+        {
+            var titleEl = wait.Until(dr => dr.FindElement(By.CssSelector(".single .query .header .title")));
+            if (title != null)
+            {
+                Assert.AreEqual(title, titleEl.Text);
+            }
+            wait.Until(dr => dr.FindElement(By.CssSelector(".single .query .collection")));
+            Assert.AreEqual("Actions", GetByCss(".single .query .header .menu").Text);
+            AssertFooterExists();
+        }
+
+        protected void AssertTopItemInListIs(string title)
+        {
+            string topItem = GetByCss(".collection tr td.reference").Text;
+
+            Assert.AreEqual(title, topItem);
+        }
+
+        protected void WaitForSingleHome()
+        {
+            var titleEl = wait.Until(dr => dr.FindElement(By.CssSelector(".single .home .header .title")));
+            Assert.AreEqual("Home", titleEl.Text);
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
+
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.ClassName("menu"));
+            Assert.AreEqual("Customers", menus[0].Text);
+            Assert.AreEqual("Orders", menus[1].Text);
+            Assert.AreEqual("Products", menus[2].Text);
+            Assert.AreEqual("Employees", menus[3].Text);
+            Assert.AreEqual("Sales", menus[4].Text);
+            Assert.AreEqual("Special Offers", menus[5].Text);
+            Assert.AreEqual("Contacts", menus[6].Text);
+            Assert.AreEqual("Vendors", menus[7].Text);
+            Assert.AreEqual("Purchase Orders", menus[8].Text);
+            Assert.AreEqual("Work Orders", menus[9].Text);
+            AssertFooterExists();
+        }
+        #endregion
         protected void AssertClassExists(string className)
         {
             Assert.IsTrue(br.FindElements(By.ClassName(className)).Count >= 1);
@@ -343,6 +386,24 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             wait.Until(d => br.FindElement(By.CssSelector(".dialog .ok")));
             Click(br.FindElement(By.CssSelector(".ok")));
+        }
+
+        protected void CancelDialog()
+        {
+             Click(br.FindElement(By.CssSelector(".dialog  .cancel")));
+
+                wait.Until(d => {
+                    try
+                    {
+                        br.FindElement(By.ClassName("dialog"));
+                        return false;
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        return true;
+                    }
+                });
+
         }
 
         #endregion

@@ -20,7 +20,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void UnrecognisedUrlGoesToHome()
         {
             br.Navigate().GoToUrl(Url + "#/unrecognised");
-            TestThatHomeElementsPresent();
+            WaitForSingleHome();
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
@@ -29,37 +29,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void Home()
         {
             br.Navigate().GoToUrl(Url + "#/home");
-            TestThatHomeElementsPresent();
+            WaitForSingleHome();
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
-        protected void TestThatHomeElementsPresent()
-        {
-            wait.Until(d => d.FindElement(By.ClassName("single")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("home")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("header")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("menu")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("main-column")));
 
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.ClassName("menu"));
-            Assert.AreEqual("Customers", menus[0].Text);
-            Assert.AreEqual("Orders", menus[1].Text);
-            Assert.AreEqual("Products", menus[2].Text);
-            Assert.AreEqual("Employees", menus[3].Text);
-            Assert.AreEqual("Sales", menus[4].Text);
-            Assert.AreEqual("Special Offers", menus[5].Text);
-            Assert.AreEqual("Contacts", menus[6].Text);
-            Assert.AreEqual("Vendors", menus[7].Text);
-            Assert.AreEqual("Purchase Orders", menus[8].Text);
-            Assert.AreEqual("Work Orders", menus[9].Text);
-            TestThatFooterElementsArePresent();
-        }
 
         [TestMethod]
         public virtual void HomeWithMenu()
         {
             br.Navigate().GoToUrl(Url + "#/home?menu1=CustomerRepository");
-            TestThatHomeElementsPresent();
+            WaitForSingleHome();
             wait.Until(d => d.FindElement(By.ClassName("actions")));
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
@@ -86,7 +66,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void HomeIgnoredInvalidParam()
         {
             br.Navigate().GoToUrl(Url + "#/home?menu2=Actions");
-            TestThatHomeElementsPresent();
+            WaitForSingleHome();
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
@@ -112,13 +92,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsNotNull(br.FindElement(By.ClassName("collections")));
         }
 
-        [TestMethod, Ignore]
-        public virtual void ObjectWithNoParams()
-        {
-            br.Navigate().GoToUrl(Url + "#/object");
-            wait.Until(d => d.FindElement(By.ClassName("error")));
-        }
-
         [TestMethod]
         public virtual void ObjectWithNoSuchObject()
         {
@@ -130,10 +103,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ObjectWithActions()
         {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&menu1=Actions");
-            wait.Until(d => d.FindElement(By.ClassName("actions")));
-            AssertObjectElementsPresent();
             GetObjectActions(StoreActions);
             GetObjectAction("Create New Address");
+            AssertObjectElementsPresent();
         }
 
         [TestMethod]
@@ -150,28 +122,23 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(collections[0].FindElements(By.ClassName("icon-list")).Count == 0);
         }
 
-        [TestMethod, Ignore]
-        public virtual void ObjectWithNoSuchCollection()
+        [TestMethod]
+        public virtual void ObjectEdit()
         {
-            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_NoSuch=List");
-            wait.Until(d => d.FindElement(By.ClassName("error")));
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555");
+            wait.Until(d => d.FindElement(By.ClassName("object")));
+            wait.Until(d => d.FindElement(By.ClassName("edit")));
+            GetSaveButton();
+            GetCancelEditButton();
+            AssertObjectElementsPresent();
         }
 
-        [TestMethod, Ignore]
-        public virtual void ObjectWithCollectionInvalidFormat()
-        {
-            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_Addresses=Summary");
-            wait.Until(d => d.FindElement(By.ClassName("error")));
-        }
-        //TODO: Edit mode
-
-
-        [TestMethod, Ignore] //Error getting query (or doing refresh on a manually rectrieved query result)
+        [TestMethod] 
         public virtual void QueryZeroParameterAction()
         {
             br.Navigate().GoToUrl(Url + "#/query?action1=HighestValueOrders");
             wait.Until(d => d.FindElement(By.ClassName("query")));
-            TestThatQueryElementsArePresent();
+            WaitForSingleQuery();
         }
         #endregion
 
@@ -204,7 +171,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
         }
 
-        [TestMethod, Ignore] //Failing due to timing issues?
+        [TestMethod]
         public virtual void SplitQueryHome()
         {
             br.Navigate().GoToUrl(Url + "#/query/home?action1=HighestValueOrders");

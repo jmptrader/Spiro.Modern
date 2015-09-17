@@ -167,7 +167,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             br.FindElement(By.CssSelector(".value  input")).SendKeys("00022262");
 
-            Click(br.FindElement(By.ClassName("ok")));
+            ClickOK();
 
             wait.Until(d => d.FindElement(By.ClassName("object")));
         }
