@@ -40,12 +40,11 @@ var Spiro;
                     var sid = object.serviceId();
                     return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
                 }
-                function isSameQuery(object, type, id) {
-                    var sid = object.serviceId();
-                    return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
-                }
                 // exposed for test mocking
                 context.getDomainObject = function (type, id) {
+                    if (currentObject && isSameObject(currentObject, type, id)) {
+                        return $q.when(currentObject);
+                    }
                     var object = new Spiro.DomainObjectRepresentation();
                     object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
                     return repLoader.populate(object).
@@ -60,6 +59,7 @@ var Spiro;
                     }
                     return this.getServices().
                         then(function (services) {
+                        // todo make getService on DomainServicesRepresentation
                         var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0].value === serviceType; });
                         var service = serviceLink.getTarget();
                         return repLoader.populate(service);

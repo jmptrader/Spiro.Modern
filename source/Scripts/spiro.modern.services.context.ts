@@ -19,9 +19,9 @@ module Spiro.Angular.Modern {
     export interface IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
         getVersion: () => ng.IPromise<VersionRepresentation>;
-        
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
+
         getObject: (type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (objectId : string) => ng.IPromise<DomainObjectRepresentation>;
         
@@ -87,14 +87,13 @@ module Spiro.Angular.Modern {
             return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
         }
 
-        function isSameQuery(object: DomainObjectRepresentation, type: string, id?: string) {
-            const sid = object.serviceId();
-            return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
-        }
-
-
         // exposed for test mocking
         context.getDomainObject = (type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
+
+            if (currentObject && isSameObject(currentObject, type, id)) {
+                return $q.when(currentObject);
+            }
+
             const object = new DomainObjectRepresentation();
             object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
@@ -113,7 +112,8 @@ module Spiro.Angular.Modern {
 
             return this.getServices().
                 then((services: DomainServicesRepresentation) => {
-                    const serviceLink = _.find(services.value().models, (model: Link) => { return model.rel().parms[0].value === serviceType; });
+                    // todo make getService on DomainServicesRepresentation
+                    const serviceLink = _.find(services.value().models, model =>  model.rel().parms[0].value === serviceType);
                     const service = serviceLink.getTarget();
                     return repLoader.populate(service);
                 }).

@@ -17,65 +17,78 @@
 /// <reference path="../../Scripts/spiro.modern.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 
-describe('context Service', () => {
+describe("context Service", () => {
 
-    beforeEach(module('app'));
+    beforeEach(module("app"));
 
-    describe('getHome', () => {
+    describe("getHome", () => {
         const testHome = new Spiro.HomePageRepresentation();
         let localContext : Spiro.Angular.Modern.IContext;
         let result; 
         let populate: jasmine.Spy;
+        let timeout;
         
 
-        beforeEach(inject(($q, $rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
+            timeout = $timeout;
 
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testHome));
         }));
 
-        describe('populates Home rep', () => {
+        describe("populates Home rep", () => {
 
             beforeEach(inject(() => {
                 result = localContext.getHome();
             }));
 
-            it('returns home representation', () => {
+            it("returns home representation", () => {
                 expect(populate).toHaveBeenCalled();
                 result.then((hr) => expect(hr).toBe(testHome));
+                timeout.flush();
             });
         });
     });
 
-    describe('getVersion', () => {
+    describe("getVersion", () => {
         const testVersion = new Spiro.VersionRepresentation();
+        const testHome = new Spiro.HomePageRepresentation();
         let localContext: Spiro.Angular.Modern.IContext;
         let result;
         let populate: jasmine.Spy;
+        let getHome: jasmine.Spy;
+        let getVersion: jasmine.Spy;
+        let timeout;
 
-
-        beforeEach(inject(($q, $rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
+            timeout = $timeout;
 
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testVersion));
+            getHome = spyOn(context, "getHome");
+            getHome.and.returnValue($q.when(testHome));
+            getVersion = spyOn(testHome, "getVersion");
+            getVersion.and.returnValue(testVersion);
         }));
 
-        describe('populates Version rep', () => {
+        describe("populates Version rep", () => {
 
             beforeEach(inject(() => {
                 result = localContext.getVersion();
+                timeout.flush();
             }));
 
-            it('returns version representation', () => {
+            it("returns version representation", () => {
                 expect(populate).toHaveBeenCalled();
                 result.then((hr) => expect(hr).toBe(testVersion));
+                timeout.flush();
             });
         });
     });
 
-    describe('getMenus', () => {
+    describe("getMenus", () => {
         const testMenus = new Spiro.MenusRepresentation();
         const testHome = new Spiro.HomePageRepresentation();
         let localContext: Spiro.Angular.Modern.IContext;
@@ -85,7 +98,7 @@ describe('context Service', () => {
         let getMenus: jasmine.Spy;
         let timeout;
 
-        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
             timeout = $timeout;
 
@@ -98,36 +111,35 @@ describe('context Service', () => {
 
         }));
 
-        describe('populates menus rep', () => {
+        describe("populates menus rep", () => {
 
             beforeEach(inject(() => {
                 result = localContext.getMenus();
                 timeout.flush();
             }));
 
-            it('returns menus representation', () => {
+            it("returns menus representation", () => {
                 expect(getHome).toHaveBeenCalled();
                 expect(getMenus).toHaveBeenCalled();
                 expect(populate).toHaveBeenCalled();
                 result.then((hr) => expect(hr).toBe(testMenus));
+                timeout.flush();
             });
         });
     });
 
-    describe('getMenu', () => {
+    describe("getMenu", () => {
         const testMenu = new Spiro.MenuRepresentation();
         const testMenus = new Spiro.MenusRepresentation();
     
         let localContext: Spiro.Angular.Modern.IContext;
         let result;
-        let populate: jasmine.Spy;
-      
+        let populate: jasmine.Spy;    
         let getMenus: jasmine.Spy;
         let getMenu: jasmine.Spy;
         let timeout;
 
-
-        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
             timeout = $timeout;
 
@@ -140,222 +152,109 @@ describe('context Service', () => {
             getMenu.and.returnValue(testMenu);
         }));
 
-        describe('populates menu rep', () => {
+        describe("populates menu rep", () => {
 
             beforeEach(inject(() => {
                 result = localContext.getMenu("anId");
                 timeout.flush();
             }));
 
-            it('returns menu representation', () => {
+            it("returns menu representation", () => {
                 expect(getMenus).toHaveBeenCalled();
                 expect(getMenu).toHaveBeenCalledWith("anId");
                 expect(populate).toHaveBeenCalled();
                 result.then((hr) => expect(hr).toBe(testMenu));
+                timeout.flush();
             });
         });
     });
 
+    describe("getObject", () => {
 
+        const testObject = new Spiro.DomainObjectRepresentation();
 
+        let localContext: Spiro.Angular.Modern.IContext;
+        let result;
+        let getDomainObject: jasmine.Spy;
+        let getService: jasmine.Spy;
+        let populate: jasmine.Spy;
+        let timeout;
 
-    //describe('getObject', () => {
+        beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
+            populate =  spyOn(repLoader, "populate");
+            populate.and.returnValue($q.when(testObject));
 
-    //    var testObject = new Spiro.DomainObjectRepresentation();
+            getDomainObject = spyOn(context, "getDomainObject");
+            getDomainObject.and.returnValue($q.when(testObject));
 
-    //    var localContext;
-    //    var result;
+            getService = spyOn(context, "getService");
+            getService.and.returnValue(testObject);
 
-    //    var getDomainObject;
-    //    var getService;
+            spyOn(testObject, "domainType").and.returnValue("test");
+            spyOn(testObject, "instanceId").and.returnValue("1");
+            spyOn(testObject, "serviceId").and.returnValue(undefined);
 
-    //    beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
-    //        spyOnPromise(repLoader, 'populate', testObject);
-    //        getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
-    //        getService = spyOnPromise(context, 'getService', testObject);
+            localContext = context;
+            timeout = $timeout;
+        }));
 
-    //        spyOn(testObject, 'domainType').and.returnValue("test");
-    //        spyOn(testObject, 'instanceId').and.returnValue("1");
-    //        spyOn(testObject, 'serviceId').and.returnValue(undefined);
+        describe("when currentObject is set", () => {
 
-    //        localContext = context;
-    //    }));
+            beforeEach(inject(() => {
+                (<any> localContext).setObject(testObject);
+                result = localContext.getObject("test",  ["1"]);
+                timeout.flush();
+            }));
 
-    //    describe('when currentObject is set', () => {
 
+            it("returns object representation", () => {
+                expect(getDomainObject).toHaveBeenCalledWith("test", "1");
+                expect(getService).not.toHaveBeenCalled();
+                result.then((hr) => expect(hr).toBe(testObject));
+                timeout.flush();
+            });
+        });
 
-    //        beforeEach(inject($rootScope => {
+        describe("when currentObject is set but not same", () => {
 
-    //            localContext.setObject(testObject);
 
-    //            runs(() => {
-    //                localContext.getObject("test", "1").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
+            beforeEach(inject(() => {
 
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
+                (<any> localContext).setObject(testObject);
+                result = localContext.getObject("test2", ["2"]);
+                timeout.flush();
+            }));
 
 
-    //        it('returns object representation', () => {
-    //            expect(getDomainObject).not.toHaveBeenCalled();
-    //            expect(getService).not.toHaveBeenCalled();
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
+            it("returns object representation", () => {
+                expect(getDomainObject).toHaveBeenCalledWith("test2", "2");
+                expect(getService).not.toHaveBeenCalled();
+                result.then((hr) => expect(hr).toBe(testObject));
+                timeout.flush();
+            });
+        });
 
-    //    describe('when currentObject is set but not same', () => {
 
+        describe("when currentObject is not set", () => {
 
-    //        beforeEach(inject($rootScope => {
+            beforeEach(inject(() => {
 
-    //            localContext.setObject(testObject);
+                result = localContext.getObject("test", ["1"]);
+                timeout.flush();
+            }));
 
-    //            runs(() => {
-    //                localContext.getObject("test2", "2").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
 
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
+            it("returns object representation", () => {
+                expect(getDomainObject).toHaveBeenCalledWith("test", "1");
+                expect(getService).not.toHaveBeenCalled();
+                result.then((hr) => expect(hr).toBe(testObject));
+                timeout.flush();
+            });
+        });
 
+    });
 
-    //        it('returns object representation', () => {
-    //            expect(getDomainObject).toHaveBeenCalledWith("test2", "2");
-    //            expect(getService).not.toHaveBeenCalled();
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
-
-
-    //    describe('when currentObject is not set', () => {
-
-    //        beforeEach(inject($rootScope => {
-
-    //            runs(() => {
-    //                localContext.getObject("test", "1").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
-
-
-    //        it('returns object representation', () => {
-    //            expect(getDomainObject).toHaveBeenCalledWith("test", "1");
-    //            expect(getService).not.toHaveBeenCalled();
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
-
-    //});
-
-    //describe('getNestedObject', () => {
-
-    //    var testObject = new Spiro.DomainObjectRepresentation();
-
-    //    var localContext;
-    //    var result;
-
-    //    var populate;
-
-    //    beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {
-
-
-    //        spyOn(testObject, 'domainType').and.returnValue("test");
-    //        spyOn(testObject, 'instanceId').and.returnValue("1");
-    //        spyOn(testObject, 'serviceId').and.returnValue(undefined);
-
-    //        localContext = context;
-    //    }));
-
-    //    describe('when nestedObject is set', () => {
-
-    //        beforeEach(inject(($rootScope, repLoader: Spiro.Angular.IRepLoader) => {
-
-    //            populate = spyOnPromise(repLoader, 'populate', testObject);
-
-    //            localContext.setNestedObject(testObject);
-
-    //            runs(() => {
-    //                localContext.getNestedObject("test", "1").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
-
-
-    //        it('returns object representation', () => {
-    //            expect(populate).not.toHaveBeenCalled();
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
-
-    //    describe('when nestedObject is set but not same', () => {
-
-    //        var testResult = new Spiro.DomainObjectRepresentation();
-
-    //        beforeEach(inject(($rootScope, repLoader: Spiro.Angular.IRepLoader) => {
-
-    //            testResult.hateoasUrl = "objects/test2/2";
-
-    //            populate = spyOnPromise(repLoader, 'populate', testResult);
-
-    //            localContext.setNestedObject(testObject);
-
-    //            runs(() => {
-    //                localContext.getNestedObject("test2", "2").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
-
-    //        it('returns object representation', () => {
-    //            expect(populate).toHaveBeenCalled();
-    //            expect(result).toBe(testResult);
-    //        });
-    //    });
-
-    //    describe('when nestedObject is not set', () => {
-
-    //        var testResult = new Spiro.DomainObjectRepresentation();
-
-    //        beforeEach(inject(($rootScope, repLoader: Spiro.Angular.IRepLoader) => {
-
-    //            testResult.hateoasUrl = "objects/test/1";
-
-    //            populate = spyOnPromise(repLoader, 'populate', testResult);
-
-    //            runs(() => {
-    //                localContext.getNestedObject("test", "1").then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
-
-
-    //        it('returns object representation', () => {
-    //            expect(populate).toHaveBeenCalled();
-    //            expect(result).toBe(testResult);
-    //        });
-    //    });
-
-    //});
+   
 
     //describe('getCollection', () => {
 
