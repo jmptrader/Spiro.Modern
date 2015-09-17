@@ -23,11 +23,11 @@ describe("context Service", () => {
 
     describe("getHome", () => {
         const testHome = new Spiro.HomePageRepresentation();
-        let localContext : Spiro.Angular.Modern.IContext;
-        let result; 
+        let localContext: Spiro.Angular.Modern.IContext;
+        let result: angular.IPromise<Spiro.HomePageRepresentation>;
         let populate: jasmine.Spy;
-        let timeout;
-        
+        let timeout: ng.ITimeoutService;
+
 
         beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
@@ -55,11 +55,11 @@ describe("context Service", () => {
         const testVersion = new Spiro.VersionRepresentation();
         const testHome = new Spiro.HomePageRepresentation();
         let localContext: Spiro.Angular.Modern.IContext;
-        let result;
+        let result: angular.IPromise<Spiro.VersionRepresentation>;
         let populate: jasmine.Spy;
         let getHome: jasmine.Spy;
         let getVersion: jasmine.Spy;
-        let timeout;
+        let timeout: ng.ITimeoutService;
 
         beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
@@ -92,11 +92,11 @@ describe("context Service", () => {
         const testMenus = new Spiro.MenusRepresentation();
         const testHome = new Spiro.HomePageRepresentation();
         let localContext: Spiro.Angular.Modern.IContext;
-        let result;
+        let result: angular.IPromise<Spiro.MenusRepresentation>;
         let populate: jasmine.Spy;
         let getHome: jasmine.Spy;
         let getMenus: jasmine.Spy;
-        let timeout;
+        let timeout: ng.ITimeoutService;
 
         beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
@@ -131,13 +131,13 @@ describe("context Service", () => {
     describe("getMenu", () => {
         const testMenu = new Spiro.MenuRepresentation();
         const testMenus = new Spiro.MenusRepresentation();
-    
+
         let localContext: Spiro.Angular.Modern.IContext;
-        let result;
-        let populate: jasmine.Spy;    
+        let result: angular.IPromise<Spiro.MenuRepresentation>;
+        let populate: jasmine.Spy;
         let getMenus: jasmine.Spy;
         let getMenu: jasmine.Spy;
-        let timeout;
+        let timeout: ng.ITimeoutService;
 
         beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
             localContext = context;
@@ -145,7 +145,7 @@ describe("context Service", () => {
 
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testMenu));
-       
+
             getMenus = spyOn(context, "getMenus");
             getMenus.and.returnValue($q.when(testMenus));
             getMenu = spyOn(testMenus, "getMenu");
@@ -174,11 +174,11 @@ describe("context Service", () => {
         const testObject = new Spiro.DomainObjectRepresentation();
 
         let localContext: Spiro.Angular.Modern.IContext;
-        let result;
+        let result: angular.IPromise<Spiro.DomainObjectRepresentation>;
         let getDomainObject: jasmine.Spy;
         let getService: jasmine.Spy;
         let populate: jasmine.Spy;
-        let timeout;
+        let timeout: ng.ITimeoutService;
 
         describe("getting a domain object", () => {
 
@@ -348,78 +348,63 @@ describe("context Service", () => {
     });
 
 
-    //describe('getQuery', () => {
+    describe("getQuery", () => {
 
-    //    var testObject = new Spiro.ListRepresentation();
-
-    //    var localContext;
-    //    var result;
-
-    //    beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {
-    //        localContext = context;
-    //    }));
-
-    //    describe('when collection is set', () => {
-
-    //        beforeEach(inject($rootScope => {
-
-    //            localContext.setCollection(testObject);
-
-    //            runs(() => {
-    //                localContext.getCollection().then(object => {
-    //                    result = object;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => !!result, "result not set", 1000);
-    //        }));
-
-    //        it('returns collection representation', () => {
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
-
-    //    describe('when collection is not set', () => {
-
-    //        beforeEach(inject($rootScope => {
-
-    //            var getCollectionRun = false;
-
-    //            runs(() => {
-    //                localContext.getCollection().then(object => {
-    //                    result = object;
-    //                    getCollectionRun = true;
-    //                });
-    //                $rootScope.$apply();
-    //            });
-
-    //            waitsFor(() => getCollectionRun, "result not set", 1000);
-    //        }));
-
-    //        it('returns object representation', () => {
-    //            expect(result).toBeNull();
-    //        });
-    //    });
-
-    //});
-
-   
-
-
-    describe('getSelectedChoice', () => {
-
+        const testObject = new Spiro.ListRepresentation();
         let localContext: Spiro.Angular.Modern.IContext;
-        let result: Spiro.Angular.Modern.ChoiceViewModel[];
-        let timeout;
+        let result: angular.IPromise<Spiro.ListRepresentation>;
+        let timeout: ng.ITimeoutService;
 
-        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {       
+        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
             localContext = context;
             timeout = $timeout;
         }));
 
-     
-        describe('when selected choice is not set', () => {
+        describe("when collection is set", () => {
+
+            beforeEach(inject(() => {
+
+                (<any>localContext).setQuery(testObject);
+
+                result = localContext.getQuery("", "", []);
+                timeout.flush();
+            }));
+
+            it("returns collection representation", () => {
+                expect(result).toBe(testObject);
+            });
+        });
+
+        describe("when collection is not set", () => {
+
+            beforeEach(inject(() => {
+                result = localContext.getQuery("", "", []);
+                timeout.flush();
+            }));
+
+            it("returns object representation", () => {
+                expect(result).toBeNull();
+            });
+        });
+
+    });
+
+
+
+
+    describe("getSelectedChoice", () => {
+
+        let localContext: Spiro.Angular.Modern.IContext;
+        let result: Spiro.Angular.Modern.ChoiceViewModel[];
+        let timeout: ng.ITimeoutService;
+
+        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
+            localContext = context;
+            timeout = $timeout;
+        }));
+
+
+        describe("when selected choice is not set", () => {
 
             beforeEach(inject(() => {
                 result = localContext.getSelectedChoice("test", "test");
@@ -430,27 +415,27 @@ describe("context Service", () => {
             });
         });
 
-        describe('when selected choice is set', () => {
+        describe("when selected choice is set", () => {
 
-            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
+            const testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject(() => {
 
                 localContext.setSelectedChoice("test1", "test2", testCvm);
-                          
+
                 result = localContext.getSelectedChoice("test1", "test2");
             }));
 
-            it('returns cvm array', () => {
+            it("returns cvm array", () => {
                 expect(result.length).toBe(1);
                 expect(result.pop()).toBe(testCvm);
             });
         });
 
-        describe('when multiple selected choices are set', () => {
+        describe("when multiple selected choices are set", () => {
 
-            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
-            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
+            const testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            const testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject(() => {
 
@@ -459,16 +444,16 @@ describe("context Service", () => {
                 result = localContext.getSelectedChoice("test3", "test4");
             }));
 
-            it('returns cvm array', () => {
+            it("returns cvm array", () => {
                 expect(result.length).toBe(2);
                 expect(result.pop()).toBe(testCvm2);
                 expect(result.pop()).toBe(testCvm1);
             });
         });
 
-        describe('when match parm but not search', () => {
+        describe("when match parm but not search", () => {
 
-            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
+            const testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject(() => {
 
@@ -476,17 +461,17 @@ describe("context Service", () => {
                 result = localContext.getSelectedChoice("test5", "test7");
             }));
 
-            it('returns undefined', () => {
+            it("returns undefined", () => {
                 expect(result).toBeUndefined();
             });
         });
 
-        describe('when multiple selected choices are set for a parm', () => {
+        describe("when multiple selected choices are set for a parm", () => {
 
-            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
-            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
+            const testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            const testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
-            var result1;
+            let result1: Spiro.Angular.Modern.ChoiceViewModel[];
 
             beforeEach(inject(() => {
 
@@ -497,7 +482,7 @@ describe("context Service", () => {
                 result1 = localContext.getSelectedChoice("test6", "test9");
             }));
 
-            it('returns cvm arrays', () => {
+            it("returns cvm arrays", () => {
                 expect(result.length).toBe(1);
                 expect(result1.length).toBe(1);
                 expect(result.pop()).toBe(testCvm1);
