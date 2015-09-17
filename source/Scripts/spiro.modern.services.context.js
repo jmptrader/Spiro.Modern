@@ -19,7 +19,6 @@ var Spiro;
         var Modern;
         (function (Modern) {
             Angular.app.service("context", function ($q, repLoader, urlManager, $cacheFactory) {
-                var _this = this;
                 var context = this;
                 // cached values
                 var currentHome = null;
@@ -40,12 +39,11 @@ var Spiro;
                     var sid = object.serviceId();
                     return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
                 }
-                function isSameQuery(object, type, id) {
-                    var sid = object.serviceId();
-                    return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
-                }
                 // exposed for test mocking
                 context.getDomainObject = function (type, id) {
+                    if (currentObject && isSameObject(currentObject, type, id)) {
+                        return $q.when(currentObject);
+                    }
                     var object = new Spiro.DomainObjectRepresentation();
                     object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
                     return repLoader.populate(object).
@@ -58,10 +56,9 @@ var Spiro;
                     if (currentObject && isSameObject(currentObject, serviceType)) {
                         return $q.when(currentObject);
                     }
-                    return this.getServices().
+                    return context.getServices().
                         then(function (services) {
-                        var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0].value === serviceType; });
-                        var service = serviceLink.getTarget();
+                        var service = services.getService(serviceType);
                         return repLoader.populate(service);
                     }).
                         then(function (service) {
@@ -98,21 +95,21 @@ var Spiro;
                     if (currentServices) {
                         return $q.when(currentServices);
                     }
-                    return this.getHome().
+                    return context.getHome().
                         then(function (home) {
                         var ds = home.getDomainServices();
                         return repLoader.populate(ds);
                     }).
                         then(function (services) {
                         currentServices = services;
-                        $q.when(services);
+                        return $q.when(services);
                     });
                 };
                 context.getMenus = function () {
                     if (currentMenus) {
                         return $q.when(currentMenus);
                     }
-                    return this.getHome().
+                    return context.getHome().
                         then(function (home) {
                         var ds = home.getMenus();
                         return repLoader.populate(ds);
@@ -138,16 +135,16 @@ var Spiro;
                 };
                 context.getObject = function (type, id) {
                     var oid = _.reduce(id, function (a, v) { return ("" + a + (a ? "-" : "") + v); }, "");
-                    return oid ? _this.getDomainObject(type, oid) : _this.getService(type);
+                    return oid ? context.getDomainObject(type, oid) : context.getService(type);
                 };
                 context.getObjectByOid = function (objectId) {
                     var _a = objectId.split("-"), dt = _a[0], id = _a.slice(1);
-                    return this.getObject(dt, id);
+                    return context.getObject(dt, id);
                 };
                 var handleResult = function (result) {
                     if (result.resultType() === "list") {
                         var resultList = result.result().list();
-                        _this.setCollection(resultList);
+                        context.setQuery(resultList);
                         return $q.when(currentCollection);
                     }
                     else {

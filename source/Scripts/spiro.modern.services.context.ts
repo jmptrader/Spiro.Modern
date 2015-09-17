@@ -19,9 +19,9 @@ module Spiro.Angular.Modern {
     export interface IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
         getVersion: () => ng.IPromise<VersionRepresentation>;
-        
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
+
         getObject: (type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (objectId : string) => ng.IPromise<DomainObjectRepresentation>;
         
@@ -87,14 +87,13 @@ module Spiro.Angular.Modern {
             return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
         }
 
-        function isSameQuery(object: DomainObjectRepresentation, type: string, id?: string) {
-            const sid = object.serviceId();
-            return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
-        }
-
-
         // exposed for test mocking
         context.getDomainObject = (type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
+
+            if (currentObject && isSameObject(currentObject, type, id)) {
+                return $q.when(currentObject);
+            }
+
             const object = new DomainObjectRepresentation();
             object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
@@ -105,16 +104,15 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        context.getService = function (serviceType: string): ng.IPromise<DomainObjectRepresentation> {
+        context.getService = (serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 
             if (currentObject && isSameObject(currentObject, serviceType)) {
                 return $q.when(currentObject);
             }
 
-            return this.getServices().
+            return context.getServices().
                 then((services: DomainServicesRepresentation) => {
-                    const serviceLink = _.find(services.value().models, (model: Link) => { return model.rel().parms[0].value === serviceType; });
-                    const service = serviceLink.getTarget();
+                    const service = services.getService(serviceType);
                     return repLoader.populate(service);
                 }).
                 then((service: DomainObjectRepresentation) => {
@@ -154,30 +152,30 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        context.getServices = function () {
+        context.getServices = () => {
 
             if (currentServices) {
                 return $q.when(currentServices);
             }
 
-            return this.getHome().
+            return context.getHome().
                 then((home: HomePageRepresentation) => {
                     var ds = home.getDomainServices();
                     return repLoader.populate<DomainServicesRepresentation>(ds);
                 }).
                 then((services: DomainServicesRepresentation) => {
                     currentServices = services;
-                    $q.when(services);
+                    return $q.when(services);
                 });
         };
 
 
-        context.getMenus = function() {
+        context.getMenus = () => {
             if (currentMenus) {
                 return $q.when(currentMenus);
             }
 
-            return this.getHome().
+            return context.getHome().
                 then((home: HomePageRepresentation) => {
                     const ds = home.getMenus();
                     return repLoader.populate<MenusRepresentation>(ds);
@@ -208,19 +206,19 @@ module Spiro.Angular.Modern {
 
         context.getObject = (type: string, id?: string[]) => {
             const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
-            return oid ? this.getDomainObject(type, oid) : this.getService(type);
+            return oid ? context.getDomainObject(type, oid) : context.getService(type);
         };
 
-        context.getObjectByOid = function (objectId: string) {
+        context.getObjectByOid = (objectId: string) => {
             const [dt, ...id] = objectId.split("-");
-            return this.getObject(dt, id);
+            return context.getObject(dt, id);
         };
 
         const handleResult = (result: ActionResultRepresentation) => {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                this.setCollection(resultList);
+                context.setQuery(resultList);
                 return $q.when(currentCollection);
             } else {
                 return $q.reject("expect list");
