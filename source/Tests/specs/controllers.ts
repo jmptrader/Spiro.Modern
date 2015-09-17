@@ -24,7 +24,6 @@
 /// <reference path="../../Scripts/spiro.modern.services.representationhandlers.ts" />
 /// <reference path="../../Scripts/spiro.modern.services.urlmanager.ts" />
 /// <reference path="../../Scripts/spiro.modern.services.viewmodelfactory.ts" />
-/// <reference path="../../Scripts/spiro.modern.viewmodels.ts" />
 
 describe("Controllers", () => {
 	var $scope, ctrl;

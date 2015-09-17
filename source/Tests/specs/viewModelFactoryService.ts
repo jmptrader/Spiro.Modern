@@ -69,7 +69,7 @@ describe("viewModelFactory Service", () => {
 
             let setMenu: jasmine.Spy;
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager: Spiro.Angular.Modern.IUrlManager) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager) => {
                 resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink));
                 setMenu = spyOn(urlManager, "setMenu");
             }));
@@ -91,10 +91,8 @@ describe("viewModelFactory Service", () => {
 
 
         describe("from populated rep", () => {
-
-            let link = new Spiro.Link(rawLink)
-
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager: Spiro.Angular.Modern.IUrlManager) => {
+            const link = new Spiro.Link(rawLink);
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager) => {
                 resultVm = viewModelFactory.itemViewModel(link);
                 setItem = spyOn(urlManager, "setItem");
             }));
@@ -107,9 +105,6 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.target).toBeUndefined();
             });
         });
-
-
-
     });
 
     describe("create actionViewModel", () => {
@@ -133,7 +128,7 @@ describe("viewModelFactory Service", () => {
             let invokeAction: jasmine.Spy;
             const am = new Spiro.ActionMember(rawAction, {}, "anid");
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context: Spiro.Angular.Modern.IContext) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context) => {
                 resultVm = viewModelFactory.actionViewModel(am);
                 invokeAction = spyOn(context, "invokeAction");
             }));
@@ -150,7 +145,7 @@ describe("viewModelFactory Service", () => {
 
             let setDialog: jasmine.Spy;
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager: Spiro.Angular.Modern.IUrlManager) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, urlManager) => {
                 resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawActionParms, {}, "anid"));
                 setDialog = spyOn(urlManager, "setDialog");
             }));
@@ -187,7 +182,7 @@ describe("viewModelFactory Service", () => {
             let closeDialog: jasmine.Spy;
             const am = new Spiro.ActionMember(rawAction, {}, "anid");
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context: Spiro.Angular.Modern.IContext, urlManager: Spiro.Angular.Modern.IUrlManager) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, context, urlManager) => {
                 invokeAction = spyOn(context, "invokeAction");
                 closeDialog = spyOn(urlManager, "closeDialog");
                 resultVm = viewModelFactory.dialogViewModel(am);

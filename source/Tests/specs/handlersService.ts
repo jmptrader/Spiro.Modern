@@ -16,224 +16,94 @@
 /// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
 /// <reference path="helpers.ts" />
 
-describe('handlers Service', () => {
+describe("handlers Service", () => {
 
     var $scope;
 
     beforeEach(() => {
-        module('app');
-         
+        module("app");        
     });
+    
+    describe("handleError", () => {
 
-
-    //describe('handleObject', () => {
-    //    var getObject;
-
-    //    describe('if it finds object', () => {
-
-    //        var testObject = new Spiro.DomainObjectRepresentation();
-    //        var testViewModel = { test: testObject };
-
-    //        var objectViewModel;
-    //        var setNestedObject;
-
-    //        beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, $cacheFactory) => {
-
-    //            $cacheFactory.get("recentlyViewed").destroy();
-
-
-    //            $scope = $rootScope.$new();
-
-    //            getObject = spyOnPromise(context, 'getObject', testObject);
-
-    //            objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').and.returnValue(testViewModel);
-    //            setNestedObject = spyOn(context, 'setNestedObject');
-
-    //            $routeParams.dt = "test";
-    //            $routeParams.id = "1";
-    //        }));
-
-    //        describe('not in edit mode', () => {
-
-    //            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers) => {
-
-    //                handlers.handleObject($scope);
-    //            }));
-
-    //            it('should update the scope', () => {
-    //                expect(getObject).toHaveBeenCalledWith("test", "1");
-    //                expect(objectViewModel).toHaveBeenCalledWith(testObject);
-    //                expect(setNestedObject).toHaveBeenCalledWith(null);
-
-    //                expect($scope.object).toEqual(testViewModel);
-    //                expect($scope.actionTemplate).toEqual("Content/partials/actions.html");
-    //                expect($scope.propertiesTemplate).toEqual("Content/partials/viewProperties.html");
-    //            });
-    //        });
-
-    //        describe('in edit mode', () => {
-
-    //            var propertyMem = new Spiro.PropertyMember({}, testObject, "");
-
-    //            var populate;
-
-    //            beforeEach(inject(($rootScope, $q, $routeParams, repLoader: Spiro.Angular.IRepLoader, handlers: Spiro.Angular.Modern.IHandlers) => {
-
-    //                spyOn(testObject, 'propertyMembers').and.returnValue([propertyMem]);
-
-    //                $routeParams.editMode = "test";
-    //                handlers.handleEditObject($scope);
-    //            }));
-
-    //            it('should update the scope', () => {
-    //                expect(getObject).toHaveBeenCalledWith("test", "1");
-    //                expect(objectViewModel).toHaveBeenCalledWith(testObject, jasmine.any(Function));
-    //                expect(setNestedObject).toHaveBeenCalledWith(null);
-
-    //                expect($scope.object).toEqual(testViewModel);
-    //                expect($scope.actionTemplate).toEqual("");
-    //                expect($scope.propertiesTemplate).toEqual("Content/partials/editProperties.html");
-    //            });
-    //        });
-    //    });
-
-    //    describe('if it has an error', () => {
-
-    //        var testObject = new Spiro.ErrorRepresentation();
-    //        var setError;
-
-    //        beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
-    //            $scope = $rootScope.$new();
-
-    //            getObject = spyOnPromiseFail(context, 'getObject', testObject);
-    //            setError = spyOn(context, 'setError');
-
-    //            $routeParams.dt = "test";
-    //            $routeParams.id = "1";
-
-    //            handlers.handleObject($scope);
-    //        }));
-
-    //        it('should update the context', () => {
-    //            expect(getObject).toHaveBeenCalledWith("test", "1");
-    //            expect(setError).toHaveBeenCalledWith(testObject);
-
-    //            expect($scope.object).toBeUndefined();
-    //            expect($scope.actionTemplate).toBeUndefined();
-    //            expect($scope.propertiesTemplate).toBeUndefined();
-    //        });
-    //    });
-    //});
-
-    // describe('handleHome', () => {
-
-    //     let menusViewModel;
-    //     const mVm = new Spiro.MenusRepresentation({});
-
-    //     beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext, viewModelFactory) => {
-    //         $scope = $rootScope.$new();
-    //         spyOnPromise(context, 'getMenus', mVm);
-    //         menusViewModel = spyOn(viewModelFactory, "menusViewModel");
-    //     }));
-
-
-    //     describe('if it has no menu id', () => {
-
-    //         beforeEach(inject((handlers: Spiro.Angular.Modern.IHandlers) => {
-    //             var routeData = new Spiro.Angular.Modern.RouteData();
-    //             handlers.handleHome($scope, routeData.pane1);
-    //         }));
-
-    //         it('should set scope variables', () => {
-    //             expect(menusViewModel).toHaveBeenCalledWith(mVm);
-    //             expect($scope.homeTemplate).toBe(Spiro.Angular.homeTemplate);
-    //         });
-    //     });
-
-    //});
-
-
-    describe('handleError', () => {
-
-        beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
+        beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, context) => {
             $scope = $rootScope.$new();
 
-            spyOn(context, 'getError').and.returnValue(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
+            spyOn(context, "getError").and.returnValue(new Spiro.ErrorRepresentation({ message: "", stacktrace: [] }));
 
             handlers.handleError($scope);
         }));
 
 
-        it('should set a error data', () => {
+        it("should set a error data", () => {
             expect($scope.error).toBeDefined();
             expect($scope.errorTemplate).toEqual("Content/partials/error.html");
         });
 
     });
 
-    describe('handleBackground', () => {
+    describe("handleBackground", () => {
 
-        var navService: Spiro.Angular.Modern.INavigation;
-       
-        var setError;
+        let navService: Spiro.Angular.Modern.INavigation;     
+        let setError: jasmine.Spy;
 
-        beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers, $location: ng.ILocationService,  color: Spiro.Angular.IColor, navigation: Spiro.Angular.Modern.INavigation, context: Spiro.Angular.Modern.IContext) => {
+        beforeEach(inject(($rootScope, handlers, $location,  color, navigation, context) => {
             $scope = $rootScope.$new();
             navService = navigation;
 
-            spyOn(color, 'toColorFromHref').and.returnValue("acolor");
-            spyOn(navigation, 'push');
+            spyOn(color, "toColorFromHref").and.returnValue("acolor");
+            spyOn(navigation, "push");
            
-            setError = spyOn(context, 'setError');
+            setError = spyOn(context, "setError");
 
         }));
 
-        describe('if validation ok', () => {
-            var testVersion = new Spiro.VersionRepresentation();
-            beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
+        describe("if validation ok", () => {
+            const testVersion = new Spiro.VersionRepresentation();
+            beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context) => {
                 testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "selectable" } };
-                spyOnPromise(context, 'getVersion', testVersion);
+                spyOnPromise(context, "getVersion", testVersion);
 
                 handlers.handleBackground($scope);
             }));
 
-            it('should set scope variables', () => {
+            it("should set scope variables", () => {
                 expect($scope.backgroundColor).toEqual("acolor");
                 expect(navService.push).toHaveBeenCalled();
                 expect(setError).not.toHaveBeenCalled();
             });
         });
 
-        describe('if validation fails version', () => {
-            var testVersion = new Spiro.VersionRepresentation();
-            beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
+        describe("if validation fails version", () => {
+            const testVersion = new Spiro.VersionRepresentation();
+            beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context) => {
                 testVersion.attributes = { specVersion: "1.0", optionalCapabilities: { domainModel: "selectable" } };
-                spyOnPromise(context, 'getVersion', testVersion);
+                spyOnPromise(context, "getVersion", testVersion);
 
                 handlers.handleBackground($scope);
             }));
 
-            it('sets error', () => {
+            it("sets error", () => {
                 expect(setError).toHaveBeenCalled();
             });
         });
 
-        describe('if validation fails domain model', () => {
-            var testVersion = new Spiro.VersionRepresentation();
+        describe("if validation fails domain model", () => {
+            const testVersion = new Spiro.VersionRepresentation();
             beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
                 testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "formal" } };
-                spyOnPromise(context, 'getVersion', testVersion);
+                spyOnPromise(context, "getVersion", testVersion);
 
                 handlers.handleBackground($scope);
             }));
 
-            it('sets error', () => {
+            it("sets error", () => {
                 expect(setError).toHaveBeenCalled();
             });
         });
     });
 
-    describe('handleAppBar', () => {
+    describe("handleAppBar", () => {
 
 
         function expectAppBarData() {
@@ -245,7 +115,7 @@ describe('handlers Service', () => {
             expect($scope.appBar.goForward).toBeDefined();
         }
 
-        describe('handleAppBar when not viewing an  object', () => {
+        describe("handleAppBar when not viewing an  object", () => {
 
             beforeEach(inject(($rootScope, handlers: Spiro.Angular.Modern.IHandlers) => {
                 $scope = $rootScope.$new();
@@ -253,41 +123,41 @@ describe('handlers Service', () => {
                 handlers.handleAppBar($scope);
             }));
 
-            it('should set appBar data', () => {
+            it("should set appBar data", () => {
                 expectAppBarData();
             });
 
-            it('should disable edit button', () => {
+            it("should disable edit button", () => {
                 expect($scope.appBar.hideEdit()).toEqual(true);
             });
 
         });
 
-        describe('handleAppBar when viewing an editable object', () => {
+        describe("handleAppBar when viewing an editable object", () => {
 
-            var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject, "");
-            var testVm = new Spiro.Angular.Modern.DomainObjectViewModel();
+            const testObject = new Spiro.DomainObjectRepresentation();
+            const testMember = new Spiro.PropertyMember({}, testObject, "");
+            const testVm = new Spiro.Angular.Modern.DomainObjectViewModel();
 
             beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
                 $scope = $rootScope.$new();
-                spyOn(testVm, 'showEdit').and.returnValue(true);
+                spyOn(testVm, "showEdit").and.returnValue(true);
 
                 $scope.$parent.object = testVm;
 
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
 
-                spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
+                spyOnPromise(context, "getObject", testObject);
+                spyOn(testObject, "propertyMembers").and.returnValue([testMember]);
 
-                spyOn($location, 'path').and.returnValue("aPath");
+                spyOn($location, "path").and.returnValue("aPath");
                 
 
                 handlers.handleAppBar($scope);
             }));
 
-            it('should set appBar data', () => {
+            it("should set appBar data", () => {
                 expectAppBarData();
             });
 
@@ -297,10 +167,10 @@ describe('handlers Service', () => {
 
         });
 
-        describe('handleAppBar when viewing a non editable object', () => {
+        describe("handleAppBar when viewing a non editable object", () => {
 
-            var testObject = new Spiro.DomainObjectRepresentation();
-            var testMember = new Spiro.PropertyMember({}, testObject, "");
+            const testObject = new Spiro.DomainObjectRepresentation();
+            const testMember = new Spiro.PropertyMember({}, testObject, "");
 
 
             beforeEach(inject(($rootScope, $location, $routeParams, handlers: Spiro.Angular.Modern.IHandlers, context: Spiro.Angular.Modern.IContext) => {
@@ -309,20 +179,20 @@ describe('handlers Service', () => {
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
 
-                spyOnPromise(context, 'getObject', testObject);
-                spyOn(testObject, 'propertyMembers').and.returnValue([testMember]);
-                spyOn(testMember, 'disabledReason').and.returnValue("disabled");
+                spyOnPromise(context, "getObject", testObject);
+                spyOn(testObject, "propertyMembers").and.returnValue([testMember]);
+                spyOn(testMember, "disabledReason").and.returnValue("disabled");
 
-                spyOn($location, 'path').and.returnValue("aPath");
+                spyOn($location, "path").and.returnValue("aPath");
 
                 handlers.handleAppBar($scope);
             }));
 
-            it('should set appBar data', () => {
+            it("should set appBar data", () => {
                 expectAppBarData();
             });
 
-            it('should disable edit button', () => {
+            it("should disable edit button", () => {
                 expect($scope.appBar.hideEdit()).toBe(true);
             });
 

@@ -348,46 +348,46 @@ describe("context Service", () => {
     });
 
 
-    describe("getQuery", () => {
+    //describe("getQuery", () => {
 
-        const testObject = new Spiro.ListRepresentation();
-        let localContext: Spiro.Angular.Modern.IContext;
-        let result: angular.IPromise<Spiro.ListRepresentation>;
-        let timeout: ng.ITimeoutService;
+    //    const testObject = new Spiro.ListRepresentation();
+    //    let localContext: Spiro.Angular.Modern.IContext;
+    //    let result: angular.IPromise<Spiro.ListRepresentation>;
+    //    let timeout: ng.ITimeoutService;
 
-        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
-            localContext = context;
-            timeout = $timeout;
-        }));
+    //    beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
+    //        localContext = context;
+    //        timeout = $timeout;
+    //    }));
 
-        describe("when collection is set", () => {
+    //    describe("when collection is set", () => {
 
-            beforeEach(inject(() => {
+    //        beforeEach(inject(() => {
 
-                (<any>localContext).setQuery(testObject);
+    //            (<any>localContext).setQuery(testObject);
 
-                result = localContext.getQuery("", "", []);
-                timeout.flush();
-            }));
+    //            result = localContext.getQuery("", "", []);
+    //            timeout.flush();
+    //        }));
 
-            it("returns collection representation", () => {
-                expect(result).toBe(testObject);
-            });
-        });
+    //        it("returns collection representation", () => {
+    //            expect(result).toBe(testObject);
+    //        });
+    //    });
 
-        describe("when collection is not set", () => {
+    //    describe("when collection is not set", () => {
 
-            beforeEach(inject(() => {
-                result = localContext.getQuery("", "", []);
-                timeout.flush();
-            }));
+    //        beforeEach(inject(() => {
+    //            result = localContext.getQuery("", "", []);
+    //            timeout.flush();
+    //        }));
 
-            it("returns object representation", () => {
-                expect(result).toBeNull();
-            });
-        });
+    //        it("returns object representation", () => {
+    //            expect(result).toBeNull();
+    //        });
+    //    });
 
-    });
+    //});
 
 
 

@@ -263,35 +263,35 @@ describe("context Service", function () {
             });
         });
     });
-    describe("getQuery", function () {
-        var testObject = new Spiro.ListRepresentation();
-        var localContext;
-        var result;
-        var timeout;
-        beforeEach(inject(function ($rootScope, $routeParams, $timeout, context) {
-            localContext = context;
-            timeout = $timeout;
-        }));
-        describe("when collection is set", function () {
-            beforeEach(inject(function () {
-                localContext.setQuery(testObject);
-                result = localContext.getQuery("", "", []);
-                timeout.flush();
-            }));
-            it("returns collection representation", function () {
-                expect(result).toBe(testObject);
-            });
-        });
-        describe("when collection is not set", function () {
-            beforeEach(inject(function () {
-                result = localContext.getQuery("", "", []);
-                timeout.flush();
-            }));
-            it("returns object representation", function () {
-                expect(result).toBeNull();
-            });
-        });
-    });
+    //describe("getQuery", () => {
+    //    const testObject = new Spiro.ListRepresentation();
+    //    let localContext: Spiro.Angular.Modern.IContext;
+    //    let result: angular.IPromise<Spiro.ListRepresentation>;
+    //    let timeout: ng.ITimeoutService;
+    //    beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
+    //        localContext = context;
+    //        timeout = $timeout;
+    //    }));
+    //    describe("when collection is set", () => {
+    //        beforeEach(inject(() => {
+    //            (<any>localContext).setQuery(testObject);
+    //            result = localContext.getQuery("", "", []);
+    //            timeout.flush();
+    //        }));
+    //        it("returns collection representation", () => {
+    //            expect(result).toBe(testObject);
+    //        });
+    //    });
+    //    describe("when collection is not set", () => {
+    //        beforeEach(inject(() => {
+    //            result = localContext.getQuery("", "", []);
+    //            timeout.flush();
+    //        }));
+    //        it("returns object representation", () => {
+    //            expect(result).toBeNull();
+    //        });
+    //    });
+    //});
     describe("getSelectedChoice", function () {
         var localContext;
         var result;
