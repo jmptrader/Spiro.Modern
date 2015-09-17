@@ -44,9 +44,6 @@
     <Content Include="Content\spiro-modern2.css" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
-    <Content Include="Scripts\spiro.models.helpers.js" />
-    <Content Include="Scripts\spiro.models.js" />
-    <Content Include="Scripts\spiro.models.shims.js" />
     <Content Include="Re-design notes\spiro-modern3.css" />
     <Content Include="Re-design notes\spiro-modern.css" />
     <Content Include="Content\partials\home.html" />
@@ -127,6 +124,9 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\spiro.models.helpers.js" />
+    <Content Include="Scripts\spiro.models.js" />
+    <Content Include="Scripts\spiro.models.shims.js" />
     <Content Include="SpiroReadMe.txt" />
     <Content Include="Re-design notes\Notes on colour schemes.txt" />
     <Content Include="Tests\specs\contextService.js" />

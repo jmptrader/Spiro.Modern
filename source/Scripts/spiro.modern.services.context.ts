@@ -19,7 +19,7 @@ module Spiro.Angular.Modern {
     export interface IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
         getVersion: () => ng.IPromise<VersionRepresentation>;
-        getServices: () => ng.IPromise<DomainServicesRepresentation>;
+        
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
@@ -50,6 +50,7 @@ module Spiro.Angular.Modern {
 
     interface IContextInternal extends IContext {
         getDomainObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
+        getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (type: string) => ng.IPromise<DomainObjectRepresentation>;
 
         setObject: (object: DomainObjectRepresentation) => void;
@@ -131,8 +132,7 @@ module Spiro.Angular.Modern {
 
             return context.getMenus().
                 then((menus: MenusRepresentation) => {
-                    var menuLink = _.find(menus.value().models, (model: Link) => { return model.rel().parms[0].value ===  menuId; });
-                    var menu = menuLink.getTarget();
+                    const menu = menus.getMenu(menuId);
                     return repLoader.populate(menu);
                 }).
                 then((menu: MenuRepresentation) => {
@@ -179,7 +179,7 @@ module Spiro.Angular.Modern {
 
             return this.getHome().
                 then((home: HomePageRepresentation) => {
-                    var ds = home.getMenus();
+                    const ds = home.getMenus();
                     return repLoader.populate<MenusRepresentation>(ds);
                 }).
                 then((menus: MenusRepresentation) => {
@@ -197,7 +197,7 @@ module Spiro.Angular.Modern {
 
             return context.getHome().
                 then((home: HomePageRepresentation) => {
-                    var v = home.getVersion();
+                    const v = home.getVersion();
                     return repLoader.populate<VersionRepresentation>(v);
                 }).
                 then((version: VersionRepresentation) => {
