@@ -325,7 +325,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("HL Road Frame - Black, 58", topItem);
         }
 
-        [TestMethod, Ignore] //Pending fix by Stef
+        [TestMethod]
         public virtual void ConditionalChoicesDefaults() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 
@@ -358,7 +358,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Mountain-100 Black, 38", topItem);
         }
 
-        [TestMethod, Ignore] //Pending fix by Stef
+        [TestMethod]
         public virtual void ConditionalChoicesChangeDefaults() {
             br.Navigate().GoToUrl(ProductServiceUrl);
 

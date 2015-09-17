@@ -15,27 +15,57 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class ObjectEditTests : SpiroTest {
 
-        [TestMethod] //not saving due to mask issue on decimal fields
+        protected void EditObject()
+        {
+            Click(GetEditButton());
+            GetSaveButton();
+            GetCancelEditButton();
+            var title = br.FindElement(By.CssSelector(".header .title")).Text;
+            Assert.IsTrue(title.StartsWith("Editing"));
+        }
+
+        protected void SaveObject()
+        {
+            Click(GetSaveButton());
+            GetEditButton(); //To wait for save completed
+            var title = br.FindElement(By.CssSelector(".header .title")).Text;
+            Assert.IsFalse(title.StartsWith("Editing"));
+        }
+
+        protected IWebElement GetEditButton()
+        {
+            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 1);
+            var edit = br.FindElement(By.CssSelector(".header .action"));
+            Assert.AreEqual("Edit", edit.Text);
+            return edit;
+        }
+
+        protected IWebElement GetSaveButton()
+        {
+            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
+            var save = br.FindElements(By.CssSelector(".header .action"))[0];
+            Assert.AreEqual("Save", save.Text);
+            return save;
+        }
+
+        protected IWebElement GetCancelEditButton()
+        {
+            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
+            var cancel = br.FindElements(By.CssSelector(".header .action"))[1];
+            Assert.AreEqual("Cancel", cancel.Text);
+            return cancel;
+        }
+
+
+        [TestMethod]
         public virtual void ObjectEditChangeScalar() {
             br.Navigate().GoToUrl(Product870Url);
-
-            wait.Until(d => d.FindElement(By.ClassName("actions")).Displayed);
-
-            wait.Until(d => d.FindElement(By.ClassName("icon-edit")).Displayed);
-
-            Click(br.FindElement(By.ClassName("icon-edit")));
-
-            wait.Until(d => br.FindElements(By.ClassName("action")).Count == 2);
-
+            EditObject();
 
             // set price and days to mfctr
-
             br.FindElement(By.CssSelector("div#listprice input")).SendKeys(Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
-
-            Click(br.FindElement(By.ClassName("save")));
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+            SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
@@ -46,17 +76,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeDateTime() {
             br.Navigate().GoToUrl(Product870Url);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
-
-            wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
-
-            Click(br.FindElement(By.ClassName("edit")));
-
-            wait.Until(d => br.FindElement(By.ClassName("save")));
+            EditObject();
 
             // set price and days to mfctr
-
             var date = new DateTime(2014, 7, 18, 0, 0, 0, DateTimeKind.Utc);
             var dateStr = date.ToString("d MMM yyyy");
 
@@ -66,10 +88,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             br.FindElement(By.CssSelector("div#sellstartdate input")).SendKeys(dateStr + Keys.Tab);
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
-
-            Click(br.FindElement(By.ClassName("save")));
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
@@ -80,24 +99,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeChoices() {
             br.Navigate().GoToUrl(Product870Url);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
-
-            wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
-
-            Click(br.FindElement(By.ClassName("edit")));
-
-            wait.Until(d => br.FindElement(By.ClassName("save")));
+            EditObject();
 
             // set product line 
 
             br.FindElement(By.CssSelector("#productline  select")).SendKeys("S");
 
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
-
-            Click(br.FindElement(By.ClassName("save")));
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+            SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
@@ -107,15 +116,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeConditionalChoices() {
             br.Navigate().GoToUrl(Product870Url);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
-
-            wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
-
-            Click(br.FindElement(By.ClassName("edit")));
-
-            wait.Until(d => br.FindElement(By.ClassName("save")));
-
+            EditObject();
             // set product category and sub category
 
             var selected = new SelectElement(br.FindElement(By.CssSelector("#productcategory  select")));
@@ -134,18 +135,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
 
-            Click(br.FindElement(By.ClassName("save")));
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
+            SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
             Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nCaps", properties[7].Text);
 
-            Click(br.FindElement(By.ClassName("edit")));
-
-            wait.Until(d => br.FindElement(By.ClassName("save")));
+            EditObject();
 
             // set product category and sub category
 
@@ -165,9 +162,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             br.FindElement(By.CssSelector("#productsubcategory  select")).SendKeys("Mountain Bikes");
 
-            Click(br.FindElement(By.ClassName("save")));
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+            SaveObject();
 
             properties = br.FindElements(By.ClassName("property"));
 
@@ -175,9 +170,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Product Subcategory:\r\nMountain Bikes", properties[7].Text);
 
             // set values back
-            Click(br.FindElement(By.ClassName("edit")));
-
-            wait.Until(d => br.FindElement(By.ClassName("save")));
+            EditObject();
 
             br.FindElement(By.CssSelector("#productcategory  select")).SendKeys("Accessories" + Keys.Tab);
 
@@ -185,10 +178,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => slpsc.Options.Count == 13);
 
             br.FindElement(By.CssSelector("#productsubcategory  select")).SendKeys("Bottles and Cages" + Keys.Tab);
-
-            Click(br.FindElement(By.ClassName("save")));
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
+            SaveObject();
 
             properties = br.FindElements(By.ClassName("property"));
 
@@ -219,7 +209,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
