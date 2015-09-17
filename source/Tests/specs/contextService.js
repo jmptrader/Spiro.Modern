@@ -145,55 +145,121 @@ describe("context Service", function () {
         var getService;
         var populate;
         var timeout;
-        beforeEach(inject(function ($q, $rootScope, $routeParams, $timeout, context, repLoader) {
-            populate = spyOn(repLoader, "populate");
-            populate.and.returnValue($q.when(testObject));
-            getDomainObject = spyOn(context, "getDomainObject");
-            getDomainObject.and.returnValue($q.when(testObject));
-            getService = spyOn(context, "getService");
-            getService.and.returnValue(testObject);
-            spyOn(testObject, "domainType").and.returnValue("test");
-            spyOn(testObject, "instanceId").and.returnValue("1");
-            spyOn(testObject, "serviceId").and.returnValue(undefined);
-            localContext = context;
-            timeout = $timeout;
-        }));
-        describe("when currentObject is set", function () {
-            beforeEach(inject(function () {
-                localContext.setObject(testObject);
-                result = localContext.getObject("test", ["1"]);
-                timeout.flush();
+        describe("getting a domain object", function () {
+            beforeEach(inject(function ($q, $rootScope, $routeParams, $timeout, context, repLoader) {
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when(testObject));
+                getDomainObject = spyOn(context, "getDomainObject");
+                getDomainObject.and.callThrough();
+                getService = spyOn(context, "getService");
+                getService.and.callThrough();
+                spyOn(testObject, "domainType").and.returnValue("test");
+                spyOn(testObject, "instanceId").and.returnValue("1");
+                spyOn(testObject, "serviceId").and.returnValue(undefined);
+                localContext = context;
+                timeout = $timeout;
             }));
-            it("returns object representation", function () {
-                expect(getDomainObject).toHaveBeenCalledWith("test", "1");
-                expect(getService).not.toHaveBeenCalled();
-                result.then(function (hr) { return expect(hr).toBe(testObject); });
-                timeout.flush();
+            describe("when currentObject is set", function () {
+                beforeEach(inject(function () {
+                    localContext.setObject(testObject);
+                    result = localContext.getObject("test", ["1"]);
+                    timeout.flush();
+                }));
+                it("returns object representation", function () {
+                    expect(getDomainObject).toHaveBeenCalledWith("test", "1");
+                    expect(getService).not.toHaveBeenCalled();
+                    result.then(function (hr) { return expect(hr).toBe(testObject); });
+                    timeout.flush();
+                });
+            });
+            describe("when currentObject is set but not same", function () {
+                beforeEach(inject(function () {
+                    localContext.setObject(testObject);
+                    result = localContext.getObject("test2", ["2"]);
+                    timeout.flush();
+                }));
+                it("returns object representation", function () {
+                    expect(populate).toHaveBeenCalled();
+                    expect(getDomainObject).toHaveBeenCalledWith("test2", "2");
+                    expect(getService).not.toHaveBeenCalled();
+                    result.then(function (hr) { return expect(hr).toBe(testObject); });
+                    timeout.flush();
+                });
+            });
+            describe("when currentObject is not set", function () {
+                beforeEach(inject(function () {
+                    result = localContext.getObject("test", ["1"]);
+                    timeout.flush();
+                }));
+                it("returns object representation", function () {
+                    expect(populate).toHaveBeenCalled();
+                    expect(getDomainObject).toHaveBeenCalledWith("test", "1");
+                    expect(getService).not.toHaveBeenCalled();
+                    result.then(function (hr) { return expect(hr).toBe(testObject); });
+                    timeout.flush();
+                });
             });
         });
-        describe("when currentObject is set but not same", function () {
-            beforeEach(inject(function () {
-                localContext.setObject(testObject);
-                result = localContext.getObject("test2", ["2"]);
-                timeout.flush();
+        describe("getting a service", function () {
+            var testServices = new Spiro.DomainServicesRepresentation();
+            var getServices;
+            var getServiceRep;
+            beforeEach(inject(function ($q, $rootScope, $routeParams, $timeout, context, repLoader) {
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when(testObject));
+                getDomainObject = spyOn(context, "getDomainObject");
+                getDomainObject.and.callThrough();
+                getService = spyOn(context, "getService");
+                getService.and.callThrough();
+                getServices = spyOn(context, "getServices");
+                getServices.and.returnValue($q.when(testServices));
+                getServiceRep = spyOn(testServices, "getService");
+                getServiceRep.and.returnValue(testObject);
+                spyOn(testObject, "domainType").and.returnValue("test");
+                spyOn(testObject, "instanceId").and.returnValue(undefined);
+                spyOn(testObject, "serviceId").and.returnValue("sid");
+                localContext = context;
+                timeout = $timeout;
             }));
-            it("returns object representation", function () {
-                expect(getDomainObject).toHaveBeenCalledWith("test2", "2");
-                expect(getService).not.toHaveBeenCalled();
-                result.then(function (hr) { return expect(hr).toBe(testObject); });
-                timeout.flush();
+            describe("when currentObject is set", function () {
+                beforeEach(inject(function () {
+                    localContext.setObject(testObject);
+                    result = localContext.getObject("test");
+                    timeout.flush();
+                }));
+                it("returns service representation", function () {
+                    expect(getDomainObject).not.toHaveBeenCalled();
+                    expect(getService).toHaveBeenCalledWith("test");
+                    result.then(function (hr) { return expect(hr).toBe(testObject); });
+                    timeout.flush();
+                });
             });
-        });
-        describe("when currentObject is not set", function () {
-            beforeEach(inject(function () {
-                result = localContext.getObject("test", ["1"]);
-                timeout.flush();
-            }));
-            it("returns object representation", function () {
-                expect(getDomainObject).toHaveBeenCalledWith("test", "1");
-                expect(getService).not.toHaveBeenCalled();
-                result.then(function (hr) { return expect(hr).toBe(testObject); });
-                timeout.flush();
+            describe("when currentObject is set but not same", function () {
+                beforeEach(inject(function () {
+                    localContext.setObject(testObject);
+                    result = localContext.getObject("test2");
+                    timeout.flush();
+                }));
+                it("returns service representation", function () {
+                    expect(populate).toHaveBeenCalled();
+                    expect(getDomainObject).not.toHaveBeenCalled();
+                    expect(getService).toHaveBeenCalledWith("test2");
+                    result.then(function (hr) { return expect(hr).toBe(testObject); });
+                    timeout.flush();
+                });
+            });
+            describe("when currentObject is not set", function () {
+                beforeEach(inject(function () {
+                    result = localContext.getObject("test");
+                    timeout.flush();
+                }));
+                it("returns service representation", function () {
+                    expect(populate).toHaveBeenCalled();
+                    expect(getDomainObject).not.toHaveBeenCalled();
+                    expect(getService).toHaveBeenCalledWith("test");
+                    result.then(function (hr) { return expect(hr).toBe(testObject); });
+                    timeout.flush();
+                });
             });
         });
     });

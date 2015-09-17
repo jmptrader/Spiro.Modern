@@ -58,9 +58,7 @@ var Spiro;
                     }
                     return context.getServices().
                         then(function (services) {
-                        // todo make getService on DomainServicesRepresentation
-                        var serviceLink = _.find(services.value().models, function (model) { return model.rel().parms[0].value === serviceType; });
-                        var service = serviceLink.getTarget();
+                        var service = services.getService(serviceType);
                         return repLoader.populate(service);
                     }).
                         then(function (service) {

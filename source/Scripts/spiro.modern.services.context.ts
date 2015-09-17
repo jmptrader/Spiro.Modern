@@ -104,7 +104,7 @@ module Spiro.Angular.Modern {
                 });
         };
 
-        context.getService = function (serviceType: string): ng.IPromise<DomainObjectRepresentation> {
+        context.getService = (serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 
             if (currentObject && isSameObject(currentObject, serviceType)) {
                 return $q.when(currentObject);
@@ -112,9 +112,7 @@ module Spiro.Angular.Modern {
 
             return context.getServices().
                 then((services: DomainServicesRepresentation) => {
-                    // todo make getService on DomainServicesRepresentation
-                    const serviceLink = _.find(services.value().models, model =>  model.rel().parms[0].value === serviceType);
-                    const service = serviceLink.getTarget();
+                    const service = services.getService(serviceType);
                     return repLoader.populate(service);
                 }).
                 then((service: DomainObjectRepresentation) => {
