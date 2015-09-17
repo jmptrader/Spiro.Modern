@@ -76,8 +76,7 @@ var Spiro;
                     //}
                     return context.getMenus().
                         then(function (menus) {
-                        var menuLink = _.find(menus.value().models, function (model) { return model.rel().parms[0].value === menuId; });
-                        var menu = menuLink.getTarget();
+                        var menu = menus.getMenu(menuId);
                         return repLoader.populate(menu);
                     }).
                         then(function (menu) {

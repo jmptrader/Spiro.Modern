@@ -33,11 +33,12 @@ source/Tests/specs/helpers.js.map
 source/Tests/specs/handlersService.js.map
 source/Tests/specs/controllers.js.map
 source/Tests/specs/contextService.js.map
-coverage/Firefox 30.0.0 (Windows)/cobertura-coverage.xml
-coverage/IE 11.0.0 (Windows)/cobertura-coverage.xml
+coverage/
+node_modules/
 source/Spiro.Modern.sln.DotSettings.user
 test-results/karma-test-results.xml
 test/Spiro.Angular.Selenium.Test.csproj.user
 source/Spiro.Modern.v11.suo
 source/.vs/Spiro.Modern/v14/.suo
 source/.vs/config/applicationhost.config
+TESTS-IE_11.0.0_(Windows_8.1_0.0.0).xml
