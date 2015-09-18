@@ -241,7 +241,8 @@ module Spiro.Angular.Modern {
                     const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
                     lastActionFriendlyName = action.extensions().friendlyName;
                     return repLoader.invoke(action, valueParms);
-                }).then(handleResult);
+                }).
+                then(handleResult);
         };
 
         context.getQueryFromObject = (objectId: string, actionId: string, parms: { id: string; val: string }[]) => {
@@ -249,6 +250,7 @@ module Spiro.Angular.Modern {
             if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
                 return $q.when(currentCollection);
             }
+
             return context.getObjectByOid(objectId).
                 then((object: DomainObjectRepresentation) => {
                     const action = object.actionMember(actionId);
@@ -256,7 +258,8 @@ module Spiro.Angular.Modern {
                     lastActionFriendlyName = action.extensions().friendlyName;
 
                     return repLoader.invoke(action, valueParms);
-                }).then(handleResult);
+                }).
+                then(handleResult);
             
         };
 

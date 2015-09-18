@@ -348,46 +348,62 @@ describe("context Service", () => {
     });
 
 
-    //describe("getQuery", () => {
+    describe("getQuery", () => {
 
-    //    const testObject = new Spiro.ListRepresentation();
-    //    let localContext: Spiro.Angular.Modern.IContext;
-    //    let result: angular.IPromise<Spiro.ListRepresentation>;
-    //    let timeout: ng.ITimeoutService;
+        const testObject = new Spiro.ListRepresentation();
+        let localContext: Spiro.Angular.Modern.IContext;
+        let result: angular.IPromise<Spiro.ListRepresentation>;
+        let timeout: ng.ITimeoutService;
 
-    //    beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
-    //        localContext = context;
-    //        timeout = $timeout;
-    //    }));
+        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
+            localContext = context;
+            timeout = $timeout;
+        }));
 
-    //    describe("when collection is set", () => {
+        describe("when query is set", () => {
 
-    //        beforeEach(inject(() => {
+            beforeEach(inject(() => {
 
-    //            (<any>localContext).setQuery(testObject);
+                (<any>localContext).setQuery(testObject);
 
-    //            result = localContext.getQuery("", "", []);
-    //            timeout.flush();
-    //        }));
+                result = localContext.getQuery("", "", []);
+                timeout.flush();
+            }));
 
-    //        it("returns collection representation", () => {
-    //            expect(result).toBe(testObject);
-    //        });
-    //    });
+            it("returns collection representation", () => {
+                result.then((hr) => expect(hr).toBe(testObject));
+                timeout.flush();
+            });
+        });
 
-    //    describe("when collection is not set", () => {
+        describe("when collection is not set", () => {
 
-    //        beforeEach(inject(() => {
-    //            result = localContext.getQuery("", "", []);
-    //            timeout.flush();
-    //        }));
+            const testResult = new Spiro.Result({}, "");
+            const testMenu = new Spiro.MenuRepresentation();
+            const testAction = new Spiro.ActionMember({ extensions: { friendlyName: "" } }, {}, "");
+            const testActionResult = new Spiro.ActionResultRepresentation({resultType : "list"  });
+            let getMenu: jasmine.Spy;
 
-    //        it("returns object representation", () => {
-    //            expect(result).toBeNull();
-    //        });
-    //    });
+            beforeEach(inject(($q, repLoader) => {
+                getMenu = spyOn(localContext, "getMenu");
+                getMenu.and.returnValue($q.when(testMenu));
+                spyOn(testMenu, "actionMember").and.returnValue(testAction);
+                spyOn(repLoader, "invoke").and.returnValue($q.when(testActionResult));
+ 
+                spyOn(testActionResult, "result").and.returnValue(testResult);
+                spyOn(testResult, "list").and.returnValue(testObject);
 
-    //});
+                result = localContext.getQuery("", "", []);
+                timeout.flush();
+            }));
+
+            it("returns object representation", () => {
+                result.then((hr) => expect(hr).toBe(testObject));
+                timeout.flush();
+            });
+        });
+
+    });
 
 
 

@@ -164,7 +164,8 @@ var Spiro;
                         var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
                         lastActionFriendlyName = action.extensions().friendlyName;
                         return repLoader.invoke(action, valueParms);
-                    }).then(handleResult);
+                    }).
+                        then(handleResult);
                 };
                 context.getQueryFromObject = function (objectId, actionId, parms) {
                     if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
@@ -176,7 +177,8 @@ var Spiro;
                         var valueParms = _.map(parms, function (p) { return { id: p.id, val: new Spiro.Value(p.val) }; });
                         lastActionFriendlyName = action.extensions().friendlyName;
                         return repLoader.invoke(action, valueParms);
-                    }).then(handleResult);
+                    }).
+                        then(handleResult);
                 };
                 context.setObject = function (co) { return currentObject = co; };
                 var currentError = null;
