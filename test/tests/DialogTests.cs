@@ -85,7 +85,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void DateTimeParmKeepsValue()
         {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-            Click(GetObjectAction("Search For Orders"));
+            OpenActionDialog("Search For Orders");
             br.FindElements(By.CssSelector(".value input"))[0].SendKeys("1 Jan 2003");
             br.FindElements(By.CssSelector(".value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
 
