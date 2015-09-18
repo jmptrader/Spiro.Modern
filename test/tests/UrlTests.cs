@@ -106,6 +106,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(collections[0].FindElements(By.ClassName("icon-list")).Count == 0);
         }
 
+
         [TestMethod]
         public virtual void ObjectInEditMode()
         {
