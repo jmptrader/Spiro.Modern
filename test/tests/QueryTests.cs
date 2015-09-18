@@ -48,11 +48,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection table thead tr")).Count == 1);
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection table thead tr th")).Count == 25);
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr .cell")).Count > 50);
-            //TODO: Checkboxes
-            //Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.checkbox")).Count);
-
-            //Test first row of data
-            Assert.AreEqual(25, br.FindElements(By.CssSelector(".collection table tbody tr"))[1].FindElements(By.CssSelector(".cell")).Count);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr"))[1].FindElements(By.CssSelector(".cell")).Count == 25);
 
             //Switch back to List view
             Click(iconList);
